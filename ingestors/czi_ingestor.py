@@ -93,7 +93,7 @@ class CziIngestor(CrucibleDatasetIngestor):
         if cal_event:
             self.email, self.project_id = parse_calendar_event_for_ownership(cal_event)
 
-            apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/3")
+            apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
             by_email = requests.get(f"{crucible_api_url}/users?email={self.email}", headers = {"Authorization":f"Bearer {apikey}"}).json()
             by_lbl_email = requests.get(f"{crucible_api_url}/users?lbl_email={self.email}", headers = {"Authorization":f"Bearer {apikey}"}).json()
             user_info =  by_email + by_lbl_email 

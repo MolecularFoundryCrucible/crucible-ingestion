@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 # Vars ===========================
 rmq_pw = get_secret("RABBITMQ_DEFAULT_PW", "rabbitmq_default_pw/versions/1")
-crucible_apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/3")
+crucible_apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
 
 num_cores = os.cpu_count()
 
