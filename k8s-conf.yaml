@@ -1,0 +1,223 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: 
+  generation: 
+  labels:
+    app: ingestion-consumer
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:spec:
+        f:replicas: {}
+    manager: vpa-recommender
+    operation: Update
+    subresource: scale
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+        f:labels:
+          .: {}
+          f:app: {}
+      f:spec:
+        f:progressDeadlineSeconds: {}
+        f:revisionHistoryLimit: {}
+        f:selector: {}
+        f:strategy:
+          f:rollingUpdate:
+            .: {}
+            f:maxSurge: {}
+            f:maxUnavailable: {}
+          f:type: {}
+        f:template:
+          f:metadata:
+            f:annotations:
+              .: {}
+              f:gke-gcsfuse/cpu-limit: {}
+              f:gke-gcsfuse/cpu-request: {}
+              f:gke-gcsfuse/memory-request: {}
+              f:gke-gcsfuse/volumes: {}
+            f:labels:
+              .: {}
+              f:app: {}
+            f:name: {}
+            f:namespace: {}
+          f:spec:
+            f:containers:
+              k:{"name":"ingestion-consumer"}:
+                .: {}
+                f:env:
+                  .: {}
+                  k:{"name":"PYTHONUNBUFFERED"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                f:imagePullPolicy: {}
+                f:name: {}
+                f:resources: {}
+                f:terminationMessagePath: {}
+                f:terminationMessagePolicy: {}
+                f:volumeMounts:
+                  .: {}
+                  k:{"mountPath":"/mnt/gcs"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                    f:readOnly: {}
+            f:dnsPolicy: {}
+            f:restartPolicy: {}
+            f:schedulerName: {}
+            f:securityContext: {}
+            f:serviceAccount: {}
+            f:serviceAccountName: {}
+            f:terminationGracePeriodSeconds: {}
+            f:volumes:
+              .: {}
+              k:{"name":"cruc-upload-vol2"}:
+                .: {}
+                f:name: {}
+                f:persistentVolumeClaim:
+                  .: {}
+                  f:claimName: {}
+                  f:readOnly: {}
+    manager: kubectl-client-side-apply
+    operation: Update
+    time: 
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:spec:
+        f:template:
+          f:metadata:
+            f:annotations:
+              f:gke-gcsfuse/memory-limit: {}
+          f:spec:
+            f:containers:
+              k:{"name":"ingestion-consumer"}:
+                f:image: {}
+                f:resources:
+                  f:limits:
+                    f:ephemeral-storage: {}
+                  f:requests:
+                    f:ephemeral-storage: {}
+                    f:memory: {}
+    manager: unknown
+    operation: Update
+    time: 
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:deployment.kubernetes.io/revision: {}
+      f:status:
+        f:availableReplicas: {}
+        f:conditions:
+          .: {}
+          k:{"type":"Available"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Progressing"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+        f:observedGeneration: {}
+        f:readyReplicas: {}
+        f:replicas: {}
+        f:updatedReplicas: {}
+    manager: kube-controller-manager
+    operation: Update
+    subresource: status
+    time: 
+  name: ingestion-consumer
+  namespace: default
+  resourceVersion: 
+  uid: 
+spec:
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: ingestion-consumer
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 100%
+    type: RollingUpdate
+  # Horizontal Pod Autoscaling
+  template:
+    metadata:
+      annotations:
+        gke-gcsfuse/cpu-limit: "10"
+        gke-gcsfuse/cpu-request: 500m
+        gke-gcsfuse/memory-limit: 1000Gi
+        gke-gcsfuse/memory-request: 1Gi
+        gke-gcsfuse/volumes: "true"
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "10"
+        autoscaling.knative.dev/target: "8"
+      creationTimestamp: null
+      labels:
+        app: ingestion-consumer
+      name: ingestion-consumer 
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: PYTHONUNBUFFERED
+          value: "true"
+        image: us-central1-docker.pkg.dev/mf-crucible/crucible-ingestion/main:latest
+        imagePullPolicy: Always
+        name: ingestion-consumer
+        resources:
+          limits:
+            cpu: 8000m
+            memory: 8Gi
+            ephemeral-storage: 2Gi
+          requests:
+            cpu: 2000m
+            memory: 2Gi
+            ephemeral-storage: 2Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /mnt/gcs
+          name: cruc-upload-vol2
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64
+      volumes:
+      - name: cruc-upload-vol2
+        persistentVolumeClaim:
+          claimName: cruc-upload-pvc2
+          readOnly: true
