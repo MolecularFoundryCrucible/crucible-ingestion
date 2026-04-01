@@ -25,7 +25,7 @@ RUN /bin/uv sync --locked
 COPY . .
 
 # Run our flow script when the container starts
-CMD python /root/consumer-ingestion-process.py
+CMD uv run python /root/consumer-ingestion-process.py
 
 
 
