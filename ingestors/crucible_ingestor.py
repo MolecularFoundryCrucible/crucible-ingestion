@@ -8,7 +8,7 @@ from joblib import Parallel, delayed
 
 from crucible import CrucibleClient
 from crucible.utils.io import checkhash
-from crucible.models.dataset import BaseDataset
+from crucible.models import Dataset
 
 from utils import (get_secret,
                    run_rclone_command,
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
 client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
-class CrucibleDatasetIngestor(BaseDataset):
+class CrucibleDatasetIngestor(Dataset):
     githash: str = os.environ.get("GITHASH") 
     scientific_metadata: dict = {} 
     keywords: list = []
