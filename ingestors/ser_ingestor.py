@@ -2,6 +2,7 @@ import io
 import re
 from datetime import datetime as dt
 from pathlib import Path
+from typing import ClassVar
 
 from PIL import Image
 import logging
@@ -26,7 +27,7 @@ def get_emi_file_name(serfile):
 class SerIngestor(CrucibleDatasetIngestor):
     '''subclass for ingesting ser / emi files'''
     
-    supported_filetypes = ['ser']
+    supported_filetypes: ClassVar[list[str]] = ['ser']
     
     def is_file_supported(self):
         return np.any([self.file_to_upload.endswith(ftype)

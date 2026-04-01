@@ -1,6 +1,7 @@
 import os
 import re
 import logging
+from typing import ClassVar
 
 import h5py
 import numpy as np
@@ -15,22 +16,23 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 class ScopeFoundryH5Ingestor(H5Ingestor):
-    supported_measurements = ['simple_tiled_image', 
-                              'canon_camera_capture', 
-                              'picam_readout',
-                              'm4_hyperspectral_2d_scan',
-                              'andor_hyperspec_scan',
-                              'hyperspectral_2d_scan',
-                              'fiber_winspec_scan',
-                              'hyperspec_picam_mcl',
-                              'hyperspec_picam_mcl_sweep',
-                              'asi_hyperspec_scan',
-                              'asi_OO_hyperspec_scan',
-                              'oo_asi_hyperspec_scan',
-                              'andor_asi_hyperspec_scan', 
-                              'ald_run_upd',
-                              'ald_run',
-                              'ald_run_measure']
+    supported_measurements: ClassVar[list[str]] = ['simple_tiled_image', 
+                                                    'canon_camera_capture', 
+                                                    'picam_readout',
+                                                    'm4_hyperspectral_2d_scan',
+                                                    'andor_hyperspec_scan',
+                                                    'hyperspectral_2d_scan',
+                                                    'fiber_winspec_scan',
+                                                    'hyperspec_picam_mcl',
+                                                    'hyperspec_picam_mcl_sweep',
+                                                    'asi_hyperspec_scan',
+                                                    'asi_OO_hyperspec_scan',
+                                                    'oo_asi_hyperspec_scan',
+                                                    'andor_asi_hyperspec_scan', 
+                                                    'ald_run_upd',
+                                                    'ald_run',
+                                                    'ald_run_measure'
+                                                    ]
     
     def is_file_supported(self):
         if self.file_to_upload.endswith('h5'):
@@ -101,8 +103,8 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
 
 class ALDScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['ald_run_upd', 'ald_run', 'ald_run_measure']
-    creation_location = "67-4210"
+    supported_measurements: ClassVar[list[str]] = ['ald_run_upd', 'ald_run', 'ald_run_measure']
+    creation_location: ClassVar[str] = "67-4210"
 
 
 
@@ -110,8 +112,8 @@ class ALDScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
 class SimpleTiledImageScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['simple_tiled_image']
-    creation_location = "67-1207"
+    supported_measurements: ClassVar[list[str]] = ['simple_tiled_image']
+    creation_location: ClassVar[str] = "67-1207"
 
     def get_data_files(self):
         folder_path = self.file_to_upload.replace(".h5", ".h5_images")
@@ -124,8 +126,8 @@ class SimpleTiledImageScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
 class CanonCaptureScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['canon_camera_capture']
-    creation_location = "67-1207"
+    supported_measurements: ClassVar[list[str]] = ['canon_camera_capture']
+    creation_location: ClassVar[str] = "67-1207"
 
     def get_thumbnails(self):
         image_file_name = f"{self.file_to_upload}.JPG"
@@ -140,8 +142,8 @@ class CanonCaptureScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
 class SingleSpecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['picam_readout']
-    creation_location = "67-1217"
+    supported_measurements: ClassVar[list[str]] = ['picam_readout']
+    creation_location: ClassVar[str] = "67-1217"
 
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
@@ -159,7 +161,7 @@ class SingleSpecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
 class HyperspecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['m4_hyperspectral_2d_scan',
+    supported_measurements: ClassVar[list[str]] = ['m4_hyperspectral_2d_scan',
                               'andor_hyperspec_scan',
                               'hyperspectral_2d_scan',
                               'fiber_winspec_scan',
@@ -167,8 +169,8 @@ class HyperspecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
                               'asi_OO_hyperspec_scan',
                               'oo_asi_hyperspec_scan',
                               'andor_asi_hyperspec_scan']
-    
-    creation_location = "67-1217"
+
+    creation_location: ClassVar[str] = "67-1217"
     
     def get_thumbnails(self):
         try:
@@ -198,9 +200,9 @@ class HyperspecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
 class HyperspecSweepScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['hyperspec_picam_mcl_sweep']
-    
-    creation_location = "67-1217"
+    supported_measurements: ClassVar[list[str]] = ['hyperspec_picam_mcl_sweep']
+
+    creation_location: ClassVar[str] = "67-1217"
     
     def get_thumbnails(self):
         pass
@@ -208,8 +210,8 @@ class HyperspecSweepScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
 class ToupcamLiveScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['toupcam_live']
-    creation_location = "67-1217"
+    supported_measurements: ClassVar[list[str]] = ['toupcam_live']
+    creation_location: ClassVar[str] = "67-1217"
     
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
@@ -226,8 +228,8 @@ class ToupcamLiveScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
 class CLSyncRasterScanIngestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['sync_raster_scan']
-    creation_location = '67-1210'
+    supported_measurements: ClassVar[list[str]] = ['sync_raster_scan']
+    creation_location: ClassVar[str] = '67-1210'
     
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
@@ -260,8 +262,8 @@ class CLSyncRasterScanIngestor(ScopeFoundryH5Ingestor):
 
 class CLHyperspecIngestor(ScopeFoundryH5Ingestor):
 
-    supported_measurements = ['hyperspec_cl']
-    creation_location = '67-1210'
+    supported_measurements: ClassVar[list[str]] = ['hyperspec_cl']
+    creation_location: ClassVar[str] = '67-1210'
 
     def get_thumbnails(self):
         # Hyperspectral dataset include analog and counter
@@ -291,7 +293,7 @@ class CLHyperspecIngestor(ScopeFoundryH5Ingestor):
 
 class SpinBotIngestor(ScopeFoundryH5Ingestor):
 
-    creation_location = '67-4203'
+    creation_location: ClassVar[str] = '67-4203'
 
     def get_dataset_metadata(self):
         ScopeFoundryH5Ingestor.get_dataset_metadata(self)
@@ -371,7 +373,7 @@ class SpinBotIngestor(ScopeFoundryH5Ingestor):
 
 class SpinbotSpecLineIngestor(SpinBotIngestor):
 
-    supported_measurements = ['spec_line_scan']
+    supported_measurements: ClassVar[list[str]] = ['spec_line_scan']
  
     def get_thumbnails(self):
         try:
@@ -394,7 +396,7 @@ class SpinbotSpecLineIngestor(SpinBotIngestor):
 
 class SpinbotSpecRunIngestor(SpinBotIngestor):
 
-    supported_measurements = ['spec_run']
+    supported_measurements: ClassVar[list[str]] = ['spec_run']
     
     def make_spectra_plot(self, M, s, w, plotfile):
         if len(M[s]) > 0:
@@ -430,7 +432,7 @@ class SpinbotSpecRunIngestor(SpinBotIngestor):
 
 class SpinbotCameraCaptureIngestor(SpinBotIngestor):
 
-    supported_measurements = ['zwo_camera_capture']
+    supported_measurements: ClassVar[list[str]] = ['zwo_camera_capture']
     
     def get_thumbnails(self):
         for format in ['jpg', 'tif']:
@@ -451,7 +453,7 @@ class SpinbotCameraCaptureIngestor(SpinBotIngestor):
 
 
 class SpinbotPhotoRunIngestor(SpinBotIngestor):
-    supported_measurements = ['photo_run']
+    supported_measurements: ClassVar[list[str]] = ['photo_run']
 
 
 class BioGlowIngestor(ScopeFoundryH5Ingestor):
@@ -471,7 +473,7 @@ class BioGlowIngestor(ScopeFoundryH5Ingestor):
 
 
 class QSpleemImageIngestor(ScopeFoundryH5Ingestor):
-    supported_measurements = ['image_save']
+    supported_measurements: ClassVar[list[str]] = ['image_save']
 
     def is_file_supported(self):
         return(self.file_to_upload.endswith('_image_save.h5'))
@@ -489,7 +491,7 @@ class QSpleemImageIngestor(ScopeFoundryH5Ingestor):
 
 
 class QSpleemSVRampIngestor(ScopeFoundryH5Ingestor):
-    supported_measurements = ['sv_ramp']
+    supported_measurements: ClassVar[list[str]] = ['sv_ramp']
 
     def is_file_supported(self):
         return(self.file_to_upload.endswith('_sv_ramp.h5'))

@@ -34,6 +34,7 @@ class CrucibleDatasetIngestor(Dataset):
     acl: list = []
     associated_files: dict = {} 
     thumbnails: list = []
+    samples: list = []
 
     def is_file_supported(self):
         return True

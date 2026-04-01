@@ -1,4 +1,5 @@
 import os
+from typing import ClassVar
 import numpy as np
 import requests
 import logging
@@ -36,7 +37,7 @@ def decode_recurse(x):
 
 
 class AFMIngestor(CrucibleDatasetIngestor):
-    supported_filetypes = ['ibw']
+    supported_filetypes: ClassVar[list[str]] = ['ibw']
 
     def is_file_supported(self):
         return np.any([self.file_to_upload.endswith(ftype) for ftype in self.supported_filetypes])

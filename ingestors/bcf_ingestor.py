@@ -1,4 +1,5 @@
 import os
+from typing import ClassVar
 from PIL import Image
 import numpy as np
 import logging
@@ -13,8 +14,7 @@ class BcfIngestor(CrucibleDatasetIngestor):
     '''
     subclass for bcf files
     '''
-    supported_filetypes = ['bcf']
-    
+    supported_filetypes: ClassVar[list[str]] = ['bcf']
 
     def is_file_supported(self):
         return np.any([self.file_to_upload.endswith(ftype) for ftype in self.supported_filetypes])

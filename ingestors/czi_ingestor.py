@@ -1,4 +1,5 @@
 import os
+from typing import ClassVar
 import requests
 from datetime import datetime
 from PIL import Image
@@ -32,7 +33,7 @@ def search_and_replace(searchkey, d):
 
 class CziIngestor(CrucibleDatasetIngestor):
     
-    supported_filetypes = ['czi']
+    supported_filetypes: ClassVar[list[str]] = ['czi']
     
     def is_file_supported(self):
         return np.any([self.file_to_upload.endswith(ftype) for ftype in self.supported_filetypes])

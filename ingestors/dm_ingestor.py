@@ -2,6 +2,7 @@
 import io
 from datetime import datetime
 from pathlib import Path
+from typing import ClassVar
 
 from PIL import Image
 import numpy as np
@@ -20,7 +21,7 @@ class DigitalMicrographIngestor(CrucibleDatasetIngestor):
     Supported file types: DM3, DM4
     '''
 
-    supported_filetypes = ['dm3', 'dm4']
+    supported_filetypes: ClassVar[list[str]] = ['dm3', 'dm4']
 
     def is_file_supported(self):
         """Check if the file to upload is a supported DM file based on its extension."""
