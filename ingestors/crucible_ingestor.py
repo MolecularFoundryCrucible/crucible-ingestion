@@ -179,7 +179,7 @@ class CrucibleDatasetIngestor(Dataset):
         self.parse_orcid()
         logger.info("parse orcid complete")
         if self.owner_orcid and not self.owner_user_id:
-            owner = client.user.get(self.owner_orcid)
+            owner = client.users.get(self.owner_orcid)
         try:
             self.owner_user_id = owner['id']
             self.acl.append(self.owner_orcid)
