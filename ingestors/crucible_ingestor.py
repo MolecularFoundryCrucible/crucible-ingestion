@@ -152,7 +152,6 @@ class CrucibleDatasetIngestor(Dataset):
         self.parse_source_folder()
         self.parse_instrument()
         self.parse_keywords()
-        logger.info("get_dataset_metadata completed")
         return
 
 
@@ -180,15 +179,15 @@ class CrucibleDatasetIngestor(Dataset):
         logger.info("parse orcid complete")
         if self.owner_orcid and not self.owner_user_id:
             owner = client.users.get(self.owner_orcid)
-        try:
-            self.owner_user_id = owner['id']
-            self.acl.append(self.owner_orcid)
-            logger.info(f"Owner info appended: {self.owner_user_id}, {self.owner_orcid}")
+            try:
+                self.owner_user_id = owner['id']
+                self.acl.append(self.owner_orcid)
+                logger.info(f"Owner info appended: {self.owner_user_id}, {self.owner_orcid}")
 
-        except Exception as err:
-            logger.warning(f"Failed to append owner info due to error {err}.\
-                             parsed_owner_orcid: {self.owner_orcid=} \
-                             owner_query_results: {owner=}")
+            except Exception as err:
+                logger.warning(f"Failed to append owner info due to error {err}. "
+                               f"parsed_owner_orcid: {self.owner_orcid} "
+                               f"owner_query_results: {owner}")
         
         # PROJECT
         self.parse_project_id()

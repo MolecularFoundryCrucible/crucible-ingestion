@@ -103,7 +103,7 @@ class PtychographyH5Ingestor(H5Ingestor):
         """
         base_path = os.path.dirname(self.file_to_upload)
         dsname = os.path.basename(self.file_to_upload).split('_master')[0]
-        logger.info(f'{base_path=}', f'{dsname=}')
+        logger.info(f'{base_path=}, {dsname=}')
 
         associated_files = [os.path.join(base_path, f) for f in os.listdir(base_path) if dsname in f]
         logger.info(f'{associated_files=}')

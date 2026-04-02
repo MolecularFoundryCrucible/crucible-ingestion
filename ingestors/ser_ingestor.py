@@ -53,8 +53,8 @@ class SerIngestor(CrucibleDatasetIngestor):
             tia_date_format = "%a %b %d %H:%M:%S %Y"
             self.timestamp = dt.strptime(acquired_date, tia_date_format).isoformat()
 
-        self.measurement = self.scientific_metadata['metadata'].get('Mode []')
-        self.dataset_name = nio.Path(self.file_to_upload).stem
+        self.measurement = self.scientific_metadata.get('Mode []')
+        self.dataset_name = Path(self.file_to_upload).stem
 
 
     def get_data_files(self):
@@ -69,7 +69,7 @@ class SerIngestor(CrucibleDatasetIngestor):
         fig_size = (target_size[0] / dpi, target_size[1] / dpi) # inches
         with nio.ser.fileSER(self.file_to_upload) as ser:
             image_array = ser.getDataset(0)[0]
-            print(image_array)
+            logger.debug(f'{image_array=}')
         fg, ax = plt.subplots(1, 1, figsize=fig_size, dpi=dpi)
         ax.imshow(image_array, cmap = 'viridis')
         ax.axis('off')
@@ -87,7 +87,7 @@ class SerIngestor(CrucibleDatasetIngestor):
             if thumbnail:
                 self.add_thumbnail(thumbnail, "TIA_Thumbnail")
         except Exception as e:
-            print(f"failed to extract thumbnail: {e}")
+            logger.error(f"Failed to extract thumbnail: {e}")
 
 
 

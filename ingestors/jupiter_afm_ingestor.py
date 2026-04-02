@@ -23,8 +23,8 @@ def decode_recurse(x):
             x[k] = decode_recurse(x[k])
     elif isinstance(x, bytes):
         try:
-            x = x.decode('latin-1').replace('\u0000', None)
-        except:
+            x = x.decode('latin-1').replace('\u0000', '')
+        except Exception:
             x = x
     elif isinstance(x, list):
         x = [decode_recurse(i) for i in x]

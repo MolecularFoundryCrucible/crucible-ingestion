@@ -50,30 +50,30 @@ class CziIngestor(CrucibleDatasetIngestor):
         CrucibleDatasetIngestor.get_dataset_metadata(self)
         try:
             self.timestamp = datetime.strptime(self.scientific_metadata['Information']['Document']['CreationDate'], "%Y-%m-%dT%H:%M:%S").isoformat()
-        except:
+        except Exception:
             pass
 
         self.dataset_name = os.path.basename(self.file_to_upload)
         try:
             self.session_name = self.scientific_metadata['Information']['Image']['Session']['@SessionName']
             self.keywords += [self.session_name]
-        except:
+        except Exception:
             pass
 
         try:
             ac_settings = self.scientific_metadata['Experiment']['ExperimentBlocks']['AcquisitionBlock']
             tracksetup = ac_settings['MultiTrackSetup']['TrackSetup']
-            
+
             detector = f"detector:{tracksetup['Detectors']['Detector']['DetectorIdentifier']}"
             detector_mode = f"detector_mode:{tracksetup['Detectors']['Detector']['DetectorMode']}"
             device_mode = f"device_mode:{tracksetup['DeviceMode']}"
             laser = f"laser:{ac_settings['Lasers']['Laser']['LaserName']}"
             objective = f"objective_model:{ac_settings['AcquisitionModeSetup']['Objective']}"
             ex_wl = f"excitation_wavelength:{tracksetup['Attenuators']['Attenuator']['Wavelength']}"
-            
+
             self.keywords += [detector, detector_mode, device_mode, laser, objective, ex_wl]
-            
-        except:
+
+        except Exception:
             pass
 
     def parse_orcid(self):
@@ -152,6 +152,6 @@ class CziIngestor(CrucibleDatasetIngestor):
             plt.savefig(out_image_file_name)
             single_image = Image.open(out_image_file_name)
             self.add_thumbnail(single_image, caption)
-        except:
+        except Exception:
             logger.warning("failed to extract thumbnail")
 

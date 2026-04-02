@@ -44,5 +44,5 @@ class BcfIngestor(CrucibleDatasetIngestor):
         try:
             single_image = Image.open(out_image_file_name)
             self.add_thumbnail(single_image, "EDS Thumbnail", size = (200,200))
-        except:
+        except Exception:
             logger.warning("failed to extract thumbnail")

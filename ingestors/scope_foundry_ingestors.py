@@ -15,6 +15,16 @@ from ingestors.h5_ingestor import H5Ingestor
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+
+def check_orcid_entry(orcid_string):
+    """Validate and return an ORCID string if it matches the expected format."""
+    if not isinstance(orcid_string, str):
+        return None
+    orcid_string = orcid_string.strip()
+    if re.match(r'^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$', orcid_string):
+        return orcid_string
+    return None
+
 class ScopeFoundryH5Ingestor(H5Ingestor):
     supported_measurements: ClassVar[list[str]] = ['simple_tiled_image', 
                                                     'canon_camera_capture', 
@@ -38,6 +48,7 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
         if self.file_to_upload.endswith('h5'):
             return np.any([self.file_to_upload.endswith(f"{meas_name}.h5")
                            for meas_name in self.supported_measurements])
+        return False
     
     def get_dataset_metadata(self):
         self.instrument_name = self.scientific_metadata['app']['name']
@@ -62,7 +73,7 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
             scope_foundry_tags = self.scientific_metadata['hardware']['mf-crucible']['settings']['tags'].strip()
             scope_foundry_session = self.scientific_metadata['hardware']['mf-crucible']['settings']['session_name'].strip()
 
-        except:
+        except Exception:
             logger.warning("no mf-crucible settings found for tags or session_name")
             scope_foundry_tags = default_tags_value
             scope_foundry_session = default_session_value
@@ -305,7 +316,7 @@ class SpinBotIngestor(ScopeFoundryH5Ingestor):
             scope_foundry_tags = self.scientific_metadata['hardware']['mf_crucible_spinbot']['settings']['tags'].strip()
             scope_foundry_session = self.scientific_metadata['hardware']['mf_crucible_spinbot']['settings']['session_name'].strip()
 
-        except:
+        except Exception:
             logger.warning("no mf-crucible settings found for tags or session_name")
             scope_foundry_tags = default_tags_value
             scope_foundry_session = default_session_value
@@ -702,7 +713,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             scope_foundry_tags = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['tags'].strip()
             scope_foundry_session = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['session_name'].strip()
 
-        except:
+        except Exception:
             logger.warning("no mf-crucible settings found for tags or session_name")
             scope_foundry_tags = default_tags_value
             scope_foundry_session = default_session_value

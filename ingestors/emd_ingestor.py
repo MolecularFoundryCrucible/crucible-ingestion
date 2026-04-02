@@ -1,10 +1,8 @@
 import os
-import re
 import io
 
 from pathlib import Path
 from PIL import Image
-import numpy as np
 import ncempy.io as nio
 import matplotlib.pyplot as plt
 import logging
@@ -77,7 +75,7 @@ class BerkeleyEmdIngestor(CrucibleDatasetIngestor):
             im = Image.open(buf)
             return im
         except Exception as e:
-            print(f"Failed to generate thumbnail: {e}")
+            logger.error(f"Failed to generate thumbnail: {e}")
 
     def get_thumbnails(self):
         try:
@@ -85,4 +83,4 @@ class BerkeleyEmdIngestor(CrucibleDatasetIngestor):
             if thumbnail:
                 self.add_thumbnail(thumbnail, "EMD_Thumbnail")
         except Exception as e:
-            print(f"Failed to extract thumbnail: {e}")
+            logger.error(f"Failed to extract thumbnail: {e}")

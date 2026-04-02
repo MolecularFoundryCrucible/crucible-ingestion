@@ -8,7 +8,7 @@ Created on Tue Dec  9 15:42:49 2025
 
 import os
 
-from crucible_ingestor import CrucibleDatasetIngestor
+from ingestors.crucible_ingestor import CrucibleDatasetIngestor
 
 #%%
 
@@ -88,7 +88,7 @@ class LmpIngestor(CrucibleDatasetIngestor):
         
         try:
             import ase.io.lammpsdata
-        except:
+        except ImportError:
             raise ImportError("ASE needs to be installed for LMP ingestor to work!")
             
         data = {}
