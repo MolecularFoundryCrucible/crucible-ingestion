@@ -76,7 +76,7 @@ def find_supported_ingestor(dataset_to_process,
     if specified_ingestor is not None:
         cls = globals()[specified_ingestor]
         logger.info(cls)
-        ig = cls(dataset_to_process, dsid = dsid)
+        ig = cls(file_to_upload = dataset_to_process, unique_id = dsid)
         if ig.is_file_supported():
             logger.info(f"{dataset_to_process} is supported by {specified_ingestor}")
             return ig
@@ -85,7 +85,7 @@ def find_supported_ingestor(dataset_to_process,
 
     # if that ingestor class was not supported, check the others
     for ingestor_class in ingestor_list:
-        ig = ingestor_class(dataset_to_process, dsid = dsid)
+        ig = ingestor_class(file_to_upload = dataset_to_process, unique_id = dsid)
 
         if ig.is_file_supported():
             logger.info(f"{dataset_to_process} is supported by {ingestor_class.__name__}")
