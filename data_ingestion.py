@@ -32,6 +32,7 @@ from ingestors.dm_ingestor import DigitalMicrographIngestor
 from ingestors.ser_ingestor import SerIngestor
 from ingestors.bcf_ingestor import BcfIngestor
 from ingestors.emd_ingestor import BerkeleyEmdIngestor
+from ingestors.emd_velox_ingestor import VeloxEmdIngestor
 from ingestors.jupiter_afm_ingestor import AFMIngestor
 from ingestors.czi_ingestor import CziIngestor
 from ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
@@ -62,6 +63,7 @@ ingestor_list = [AFMIngestor,
                 SerIngestor,
                 BcfIngestor,
                 BerkeleyEmdIngestor,
+                VeloxEmdIngestor,
                 SpinbotSpecRunIngestor,
                 ImageIngestor,
                 NirvanaMultiPosLineScanIngestor] 
