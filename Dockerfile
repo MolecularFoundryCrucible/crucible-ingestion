@@ -21,6 +21,7 @@ COPY pyproject.toml /root/
 COPY uv.lock /root/
 COPY .python-version /root/
 RUN /bin/uv sync --locked
+RUN uv pip install git+https://github.com/MolecularFoundryCrucible/nano-crucible.git@dev
 
 COPY . .
 
