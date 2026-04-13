@@ -5,6 +5,7 @@ from io import BytesIO
 import os
 import json
 import logging
+import tempfile
 from PIL import Image
 import pika
 from dotenv import load_dotenv
@@ -107,63 +108,58 @@ def setup_pika_client(host, port, pw, heartbeat = 60, blocked_connection_timeout
     return(connection, channel)
 
 
+def _get_sa_credentials(home):
+    """Load SA credentials from local file or secret manager."""
+    for path in glob.glob(f"{home}/.config/mf-crucible*.json"):
+        with open(path, "r") as f:
+            content = f.read().strip()
+        if content:
+            return content
+    return get_secret("GCS_SA", "service-account-cred/versions/6")
+
+
 def run_rclone_command(source_path= "",
                        destination_path= "",
                        cmd="copy",
                        background = False,
                        checkflag = True):
-    
+
     gcs_config_name = 'mf-cloud-storage'
 
-    # GET THE CLIENT SECRET
     client_secret = get_secret("GCS_CLIENT_SECRET", "gcs_client_secret/versions/1")
 
-    # GET THE SERVICE ACCOUNT CREDENTIALS
-    home = os.getenv("HOME")
-    sa_cred_file = glob.glob(f"{home}/.config/mf-crucible*.json")
+    sa_creds = _get_sa_credentials(os.getenv("HOME"))
 
-    sa_creds = None
-    
-    if sa_cred_file:
-        sa_cred_file = sa_cred_file[0]
-        with open(sa_cred_file, "r") as f:
-            sa_creds = f.read()
-        if len(sa_creds.strip()) == 0:
-            sa_creds = None
-            
-    if sa_creds is None:
-        sa_creds = get_secret("GCS_SA", "service-account-cred/versions/6")
+    # Write SA credentials to a temp file so we don't pass a JSON blob on the command line
+    sa_cred_file = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False)
+    try:
+        sa_cred_file.write(sa_creds)
+        sa_cred_file.close()
 
+        cmd_args = [
+            "--gcs-client-id=776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com",
+            f"--gcs-client-secret={client_secret}",
+            "--gcs-project-number=mf-crucible",
+            f"--gcs-service-account-credentials={sa_cred_file.name}",
+            "--gcs-bucket-policy-only=true",
+            "--gcs-env-auth=true",
+        ]
 
-    # PASS THEM INTO THE RCLONE COMMAND LINE ARGUMENTS
-    cmd_args = [f"--gcs-client-id=776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com" ,
-                f"--gcs-client-secret={client_secret}",
-                f"--gcs-project-number=mf-crucible",
-                f"--gcs-service-account-credentials='{sa_creds}'",
-                f"--gcs-bucket-policy-only=true",
-                f"--gcs-env-auth=true"]
-
-    # CLEAN UP THE COMMAND
-    if len(destination_path.strip()) > 0:
+        if len(destination_path.strip()) > 0:
             destination_path = f'"{destination_path}"'
 
-    rclone_drives = [x.split(":/")[0] for x in [source_path, destination_path]]
+        try:
+            rclone_cmd = " ".join([f'rclone {cmd}'] + cmd_args + [f'"{source_path}" {destination_path}'])
+            run_shell_out = run_shell(rclone_cmd, background=background, checkflag=True)
+        except Exception as e:
+            logger.warning(f"Rclone command failed, retrying with config name: {e}")
+            source_path, destination_path = (x.replace(":gcs", gcs_config_name) for x in (source_path, destination_path))
+            rclone_cmd = f'rclone {cmd} "{source_path}" {destination_path}'
+            run_shell_out = run_shell(rclone_cmd, background=background, checkflag=checkflag)
+    finally:
+        os.unlink(sa_cred_file.name)
 
-    try:
-        rclone_cmd = "   ".join([f'rclone {cmd}'] + cmd_args + [f'"{source_path}" {destination_path}'])
-        run_shell_out = run_shell(rclone_cmd, background = background, checkflag=True)
-        
-    except Exception as e:
-        #raise Exception(f"Rclone command failed. Does it help to create config file? Error: {e}")
-        # home = os.getenv("HOME")
-        # sa_cred_file = f"{home}/.config/mf-crucible-9009d3780383.json"
-        # J = json.loads(sa_creds)
-        # with open(sa_cred_file, "w") as f:
-        #     json.dump(J, f)
-        source_path, destination_path = (x.replace(":gcs", gcs_config_name) for x in (source_path, destination_path))
-        rclone_cmd = f'rclone {cmd} "{source_path}" {destination_path}'
-        run_shell_out = run_shell(rclone_cmd, background = background, checkflag=checkflag)
-    return(run_shell_out)
+    return run_shell_out
 
 
 def build_b64_thumbnail(image: Image, max_size = (200,200)): 
