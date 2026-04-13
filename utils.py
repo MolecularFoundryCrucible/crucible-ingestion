@@ -1,5 +1,6 @@
 
 import base64
+import glob
 from io import BytesIO
 import os
 import json
@@ -62,11 +63,10 @@ def get_secret(secret_env_var, gcs_secret_name = None, sa_creds: str = None, sec
     Otherwise, sa_creds should be a filepath to the service account credentials.  
     '''
 
-    load_dotenv('../.env')
+    load_dotenv('.env')
     secret = os.environ.get(secret_env_var)
     if secret:
         return secret
-    
     elif gcs_secret_name is not None:
         gcs_secret_path = f"{secret_store}/{gcs_secret_name}"
 
@@ -110,32 +110,27 @@ def setup_pika_client(host, port, pw, heartbeat = 60, blocked_connection_timeout
 def run_rclone_command(source_path= "",
                        destination_path= "",
                        cmd="copy",
-                       client_secret = None,
-                       sa_creds = None,
-                       gcs_config_name = 'mf-cloud-storage',
                        background = False,
-                       checkflag = True,
-                       cred_file = None):
+                       checkflag = True):
     
+    gcs_config_name = 'mf-cloud-storage'
+
     # GET THE CLIENT SECRET
-    if client_secret is None:
-        client_secret = get_secret("GCS_CLIENT_SECRET", "gcs_client_secret/versions/1")
-        
-    if client_secret is None:
-        client_secret = os.getenv("GCS_CLIENT_SECRET")
+    client_secret = get_secret("GCS_CLIENT_SECRET", "gcs_client_secret/versions/1")
 
     # GET THE SERVICE ACCOUNT CREDENTIALS
-    if cred_file is not None:
-        with open(cred_file, "r") as f:
+    home = os.getenv("HOME")
+    sa_cred_file = glob.glob(f"{home}/.config/mf-crucible*.json")
+
+    if sa_cred_file:
+        sa_cred_file = sa_cred_file[0]
+        with open(sa_cred_file, "r") as f:
             sa_creds = f.read()
         if len(sa_creds.strip()) == 0:
             sa_creds = None
             
     if sa_creds is None:
         sa_creds = get_secret("GCS_SA", "service-account-cred/versions/6")
-
-    if sa_creds is None:
-        sa_creds = os.getenv("GCS_SA")
 
     # PASS THEM INTO THE RCLONE COMMAND LINE ARGUMENTS
     cmd_args = [f"--gcs-client-id=776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com" ,
@@ -155,12 +150,13 @@ def run_rclone_command(source_path= "",
         rclone_cmd = "   ".join([f'rclone {cmd}'] + cmd_args + [f'"{source_path}" {destination_path}'])
         run_shell_out = run_shell(rclone_cmd, background = background, checkflag=True)
         
-    except:
-        home = os.getenv("HOME")
-        sa_cred_file = f"{home}/.config/mf-crucible-9009d3780383.json"
-        J = json.loads(sa_creds)
-        with open(sa_cred_file, "w") as f:
-            json.dump(J, f)
+    except Exception as e:
+        #raise Exception(f"Rclone command failed. Does it help to create config file? Error: {e}")
+        # home = os.getenv("HOME")
+        # sa_cred_file = f"{home}/.config/mf-crucible-9009d3780383.json"
+        # J = json.loads(sa_creds)
+        # with open(sa_cred_file, "w") as f:
+        #     json.dump(J, f)
         source_path, destination_path = (x.replace(":gcs", gcs_config_name) for x in (source_path, destination_path))
         rclone_cmd = f'rclone {cmd} "{source_path}" {destination_path}'
         run_shell_out = run_shell(rclone_cmd, background = background, checkflag=checkflag)

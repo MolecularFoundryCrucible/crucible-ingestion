@@ -274,8 +274,9 @@ class CrucibleDatasetIngestor(Dataset):
                 
             else:
                continue
-
-        self.project_id = self.project_id.split(" ")[0]
+            
+        if self.project_id:
+            self.project_id = self.project_id.split(" ")[0]
 
 
     def to_json_from_ig(self, jsonfile, sql_export_attr, allow_missing=False):
@@ -287,8 +288,7 @@ class CrucibleDatasetIngestor(Dataset):
 
             export_metadata[attr] = getattr(self, attr)
             
-        export_metadata['thumbnails'] = [ {"thumbnail": x["thumbnail"], 
-                                          "caption":   x["caption"]}  for x in self.thumbnails ]
+        export_metadata['thumbnails'] = [{"thumbnail": tn['thumbnail'], "caption": tn['caption']} for tn in self.thumbnails]
 
         with open(jsonfile, "w") as f:
             json.dump(export_metadata, f, cls = EnhancedJSONEncoder, indent = 4)

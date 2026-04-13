@@ -182,13 +182,13 @@ def data_ingestion(dataset_to_process: str,
 
     # send the data
     ds = client.datasets.update(ig.unique_id, **D)
-    logger.info(f"UPDATED DS: {ds.json()=}")
+    logger.info(f"UPDATED DS: {ds=}")
 
     # thumbnails
     for thumbnail in thumbnails:
         try:
-            image, caption = thumbnail
-            res = client.datasets.add_thumbnail(dsid, image, caption)
+            logger.info(f"Adding thumbnail image: {thumbnail['caption']=}")
+            res = client.datasets.add_thumbnail(dsid, thumbnail['thumbnail'], thumbnail['caption'])
         except Exception as err:
             logger.error(f"Failed to add thumbnail with error {err}")
 
