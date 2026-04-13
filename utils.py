@@ -122,6 +122,8 @@ def run_rclone_command(source_path= "",
     home = os.getenv("HOME")
     sa_cred_file = glob.glob(f"{home}/.config/mf-crucible*.json")
 
+    sa_creds = None
+    
     if sa_cred_file:
         sa_cred_file = sa_cred_file[0]
         with open(sa_cred_file, "r") as f:
@@ -131,6 +133,7 @@ def run_rclone_command(source_path= "",
             
     if sa_creds is None:
         sa_creds = get_secret("GCS_SA", "service-account-cred/versions/6")
+
 
     # PASS THEM INTO THE RCLONE COMMAND LINE ARGUMENTS
     cmd_args = [f"--gcs-client-id=776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com" ,
