@@ -133,8 +133,8 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
         # iterate through image datasets to find a non-processed image 
         all_image_groups = list(self._file_hdl['/Data/Image'].values())
         for group in all_image_groups[::-1]:  # start from the back, assuming that processed images are at the front
-            md = self._ncempy_datafile.getMetadata(group)
-            if get_groupType_from_md(md) != self._ncempy_datafile.PROCESSED_IMAGE_GROUP_NAME: 
+            md = self.getMetadata(group)
+            if get_groupType_from_md(md) != self.PROCESSED_IMAGE_GROUP_NAME: 
                 image_dataset = group 
                 break 
         # if all images are processed images, use an arbitrary processed image
@@ -149,7 +149,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         if not self.file_to_upload.endswith('.emd'):
             return False
         
-        with fileEMDVeloxWithSpectra(self.file_to_upload, readonly=True) as emd1:
+        with fileEMDVeloxWithSpectra(self.file_to_upload) as emd1:
             return len(emd1.list_data) > 0
             # this only ensures that there's at least a Image, Spectrum Image, or Spectrum group? 
 
@@ -157,29 +157,17 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
 
     
     def get_scientific_metadata(self):
-        with fileEMDVeloxWithSpectra(self.file_to_upload, readonly=True) as emd1:
-            if len(emd1.list_data) == 1: 
-                self.scientific_metadata = emd1.getMetadata(0)
-            else: # TODO: use a list of child metadata dictionaries, labeled by their measurement
-                self.scientific_metadata = {}
+        """
+        Updates scientific metadata and measurement. 
+        """
+        self.scientific_metadata, self.measurement = self._parse_measurement_metadata()
+        # TODO: scientific_metadata should be dictionary of child metadata dictionaries, labeled by their measurement
         logger.info(f'Got metadata from Velox EMD: {self.scientific_metadata=}')
-         
-        # emd_handle = nio.emd.fileEMD(self.file_to_upload, readonly=True)
-        # for device_index, device_name in enumerate(_dset_names(emd_handle)):
-        #     logger.info(f'{device_index=}, {device_name=}')
-        #     frame_stream_name = f'primary_{device_name}'
-        #     stream_metadata = _metadata_from_dset(self.file_to_upload, dset_num=device_index)
-        #     self.scientific_metadata[frame_stream_name] = stream_metadata
-        # print(f'{self.scientific_metadata=}')
-        # return
 
     def get_dataset_metadata(self):
          # Use parent class method to set data_format, size, and source_folder
         CrucibleDatasetIngestor.get_dataset_metadata(self)
-        self.dataset_name = Path(self.file_to_upload).stem # file name without extension
-        # TODO: parse this
-        self.measurement = ''
-
+        
     def parse_dataset_name(self):
         if self.dataset_name:
             return
@@ -202,10 +190,10 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         fig_size = (target_size[0] / dpi, target_size[1] / dpi) # inches
        
         try:            
-            with fileEMDVeloxWithSpectra(self.file_to_upload, readonly=True) as emd1:
+            with fileEMDVeloxWithSpectra(self.file_to_upload) as emd1:
                 image_array = emd1.getThumbnailImageDataset()
             
-            if image_array: 
+            if image_array != None: 
                 fg, ax = plt.subplots(1, 1, figsize=fig_size, dpi=dpi)
                 ax.imshow(image_array, cmap = 'gray')
                 ax.axis('off')
@@ -226,3 +214,134 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 self.add_thumbnail(thumbnail, "EMD_Thumbnail")
         except Exception as e:
             print(f"Failed to extract thumbnail: {e}")
+
+    def _parse_measurement_metadata(self): 
+        """
+        Parses scientific metadata for each child/measurement, returns list of metadata dictionaries. 
+        """
+        illumination, projection, signal = "", "", ""
+
+        all_metadata = {}
+        with fileEMDVeloxWithSpectra(self.file_to_upload) as emd1:
+            first_md = emd1.getMetadata(0)
+            illumination = self.get_illumination_mode(first_md)
+            projection = self.get_projection_mode(first_md)
+            signal = ""
+
+            for i, group in enumerate(emd1.list_data): 
+                md = emd1.getMetadata(group)
+
+                measurement_type = group.parent.name[6:]
+                # parse measurement_type for this measurement
+                # illumination = self.get_illumination_mode(md)
+                # projection = self.get_projection_mode(md)
+                cur_signal = self.get_signal_type(md) if measurement_type != 'SpectrumImage' else 'EDS' # handle spectrum images separately? 
+                measurement_str = illumination + ' ' + projection + ' ' + cur_signal if cur_signal else 'Velox Processed Image'
+                
+                md.update({"measurement": measurement_str})
+                all_metadata.update({i:md})
+
+                # update overall measurement
+                if signal == "" and cur_signal != "": 
+                    signal = cur_signal
+                elif signal != "EDS": # Priority: EDS > Pixelated > Non-Pixelated
+                    if cur_signal == "EDS": # as soon as there's an EDS, signal should be EDS
+                        signal = "EDS"
+                    if signal != "Pixelated":
+                        if cur_signal == "Pixelated":
+                            signal = "Pixelated" # bump up signal to Pixelated                   
+
+        overall_measurment_str = illumination + ' ' + projection + ' ' + signal # assume that overall measurement is never Velox Processed Image
+        return all_metadata, overall_measurment_str
+
+    def getMeasurementType(ncempy_emd_file, index=-1):
+        """
+        Args:
+        - index: which item of list_data to consider (default: consider last item)
+
+        Returns: 
+        - measurement type of this file for crucible data ingestion 
+        """
+        measurement_type = ncempy_emd_file.list_data[index].parent.name[6:]
+        if measurement_type == 'Spectrum': 
+            measurement_type = ncempy_emd_file.SPECTRUM_GROUP_NAME
+        elif measurement_type == 'SpectrumImage': 
+            measurement_type = ncempy_emd_file.SPECTRUM_IMAGE_GROUP_NAME
+        return measurement_type 
+
+    def get_illumination_mode(self, metadata_dictionary): 
+        """
+        Identify the illumination mode for the measurement/child dataset 
+        corresponding to to METADATA_DICTIONARY.
+
+        Currently, Spectre specific logic. 
+
+        Args: 
+        - metadata_dictionary: dict 
+
+        Returns: 
+        - illumination: str (defaults to '[IlluminationMode]' no case matched)
+        """
+        # handle errors/edge cases
+        illumination = '[IlluminationMode]' # placeholder 
+        if 'OperatingMode' not in metadata_dictionary: 
+            return illumination
+        
+        data_illumination = int(metadata_dictionary['OperatingMode'])
+        if data_illumination == 1:
+            illumination = 'TEM'
+        elif data_illumination == 2:
+            illumination = 'STEM'
+        return illumination
+
+    def get_projection_mode(self, metadata_dictionary): 
+        """
+        Identify the projection mode for the measurement/child dataset 
+        corresponding to to METADATA_DICTIONARY.
+
+        Currently, Spectre specific logic. 
+
+        Args: 
+        - metadata_dictionary: dict 
+
+        Returns: 
+        - projection: str (defaults to '[ProjectorMode]' no case matched) 
+        """
+        # handle errors/edge cases
+        projection = '[ProjectorMode]' # placeholder 
+        if 'ProjectorMode' not in metadata_dictionary: 
+            return projection
+
+        data_proj = int(metadata_dictionary['ProjectorMode'])
+        if data_proj == 1:
+            projection = 'Diffraction'
+        elif data_proj == 2:
+            projection = 'Imaging'
+        return projection
+
+    def get_signal_type(self, metadata_dictionary):
+        """
+        Identify the projection mode for the measurement/child dataset 
+        corresponding to to METADATA_DICTIONARY.
+
+        Currently, Spectre specific logic. 
+
+        Args: 
+        - metadata_dictionary: dict 
+
+        Returns: 
+        - signal: str or None (defaults to None if no case matched) 
+        """
+        # handle errors/edge cases
+        signal = "" 
+        if 'DetectorIndex' not in metadata_dictionary: 
+            return signal # want measurement = 'Velox Processed Image'
+        
+        detector_indx = int(metadata_dictionary['DetectorIndex'])
+        if detector_indx in [1, 3, 4, 5]:
+            signal = 'Pixelated'
+        elif detector_indx in [0, 2, 6]:
+            signal = 'Non-Pixelated'
+        elif detector_indx in [7, 8, 9, 10, 11, 12]:
+            signal = 'EDS'
+        return signal
