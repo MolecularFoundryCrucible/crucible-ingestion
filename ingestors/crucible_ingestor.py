@@ -47,10 +47,12 @@ class CrucibleDatasetIngestor(Dataset):
         logger.info("getting dataset metadata complete")
         self.get_acl_information()
         logger.info("getting acl information complete")
-        self.parse_batch()
+        self.parse_batch() # this is mainly done at the UI level now
         logger.info("parsing batch complete")
-        self.parse_samples()
+        self.parse_samples() # this is mainly done at the UI level
         logger.info("parsing samples complete")
+        self.parse_children() # adding for instances where 1 file contains multiple datasets.
+        logger.info("parsing children complete")
         self.get_data_files()
         logger.info("getting data files complete")
         self.get_thumbnails()
@@ -167,6 +169,16 @@ class CrucibleDatasetIngestor(Dataset):
         if self.owner_orcid:
             return
 
+    def parse_children(self):
+        # Logic to determine child datasets present in a file
+            # file specific code
+        # Create new dataset object
+            # newds = Dataset()
+            # resp = client.datasets.create(newds, scientific_metadata = {}, keywords = [])
+            # newds_dsid = resp['created_record']['unique_id']
+        # Link child dataset to parent dataset
+            # client.datasets.link_parent_child(parent_id=self.unique_id, child_id=newds_dsid)
+        pass
 
     def parse_project_id(self):
         if self.project_id:
