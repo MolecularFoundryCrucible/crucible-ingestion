@@ -203,9 +203,7 @@ def data_ingestion(dataset_to_process: str,
                         'size': file_info['size'],
                         'sha256_hash': file_info['sha256_hash']
                     }
-            return client._request('post',
-                                   f'/datasets/{dsid}/associated_files',
-                                   json=associated_file_data)
+            client._request('post', f'/datasets/{dsid}/associated_files', json=associated_file_data)
         except Exception as err:
             logger.error(f"Failed to add associated file with error {err}")
 
@@ -221,7 +219,7 @@ def data_ingestion(dataset_to_process: str,
 
     # scientific metadata
     res = client.datasets.update_scientific_metadata(dsid, md, overwrite = False)
-    logger.info(f"Scientific metadata update complete. Response: {res.content}")
+    logger.info(f"Scientific metadata update complete. Response: {res}")
 
 
 

@@ -107,7 +107,7 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
         meta_data = super().getMetadata(group)
        
         # add general metadata
-        general_md = {}
+        general_md = {'groupType': "", 'title': ""} # placeholder 
         if group.name in self.img_titles: 
             general_md = self.img_titles[group.name]
         elif group.parent.name == '/Data/Spectrum':
@@ -125,6 +125,7 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
         If a non-processed-image exists, return an arbitrary one. 
         Otherwise, return an arbitrary processed-image. 
         """
+        # print(f"Got image_array for thumbnail: {len(image_dataset) if image_dataset!=None else 'None'}")
         if '/Data/Image' not in self._file_hdl: 
             return None
 
@@ -138,8 +139,9 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
                 image_dataset = group 
                 break 
         # if all images are processed images, use an arbitrary processed image
-        if image_dataset == None: 
+        if image_dataset is None: 
             image_dataset = all_image_groups[0]
+        
         return image_dataset['Data'][:,:,0]
         
 class VeloxEmdIngestor(CrucibleDatasetIngestor):
@@ -161,8 +163,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         Updates scientific metadata and measurement. 
         """
         self.scientific_metadata, self.measurement = self._parse_measurement_metadata()
-        # TODO: scientific_metadata should be dictionary of child metadata dictionaries, labeled by their measurement
-        logger.info(f'Got metadata from Velox EMD: {self.scientific_metadata=}')
+        # logger.info(f'Got metadata from Velox EMD: {self.scientific_metadata=}')
 
     def get_dataset_metadata(self):
          # Use parent class method to set data_format, size, and source_folder
@@ -193,7 +194,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             with fileEMDVeloxWithSpectra(self.file_to_upload) as emd1:
                 image_array = emd1.getThumbnailImageDataset()
             
-            if image_array != None: 
+            if image_array is not None: 
                 fg, ax = plt.subplots(1, 1, figsize=fig_size, dpi=dpi)
                 ax.imshow(image_array, cmap = 'gray')
                 ax.axis('off')
@@ -211,7 +212,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         try:
             thumbnail = self.generate_thumbnail()
             if thumbnail:
-                self.add_thumbnail(thumbnail, "EMD_Thumbnail")
+                self.add_thumbnail(thumbnail, "Velox_EMD_Thumbnail")
         except Exception as e:
             print(f"Failed to extract thumbnail: {e}")
 
@@ -239,7 +240,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 measurement_str = illumination + ' ' + projection + ' ' + cur_signal if cur_signal else 'Velox Processed Image'
                 
                 md.update({"measurement": measurement_str})
-                all_metadata.update({i:md})
+                all_metadata.update({get_title_from_md(md) + f" ({group.name})": md}) # use title as key for child scientific metadata 
 
                 # update overall measurement
                 if signal == "" and cur_signal != "": 
