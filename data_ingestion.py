@@ -193,7 +193,8 @@ def data_ingestion(dataset_to_process: str,
             logger.error(f"Failed to add thumbnail with error {err}")
 
     # associated files
-    for filepath,file_info in associated_files.items():
+    print(f"Adding associated files: {associated_files=}")
+    for filepath, file_info in associated_files.items():
         try:
             logger.info({"filename": filepath, "size": file_info['size'], "sha256_hash": file_info['sha256_hash']})
             associated_file_data = {
