@@ -43,11 +43,10 @@ def parse_dataset_as_dict(dataset):
 get_groupType_from_md = lambda md: md['General']['groupType'] if 'groupType' in md['General'] else "" # options: STEM, TEM, EDS_Processed, EDS
 get_title_from_md = lambda md: md['General']['title'] if 'title' in  md['General'] else "" # options: EDS_SI, EDS_Spectrum, HAADF, element name
 
+PROCESSED_IMAGE_GROUP_NAME = 'EDS_Processed'
+SPECTRUM_IMAGE_GROUP_NAME = 'EDS_SI'
+SPECTRUM_GROUP_NAME = 'EDS_Spectrum'
 class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
-    PROCESSED_IMAGE_GROUP_NAME = 'EDS_Processed'
-    SPECTRUM_IMAGE_GROUP_NAME = 'EDS_SI'
-    SPECTRUM_GROUP_NAME = 'EDS_Spectrum'
-
     def __init__(self, filename): 
         super().__init__(filename)
         self._parse_image_titles()
@@ -93,7 +92,7 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
             data_path = data_ref_dict["dataPath"]
             # data_path = data_path.split("/")[-1]
             groupType = display_group_dict['groupType'].upper()
-            self.img_titles[data_path] = {'groupType': self.PROCESSED_IMAGE_GROUP_NAME if groupType == "EDS" else groupType, 
+            self.img_titles[data_path] = {'groupType': PROCESSED_IMAGE_GROUP_NAME if groupType == "EDS" else groupType, 
                                           'title': display_group_dict['name']} 
 
     def getMetadata(self, group):
@@ -120,9 +119,9 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
         if group.name in self.img_titles: 
             general_md = self.img_titles[group.name]
         elif group.parent.name == '/Data/Spectrum':
-            general_md = {'groupType': self.SPECTRUM_GROUP_NAME, 'title': self.SPECTRUM_GROUP_NAME} 
+            general_md = {'groupType': SPECTRUM_GROUP_NAME, 'title': SPECTRUM_GROUP_NAME} 
         elif group.parent.name == '/Data/SpectrumImage':
-            general_md = {'groupType': self.SPECTRUM_IMAGE_GROUP_NAME, 'title': self.SPECTRUM_IMAGE_GROUP_NAME} 
+            general_md = {'groupType': SPECTRUM_IMAGE_GROUP_NAME, 'title': SPECTRUM_IMAGE_GROUP_NAME} 
 
         meta_data.update({'General': general_md})
 
@@ -144,7 +143,7 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
         all_image_groups = list(self._file_hdl['/Data/Image'].values())
         for group in all_image_groups[::-1]:  # start from the back, assuming that processed images are at the front
             md = self.getMetadata(group)
-            if get_groupType_from_md(md) != self.PROCESSED_IMAGE_GROUP_NAME: 
+            if get_groupType_from_md(md) != PROCESSED_IMAGE_GROUP_NAME: 
                 image_dataset = group 
                 break 
         # if all images are processed images, use an arbitrary processed image
@@ -313,19 +312,19 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
             )
         
-            resp = self.client.create_new_dataset(
+            resp = client.create_new_dataset(
                 child_ds,
                 scientific_metadata=md,
                 keywords=self.keywords,
             )
             child_dsid = resp['created_record']['unique_id']
 
-            # Link child with parent dataset 
-            client.link_datasets(parent_dsid, child_dsid)
-
             # add thumbnail for child if applicable
             if child_thumbnail is not None:
                 client.add_thumbnail(child_dsid, child_thumbnail)
+
+            # Link child with parent dataset 
+            client.link_datasets(parent_dsid, child_dsid)
 
             return child_dsid
         
@@ -334,50 +333,17 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             self.scientific_metadata = self.scientific_metadata.values()[0] # decapsulate scientific metadata for parent
             return 
         
-        for key, md in self.scientific_metadata.items():
-            # remove thumbnail from metadata if applicable 
-            child_thumbnail = None
-            if "thumbnail" in md: # generated in _parse_measurement_metadata
-                child_thumbnail = md["thumbnail"]
-                del md["thumbnail"]
+        # upload children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
+        spectrum_image_dsid = None
+        for i, md in enumerate(list(self.scientific_metadata.values())[::-1]):
+            # ensure that processed images are nested properly 
+            # assume: processed image exists => spectrum_image exists
+            parent_dsid = spectrum_image_dsid if (get_groupType_from_md(md) == PROCESSED_IMAGE_GROUP_NAME and spectrum_image_dsid != None) else self.unique_id 
+            dsid = upload_child(md, parent_dsid)
 
-            # create new child dataset & link to parent 
-            child_ds = Dataset(
-                measurement    = md['measurement'], # prev: get_groupType_from_md(md), 
-                project_id     = self.project_id,
-                owner_orcid    = None,  # API key handles user authentication
-                dataset_name   = self.dataset_name + f" ({get_title_from_md(md)})",
-                # session_name   = self.session_name,
-                # public         = self.public,
-                # instrument_name = self.instrument_name, 
-                data_format    = self.data_format,
-                source_folder  = self.source_folder,
-                # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
-            )
-            resp = client.datasets.create(child_ds, scientific_metadata = md, keywords = self.keywords)
-            child_dsid = resp['created_record']['unique_id']
-            # client.datasets.link_parent_child(parent_id=self.unique_id, child_id=child_dsid)
-            client.link_datasets(parent_dataset_id=self.unique_id, child_dataset_id=child_dsid)
-
-            # add thumbnail for child dataset
-            # is_image = key[key.index("(")+1:-1][6:12] == "Image"
-            if child_thumbnail is not None:
-                client.add_thumbnail(child_dsid, child_thumbnail)
-
-    def getMeasurementType(ncempy_emd_file, index=-1):
-        """
-        Args:
-        - index: which item of list_data to consider (default: consider last item)
-
-        Returns: 
-        - measurement type of this file for crucible data ingestion 
-        """
-        measurement_type = ncempy_emd_file.list_data[index].parent.name[6:]
-        if measurement_type == 'Spectrum': 
-            measurement_type = ncempy_emd_file.SPECTRUM_GROUP_NAME
-        elif measurement_type == 'SpectrumImage': 
-            measurement_type = ncempy_emd_file.SPECTRUM_IMAGE_GROUP_NAME
-        return measurement_type 
+            # assume that spectrum will always be at the end of list_data if it exists; therefore, we only update spectrum_image_dsid in the first iteration 
+            if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
+                spectrum_image_dsid = dsid
 
     def get_illumination_mode(self, metadata_dictionary): 
         """
