@@ -32,6 +32,7 @@ from ingestors.dm_ingestor import DigitalMicrographIngestor
 from ingestors.ser_ingestor import SerIngestor
 from ingestors.bcf_ingestor import BcfIngestor
 from ingestors.emd_ingestor import BerkeleyEmdIngestor
+from ingestors.emd_velox_ingestor import VeloxEmdIngestor
 from ingestors.jupiter_afm_ingestor import AFMIngestor
 from ingestors.czi_ingestor import CziIngestor
 from ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
@@ -62,6 +63,7 @@ ingestor_list = [AFMIngestor,
                 SerIngestor,
                 BcfIngestor,
                 BerkeleyEmdIngestor,
+                VeloxEmdIngestor,
                 SpinbotSpecRunIngestor,
                 ImageIngestor,
                 NirvanaMultiPosLineScanIngestor] 
@@ -202,9 +204,7 @@ def data_ingestion(dataset_to_process: str,
                         'size': file_info['size'],
                         'sha256_hash': file_info['sha256_hash']
                     }
-            return client._request('post',
-                                   f'/datasets/{dsid}/associated_files',
-                                   json=associated_file_data)
+            client._request('post', f'/datasets/{dsid}/associated_files', json=associated_file_data)
         except Exception as err:
             logger.error(f"Failed to add associated file with error {err}")
 
@@ -220,7 +220,7 @@ def data_ingestion(dataset_to_process: str,
 
     # scientific metadata
     res = client.datasets.update_scientific_metadata(dsid, md, overwrite = False)
-    logger.info(f"Scientific metadata update complete. Response: {res.content}")
+    logger.info(f"Scientific metadata update complete. Response: {res}")
 
 
 
