@@ -51,6 +51,8 @@ class CrucibleDatasetIngestor(Dataset):
         logger.info("parsing batch complete")
         self.parse_samples()
         logger.info("parsing samples complete")
+        self.parse_children()
+        logger.info("parsing children complete")
         self.get_data_files()
         logger.info("getting data files complete")
         self.get_thumbnails()
@@ -162,7 +164,9 @@ class CrucibleDatasetIngestor(Dataset):
     def parse_samples(self):
         pass
         
-
+    def parse_children(self):
+        pass
+    
     def parse_orcid(self):
         if self.owner_orcid:
             return

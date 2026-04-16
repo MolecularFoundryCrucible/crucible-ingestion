@@ -11,9 +11,18 @@ import logging
 import json
 
 from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from crucible import CrucibleClient
+from crucible.models import Dataset
+from utils import get_secret
+
+from constants import crucible_api_url
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+# Crucible Client
+apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
+client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
 def parse_dataset_as_dict(dataset): 
     """
@@ -178,8 +187,8 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             logger.info(f"{self.dataset_name=}")
             return
 
-    def generate_thumbnail(self):
-        """Generate a thumbnail from an EMD image as a PNG.
+    def _generate_thumbnail_from_array(self, image_array): 
+        """Generate a thumbnail from an image_arr. Helper function. 
 
         Returns
         -------
@@ -189,21 +198,31 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         target_size = (200, 200) # pixels
         dpi = 100
         fig_size = (target_size[0] / dpi, target_size[1] / dpi) # inches
-       
+
+        fg, ax = plt.subplots(1, 1, figsize=fig_size, dpi=dpi)
+        ax.imshow(image_array, cmap = 'gray')
+        ax.axis('off')
+
+        # Convert to PIL Image and store in self.thumbnails
+        buf = io.BytesIO()
+        fg.savefig(buf, bbox_inches='tight', pad_inches=0.05, dpi=100)
+        im = Image.open(buf)
+        return im
+
+    def generate_thumbnail(self):
+        """Generate a thumbnail from an EMD image as a PNG.
+
+        Returns
+        -------
+        : PIL.Image
+            Thumbnail image as a PIL Image object.
+        """       
         try:            
             with fileEMDVeloxWithSpectra(self.file_to_upload) as emd1:
                 image_array = emd1.getThumbnailImageDataset()
             
             if image_array is not None: 
-                fg, ax = plt.subplots(1, 1, figsize=fig_size, dpi=dpi)
-                ax.imshow(image_array, cmap = 'gray')
-                ax.axis('off')
-
-                # Convert to PIL Image and store in self.thumbnails
-                buf = io.BytesIO()
-                fg.savefig(buf, bbox_inches='tight', pad_inches=0.05, dpi=100)
-                im = Image.open(buf)
-                return im
+                return self._generate_thumbnail_from_array(image_array)
             return None
         except Exception as e:
             print(f"Failed to generate thumbnail: {e}")
@@ -238,9 +257,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 # projection = self.get_projection_mode(md)
                 cur_signal = self.get_signal_type(md) if measurement_type != 'SpectrumImage' else 'EDS' # handle spectrum images separately? 
                 measurement_str = illumination + ' ' + projection + ' ' + cur_signal if cur_signal else 'Velox Processed Image'
-                
                 md.update({"measurement": measurement_str})
-                all_metadata.update({get_title_from_md(md) + f" ({group.name})": md}) # use title as key for child scientific metadata 
 
                 # update overall measurement
                 if signal == "" and cur_signal != "": 
@@ -250,10 +267,102 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                         signal = "EDS"
                     if signal != "Pixelated":
                         if cur_signal == "Pixelated":
-                            signal = "Pixelated" # bump up signal to Pixelated                   
+                            signal = "Pixelated" # bump up signal to Pixelated   
+
+                # generate thumbnail for image measurements (only for children ds; otherwise, parent ds's thumbnail handled separately later)
+                # note: thumbnail will be added to crucible, but encoding will be removed from md dictionary later
+                if len(emd1.list_data) > 1: 
+                    if measurement_type == "Image":
+                        image_array = group['Data'][:,:,0]
+                        thumbnail = self._generate_thumbnail_from_array(image_array)
+                        md.update({"thumbnail": thumbnail})
+                    if measurement_type == "SpectrumImage": 
+                        thumbnail = self.generate_thumbnail() # SpectrumImage will have same thumbnail as overall file 
+                        md.update({"thumbnail": thumbnail})
+                
+                all_metadata.update({get_title_from_md(md) + f" ({group.name})": md}) # use title as key for child scientific metadata 
 
         overall_measurment_str = illumination + ' ' + projection + ' ' + signal # assume that overall measurement is never Velox Processed Image
         return all_metadata, overall_measurment_str
+
+    def parse_children(self):
+        def upload_child(md, parent_dsid): 
+            """
+            Uploads child dataset using metadata MD. Links the created dataset record to PARENT_DSID.
+            Also, adds the thumbnail for the child, if applicable. 
+            Returns child_dsid. 
+            """
+            # remove thumbnail from metadata if applicable 
+            child_thumbnail = None
+            if "thumbnail" in md: # generated in _parse_measurement_metadata
+                child_thumbnail = md["thumbnail"]
+                del md["thumbnail"]
+
+            # Create dataset
+            child_ds = Dataset(
+                # unique_id      = self.mfid, # need a new id for each measurement ds?
+                measurement    = md['measurement'], # prev: get_groupType_from_md(md), 
+                project_id     = self.project_id,
+                owner_orcid    = None,  # API key handles user authentication
+                dataset_name   = self.dataset_name + f" ({get_title_from_md(md)})",
+                # session_name   = self.session_name,
+                # public         = self.public,
+                # instrument_name = self.instrument_name, # TODO: include detector here? 
+                data_format    = self.data_format,
+                source_folder  = self.source_folder,
+                # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
+            )
+        
+            resp = self.client.create_new_dataset(
+                child_ds,
+                scientific_metadata=md,
+                keywords=self.keywords,
+            )
+            child_dsid = resp['created_record']['unique_id']
+
+            # Link child with parent dataset 
+            client.link_datasets(parent_dsid, child_dsid)
+
+            # add thumbnail for child if applicable
+            if child_thumbnail is not None:
+                client.add_thumbnail(child_dsid, child_thumbnail)
+
+            return child_dsid
+        
+        # if there's only 1 measurement, don't need to create an additional child dataset. 
+        if len(self.scientific_metadata) == 1:
+            self.scientific_metadata = self.scientific_metadata.values()[0] # decapsulate scientific metadata for parent
+            return 
+        
+        for key, md in self.scientific_metadata.items():
+            # remove thumbnail from metadata if applicable 
+            child_thumbnail = None
+            if "thumbnail" in md: # generated in _parse_measurement_metadata
+                child_thumbnail = md["thumbnail"]
+                del md["thumbnail"]
+
+            # create new child dataset & link to parent 
+            child_ds = Dataset(
+                measurement    = md['measurement'], # prev: get_groupType_from_md(md), 
+                project_id     = self.project_id,
+                owner_orcid    = None,  # API key handles user authentication
+                dataset_name   = self.dataset_name + f" ({get_title_from_md(md)})",
+                # session_name   = self.session_name,
+                # public         = self.public,
+                # instrument_name = self.instrument_name, 
+                data_format    = self.data_format,
+                source_folder  = self.source_folder,
+                # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
+            )
+            resp = client.datasets.create(child_ds, scientific_metadata = md, keywords = self.keywords)
+            child_dsid = resp['created_record']['unique_id']
+            # client.datasets.link_parent_child(parent_id=self.unique_id, child_id=child_dsid)
+            client.link_datasets(parent_dataset_id=self.unique_id, child_dataset_id=child_dsid)
+
+            # add thumbnail for child dataset
+            # is_image = key[key.index("(")+1:-1][6:12] == "Image"
+            if child_thumbnail is not None:
+                client.add_thumbnail(child_dsid, child_thumbnail)
 
     def getMeasurementType(ncempy_emd_file, index=-1):
         """
