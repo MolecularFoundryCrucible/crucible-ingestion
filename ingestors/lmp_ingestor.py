@@ -27,18 +27,19 @@ class LmpIngestor(CrucibleDatasetIngestor):
         Main driver, reads input file and find other relevant files, then
         reads each one to extract metadata.
         """
-        
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
+
         # read input file
-        self.scientific_metadata = self.read_lmp_input_file()
+        self.scientific_metadata.update(self.read_lmp_input_file())
 
         # read data file
         data_file_metadata = self.read_data_file()
         self.scientific_metadata.update(data_file_metadata)
-        
+
         # read LOG file
         log_file_metadata = self.read_log_file()
         self.scientific_metadata.update(log_file_metadata)
-        
+
         return
     
     

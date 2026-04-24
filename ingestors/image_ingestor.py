@@ -34,6 +34,7 @@ class TifIngestor(ImageIngestor):
 
     
     def get_scientific_metadata(self):
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         with Image.open(self.file_to_upload) as im:
             raw_md = im.tag_v2
             for tag, value in raw_md.items():

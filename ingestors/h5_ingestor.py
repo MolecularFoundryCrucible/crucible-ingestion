@@ -9,6 +9,7 @@ class H5Ingestor(CrucibleDatasetIngestor):
            
  
     def get_scientific_metadata(self):
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         d = dict()
         def nest_json(k,v, d=d):
             keys=k.split("/")
@@ -19,10 +20,10 @@ class H5Ingestor(CrucibleDatasetIngestor):
                     d[key] = {}
             for eachkey in v.attrs.keys():
                 d[key][eachkey] = v.attrs[eachkey]
-                
+
         self.h5file = h5py.File(self.file_to_upload, 'r')
         self.h5file.visititems(nest_json)
-        self.scientific_metadata = d
+        self.scientific_metadata.update(d)
 
     
     def get_dataset_metadata(self):

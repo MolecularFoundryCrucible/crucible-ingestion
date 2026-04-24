@@ -37,19 +37,19 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
             return False
 
     def get_scientific_metadata(self):
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         logger.info("running get scientific metadata")
-    
+
         self.tmp_folder = os.path.join("./generated_files/", os.path.basename(self.file_to_upload.replace(".zip", "")))
         logger.info(f"{self.tmp_folder=}")
-        
+
         # extract the files
         if os.path.exists(self.tmp_folder):
             shutil.rmtree(self.tmp_folder)
         xx = run_shell(f"unzip -qq '{self.file_to_upload}' -d ./generated_files/")
         logger.info(xx.stderr)
-        
+
         # sample parsing
-        self.scientific_metadata = {}
         self.instrument_name = ""
         for (root,dirs,files) in os.walk(self.tmp_folder, topdown=True): 
             files = [f for f in files if not f[0] == '.']

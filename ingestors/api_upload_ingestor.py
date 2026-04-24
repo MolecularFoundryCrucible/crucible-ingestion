@@ -20,6 +20,4 @@ class ApiUploadIngestor(CrucibleDatasetIngestor):
             self.sha256_hash_file_to_upload = checkhash(self.file_to_upload)
         logger.info(f'{self.unique_id} hash = {self.sha256_hash_file_to_upload}')
 
-    def get_scientific_metadata(self):
-        pass
             

@@ -40,10 +40,11 @@ class CziIngestor(CrucibleDatasetIngestor):
 
    
     def get_scientific_metadata(self):
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         czi = CziFile(self.file_to_upload)
         metadata = xmltodict.parse(czi.reader.read_meta())['ImageDocument']['Metadata']
         search_and_replace("HotPixelSettings", metadata)
-        self.scientific_metadata = metadata
+        self.scientific_metadata.update(metadata)
 
                 
     def get_dataset_metadata(self):

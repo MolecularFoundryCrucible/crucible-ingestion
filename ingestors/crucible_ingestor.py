@@ -36,6 +36,10 @@ class CrucibleDatasetIngestor(Dataset):
     thumbnails: list = []
     samples: list = []
 
+    @property
+    def ingestion_class(self):
+        return type(self).__name__
+
     def is_file_supported(self):
         return True
 
@@ -66,8 +70,11 @@ class CrucibleDatasetIngestor(Dataset):
         populate the metadata_dictionary
         of the object.
         """
-        logger.info("get_scientific_metadata completed")
-        return 
+        self.scientific_metadata.update({
+            'git_repo': 'https://github.com/MolecularFoundryCrucible/crucible-ingestion',
+            'githash': self.githash,
+            'ingestion_class': self.ingestion_class,
+        })
     
     
     def parse_dataset_name(self):
@@ -269,7 +276,7 @@ class CrucibleDatasetIngestor(Dataset):
                     else:
                         # should be an empty dictionary; but just in case
                         existing_metadata = dataset_obj[attr]
-                    logger.info(f'{existing_metadata=}')
+                  #  logger.info(f'{existing_metadata=}')
                     self.scientific_metadata.update(existing_metadata)
                     continue
                     
@@ -321,7 +328,8 @@ class CrucibleDatasetIngestor(Dataset):
                                  cmd="copy",
                                  checkflag = False)
         logger.info(out.stdout)
-        logger.error(out.stderr)
+        if out.stderr is not None:
+            logger.error(out.stderr)
         return 
 
 

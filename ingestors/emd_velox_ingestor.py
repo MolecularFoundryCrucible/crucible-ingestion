@@ -135,6 +135,7 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
         """
         # print(f"Got image_array for thumbnail: {len(image_dataset) if image_dataset!=None else 'None'}")
         if '/Data/Image' not in self._file_hdl: 
+            logger.info(f'/Data/Image not in file')
             return None
 
         # choose the image from which to create a thumbnail
@@ -222,17 +223,22 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             
             if image_array is not None: 
                 return self._generate_thumbnail_from_array(image_array)
+            else: 
+                logger.info(f'image_array was none for {self.unique_id}')
+
             return None
         except Exception as e:
-            print(f"Failed to generate thumbnail: {e}")
+            logger.error(f"Failed to generate thumbnail: {e}")
 
     def get_thumbnails(self):
         try:
             thumbnail = self.generate_thumbnail()
             if thumbnail:
                 self.add_thumbnail(thumbnail, "Velox_EMD_Thumbnail")
+            logger.info(f'{len(self.thumbnails)=}')
         except Exception as e:
-            print(f"Failed to extract thumbnail: {e}")
+            logger.error(f"Failed to extract thumbnail: {e}")
+
 
     def _parse_measurement_metadata(self): 
         """
@@ -321,8 +327,10 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
 
             # add thumbnail for child if applicable
             if child_thumbnail is not None:
-                client.add_thumbnail(child_dsid, child_thumbnail)
-
+                resp = client.add_thumbnail(child_dsid, child_thumbnail)
+                logger.info(f'{child_dsid} -- thumbnail -- {resp}')
+            else: 
+                logger.info(f'{child_dsid} thumbnail was None')
             # Link child with parent dataset 
             client.link_datasets(parent_dsid, child_dsid)
 

@@ -48,6 +48,7 @@ class PtychographyH5Ingestor(H5Ingestor):
 
 
     def get_scientific_metadata(self):
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         d = dict()
 
         def nest_json(k, v, d=d):
@@ -74,7 +75,7 @@ class PtychographyH5Ingestor(H5Ingestor):
 
         self.h5file = h5py.File(self.file_to_upload, 'r')
         self.h5file.visititems(nest_json)
-        self.scientific_metadata = d
+        self.scientific_metadata.update(d)
         
 
     def get_dataset_metadata(self):

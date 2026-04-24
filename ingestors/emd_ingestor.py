@@ -28,8 +28,9 @@ class BerkeleyEmdIngestor(CrucibleDatasetIngestor):
 
     
     def get_scientific_metadata(self):
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         with nio.emd.fileEMD(self.file_to_upload, readonly=True) as emd1:
-            self.scientific_metadata = emd1.getMetadata(0)
+            self.scientific_metadata.update(emd1.getMetadata(0))
         logger.info(f'Got metadata from Berkeley EMD: {self.scientific_metadata=}')
          
     

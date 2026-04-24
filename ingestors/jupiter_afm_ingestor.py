@@ -44,9 +44,10 @@ class AFMIngestor(CrucibleDatasetIngestor):
 
 
     def get_scientific_metadata(self):
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         im = igor.binarywave.load(self.file_to_upload)
         im = decode_recurse(im)
-        
+
         newnote = {}
         for y in [x.split(":") for x in im['wave']['note'].split("\r")]:
             if len(y) == 2:
@@ -57,12 +58,12 @@ class AFMIngestor(CrucibleDatasetIngestor):
                 newnote[y[0].strip()] = None
             else:
                 continue
-        
+
         for x in ['SaveImage', 'SaveForce',  'LastSaveImage', 'LastSaveForce']:
             newnote[x] = newnote[x].replace(":", "/")
         im['wave']['note'] = newnote
 
-        self.scientific_metadata = im['wave']
+        self.scientific_metadata.update(im['wave'])
         self.scientific_metadata['version'] = im['version']
 
 

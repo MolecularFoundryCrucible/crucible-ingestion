@@ -35,8 +35,9 @@ class SerIngestor(CrucibleDatasetIngestor):
 
     def get_scientific_metadata(self):
         """Extract scientific metadata from the ser file using ncempy."""
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         with nio.ser.fileSER(self.file_to_upload) as ser:
-            self.scientific_metadata = ser.getMetadata()
+            self.scientific_metadata.update(ser.getMetadata())
 
     
     def get_dataset_metadata(self):

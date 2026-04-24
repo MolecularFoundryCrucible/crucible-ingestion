@@ -180,11 +180,11 @@ def data_ingestion(dataset_to_process: str,
     associated_files = D.pop('associated_files')
     thumbnails = D.pop('thumbnails')
     md = D.pop("scientific_metadata") 
-    logger.info(f"Data to update: {D}")
+    #logger.info(f"Data to update: {D}")
 
     # send the data
     ds = client.datasets.update(ig.unique_id, **D)
-    logger.info(f"UPDATED DS: {ds=}")
+    #logger.info(f"UPDATED DS: {ds=}")
 
     # thumbnails
     for thumbnail in thumbnails:
@@ -220,7 +220,7 @@ def data_ingestion(dataset_to_process: str,
 
     # scientific metadata
     res = client.datasets.update_scientific_metadata(dsid, md, overwrite = False)
-    logger.info(f"Scientific metadata update complete. Response: {res}")
+  #  logger.info(f"Scientific metadata update complete. Response: {res}")
 
 
 

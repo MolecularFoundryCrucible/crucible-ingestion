@@ -30,11 +30,10 @@ class DigitalMicrographIngestor(CrucibleDatasetIngestor):
    
     def get_scientific_metadata(self):
         """Extract scientific metadata from the DM file using ncempy."""
-        meta_data = {}
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
         with nio.dm.fileDM(self.file_to_upload, on_memory=True) as dm1:
             md = dm1.getMetadata(0)
-            meta_data.update(md)
-        self.scientific_metadata = meta_data
+            self.scientific_metadata.update(md)
 
 
     def get_dataset_metadata(self):
