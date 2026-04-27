@@ -117,19 +117,19 @@ class CrucibleDatasetIngestor(Dataset):
         
 
     def parse_instrument(self):
-        if self.instrument_id and self.instrument_name:
+        if self.instrument_name:
             self.acl.append(self.instrument_name)
 
-        elif self.instrument_name:
-            instrument = client.instruments.get(instrument_name=self.instrument_name)
-            if instrument:
-                self.instrument_id = instrument['id']
-                self.acl.append(self.instrument_name)
-            else:
-                raise ValueError(f'Provided instrument does not exist: {self.instrument_name}')
+        # elif self.instrument_name:
+        #     instrument = client.instruments.get(instrument_name=self.instrument_name)
+        #     if instrument:
+        #         self.instrument_id = instrument['id']
+        #         self.acl.append(self.instrument_name)
+        #     else:
+        #         raise ValueError(f'Provided instrument does not exist: {self.instrument_name}')
     
-        else:
-            pass
+        # else:
+        #     pass
     
 
     def parse_keywords(self):
@@ -188,17 +188,20 @@ class CrucibleDatasetIngestor(Dataset):
         # OWNER
         self.parse_orcid()
         logger.info("parse orcid complete")
-        if self.owner_orcid and not self.owner_user_id:
-            owner = client.users.get(self.owner_orcid)
-            try:
-                self.owner_user_id = owner['id']
-                self.acl.append(self.owner_orcid)
-                logger.info(f"Owner info appended: {self.owner_user_id}, {self.owner_orcid}")
+        if self.owner_orcid:
+            self.acl.append(self.owner_orcid)
 
-            except Exception as err:
-                logger.warning(f"Failed to append owner info due to error {err}. "
-                               f"parsed_owner_orcid: {self.owner_orcid} "
-                               f"owner_query_results: {owner}")
+        # if self.owner_orcid and not self.owner_user_id:
+        #     owner = client.users.get(self.owner_orcid)
+        #     try:
+        #         self.owner_user_id = owner['id']
+        #         self.acl.append(self.owner_orcid)
+        #         logger.info(f"Owner info appended: {self.owner_user_id}, {self.owner_orcid}")
+
+        #     except Exception as err:
+        #         logger.warning(f"Failed to append owner info due to error {err}. "
+        #                        f"parsed_owner_orcid: {self.owner_orcid} "
+        #                        f"owner_query_results: {owner}")
         
         # PROJECT
         self.parse_project_id()
