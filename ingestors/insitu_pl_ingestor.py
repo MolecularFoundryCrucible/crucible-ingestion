@@ -80,12 +80,12 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
 
         self.instrument_name = self.scientific_metadata[self.header_sample]['settings']['Spectrometer']
 
-        if "QEP" in self.header_file or "FLM" in self.header_file:
-            self.measurement = "In Situ PL"
-        elif "transmission" in self.header_file.lower():
+        # if "QEP" in self.header_file or "FLM" in self.header_file:
+        #     self.measurement = "In Situ PL"
+        if "transmission" in self.header_file.lower():
             self.measurement = "In Situ UV-Vis"
         else:
-            logger.warning("could not determine measurement from filename")
+            self.measurement = "In Situ PL"
         CrucibleDatasetIngestor.get_dataset_metadata(self)
         self.keywords += ["In Situ Spectroscopy"]
         self.keywords += list(self.scientific_metadata.keys())
