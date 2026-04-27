@@ -90,7 +90,6 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
         self.keywords += ["In Situ Spectroscopy"]
         self.keywords += list(self.scientific_metadata.keys())
 
-    # TODO - pass orcid and project_id in API call
-
+ 
 
 
