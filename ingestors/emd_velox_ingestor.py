@@ -352,10 +352,13 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                     return r['unique_id']
             return None
         
-        # handle multi-dataset files
+        ### handle multi-dataset files
 
+        # create parent_child_map for caching 
         parent_child_map = {self.unique_id: client.datasets.list_children(self.unique_id)} # self.unique_id = file_dsid
         spectrum_image_dsid = None
+
+        # upload children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
         for i, md in enumerate(list(self.scientific_metadata.values())[::-1]):
             parent_dsid = spectrum_image_dsid if (get_groupType_from_md(md) == PROCESSED_IMAGE_GROUP_NAME and spectrum_image_dsid != None) else self.unique_id 
             # get parent's existing_children: 
@@ -380,18 +383,6 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
                     spectrum_image_dsid = dsid # keep track of si_dsid 
                 logger.info(f"upload {child_ds_name} with dsid {dsid}")
-
-        # # upload children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
-        # spectrum_image_dsid = None
-        # for i, md in enumerate(list(self.scientific_metadata.values())[::-1]):
-        #     # ensure that processed images are nested properly 
-        #     # assume: processed image exists => spectrum_image exists
-        #     parent_dsid = spectrum_image_dsid if (get_groupType_from_md(md) == PROCESSED_IMAGE_GROUP_NAME and spectrum_image_dsid != None) else self.unique_id 
-        #     dsid = upload_child(md, parent_dsid)
-
-        #     # assume that spectrum will always be at the end of list_data if it exists; therefore, we only update spectrum_image_dsid in the first iteration 
-        #     if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
-        #         spectrum_image_dsid = dsid
 
     def get_illumination_mode(self, metadata_dictionary): 
         """
