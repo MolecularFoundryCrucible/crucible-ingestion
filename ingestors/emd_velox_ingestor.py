@@ -122,6 +122,8 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
             general_md = {'groupType': SPECTRUM_GROUP_NAME, 'title': SPECTRUM_GROUP_NAME} 
         elif group.parent.name == '/Data/SpectrumImage':
             general_md = {'groupType': SPECTRUM_IMAGE_GROUP_NAME, 'title': SPECTRUM_IMAGE_GROUP_NAME} 
+        else: # default for images whose titles aren't included in Display Group? 
+            general_md = {'groupType': 'Image', 'title': 'Image'} 
 
         meta_data.update({'General': general_md})
 
@@ -285,7 +287,8 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                         thumbnail = self.generate_thumbnail() # SpectrumImage will have same thumbnail as overall file 
                         md.update({"thumbnail": thumbnail})
                 
-                all_metadata.update({get_title_from_md(md) + f" ({group.name})": md}) # use title as key for child scientific metadata 
+                all_metadata.update({get_title_from_md(md): md}) # use title as key for child scientific metadata 
+                # previously also included dataset path: get_title_from_md(md) + f" ({group.name})": md}
 
         overall_measurment_str = illumination + ' ' + projection + ' ' + signal # assume that overall measurement is never Velox Processed Image
         return all_metadata, overall_measurment_str
@@ -297,22 +300,23 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             Also, adds the thumbnail for the child, if applicable. 
             Returns child_dsid. 
             """
-            # remove thumbnail from metadata if applicable 
+            # remove thumbnail from metadata (before dataset creation) if applicable 
             child_thumbnail = None
             if "thumbnail" in md: # generated in _parse_measurement_metadata
                 child_thumbnail = md["thumbnail"]
                 del md["thumbnail"]
 
             # Create dataset
+            child_ds_name = self.dataset_name + f" ({get_title_from_md(md)})"
             child_ds = Dataset(
                 # unique_id      = self.mfid, # need a new id for each measurement ds?
                 measurement    = md['measurement'], # prev: get_groupType_from_md(md), 
                 project_id     = self.project_id,
                 owner_orcid    = None,  # API key handles user authentication
-                dataset_name   = self.dataset_name + f" ({get_title_from_md(md)})",
+                dataset_name   = child_ds_name,
                 # session_name   = self.session_name,
                 # public         = self.public,
-                # instrument_name = self.instrument_name, # TODO: include detector here? 
+                # instrument_name = self.instrument_name, # TODO: update instrument
                 data_format    = self.data_format,
                 source_folder  = self.source_folder,
                 # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
@@ -327,7 +331,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
 
             # add thumbnail for child if applicable
             if child_thumbnail is not None:
-                resp = client.add_thumbnail(child_dsid, child_thumbnail)
+                resp = client.add_thumbnail(child_dsid, child_thumbnail, 'Velox_EMD_Thumbnail')
                 logger.info(f'{child_dsid} -- thumbnail -- {resp}')
             else: 
                 logger.info(f'{child_dsid} thumbnail was None')
@@ -336,22 +340,53 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
 
             return child_dsid
         
-        # if there's only 1 measurement, don't need to create an additional child dataset. 
+        def find_dsid_for_ds_name(ds_name, records):
+            """ Helper function. 
+            Returns dsid corresponding to DS_NAME, or None if DS_NAME not in RECORDS.
+            """
+            for r in records:
+                if r['dataset_name'] == ds_name:
+                    return r['unique_id']
+            return None
+        
+        ### if there's only 1 measurement, don't need to create an additional child dataset. 
         if len(self.scientific_metadata) == 1:
             self.scientific_metadata = self.scientific_metadata.values()[0] # decapsulate scientific metadata for parent
             return 
         
-        # upload children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
-        spectrum_image_dsid = None
-        for i, md in enumerate(list(self.scientific_metadata.values())[::-1]):
-            # ensure that processed images are nested properly 
-            # assume: processed image exists => spectrum_image exists
-            parent_dsid = spectrum_image_dsid if (get_groupType_from_md(md) == PROCESSED_IMAGE_GROUP_NAME and spectrum_image_dsid != None) else self.unique_id 
-            dsid = upload_child(md, parent_dsid)
+        ### handle multi-dataset files
 
-            # assume that spectrum will always be at the end of list_data if it exists; therefore, we only update spectrum_image_dsid in the first iteration 
-            if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
-                spectrum_image_dsid = dsid
+        # create parent_child_map for caching client.list_children() results 
+        parent_child_map = {self.unique_id: client.datasets.list_children(self.unique_id)} # self.unique_id = file_dsid
+        spectrum_image_dsid = None
+
+        # upload children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
+        for i, md in enumerate(list(self.scientific_metadata.values())[::-1]): # assume SpectrumImage is at the end of sci_metadata, so iterate backwards
+            # determine if parent is file or SpectrumImage
+            parent_dsid = spectrum_image_dsid if (get_groupType_from_md(md) == PROCESSED_IMAGE_GROUP_NAME and spectrum_image_dsid != None) else self.unique_id 
+            
+            # get parent's existing_children: 
+            existing_children = []
+            if parent_dsid in parent_child_map: 
+                existing_children = parent_child_map[parent_dsid]
+            else: 
+                existing_children = client.datasets.list_children(parent_dsid)
+                parent_child_map[parent_dsid] = existing_children # update parent_child_map
+
+            child_ds_name = f"{self.dataset_name} ({get_title_from_md(md)})"
+            found_dsid = find_dsid_for_ds_name(child_ds_name, existing_children)
+            if found_dsid is not None: # child already exists 
+                # don't upload this child -- but keep track of si_dsid if it's a spectrum image
+                if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
+                    spectrum_image_dsid = found_dsid # keep track of si_dsid 
+                logger.info(f"skip upload for {child_ds_name}")
+            else: 
+                # child doesn't exist yet; upload as normal
+                dsid = upload_child(md, parent_dsid)
+                
+                if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
+                    spectrum_image_dsid = dsid # keep track of si_dsid 
+                logger.info(f"uploaded {child_ds_name} with dsid {dsid}")
 
     def get_illumination_mode(self, metadata_dictionary): 
         """
