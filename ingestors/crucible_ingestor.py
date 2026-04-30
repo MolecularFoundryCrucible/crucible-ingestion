@@ -28,7 +28,7 @@ apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
 client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
 class CrucibleDatasetIngestor(Dataset):
-    githash: str = os.environ.get("GITHASH") 
+    ingestion_githash: str = os.environ.get("GITHASH") 
     scientific_metadata: dict = {} 
     keywords: list = []
     acl: list = []
@@ -72,7 +72,7 @@ class CrucibleDatasetIngestor(Dataset):
         """
         self.scientific_metadata.update({
             'git_repo': 'https://github.com/MolecularFoundryCrucible/crucible-ingestion',
-            'githash': self.githash,
+            'ingestion_githash': self.ingestion_githash,
             'ingestion_class': self.ingestion_class,
         })
     
