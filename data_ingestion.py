@@ -220,8 +220,8 @@ def data_ingestion(dataset_to_process: str,
 
     # scientific metadata
     res = client.datasets.update_scientific_metadata(dsid, md, overwrite = False)
-  #  logger.info(f"Scientific metadata update complete. Response: {res}")
-
+    logger.info(f"Scientific metadata update complete. Response: {res}")
+    return (ds, None)
 
 
 
