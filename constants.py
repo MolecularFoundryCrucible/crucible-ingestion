@@ -1,5 +1,5 @@
 # EVENTUALLY ALL THESE CAN GET HANDLED THROUGH CONFIG MAP 
-crucible_api_url = "https://crucible.lbl.gov/api/v1"
+crucible_api_url = "https://crucible.lbl.gov/api/v2"
 secret_store = "projects/776258882599/secrets"
 gcs_client_id = "776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com"
 rmq_host =  '10.128.0.31'
