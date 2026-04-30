@@ -146,10 +146,10 @@ def callback(ch, method, props, body):
     except Exception as err:
         client.update_ingestion_status(dsid, reqid, "failed")
         logger.error(f"[x] Received {body} but failed with error {err}")
-        #ch.basic_publish(exchange = '', routing_key= 'ingestion-newapi-failed', body=json.dumps(message))
-        #ch.basic_ack(delivery_tag=method.delivery_tag)    
+        ch.basic_publish(exchange = '', routing_key= 'ingestion-newapi-failed', body=json.dumps(message))
+        ch.basic_ack(delivery_tag=method.delivery_tag)    
         return
-       # ch.basic_nack(delivery_tag=method.delivery_tag)      
+        #ch.basic_nack(delivery_tag=method.delivery_tag)      
 
 # subscribe to the queue
 channel.basic_consume(queue='ingest-newapi',
