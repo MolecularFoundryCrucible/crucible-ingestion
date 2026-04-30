@@ -10,7 +10,7 @@ sql_import_attr = [ 'dataset_name', # default is not none
                     'timestamp', 
                     'size',
                     'source_folder',
-                    'owner_user_id',
+                   # 'owner_user_id',
                     'owner_orcid',
                     'project_id',
                     'scientific_metadata',
