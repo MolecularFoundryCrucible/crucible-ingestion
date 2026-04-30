@@ -16,7 +16,7 @@ sql_import_attr = [ 'dataset_name', # default is not none
                     'scientific_metadata',
                     'public',
                     'file_to_upload',
-                    'instrument_id',
+                   # 'instrument_id',
                     'instrument_name',
                     'measurement',
                     'data_format',
