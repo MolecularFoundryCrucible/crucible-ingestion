@@ -316,7 +316,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 dataset_name   = child_ds_name,
                 # session_name   = self.session_name,
                 # public         = self.public,
-                # instrument_name = self.instrument_name, # TODO: include detector here? 
+                # instrument_name = self.instrument_name, # TODO: update instrument
                 data_format    = self.data_format,
                 source_folder  = self.source_folder,
                 # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
@@ -340,27 +340,31 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
 
             return child_dsid
         
-        # if there's only 1 measurement, don't need to create an additional child dataset. 
-        if len(self.scientific_metadata) == 1:
-            self.scientific_metadata = self.scientific_metadata.values()[0] # decapsulate scientific metadata for parent
-            return 
         def find_dsid_for_ds_name(ds_name, records):
-            """ Returns dsid corresponding to DS_NAME, or None if DS_NAME not in RECORDS.
+            """ Helper function. 
+            Returns dsid corresponding to DS_NAME, or None if DS_NAME not in RECORDS.
             """
             for r in records:
                 if r['dataset_name'] == ds_name:
                     return r['unique_id']
             return None
         
+        ### if there's only 1 measurement, don't need to create an additional child dataset. 
+        if len(self.scientific_metadata) == 1:
+            self.scientific_metadata = self.scientific_metadata.values()[0] # decapsulate scientific metadata for parent
+            return 
+        
         ### handle multi-dataset files
 
-        # create parent_child_map for caching 
+        # create parent_child_map for caching client.list_children() results 
         parent_child_map = {self.unique_id: client.datasets.list_children(self.unique_id)} # self.unique_id = file_dsid
         spectrum_image_dsid = None
 
         # upload children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
-        for i, md in enumerate(list(self.scientific_metadata.values())[::-1]):
+        for i, md in enumerate(list(self.scientific_metadata.values())[::-1]): # assume SpectrumImage is at the end of sci_metadata, so iterate backwards
+            # determine if parent is file or SpectrumImage
             parent_dsid = spectrum_image_dsid if (get_groupType_from_md(md) == PROCESSED_IMAGE_GROUP_NAME and spectrum_image_dsid != None) else self.unique_id 
+            
             # get parent's existing_children: 
             existing_children = []
             if parent_dsid in parent_child_map: 
@@ -372,17 +376,17 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             child_ds_name = f"{self.dataset_name} ({get_title_from_md(md)})"
             found_dsid = find_dsid_for_ds_name(child_ds_name, existing_children)
             if found_dsid is not None: # child already exists 
-                # don't upload this child -- but keep track of spectrum_dsid if it's a spectrum image
+                # don't upload this child -- but keep track of si_dsid if it's a spectrum image
                 if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
                     spectrum_image_dsid = found_dsid # keep track of si_dsid 
                 logger.info(f"skip upload for {child_ds_name}")
             else: 
-                # upload as normal
+                # child doesn't exist yet; upload as normal
                 dsid = upload_child(md, parent_dsid)
                 
                 if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
                     spectrum_image_dsid = dsid # keep track of si_dsid 
-                logger.info(f"upload {child_ds_name} with dsid {dsid}")
+                logger.info(f"uploaded {child_ds_name} with dsid {dsid}")
 
     def get_illumination_mode(self, metadata_dictionary): 
         """
