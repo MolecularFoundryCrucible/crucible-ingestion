@@ -104,7 +104,8 @@ def populate_existing_ds_info(ig, dataset_to_process, client, populate_fields):
     if not found_ds:
         ig.sha256_hash_file_to_upload = checkhash(dataset_to_process)
         found_ds = client.datasets.get(ig.sha256_hash_file_to_upload, include_metadata = True)
-
+        logger.info(f"Checked for existing dataset with sha256 hash {ig.sha256_hash_file_to_upload} and found {found_ds=}")
+        
     # add required info to IG
     if found_ds:
         for k in populate_fields:

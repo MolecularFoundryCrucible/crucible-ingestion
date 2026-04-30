@@ -104,7 +104,7 @@ def callback(ch, method, props, body):
     client.update_ingestion_status(dsid, reqid, "started")
 
     # check file found (retry up to 5 times)
-    max_file_retries = 7
+    max_file_retries = 5
     for attempt in range(1, max_file_retries + 1):
         if not is_file_lost(message, ch, update_status=(attempt == max_file_retries)):
             break

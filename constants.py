@@ -22,9 +22,10 @@ sql_import_attr = [ 'dataset_name', # default is not none
                     'data_format',
                     'session_name',
                     'sha256_hash_file_to_upload',
-                    'githash']
+                    'ingestion_class',
+                    'ingestion_githash']
 
-sql_export_attr = sql_import_attr + ['thumbnails', 'associated_files', 'keywords', 'acl', 'githash']
+sql_export_attr = sql_import_attr + ['thumbnails', 'associated_files', 'keywords', 'acl']
 
 INSTRUMENT_DRIVES = {
           "aldbot":"CRUCIBLE - MF Inorganic ALDbot",
