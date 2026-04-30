@@ -139,7 +139,7 @@ def callback(ch, method, props, body):
 
         else:
             client.update_ingestion_status(dsid, reqid, "complete")
-            logger.info(f"[x] Received {body} and ingested with id: {ds.unique_id}")
+            logger.info(f"[x] Received {body} and ingested with id: {ds['unique_id']}")
         
         ch.basic_ack(delivery_tag=method.delivery_tag)      
         
