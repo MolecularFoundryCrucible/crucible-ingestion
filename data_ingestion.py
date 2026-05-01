@@ -98,14 +98,9 @@ def find_supported_ingestor(dataset_to_process,
     return None
 
 
-def populate_existing_ds_info(ig, dataset_to_process, client, populate_fields):
+def populate_existing_ds_info(ig, client, populate_fields):
     found_ds = client.datasets.get(ig.unique_id, include_metadata=True)
 
-    if not found_ds:
-        ig.sha256_hash_file_to_upload = checkhash(dataset_to_process)
-        found_ds = client.datasets.get(ig.sha256_hash_file_to_upload, include_metadata = True)
-        logger.info(f"Checked for existing dataset with sha256 hash {ig.sha256_hash_file_to_upload} and found {found_ds=}")
-        
     # add required info to IG
     if found_ds:
         for k in populate_fields:
@@ -137,7 +132,6 @@ def data_ingestion(dataset_to_process: str,
     storage_bucket = 'mf-storage-prod'
     ingest_json_fname = f"{dsid}_ingest_{timestamp}_{reqid}.json"
 
-
     # select ingestion class to use
     # if no supporting ingestion class found; 
     # request will get rerouted to "not-supported queue"
@@ -145,9 +139,15 @@ def data_ingestion(dataset_to_process: str,
     if ig is None:
         logger.warning("Tried all ingestors with no matches found")
         return (None, None)
+    
+    ingestion_class = ig.ingestion_class()
 
     # check if the dataset already exists; reinstantiate ig with info
-    populate_fields = ['owner_orcid', 'project_id', 'measurement', 'session_name', 'instrument_name'] #'owner_user_id', 'instrument_id',
+    populate_fields = ['dataset_name', 'public', 'owner_orcid',
+                       'project_id', 'measurement', 'session_name',
+                       'instrument_name', 'data_type', 'timestamp',
+                       'data_format', 'size', 'source_folder']
+    
     ig, found_ds = populate_existing_ds_info(ig, dataset_to_process, client, populate_fields)
         
     # parse the file + add any additional metadata
@@ -164,12 +164,8 @@ def data_ingestion(dataset_to_process: str,
     
     
     # send to gcs
-    num_files = len(ig.associated_files)
-    use_n_cores = min(32, int(num_files / 4)+1)
     ig.to_google_cloud_storage(storage_bucket,
-                               jsonfile = ingest_json_fname,
-                               copy_assoc_files = True,
-                               num_cores = use_n_cores)
+                               jsonfile = ingest_json_fname)
     logger.info(f"Created json file {ingest_json_fname=} and copied to GCS")
     
     # only do this if ingestor found: update SQL database
@@ -178,14 +174,14 @@ def data_ingestion(dataset_to_process: str,
 
     keywords = D.pop('keywords') 
     acl = D.pop('acl')
-    associated_files = D.pop('associated_files')
+    ingestion_githash = D.pop('ingestion_githash')
+    ingestion_class = D.pop('ingestion_class')
+    # associated_files = D.pop('associated_files')
     thumbnails = D.pop('thumbnails')
     md = D.pop("scientific_metadata") 
-    #logger.info(f"Data to update: {D}")
 
     # send the data
     ds = client.datasets.update(ig.unique_id, **D)
-    #logger.info(f"UPDATED DS: {ds=}")
 
     # thumbnails
     for thumbnail in thumbnails:
@@ -194,20 +190,19 @@ def data_ingestion(dataset_to_process: str,
             res = client.datasets.add_thumbnail(dsid, thumbnail['thumbnail'], thumbnail['caption'])
         except Exception as err:
             logger.error(f"Failed to add thumbnail with error {err}")
-
-    # associated files
-    print(f"Adding associated files: {associated_files=}")
-    for filepath, file_info in associated_files.items():
-        try:
-            logger.info({"filename": filepath, "size": file_info['size'], "sha256_hash": file_info['sha256_hash']})
-            associated_file_data = {
-                        'filename': filepath,
-                        'size': file_info['size'],
-                        'sha256_hash': file_info['sha256_hash']
-                    }
-            client._request('post', f'/datasets/{dsid}/associated_files', json=associated_file_data)
-        except Exception as err:
-            logger.error(f"Failed to add associated file with error {err}")
+    
+    # print(f"Adding associated files: {associated_files=}")
+    # for filepath, file_info in associated_files.items():
+    #     try:
+    #         logger.info({"filename": filepath, "size": file_info['size'], "sha256_hash": file_info['sha256_hash']})
+    #         associated_file_data = {
+    #                     'filename': filepath,
+    #                     'size': file_info['size'],
+    #                     'sha256_hash': file_info['sha256_hash']
+    #                 }
+    #         client._request('post', f'/datasets/{dsid}/associated_files', json=associated_file_data)
+    #     except Exception as err:
+    #         logger.error(f"Failed to add associated file with error {err}")
 
     # keywords
     filt_keywords = [kw for kw in keywords if isinstance(kw, str) and kw != ""]
@@ -222,7 +217,7 @@ def data_ingestion(dataset_to_process: str,
     # scientific metadata
     res = client.datasets.update_scientific_metadata(dsid, md, overwrite = False)
     logger.info(f"Scientific metadata update complete. Response: {res}")
-    return (ds, None)
+    return (ds, ingestion_class)
 
 
 

@@ -10,22 +10,23 @@ sql_import_attr = [ 'dataset_name', # default is not none
                     'timestamp', 
                     'size',
                     'source_folder',
-                   # 'owner_user_id',
                     'owner_orcid',
                     'project_id',
                     'scientific_metadata',
                     'public',
-                    'file_to_upload',
-                   # 'instrument_id',
+                    # 'file_to_upload',
                     'instrument_name',
                     'measurement',
                     'data_format',
                     'session_name',
-                    'sha256_hash_file_to_upload',
+                   # 'sha256_hash_file_to_upload',
                     'ingestion_class',
                     'ingestion_githash']
 
-sql_export_attr = sql_import_attr + ['thumbnails', 'associated_files', 'keywords', 'acl']
+sql_export_attr = sql_import_attr + ['thumbnails',
+                                    # 'associated_files',
+                                     'keywords', 
+                                     'acl']
 
 INSTRUMENT_DRIVES = {
           "aldbot":"CRUCIBLE - MF Inorganic ALDbot",

@@ -9,6 +9,7 @@ from constants import crucible_api_url, rmq_host, rmq_port
 from crucible.utils.io import get_tz_isoformat
 from data_ingestion import data_ingestion
 
+ingestion_githash = os.environ.get('GITHASH')
 
 logger = logging.getLogger(__name__)
 
@@ -100,8 +101,9 @@ def callback(ch, method, props, body):
     dsid = message['dsid']
     start_time = get_tz_isoformat().replace(":", "")
     logger.info(f"received message {message} .. starting processing")
+    
     # update the SQL database that the ingestion has begun
-    client.update_ingestion_status(dsid, reqid, "started")
+    client.update_ingestion_status(dsid, reqid, "started", ingestion_githash = ingestion_githash)
 
     # check file found (retry up to 5 times)
     max_file_retries = 5
@@ -123,28 +125,33 @@ def callback(ch, method, props, body):
         return  
 
     try:
-        ds, bucket = data_ingestion(dataset_to_process = f"/mnt/gcs/{filename}", 
+        # /datasets/{dsid}/upload uploads file to crucible-uploads and returns path to client as crucible-uploads/{path-to-file}
+        # client passes the upload path to /datasets/{dsid}/add_associated_file as the filename
+        # /add_associated_file uses the associated_file.filename in the ingestion request message
+        cloud_path = filename.replace('crucible-uploads', '/mnt/gcs')
+        ds, ingestion_class = data_ingestion(dataset_to_process = cloud_path, 
                                     dsid = dsid,
                                     reqid = reqid,
                                     timestamp = start_time,
                                     client = client, 
                                     ingestion_class = specified_ingestor)
-        logger.info(f"{ds=}, {bucket=}")
+        
+        logger.info(f"{ds=}")
         if ds is None:
-            client.update_ingestion_status(dsid, reqid, "not supported")    
+            client.update_ingestion_status(dsid, reqid, "not supported", ingestion_githash = ingestion_githash)    
             ch.basic_publish(exchange = '',
                             routing_key= 'not-supported',
                             body=json.dumps(message))
             logger.warning(f"[x] Received {body} and was not a supported a file type - skipping")
 
         else:
-            client.update_ingestion_status(dsid, reqid, "complete")
+            client.update_ingestion_status(dsid, reqid, "complete", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
             logger.info(f"[x] Received {body} and ingested with id: {ds['unique_id']}")
         
         ch.basic_ack(delivery_tag=method.delivery_tag)      
         
     except Exception as err:
-        client.update_ingestion_status(dsid, reqid, "failed")
+        client.update_ingestion_status(dsid, reqid, "failed", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
         logger.error(f"[x] Received {body} but failed with error {err}")
         ch.basic_publish(exchange = '', routing_key= 'ingestion-newapi-failed', body=json.dumps(message))
         ch.basic_ack(delivery_tag=method.delivery_tag)    
