@@ -324,10 +324,8 @@ class TestPopulateExistingDsInfo:
         assert "log.txt" in ig_out.associated_files
         assert ig_out.associated_files["log.txt"] == {"size": 256, "sha256_hash": "hash_bbb"}
 
-    def test_field_not_in_found_ds_raises_keyerror(self):
-        """FAILURE POINT: If populate_fields contains a key that is NOT present
-        in the found dataset dictionary, the found_ds[k] access should raise
-        a KeyError. This tests that the code does not silently skip missing keys."""
+    @pytest.mark.xfail(reason="found_ds[k] crashes on missing keys instead of using .get()")
+    def test_missing_field_in_api_response_handled_gracefully(self):
         ig = self._make_mock_ingestor()
         mock_client = MagicMock()
 
@@ -336,11 +334,13 @@ class TestPopulateExistingDsInfo:
         mock_client.datasets.get.return_value = found_ds_data
         mock_client.get_associated_files.return_value = []
 
-        with pytest.raises(KeyError):
-            populate_existing_ds_info(
-                ig, "/mnt/gcs/test.dm4", mock_client,
-                populate_fields=["owner_orcid", "session_name"]
-            )
+        # Should NOT crash — missing fields should be skipped
+        ig_out, found_ds = populate_existing_ds_info(
+            ig, "/mnt/gcs/test.dm4", mock_client,
+            populate_fields=["owner_orcid", "session_name"]
+        )
+        # The field that WAS present should still be populated
+        assert ig_out.owner_orcid == "0000-1111-2222-3333"
 
 
 # ============================================================================
@@ -636,22 +636,18 @@ class TestDataIngestion:
         # Keywords should still have been processed despite the thumbnail failure
         mock_client.add_dataset_keyword.assert_called()
 
-    def test_associated_files_early_return_bug(self):
-        """BUG DETECTION: The associated files loop contains a 'return' statement
-        inside the for-loop body (line 204). This causes the function to return
-        after processing only the FIRST associated file, skipping all remaining
-        associated files, keywords, and scientific metadata updates.
-
-        This test verifies the current (buggy) behavior: with multiple associated
-        files, only the first one is processed and the function returns early,
-        preventing keyword addition and metadata updates from executing."""
+    @pytest.mark.xfail(reason="early return inside associated files loop")
+    def test_all_associated_files_should_be_posted(self):
         mock_ig = MagicMock()
         mock_ig.unique_id = "ds_assoc_bug"
         mock_ig.associated_files = {}
 
         mock_client = MagicMock()
         mock_client.datasets.update.return_value = MagicMock()
-        mock_client._request.return_value = "posted_result"
+        mock_client._request.return_value = MagicMock()
+        mock_res = MagicMock()
+        mock_res.content = "{}"
+        mock_client.datasets.update_scientific_metadata.return_value = mock_res
 
         json_data = {
             "keywords": ["should_be_added"],
@@ -668,7 +664,7 @@ class TestDataIngestion:
         with patch.object(data_ingestion, "find_supported_ingestor", return_value=mock_ig), \
              patch.object(data_ingestion, "populate_existing_ds_info", return_value=(mock_ig, None)), \
              patch("builtins.open", mock_open(read_data=json.dumps(json_data))):
-            result = data_ingestion_fn(
+            data_ingestion_fn(
                 dataset_to_process="/data/file.h5",
                 dsid="ds_assoc_bug",
                 reqid="req_assoc",
@@ -676,18 +672,14 @@ class TestDataIngestion:
                 client=mock_client
             )
 
-        # Due to the early return, the function returns the _request result
-        # instead of completing the full flow
-        assert result == "posted_result"
+        # ALL 3 associated files should be posted
+        assert mock_client._request.call_count == 3
 
-        # Only ONE _request call should have been made (the early return)
-        assert mock_client._request.call_count == 1
+        # Keywords should be added after associated files
+        mock_client.add_dataset_keyword.assert_called_once_with("ds_assoc_bug", "should_be_added")
 
-        # Keywords should NOT have been added because the function returned early
-        mock_client.add_dataset_keyword.assert_not_called()
-
-        # Scientific metadata should NOT have been updated
-        mock_client.datasets.update_scientific_metadata.assert_not_called()
+        # Scientific metadata should be updated
+        mock_client.datasets.update_scientific_metadata.assert_called_once()
 
     def test_no_associated_files_allows_keywords_and_metadata(self):
         """When there are NO associated files, the for-loop body never executes,

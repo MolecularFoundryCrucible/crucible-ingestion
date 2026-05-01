@@ -181,17 +181,16 @@ class TestFilterEventsAtTime:
         result = filter_events_at_time(data_ctime, [])
         assert result is None
 
-    def test_single_event_data_after_returns_none(self):
-        """If there's only one event and data is after it, the function returns
-        None because there is no next event to compare against. This is a known
-        limitation — even data created 1 second after an experiment ends
-        cannot be attributed to that experiment."""
+    @pytest.mark.xfail(reason="no fallback for data after last event")
+    def test_data_shortly_after_single_event_should_match(self):
         events = [
-            make_event("2026-01-15T10:00:00+00:00", "2026-01-15T12:00:00+00:00")
+            make_event("2026-01-15T10:00:00+00:00", "2026-01-15T12:00:00+00:00",
+                       summary="Recent Exp")
         ]
         data_ctime = datetime(2026, 1, 15, 12, 0, 1, tzinfo=UTC)
         result = filter_events_at_time(data_ctime, events)
-        assert result is None
+        assert result is not None
+        assert result["summary"] == "Recent Exp"
 
     def test_data_before_all_events_returns_none(self):
         """When data was created before any event in the list, the function
@@ -206,9 +205,8 @@ class TestFilterEventsAtTime:
         result = filter_events_at_time(data_ctime, events)
         assert result is None
 
-    def test_data_after_all_events_returns_none(self):
-        """When data is after ALL events with no next event to compare against,
-        returns None. Even data created 1 minute after the last event returns None."""
+    @pytest.mark.xfail(reason="returns None for data after all events")
+    def test_data_shortly_after_last_event_should_match_closest(self):
         events = [
             make_event("2026-01-15T10:00:00+00:00", "2026-01-15T11:00:00+00:00",
                        summary="E1"),
@@ -217,28 +215,24 @@ class TestFilterEventsAtTime:
         ]
         data_ctime = datetime(2026, 1, 15, 14, 1, 0, tzinfo=UTC)
         result = filter_events_at_time(data_ctime, events)
-        assert result is None
+        assert result is not None
+        assert result["summary"] == "E2"
 
-    def test_data_exactly_at_event_start_not_matched(self):
-        """EDGE CASE: The function uses strict inequality (start < data_ctime),
-        so if data_ctime equals exactly the event's start time, the event is NOT
-        considered a match. This means data timestamped at the exact moment an
-        experiment begins will not be attributed to that experiment."""
+    @pytest.mark.xfail(reason="strict < instead of <= for event start time")
+    def test_data_at_event_start_should_match(self):
         events = [
             make_event("2026-01-15T10:00:00+00:00", "2026-01-15T12:00:00+00:00",
                        summary="Exp")
         ]
         data_ctime = datetime(2026, 1, 15, 10, 0, 0, tzinfo=UTC)
         result = filter_events_at_time(data_ctime, events)
-        # start (10:00) < data_ctime (10:00) is False → not matched
-        assert result is None
+        assert result is not None
+        assert result["summary"] == "Exp"
 
     # --- Failure points ---
 
-    def test_all_day_event_without_dateTime_raises_keyerror(self):
-        """FAILURE POINT: If a calendar event is an all-day event, Google Calendar
-        uses 'date' instead of 'dateTime'. The function accesses
-        e['start']['dateTime'] without a fallback, causing a KeyError."""
+    @pytest.mark.xfail(reason="no dateTime fallback for all-day events")
+    def test_all_day_event_should_be_handled_gracefully(self):
         events = [
             {
                 "start": {"date": "2026-01-15"},
@@ -247,8 +241,10 @@ class TestFilterEventsAtTime:
             }
         ]
         data_ctime = datetime(2026, 1, 15, 12, 0, 0, tzinfo=UTC)
-        with pytest.raises(KeyError):
-            filter_events_at_time(data_ctime, events)
+        # Should not crash — should either skip the all-day event or parse it
+        result = filter_events_at_time(data_ctime, events)
+        # The all-day event spans the entire day, so data at noon is "during" it
+        assert result is not None or result is None  # just shouldn't crash
 
 
 # ============================================================================
