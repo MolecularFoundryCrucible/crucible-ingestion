@@ -315,7 +315,7 @@ class CrucibleDatasetIngestor(Dataset):
                               f'/mnt/gcs/api-uploads/{file_to_upload_path}', f'/mnt/gcs/manual-uploads/{file_to_upload_path}']
         
         dsid = self.unique_id
-        destination = f":gcs:{storage_bucket}/{dsid}"
+        destination = f":gcs:/{storage_bucket}/{dsid}"
         
         # copy data
         if copy_assoc_files is True:
