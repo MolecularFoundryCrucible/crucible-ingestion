@@ -38,7 +38,7 @@ spec:
       - env:
         - name: PYTHONUNBUFFERED
           value: "true"
-        image: us-central1-docker.pkg.dev/mf-crucible/crucible-ingestion/main:latest
+        image: us-central1-docker.pkg.dev/mf-crucible/crucible-ingestion/staging:latest
         imagePullPolicy: Always
         name: ingestion-consumer-staging
         resources:
