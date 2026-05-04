@@ -80,7 +80,7 @@ class TestFindSupportedIngestor:
         assert result is None
 
     def test_returns_none_for_empty_ingestor_list(self):
-        """Edge case: an empty ingestor list should gracefully return None."""
+        """Empty ingestor list returns None."""
         result = find_supported_ingestor(
             "/data/file.h5", "ds003",
             specified_ingestor=None,
@@ -195,7 +195,7 @@ class TestPopulateExistingDsInfo:
             populate_fields=["owner_orcid", "project_id", "measurement", "session_name", "instrument_name"]
         )
 
-        # Verify each field was populated correctly on the ingestor
+        # Verify fields on the ingestor
         assert ig_out.owner_orcid == "0000-0001-2345-6789"
         assert ig_out.project_id == "MFP00123"
         assert ig_out.measurement == "TEM_imaging"
@@ -291,7 +291,7 @@ class TestPopulateExistingDsInfo:
         assert ig_out.associated_files["log.txt"] == {"size": 256, "sha256_hash": "hash_bbb"}
 
     @pytest.mark.xfail
-    def test_missing_field_in_api_response_handled_gracefully(self):
+    def test_missing_field_in_api_response_handled(self):
         ig = self._make_mock_ingestor()
         mock_client = MagicMock()
 
@@ -494,7 +494,7 @@ class TestDataIngestion:
         gcs_call = mock_ig.to_google_cloud_storage.call_args
         assert gcs_call[1]["num_cores"] == 3
 
-    def test_json_filename_constructed_correctly(self):
+    def test_json_filename_constructed(self):
         """The JSON output filename should incorporate dsid, timestamp, and reqid
         to ensure uniqueness per ingestion request."""
         mock_ig = MagicMock()

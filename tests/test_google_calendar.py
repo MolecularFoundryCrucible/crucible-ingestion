@@ -232,7 +232,7 @@ class TestFilterEventsAtTime:
     # --- Failure points ---
 
     @pytest.mark.xfail
-    def test_all_day_event_should_be_handled_gracefully(self):
+    def test_all_day_event_handled(self):
         events = [
             {
                 "start": {"date": "2026-01-15"},
@@ -347,7 +347,7 @@ class TestParseCalendarEventForOwnership:
         email, _ = parse_calendar_event_for_ownership(event)
         assert email == "first@lbl.gov"
 
-    def test_location_zero_formatted_correctly(self):
+    def test_location_zero_formatted(self):
         """Edge case: location '0' is numeric, should become 'MFP00000'."""
         event = make_event(
             "2026-01-15T10:00:00Z", "2026-01-15T12:00:00Z",
@@ -410,7 +410,7 @@ class TestSetupClient:
     def test_missing_env_var_raises_type_error(self, mock_exists):
         """FAILURE POINT: If the file doesn't exist AND the env var is not set,
         os.getenv() returns None, and json.loads(None) raises TypeError.
-        There is no graceful error handling for this case."""
+        No error handling for this case."""
         with pytest.raises(TypeError):
             setup_client(
                 service_account_file="/nonexistent.json",

@@ -128,14 +128,13 @@ class TestScopeFoundryBase:
 
     @patch("ingestors.h5_ingestor.H5Ingestor.get_dataset_metadata")
     def test_get_dataset_metadata_handles_missing_hardware_block(self, mock_super, base_ig, mock_h5):
-        """The except Exception block correctly catches KeyError if the 'hardware' dict is missing,
-        falling back to default tags."""
+        """Catches KeyError if the 'hardware' dict is missing, falling back to default tags."""
         base_ig.h5file = mock_h5
         del base_ig.scientific_metadata["hardware"]
         
         base_ig.get_dataset_metadata()
         
-        # Falls back gracefully, default values are NOT added to keywords
+        # Default values are not added to keywords
         assert len(base_ig.keywords) == 0
         assert base_ig.session_name is None
 
