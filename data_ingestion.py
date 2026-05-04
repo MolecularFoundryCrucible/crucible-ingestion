@@ -24,11 +24,13 @@ from ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5In
                                                 SpinbotSpecRunIngestor,
                                                 SpinbotCameraCaptureIngestor, 
                                                 SpinbotPhotoRunIngestor,
-                                                NirvanaMultiPosLineScanIngestor)
+                                                NirvanaMultiPosLineScanIngestor,
+                                                ScopeFoundryH5Ingestor)
 
 from ingestors.image_ingestor import ImageIngestor
 from ingestors.insitu_pl_ingestor import InSituPlIngestor
 from ingestors.dm_ingestor import DigitalMicrographIngestor
+from ingestors.emi_ingestor import EmiIngestor
 from ingestors.ser_ingestor import SerIngestor
 from ingestors.bcf_ingestor import BcfIngestor
 from ingestors.emd_ingestor import BerkeleyEmdIngestor
@@ -36,7 +38,9 @@ from ingestors.emd_velox_ingestor import VeloxEmdIngestor
 from ingestors.jupiter_afm_ingestor import AFMIngestor
 from ingestors.czi_ingestor import CziIngestor
 from ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
+from ingestors.h5_ingestor import H5Ingestor
 from ingestors.api_upload_ingestor import ApiUploadIngestor
+
 
 logger.info("imported all classes")
 ingestor_list = [AFMIngestor,
@@ -60,13 +64,16 @@ ingestor_list = [AFMIngestor,
                 InSituPlIngestor,
                 CziIngestor,
                 DigitalMicrographIngestor,
+                EmiIngestor,
                 SerIngestor,
                 BcfIngestor,
                 BerkeleyEmdIngestor,
                 VeloxEmdIngestor,
                 SpinbotSpecRunIngestor,
                 ImageIngestor,
-                NirvanaMultiPosLineScanIngestor] 
+                NirvanaMultiPosLineScanIngestor,
+                ScopeFoundryH5Ingestor,
+                H5Ingestor] 
 
 
 
@@ -173,12 +180,12 @@ def data_ingestion(dataset_to_process: str,
         D = json.load(j)
 
     keywords = D.pop('keywords') 
-    acl = D.pop('acl')
-    ingestion_githash = D.pop('ingestion_githash')
     ingestion_class = D.pop('ingestion_class')
-    # associated_files = D.pop('associated_files')
     thumbnails = D.pop('thumbnails')
     md = D.pop("scientific_metadata") 
+
+    for remove_field in ['acl', 'ingestion_githash']:
+        _ = D.pop(remove_field)
 
     # send the data
     ds = client.datasets.update(ig.unique_id, **D)
@@ -191,19 +198,6 @@ def data_ingestion(dataset_to_process: str,
         except Exception as err:
             logger.error(f"Failed to add thumbnail with error {err}")
     
-    # print(f"Adding associated files: {associated_files=}")
-    # for filepath, file_info in associated_files.items():
-    #     try:
-    #         logger.info({"filename": filepath, "size": file_info['size'], "sha256_hash": file_info['sha256_hash']})
-    #         associated_file_data = {
-    #                     'filename': filepath,
-    #                     'size': file_info['size'],
-    #                     'sha256_hash': file_info['sha256_hash']
-    #                 }
-    #         client._request('post', f'/datasets/{dsid}/associated_files', json=associated_file_data)
-    #     except Exception as err:
-    #         logger.error(f"Failed to add associated file with error {err}")
-
     # keywords
     filt_keywords = [kw for kw in keywords if isinstance(kw, str) and kw != ""]
     for kw in filt_keywords:

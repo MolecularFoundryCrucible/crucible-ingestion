@@ -19,18 +19,6 @@ class BcfIngestor(CrucibleDatasetIngestor):
     def is_file_supported(self):
         return np.any([self.file_to_upload.endswith(ftype) for ftype in self.supported_filetypes])
 
-        
-    def get_dataset_metadata(self):
-        '''
-        previously parsed data that should be passed through API now is: 
-        - session name
-        - tags
-        - instrument name
-        '''
-        CrucibleDatasetIngestor.get_dataset_metadata(self)
-        self.dataset_name = os.path.basename(self.file_to_upload)
-        self.keywords += [self.session_name] 
-
 
     def get_thumbnails(self):
         out_image_file_name = f"./generated_files/{os.path.basename(self.file_to_upload)}.png"
