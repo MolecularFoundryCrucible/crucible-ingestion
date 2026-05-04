@@ -10,6 +10,7 @@ from crucible.utils.io import get_tz_isoformat
 from data_ingestion import data_ingestion
 
 ingestion_githash = os.environ.get('GITHASH')
+RMQ_ROUTING_SUFFIX = os.environ.get('RMQ_ROUTING_SUFFIX')
 
 logger = logging.getLogger(__name__)
 
@@ -159,7 +160,7 @@ def callback(ch, method, props, body):
         #ch.basic_nack(delivery_tag=method.delivery_tag)      
 
 # subscribe to the queue
-channel.basic_consume(queue='ingest-newapi',
+channel.basic_consume(queue=f'ingestion-{RMQ_ROUTING_SUFFIX}',
                       auto_ack=False,
                       on_message_callback=callback)
 

@@ -11,6 +11,9 @@ ENV UV_NO_DEV=1
 ARG githash
 ENV GITHASH=$githash
 
+ARG rmq_routing_suffix
+ENV RMQ_ROUTING_SUFFIX=$rmq_routing_suffix
+
 # basic utility packages
 RUN apt-get update && \
     apt-get install -yq --no-upgrade unzip curl
