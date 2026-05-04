@@ -77,8 +77,8 @@ class TestGenerateTimeRange:
 # ============================================================================
 # TESTS: filter_events_at_time
 #
-# This is the most complex function in the module. It determines which calendar
-# event a piece of data "belongs to" based on proximity in time.
+# It determines which calendar event a piece of data "belongs to"
+# based on proximity in time.
 # ============================================================================
 
 class TestFilterEventsAtTime:
@@ -181,7 +181,7 @@ class TestFilterEventsAtTime:
         result = filter_events_at_time(data_ctime, [])
         assert result is None
 
-    @pytest.mark.xfail(reason="no fallback for data after last event")
+    @pytest.mark.xfail
     def test_data_shortly_after_single_event_should_match(self):
         events = [
             make_event("2026-01-15T10:00:00+00:00", "2026-01-15T12:00:00+00:00",
@@ -205,7 +205,7 @@ class TestFilterEventsAtTime:
         result = filter_events_at_time(data_ctime, events)
         assert result is None
 
-    @pytest.mark.xfail(reason="returns None for data after all events")
+    @pytest.mark.xfail
     def test_data_shortly_after_last_event_should_match_closest(self):
         events = [
             make_event("2026-01-15T10:00:00+00:00", "2026-01-15T11:00:00+00:00",
@@ -218,7 +218,7 @@ class TestFilterEventsAtTime:
         assert result is not None
         assert result["summary"] == "E2"
 
-    @pytest.mark.xfail(reason="strict < instead of <= for event start time")
+    @pytest.mark.xfail
     def test_data_at_event_start_should_match(self):
         events = [
             make_event("2026-01-15T10:00:00+00:00", "2026-01-15T12:00:00+00:00",
@@ -231,7 +231,7 @@ class TestFilterEventsAtTime:
 
     # --- Failure points ---
 
-    @pytest.mark.xfail(reason="no dateTime fallback for all-day events")
+    @pytest.mark.xfail
     def test_all_day_event_should_be_handled_gracefully(self):
         events = [
             {
@@ -241,10 +241,8 @@ class TestFilterEventsAtTime:
             }
         ]
         data_ctime = datetime(2026, 1, 15, 12, 0, 0, tzinfo=UTC)
-        # Should not crash — should either skip the all-day event or parse it
         result = filter_events_at_time(data_ctime, events)
-        # The all-day event spans the entire day, so data at noon is "during" it
-        assert result is not None or result is None  # just shouldn't crash
+        assert result is not None or result is None
 
 
 # ============================================================================

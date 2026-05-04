@@ -17,15 +17,7 @@ from unittest.mock import patch, MagicMock, call
 # 1. SYSTEM-LEVEL MOCKING (before import)
 # ============================================================================
 
-mock_crucible = MagicMock()
-mock_crucible_utils = MagicMock()
-mock_crucible_utils_io = MagicMock()
-mock_crucible_utils_io.get_tz_isoformat = MagicMock(return_value="2026-01-15T10:00:00-08:00")
 
-sys.modules["crucible"] = mock_crucible
-sys.modules["crucible.utils"] = mock_crucible_utils
-sys.modules["crucible.utils.io"] = mock_crucible_utils_io
-sys.modules["crucible.models"] = MagicMock()
 
 # Patch module-level calls that execute on import
 with patch("utils.get_secret", return_value="fake_secret"), \
@@ -457,15 +449,15 @@ class TestCallback:
 
 
 # ============================================================================
-# BUG-CATCHING TESTS: These assert INTENDED behavior, not current behavior.
-# They are marked xfail because the code does NOT currently behave correctly.
+# BUG-CATCHING TESTS:
+# They are marked xfail because the code does not currently behave correctly.
 # When the bugs are fixed, these tests will start passing and the xfail
 # marker should be removed.
 # ============================================================================
 
 class TestKnownBugs:
 
-    @pytest.mark.xfail(reason="basic_ack/basic_nack commented out in except block")
+    @pytest.mark.xfail
     def test_failed_ingestion_should_ack_message(self):
         msg = make_message()
         ch = MagicMock()
@@ -479,18 +471,17 @@ class TestKnownBugs:
              patch.object(consumer, "get_tz_isoformat", return_value="20260115T100000"):
             callback(ch, method, None, body)
 
-        # The message SHOULD be acked or nacked to remove it from the queue
         assert ch.basic_ack.called or ch.basic_nack.called
 
-    @pytest.mark.xfail(reason="docstring says 2GB but code checks 10GB")
+    @pytest.mark.xfail
     def test_files_over_2gb_should_be_rejected_per_docstring(self):
         msg = make_message()
         with patch("os.path.getsize", return_value=int(5e9)):  # 5GB
             with patch.object(consumer, "client"):
                 result = is_file_too_big(msg, MagicMock())
-        assert result is True  # 5GB > 2GB per the docstring spec
+        assert result is True
 
-    @pytest.mark.xfail(reason="comment says 5 retries but max_file_retries is 7")
+    @pytest.mark.xfail
     def test_retries_should_match_documented_count(self):
         msg = make_message()
         ch = MagicMock()
@@ -503,10 +494,9 @@ class TestKnownBugs:
              patch("time.sleep"):
             callback(ch, method, None, body)
 
-        # Per the comment, should retry 5 times (not 7)
         assert mock_lost.call_count == 5
 
-    @pytest.mark.xfail(reason="ch parameter accepted but never used")
+    @pytest.mark.xfail
     def test_is_file_lost_should_use_channel_parameter(self):
         msg = make_message()
         ch = MagicMock()
@@ -514,10 +504,9 @@ class TestKnownBugs:
             with patch.object(consumer, "client"):
                 is_file_lost(msg, ch, update_status=True)
 
-        # The channel should be used to publish to the lost-files queue
         ch.basic_publish.assert_called()
 
-    @pytest.mark.xfail(reason="fail_message assigned but never published to queue")
+    @pytest.mark.xfail
     def test_oversized_file_should_be_published_to_large_file_queue(self):
         msg = make_message()
         ch = MagicMock()
@@ -525,5 +514,4 @@ class TestKnownBugs:
             with patch.object(consumer, "client"):
                 is_file_too_big(msg, ch)
 
-        # Should publish to a large-files queue
         ch.basic_publish.assert_called()

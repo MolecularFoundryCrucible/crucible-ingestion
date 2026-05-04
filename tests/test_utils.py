@@ -7,11 +7,7 @@ from unittest.mock import patch, MagicMock, mock_open, call
 from PIL import Image
 from io import BytesIO
 
-# Mock crucible before importing utils (utils.py imports crucible.utils.io at module level)
-sys.modules.setdefault("crucible", MagicMock())
-sys.modules.setdefault("crucible.utils", MagicMock())
-sys.modules.setdefault("crucible.utils.io", MagicMock())
-sys.modules.setdefault("crucible.models", MagicMock())
+
 
 from utils import (
     get_cloud_secret_selfauth,
@@ -66,7 +62,7 @@ class TestGetCredentialsFromEnv:
         mock_from_file.assert_called_once_with("temp_creds.json")
         assert result is not None
 
-    @pytest.mark.xfail(reason="temp_creds.json written but never deleted")
+    @pytest.mark.xfail
     @patch("utils.service_account.Credentials.from_service_account_file")
     @patch.dict(os.environ, {"GCS_SA": '{"type": "service_account"}'}, clear=True)
     def test_temp_creds_file_should_be_cleaned_up(self, mock_from_file):
@@ -167,7 +163,7 @@ class TestSetupPikaClient:
         assert call_kwargs[1]["heartbeat"] == 120
         assert call_kwargs[1]["blocked_connection_timeout"] == 300
 
-    @pytest.mark.xfail(reason="RabbitMQ username hardcoded to 'admin'")
+    @pytest.mark.xfail
     @patch("utils.pika.BlockingConnection")
     @patch("utils.pika.PlainCredentials")
     @patch("utils.pika.ConnectionParameters")
@@ -276,7 +272,7 @@ class TestBuildB64Thumbnail:
         assert reopened.size[0] <= 50
         assert reopened.size[1] <= 50
 
-    @pytest.mark.xfail(reason="image.convert('RGB') result not assigned back")
+    @pytest.mark.xfail
     def test_rgba_should_be_converted_to_rgb(self):
         img = Image.new("RGBA", (100, 100), color=(255, 0, 0, 128))
         result = build_b64_thumbnail(img)
@@ -422,7 +418,7 @@ class TestEnhancedJSONEncoder:
         assert result["metadata"]["counts"] == [10, 20, 30]
         assert result["metadata"]["flag"] is False
 
-    @pytest.mark.xfail(reason="np.float16 not handled by encoder")
+    @pytest.mark.xfail
     def test_numpy_float16_should_be_handled(self):
         data = {"v": np.float16(1.5)}
         result = json.loads(json.dumps(data, cls=EnhancedJSONEncoder))

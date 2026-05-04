@@ -3,42 +3,8 @@ import json
 import pytest
 from unittest.mock import patch, MagicMock, mock_open, call
 
-# --- 1. SYSTEM-LEVEL MOCKING ---
-# Must mock the 'crucible' namespace before importing data_ingestion,
-# since it transitively imports from crucible via all ingestor classes.
 
-class DummyDataset:
-    """Minimal stand-in for crucible.models.Dataset so all ingestors can inherit from it."""
-    file_to_upload = None
-    dataset_name = None
-    timestamp = None
-    source_folder = None
-    instrument_id = None
-    instrument_name = None
-    unique_id = None
-    sha256_hash_file_to_upload = None
-    owner_orcid = None
-    owner_user_id = None
-    project_id = None
-    measurement = None
-    session_name = None
-    size = None
-    data_format = None
 
-mock_crucible = MagicMock()
-mock_models = MagicMock()
-mock_utils = MagicMock()
-mock_utils_io = MagicMock()
-
-mock_models.Dataset = DummyDataset
-mock_crucible.CrucibleClient = MagicMock
-mock_utils_io.run_shell = MagicMock()
-mock_utils_io.checkhash = MagicMock(return_value="fake_hash_abc123")
-
-sys.modules["crucible"] = mock_crucible
-sys.modules["crucible.models"] = mock_models
-sys.modules["crucible.utils"] = mock_utils
-sys.modules["crucible.utils.io"] = mock_utils_io
 
 # --- 2. PATCH SECRETS DURING IMPORT ---
 patcher_secret = patch("utils.get_secret", return_value="fake_api_key")
@@ -324,7 +290,7 @@ class TestPopulateExistingDsInfo:
         assert "log.txt" in ig_out.associated_files
         assert ig_out.associated_files["log.txt"] == {"size": 256, "sha256_hash": "hash_bbb"}
 
-    @pytest.mark.xfail(reason="found_ds[k] crashes on missing keys instead of using .get()")
+    @pytest.mark.xfail
     def test_missing_field_in_api_response_handled_gracefully(self):
         ig = self._make_mock_ingestor()
         mock_client = MagicMock()
@@ -636,7 +602,7 @@ class TestDataIngestion:
         # Keywords should still have been processed despite the thumbnail failure
         mock_client.add_dataset_keyword.assert_called()
 
-    @pytest.mark.xfail(reason="early return inside associated files loop")
+    @pytest.mark.xfail
     def test_all_associated_files_should_be_posted(self):
         mock_ig = MagicMock()
         mock_ig.unique_id = "ds_assoc_bug"

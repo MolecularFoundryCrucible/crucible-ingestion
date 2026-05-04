@@ -2,27 +2,7 @@
 import sys, os, json, pytest
 from unittest.mock import patch, MagicMock, mock_open
 
-# --- System-level mocking (before import) ---
-class DummyDataset:
-    file_to_upload = "/mnt/gcs/team05/my_file.h5"
-    dataset_name = None; timestamp = None; source_folder = None
-    instrument_id = None; instrument_name = None; unique_id = None
-    sha256_hash_file_to_upload = None; owner_orcid = None
-    owner_user_id = None; project_id = None; measurement = None
-    session_name = None; size = None; data_format = None
 
-mock_crucible = MagicMock()
-mock_models = MagicMock()
-mock_utils_mod = MagicMock()
-mock_utils_io = MagicMock()
-mock_models.Dataset = DummyDataset
-mock_crucible.CrucibleClient = MagicMock
-mock_utils_io.checkhash = MagicMock(return_value="fake_hash_abc")
-
-sys.modules["crucible"] = mock_crucible
-sys.modules["crucible.models"] = mock_models
-sys.modules["crucible.utils"] = mock_utils_mod
-sys.modules["crucible.utils.io"] = mock_utils_io
 
 with patch("utils.get_secret", return_value="fake_key"):
     from ingestors.crucible_ingestor import CrucibleDatasetIngestor
@@ -201,7 +181,7 @@ class TestGetDatasetMetadata:
             ig.get_dataset_metadata()
         assert ig.data_format == "dm4"
 
-    @pytest.mark.xfail(reason="split('.')[-1] returns full filename for extensionless files")
+    @pytest.mark.xfail
     def test_file_without_extension_should_have_empty_format(self, ig):
         ig.file_to_upload = "/mnt/gcs/team05/Makefile"
         with patch.object(ci_module, "mfid", return_value=("id",)), \
@@ -249,7 +229,7 @@ class TestGetAclInformation:
         ig.get_acl_information()
         mock_client.users.get.assert_not_called()
 
-    @pytest.mark.xfail(reason="owner_orcid never added to ACL when user ID lookup fails")
+    @pytest.mark.xfail
     def test_owner_should_be_in_acl_even_when_id_lookup_fails(self, ig):
         ig.owner_orcid = "0000-0001-2345-6789"
         mock_client.users.get.return_value = None
@@ -334,7 +314,7 @@ class TestToIgFromSql:
         assert ig.instrument_name == "Original"
         assert ig.measurement == "EELS"
 
-    @pytest.mark.xfail(reason="mutable class-level attributes leak between instances")
+    @pytest.mark.xfail
     def test_mutable_class_attrs_should_not_leak(self):
         # Create two fresh instances WITHOUT fixture cleanup
         a = CrucibleDatasetIngestor()
@@ -370,7 +350,7 @@ class TestToJsonFromIg:
         data = mj.call_args[0][0]
         assert "nonexistent_attr" not in data
 
-    @pytest.mark.xfail(reason="getattr raises AttributeError when allow_missing=False")
+    @pytest.mark.xfail
     @patch("builtins.open", new_callable=mock_open)
     def test_missing_attr_without_allow_missing_should_not_crash(self, mf, ig):
         ig.to_json_from_ig("out.json", ["nonexistent_attr"],
@@ -428,7 +408,7 @@ class TestToGoogleCloudStorage:
                                         copy_assoc_files=False)
         mp.assert_not_called()
 
-    @pytest.mark.xfail(reason="mutable default argument accumulates across calls")
+    @pytest.mark.xfail
     @patch.object(ci_module, "run_rclone_command")
     @patch("json.dump")
     @patch("builtins.open", new_callable=mock_open)
@@ -467,7 +447,7 @@ class TestSetupData:
         ig.get_data_files.assert_called_once()
         ig.get_thumbnails.assert_called_once()
 
-    @pytest.mark.xfail(reason="no error handling — one failed step aborts entire pipeline")
+    @pytest.mark.xfail
     def test_later_steps_should_run_even_if_acl_fails(self, ig):
         ig.get_scientific_metadata = MagicMock()
         ig.get_dataset_metadata = MagicMock()
