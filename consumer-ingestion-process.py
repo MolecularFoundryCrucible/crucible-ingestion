@@ -43,7 +43,7 @@ def is_file_lost(message, ch, update_status=True):
     file_exists = os.path.exists(dataset_to_process)
     if not file_exists:
         if update_status:
-            client.update_ingestion_status(dsid, reqid, "file not found")
+            client.datasets.update_ingestion_status(dsid, reqid, "file not found")
         file_lost = True
 
     else:
@@ -64,7 +64,7 @@ def is_file_too_big(message, ch):
         fail_message = message
 
         logger.warning(f"[x] Received {message} but sending file to large file queue")
-        client.update_ingestion_status(dsid, reqid, "file too large")
+        client.datasets.update_ingestion_status(dsid, reqid, "file too large")
 
         too_big = True
     else:
@@ -104,7 +104,7 @@ def callback(ch, method, props, body):
     logger.info(f"received message {message} .. starting processing")
     
     # update the SQL database that the ingestion has begun
-    client.update_ingestion_status(dsid, reqid, "started", ingestion_githash = ingestion_githash)
+    client.datasets.update_ingestion_status(dsid, reqid, "started", ingestion_githash = ingestion_githash)
 
     # check file found (retry up to 5 times)
     max_file_retries = 5
@@ -139,7 +139,7 @@ def callback(ch, method, props, body):
         
         logger.info(f"{ds=}")
         if ds is None:
-            client.update_ingestion_status(dsid, reqid, "not supported", ingestion_githash = ingestion_githash)    
+            client.datasets.update_ingestion_status(dsid, reqid, "not supported", ingestion_githash = ingestion_githash)    
             ch.basic_publish(exchange = '',
                             routing_key= 'not-supported',
                             body=json.dumps(message))
@@ -152,7 +152,7 @@ def callback(ch, method, props, body):
         ch.basic_ack(delivery_tag=method.delivery_tag)      
         
     except Exception as err:
-        client.update_ingestion_status(dsid, reqid, "failed", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
+        client.datasets.update_ingestion_status(dsid, reqid, "failed", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
         logger.error(f"[x] Received {body} but failed with error {err}")
         ch.basic_publish(exchange = '', routing_key= f'ingestion-{RMQ_ROUTING_SUFFIX}-failed', body=json.dumps(message))
         ch.basic_ack(delivery_tag=method.delivery_tag)    
