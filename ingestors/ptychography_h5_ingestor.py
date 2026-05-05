@@ -4,7 +4,7 @@ import numpy as np
 import logging
 
 from ingestors.h5_ingestor import H5Ingestor
-from ingestors import CrucibleDatasetIngestor
+from ingestors.crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
