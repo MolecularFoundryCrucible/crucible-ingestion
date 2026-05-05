@@ -23,7 +23,7 @@ num_cores = os.cpu_count()
 # RMQ Setup ===========================
 connection, channel = setup_pika_client(rmq_host, rmq_port, rmq_pw)
 
-queues_needed = ['ingest-newapi', 'not-supported', 'ingestion-newapi-failed']
+queues_needed = [f'ingestion-{RMQ_ROUTING_SUFFIX}', 'not-supported', f'ingestion-{ROUTING_SUFFIX}-failed']
 
 for q in queues_needed:
     channel.queue_declare(queue=q)
@@ -154,7 +154,7 @@ def callback(ch, method, props, body):
     except Exception as err:
         client.update_ingestion_status(dsid, reqid, "failed", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
         logger.error(f"[x] Received {body} but failed with error {err}")
-        ch.basic_publish(exchange = '', routing_key= 'ingestion-newapi-failed', body=json.dumps(message))
+        ch.basic_publish(exchange = '', routing_key= f'ingestion-{RMQ_ROUTING_SUFFIX}-failed', body=json.dumps(message))
         ch.basic_ack(delivery_tag=method.delivery_tag)    
         return
         #ch.basic_nack(delivery_tag=method.delivery_tag)      
