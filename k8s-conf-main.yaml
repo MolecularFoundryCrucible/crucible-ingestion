@@ -40,7 +40,7 @@ spec:
           value: "true"
         image: us-central1-docker.pkg.dev/mf-crucible/crucible-ingestion/main:latest
         imagePullPolicy: Always
-        name: ingestion-consumer-main
+        name: ingestion-consumer
         resources:
           limits:
             cpu: 8000m
