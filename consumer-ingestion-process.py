@@ -23,7 +23,7 @@ num_cores = os.cpu_count()
 # RMQ Setup ===========================
 connection, channel = setup_pika_client(rmq_host, rmq_port, rmq_pw)
 
-queues_needed = [f'ingestion-{RMQ_ROUTING_SUFFIX}', 'not-supported', f'ingestion-{ROUTING_SUFFIX}-failed']
+queues_needed = [f'ingestion-{RMQ_ROUTING_SUFFIX}', 'not-supported', f'ingestion-{RMQ_ROUTING_SUFFIX}-failed']
 
 for q in queues_needed:
     channel.queue_declare(queue=q)
