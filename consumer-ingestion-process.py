@@ -32,7 +32,7 @@ client = CrucibleClient(api_url=crucible_api_url, api_key=crucible_apikey)
 
 
 # Functions ===========================
-def is_file_lost(message, ch, update_status=True):
+def is_file_lost(message, dataset_to_process, ch, update_status=True):
 
     filename = message['filename']
     reqid = message['reqid']
@@ -52,12 +52,9 @@ def is_file_lost(message, ch, update_status=True):
     return file_lost
 
 
-def is_file_too_big(message, ch):
-    filename = message['filename']
+def is_file_too_big(message, dataset_to_process, ch):
     reqid = message['reqid']
     dsid = message['dsid']
-    filename = filename.replace('\\', '/')
-    dataset_to_process = f"/mnt/gcs/{filename}"
     fsize = os.path.getsize(dataset_to_process)
 
     if fsize > 1e10:
@@ -97,6 +94,7 @@ def callback(ch, method, props, body):
     message = json.loads(body.decode("utf-8").strip())
     filename = message['filename']
     filename = filename.replace('\\', '/')
+    dataset_to_process = filename.replace('crucible-uploads', '/mnt/gcs')
     specified_ingestor = message['ingestion_class']
     reqid = message['reqid']
     dsid = message['dsid']
@@ -109,7 +107,7 @@ def callback(ch, method, props, body):
     # check file found (retry up to 5 times)
     max_file_retries = 5
     for attempt in range(1, max_file_retries + 1):
-        if not is_file_lost(message, ch, update_status=(attempt == max_file_retries)):
+        if not is_file_lost(message, dataset_to_process, ch, update_status=(attempt == max_file_retries)):
             break
         if attempt < max_file_retries:
             logger.warning(f"[x] File not found, retry {attempt}/{max_file_retries} for {body}")
@@ -120,7 +118,7 @@ def callback(ch, method, props, body):
             return
 
     # check file size
-    if is_file_too_big(message, ch):
+    if is_file_too_big(message, dataset_to_process, ch):
         logger.info(f"[x] Received {body} but file too large")
         ch.basic_ack(delivery_tag=method.delivery_tag)
         return  
@@ -129,8 +127,7 @@ def callback(ch, method, props, body):
         # /datasets/{dsid}/upload uploads file to crucible-uploads and returns path to client as crucible-uploads/{path-to-file}
         # client passes the upload path to /datasets/{dsid}/add_associated_file as the filename
         # /add_associated_file uses the associated_file.filename in the ingestion request message
-        cloud_path = filename.replace('crucible-uploads', '/mnt/gcs')
-        ds, ingestion_class = data_ingestion(dataset_to_process = cloud_path, 
+        ds, ingestion_class = data_ingestion(dataset_to_process = dataset_to_process, 
                                     dsid = dsid,
                                     reqid = reqid,
                                     timestamp = start_time,
