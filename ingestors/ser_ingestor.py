@@ -1,5 +1,4 @@
 import io
-import re
 from datetime import datetime as dt
 from pathlib import Path
 from typing import ClassVar
@@ -29,7 +28,6 @@ class SerIngestor(CrucibleDatasetIngestor):
 
     def get_scientific_metadata(self):
         """Extract scientific metadata from the ser file using ncempy."""
-        CrucibleDatasetIngestor.get_scientific_metadata(self)
         with nio.ser.fileSER(self.file_to_upload) as ser:
             self.scientific_metadata.update(ser.getMetadata())
 
@@ -51,17 +49,30 @@ class SerIngestor(CrucibleDatasetIngestor):
         self.measurement = self.scientific_metadata.get('Mode []')
         self.dataset_name = Path(self.file_to_upload)
 
-
-    def generate_thumbnail(self):
-        target_size = (200, 200) # pixels
-        dpi = 100
+    def generate_thumbnail(self, target_size=(200, 200), dpi=100):
+        
         fig_size = (target_size[0] / dpi, target_size[1] / dpi) # inches
         with nio.ser.fileSER(self.file_to_upload) as ser:
-            image_array = ser.getDataset(0)[0]
-            logger.debug(f'{image_array=}')
+            data_array = ser.getDataset(0)[0]
+
+        # Use the middle slice if it's a 3D array, otherwise use the 2D array directly
+        if data_array.ndim > 2:
+            # Calculate the middle index for all dimensions EXCEPT the last two
+            middle_indices = tuple(dim // 2 for dim in data_array.shape[:-2])
+            # Unpack the tuple to slice the array.
+            image_array = data_array[middle_indices]
+        else:
+            image_array = data_array
+
         fg, ax = plt.subplots(1, 1, figsize=fig_size, dpi=dpi)
-        ax.imshow(image_array, cmap = 'viridis')
-        ax.axis('off')
+        # Plot an image if it's 2D, otherwise plot a line graph for 1D data
+        if image_array.ndim == 2:
+            ax.imshow(image_array, cmap='gray')
+            ax.axis('off')
+        elif image_array.ndim == 1:
+            ax.plot(image_array)
+        else:
+            raise ValueError("Data array has unsupported number of dimensions for thumbnail generation.")
 
         # Convert to PIL Image and store in self.thumbnails
         buf = io.BytesIO()
@@ -76,7 +87,7 @@ class SerIngestor(CrucibleDatasetIngestor):
             if thumbnail:
                 self.add_thumbnail(thumbnail, "TIA_Thumbnail")
         except Exception as e:
-            logger.error(f"Failed to extract thumbnail: {e}")
+            print(f"failed to extract thumbnail: {e}")
 
 
 
