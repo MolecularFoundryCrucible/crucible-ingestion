@@ -96,7 +96,7 @@ def find_supported_ingestor(dataset_to_process,
 
         if ig.is_file_supported():
             logger.info(f"{dataset_to_process} is supported by {ingestor_class.__name__}")
-            return ig, ingestor_class
+            return ig, ingestor_class.__name__
         else:
             continue
 

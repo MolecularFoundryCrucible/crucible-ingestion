@@ -99,7 +99,7 @@ class CrucibleDatasetIngestor(Dataset):
             drive_name = None
 
             if file_dir.startswith('/mnt/gcs'):
-                crucible_upload_subdir = file_dir.split('/')[3:4]
+                crucible_upload_subdir = file_dir.split('/')[4]
                 drive_name = INSTRUMENT_DRIVES.get(crucible_upload_subdir)
             
             if drive_name:
@@ -285,8 +285,10 @@ class CrucibleDatasetIngestor(Dataset):
     def to_google_cloud_storage(self,
                                 storage_bucket,
                                 jsonfile,
-                                common_file_paths = []):  
-        
+                                common_file_paths=None):
+
+        if common_file_paths is None:
+            common_file_paths = []
         file_to_upload_path = os.path.dirname(self.file_to_upload)
         logger.info(f'{file_to_upload_path=}')
         common_file_paths += ["./generated_files", 

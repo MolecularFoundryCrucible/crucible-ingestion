@@ -54,8 +54,6 @@ def is_file_too_big(message, dataset_to_process, ch):
     fsize = os.path.getsize(dataset_to_process)
 
     if fsize > 1e10:
-        fail_message = message
-
         logger.warning(f"[x] Received {message} but sending file to large file queue")
         client.datasets.update_ingestion_status(dsid, reqid, "file too large")
 
@@ -140,7 +138,7 @@ def callback(ch, method, props, body):
             logger.warning(f"[x] Received {body} and was not a supported a file type - skipping")
 
         else:
-            client.update_ingestion_status(dsid, reqid, "complete", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
+            client.datasets.update_ingestion_status(dsid, reqid, "complete", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
             logger.info(f"[x] Received {body} and ingested with id: {ds['unique_id']}")
         
         ch.basic_ack(delivery_tag=method.delivery_tag)      
