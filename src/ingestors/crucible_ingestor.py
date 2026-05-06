@@ -298,7 +298,7 @@ class CrucibleDatasetIngestor(Dataset):
                               f'/mnt/gcs/manual-uploads/{file_to_upload_path}']
         
         dsid = self.unique_id
-        destination = f"{storage_bucket}/{dsid}"
+        destination = f":gcs:/{storage_bucket}/{dsid}"
         
         # copy data
         reduce_filename_and_copy(self.file_to_upload, common_file_paths, destination)

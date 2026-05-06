@@ -140,7 +140,7 @@ def run_rclone_command(source_path= "",
             "--gcs-client-id=776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com",
             f"--gcs-client-secret={client_secret}",
             "--gcs-project-number=mf-crucible",
-            f"--gcs-service-account-credentials={sa_cred_file.name}",
+            f"--gcs-service-account-file={sa_cred_file.name}",
             "--gcs-bucket-policy-only=true",
             "--gcs-env-auth=true",
         ]
@@ -148,14 +148,9 @@ def run_rclone_command(source_path= "",
         if len(destination_path.strip()) > 0:
             destination_path = f'"{destination_path}"'
 
-        try:
-            rclone_cmd = " ".join([f'rclone {cmd}'] + cmd_args + [f'"{source_path}" {destination_path}'])
-            run_shell_out = run_shell(rclone_cmd, background=background, checkflag=True)
-        except Exception as e:
-            logger.warning(f"Rclone command failed, retrying with config name: {e}")
-            source_path, destination_path = (x.replace(":gcs", gcs_config_name) for x in (source_path, destination_path))
-            rclone_cmd = f'rclone {cmd} "{source_path}" {destination_path}'
-            run_shell_out = run_shell(rclone_cmd, background=background, checkflag=checkflag)
+        rclone_cmd = " ".join([f'rclone {cmd}'] + cmd_args + [f'"{source_path}" {destination_path}'])
+        run_shell_out = run_shell(rclone_cmd, background=background, checkflag=True)
+        
     finally:
         os.unlink(sa_cred_file.name)
 
