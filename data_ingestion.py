@@ -154,7 +154,7 @@ def data_ingestion(dataset_to_process: str,
                        'instrument_name', 'data_type', 'timestamp',
                        'data_format', 'size', 'source_folder']
     
-    ig, found_ds = populate_existing_ds_info(ig, dataset_to_process, client, populate_fields)
+    ig, found_ds = populate_existing_ds_info(ig, client, populate_fields)
         
     # parse the file + add any additional metadata
     ig.setup_data()

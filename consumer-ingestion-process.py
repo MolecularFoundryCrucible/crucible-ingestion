@@ -119,6 +119,7 @@ def callback(ch, method, props, body):
         ch.basic_ack(delivery_tag=method.delivery_tag)
         return  
 
+    ds, ingestion_class = (None,None)
     try:
         # /datasets/{dsid}/upload uploads file to crucible-uploads and returns path to client as crucible-uploads/{path-to-file}
         # client passes the upload path to /datasets/{dsid}/add_associated_file as the filename
