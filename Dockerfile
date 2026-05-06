@@ -8,9 +8,6 @@ WORKDIR /root/
 # Disable development dependencies
 ENV UV_NO_DEV=1
 
-ARG githash
-ENV GITHASH=$githash
-
 # basic utility packages
 RUN apt-get update && \
     apt-get install -yq --no-upgrade unzip curl
@@ -22,8 +19,14 @@ COPY uv.lock /root/
 COPY .python-version /root/
 RUN /bin/uv sync --locked
 RUN uv pip install git+https://github.com/MolecularFoundryCrucible/nano-crucible.git@dev
-#RUN uv pip install nano-crucible
+
 COPY . .
+
+ARG githash
+ENV GITHASH=$githash
+
+ARG rmq_routing_suffix
+ENV RMQ_ROUTING_SUFFIX=$rmq_routing_suffix
 
 # Run our flow script when the container starts
 CMD uv run python /root/consumer-ingestion-process.py

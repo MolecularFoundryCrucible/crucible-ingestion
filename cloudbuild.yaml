@@ -13,7 +13,7 @@ steps:
       - >
         docker build
         --build-arg githash=$(git rev-parse HEAD)
-        --build-arg devenv=${BRANCH_NAME}
+        --build-arg rmq_routing_suffix=${BRANCH_NAME}
         -t ${_IMAGE_PATH}:${SHORT_SHA}
         -t ${_IMAGE_PATH}:latest
         --cache-from ${_IMAGE_PATH}:latest
