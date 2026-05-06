@@ -145,8 +145,8 @@ def callback(ch, method, props, body):
         ch.basic_ack(delivery_tag=method.delivery_tag)      
         
     except Exception as err:
-        client.datasets.update_ingestion_status(dsid, reqid, "failed", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
         logger.error(f"[x] Received {body} but failed with error {err}")
+        client.datasets.update_ingestion_status(dsid, reqid, "failed", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
         ch.basic_publish(exchange = '', routing_key= f'ingestion-{RMQ_ROUTING_SUFFIX}-failed', body=json.dumps(message))
         ch.basic_ack(delivery_tag=method.delivery_tag)    
         return

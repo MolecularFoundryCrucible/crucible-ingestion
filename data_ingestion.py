@@ -88,7 +88,7 @@ def find_supported_ingestor(dataset_to_process,
         ig = cls(file_to_upload = dataset_to_process, unique_id = dsid)
         if ig.is_file_supported():
             logger.info(f"{dataset_to_process} is supported by {specified_ingestor}")
-            return ig
+            return ig, specified_ingestor
         else:
             logger.warning(f"{dataset_to_process} not supported by {specified_ingestor}")
 
@@ -98,11 +98,11 @@ def find_supported_ingestor(dataset_to_process,
 
         if ig.is_file_supported():
             logger.info(f"{dataset_to_process} is supported by {ingestor_class.__name__}")
-            return ig
+            return ig, ingestor_class
         else:
             continue
 
-    return None
+    return None, None
 
 
 def populate_existing_ds_info(ig, client, populate_fields):
@@ -142,12 +142,11 @@ def data_ingestion(dataset_to_process: str,
     # select ingestion class to use
     # if no supporting ingestion class found; 
     # request will get rerouted to "not-supported queue"
-    ig = find_supported_ingestor(dataset_to_process, dsid, ingestion_class, ingestor_list)
+    ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class, ingestor_list)
     if ig is None:
         logger.warning("Tried all ingestors with no matches found")
         return (None, None)
-    
-    ingestion_class = ig.ingestion_class()
+
 
     # check if the dataset already exists; reinstantiate ig with info
     populate_fields = ['dataset_name', 'public', 'owner_orcid',
