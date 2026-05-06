@@ -81,14 +81,17 @@ def find_supported_ingestor(dataset_to_process,
                             ingestor_list = ingestor_list):
     
     if specified_ingestor is not None:
-        cls = globals()[specified_ingestor]
-        logger.info(cls)
-        ig = cls(file_to_upload = dataset_to_process, unique_id = dsid)
-        if ig.is_file_supported():
-            logger.info(f"{dataset_to_process} is supported by {specified_ingestor}")
-            return ig, specified_ingestor
+        cls = globals().get(specified_ingestor)
+        if cls is None:
+            logger.warning(f"Specified ingestor '{specified_ingestor}' not found, falling back to list scan")
         else:
-            logger.warning(f"{dataset_to_process} not supported by {specified_ingestor}")
+            logger.info(cls)
+            ig = cls(file_to_upload = dataset_to_process, unique_id = dsid)
+            if ig.is_file_supported():
+                logger.info(f"{dataset_to_process} is supported by {specified_ingestor}")
+                return ig, specified_ingestor
+            else:
+                logger.warning(f"{dataset_to_process} not supported by {specified_ingestor}")
 
     # if that ingestor class was not supported, check the others
     for ingestor_class in ingestor_list:

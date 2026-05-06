@@ -88,7 +88,14 @@ def callback(ch, method, props, body):
     message = json.loads(body.decode("utf-8").strip())
     filename = message['filename']
     filename = filename.replace('\\', '/')
-    dataset_to_process = filename.replace('crucible-uploads', '/mnt/gcs')
+    if filename.startswith('/mnt/gcs'):
+        dataset_to_process = filename
+    elif filename.startswith('crucible-uploads'):
+        dataset_to_process = filename.replace('crucible-uploads', '/mnt/gcs', 1)
+    else:
+        logger.error(f"Unexpected filename format, cannot resolve path: {filename}")
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+        return
     specified_ingestor = message['ingestion_class']
     reqid = message['reqid']
     dsid = message['dsid']
