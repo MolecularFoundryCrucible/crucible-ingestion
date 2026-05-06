@@ -7,7 +7,6 @@ import json
 from joblib import Parallel, delayed
 
 from crucible import CrucibleClient
-from crucible.utils.io import checkhash
 from crucible.models import Dataset
 
 from utils import (get_secret,
@@ -136,6 +135,8 @@ class CrucibleDatasetIngestor(Dataset):
         
         # if not self.sha256_hash_file_to_upload:
         #     self.sha256_hash_file_to_upload = checkhash(self.file_to_upload)
+        if self.size is None:
+            self.size = 0
 
         self.size += os.path.getsize(self.file_to_upload)
         if not self.data_format:

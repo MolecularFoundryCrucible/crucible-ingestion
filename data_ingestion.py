@@ -1,8 +1,6 @@
 # packages
 import json
 import logging
-
-from crucible.utils.io import checkhash
 from constants import sql_import_attr
 
 logger = logging.getLogger(__name__)
