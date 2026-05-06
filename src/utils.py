@@ -173,8 +173,10 @@ def reduce_filename_and_copy(f, common_file_paths, destination_prefix):
     else:
         rel_file_path = f
 
-    if not f.startswith('/mnt/gcs'):
-        f = f'/mnt/gcs/{f}'
+    if f.startswith('/mnt/gcs/'):
+        f = f':gcs:/crucible-uploads/{f[len("/mnt/gcs/"):]}'
+    else:
+        f = f':gcs:/crucible-uploads/{f.lstrip("/")}'
 
     rclone_out = run_rclone_command(source_path= f, 
                                     destination_path= f"{destination_prefix}/{rel_file_path}",

@@ -1,11 +1,9 @@
-# EVENTUALLY ALL THESE CAN GET HANDLED THROUGH CONFIG MAP 
-crucible_api_url = "https://crucible.lbl.gov/testapi-staging"
 secret_store = "projects/776258882599/secrets"
 gcs_client_id = "776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com"
 rmq_host =  '10.128.0.31'
 rmq_port = 5672
 
-sql_import_attr = [ 'dataset_name', # default is not none
+sql_import_attr = [ 'dataset_name', 
                     'unique_id', 
                     'timestamp', 
                     'size',
@@ -14,17 +12,14 @@ sql_import_attr = [ 'dataset_name', # default is not none
                     'project_id',
                     'scientific_metadata',
                     'public',
-                    # 'file_to_upload',
                     'instrument_name',
                     'measurement',
                     'data_format',
                     'session_name',
-                   # 'sha256_hash_file_to_upload',
                     'ingestion_class',
                     'ingestion_githash']
 
 sql_export_attr = sql_import_attr + ['thumbnails',
-                                    # 'associated_files',
                                      'keywords', 
                                      'acl']
 
