@@ -5,7 +5,7 @@ import numpy as np
 import logging
 import hyperspy.api as hs
 import matplotlib.pyplot as plt
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

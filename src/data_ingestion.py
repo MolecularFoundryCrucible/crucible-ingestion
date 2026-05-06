@@ -1,43 +1,43 @@
 # packages
 import json
 import logging
-from constants import sql_import_attr
+from .constants import sql_import_attr
 
 logger = logging.getLogger(__name__)
 
-from ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
+from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
                                                 BioGlowIngestor,
-                                                QSpleemSVRampIngestor, 
-                                                QSpleemImageIngestor, 
+                                                QSpleemSVRampIngestor,
+                                                QSpleemImageIngestor,
                                                 QSpleemARRESEKIngestor,
-                                                QSpleemARRESMMIngestor, 
-                                                CanonCaptureScopeFoundryH5Ingestor, 
+                                                QSpleemARRESMMIngestor,
+                                                CanonCaptureScopeFoundryH5Ingestor,
                                                 SingleSpecScopeFoundryH5Ingestor,
                                                 HyperspecScopeFoundryH5Ingestor,
                                                 HyperspecSweepScopeFoundryH5Ingestor,
                                                 ToupcamLiveScopeFoundryH5Ingestor,
                                                 CLSyncRasterScanIngestor,
-                                                CLHyperspecIngestor, 
+                                                CLHyperspecIngestor,
                                                 SpinbotSpecLineIngestor,
                                                 SpinbotSpecRunIngestor,
-                                                SpinbotCameraCaptureIngestor, 
+                                                SpinbotCameraCaptureIngestor,
                                                 SpinbotPhotoRunIngestor,
                                                 NirvanaMultiPosLineScanIngestor,
                                                 ScopeFoundryH5Ingestor)
 
-from ingestors.image_ingestor import ImageIngestor
-from ingestors.insitu_pl_ingestor import InSituPlIngestor
-from ingestors.dm_ingestor import DigitalMicrographIngestor
-from ingestors.emi_ingestor import EmiIngestor
-from ingestors.ser_ingestor import SerIngestor
-from ingestors.bcf_ingestor import BcfIngestor
-from ingestors.emd_ingestor import BerkeleyEmdIngestor
-from ingestors.emd_velox_ingestor import VeloxEmdIngestor
-from ingestors.jupiter_afm_ingestor import AFMIngestor
-from ingestors.czi_ingestor import CziIngestor
-from ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
-from ingestors.h5_ingestor import H5Ingestor
-from ingestors.api_upload_ingestor import ApiUploadIngestor
+from .ingestors.image_ingestor import ImageIngestor
+from .ingestors.insitu_pl_ingestor import InSituPlIngestor
+from .ingestors.dm_ingestor import DigitalMicrographIngestor
+from .ingestors.emi_ingestor import EmiIngestor
+from .ingestors.ser_ingestor import SerIngestor
+from .ingestors.bcf_ingestor import BcfIngestor
+from .ingestors.emd_ingestor import BerkeleyEmdIngestor
+from .ingestors.emd_velox_ingestor import VeloxEmdIngestor
+from .ingestors.jupiter_afm_ingestor import AFMIngestor
+from .ingestors.czi_ingestor import CziIngestor
+from .ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
+from .ingestors.h5_ingestor import H5Ingestor
+from .ingestors.api_upload_ingestor import ApiUploadIngestor
 
 
 logger.info("imported all classes")

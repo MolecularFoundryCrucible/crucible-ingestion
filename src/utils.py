@@ -14,7 +14,7 @@ from datetime import datetime
 from google.cloud import secretmanager
 from google.oauth2 import service_account
 
-from constants import secret_store
+from .constants import secret_store
 from crucible.utils.io import run_shell
 
 logger = logging.getLogger(__name__)

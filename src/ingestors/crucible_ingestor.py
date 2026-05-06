@@ -9,15 +9,15 @@ from joblib import Parallel, delayed
 from crucible import CrucibleClient
 from crucible.models import Dataset
 
-from utils import (get_secret,
-                   run_rclone_command,
-                   build_b64_thumbnail,
-                   EnhancedJSONEncoder,
-                   reduce_filename_and_copy)
+from ..utils import (get_secret,
+                     run_rclone_command,
+                     build_b64_thumbnail,
+                     EnhancedJSONEncoder,
+                     reduce_filename_and_copy)
 
-from constants import (INSTRUMENT_DRIVES,
-                       sql_export_attr,
-                       crucible_api_url)
+from ..constants import (INSTRUMENT_DRIVES,
+                         sql_export_attr,
+                         crucible_api_url)
 
 
 logger = logging.getLogger(__name__)

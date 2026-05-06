@@ -6,7 +6,7 @@ import ncempy.io as nio
 import matplotlib.pyplot as plt
 import logging
 
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

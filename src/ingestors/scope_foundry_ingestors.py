@@ -10,7 +10,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 from crucible.utils.io import run_shell
-from ingestors.h5_ingestor import H5Ingestor
+from .h5_ingestor import H5Ingestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

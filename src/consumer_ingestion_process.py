@@ -4,10 +4,10 @@ import time
 import logging
 from crucible import CrucibleClient
 
-from utils import get_secret, setup_pika_client  
-from constants import crucible_api_url, rmq_host, rmq_port                                      
+from .utils import get_secret, setup_pika_client
+from .constants import crucible_api_url, rmq_host, rmq_port
 from crucible.utils.io import get_tz_isoformat
-from data_ingestion import data_ingestion
+from .data_ingestion import data_ingestion
 
 ingestion_githash = os.environ.get('GITHASH')
 RMQ_ROUTING_SUFFIX = os.environ.get('RMQ_ROUTING_SUFFIX')

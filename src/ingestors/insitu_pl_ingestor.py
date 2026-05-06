@@ -3,7 +3,7 @@ import shutil
 import re
 import logging
 from crucible.utils.io import run_shell
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 

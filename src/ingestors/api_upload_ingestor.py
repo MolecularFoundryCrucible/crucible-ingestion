@@ -2,7 +2,7 @@
 import os
 import logging
 from crucible.utils.io import checkhash
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
