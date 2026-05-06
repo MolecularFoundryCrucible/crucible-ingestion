@@ -34,12 +34,8 @@ client = CrucibleClient(api_url=crucible_api_url, api_key=crucible_apikey)
 # Functions ===========================
 def is_file_lost(message, dataset_to_process, ch, update_status=True):
 
-    filename = message['filename']
     reqid = message['reqid']
     dsid = message['dsid']
-
-    filename = filename.replace('\\', '/')
-    dataset_to_process = f"/mnt/gcs/{filename}"
     file_exists = os.path.exists(dataset_to_process)
     if not file_exists:
         if update_status:
