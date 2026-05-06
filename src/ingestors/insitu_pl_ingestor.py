@@ -3,7 +3,7 @@ import shutil
 import re
 import logging
 from crucible.utils.io import run_shell
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +46,8 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
         # extract the files
         if os.path.exists(self.tmp_folder):
             shutil.rmtree(self.tmp_folder)
-        xx = run_shell(f"unzip -qq '{self.file_to_upload}' -d ./generated_files/")
-        logger.info(xx.stderr)
+        unzip_out = run_shell(f"unzip -qq '{self.file_to_upload}' -d ./generated_files/")
+        logger.info(unzip_out.stderr)
 
         # sample parsing
         self.instrument_name = ""
@@ -76,12 +76,11 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
                         self.header_file = f
                         self.header_sample = sample_name
         
+
     def get_dataset_metadata(self):
 
         self.instrument_name = self.scientific_metadata[self.header_sample]['settings']['Spectrometer']
 
-        # if "QEP" in self.header_file or "FLM" in self.header_file:
-        #     self.measurement = "In Situ PL"
         if "transmission" in self.header_file.lower():
             self.measurement = "In Situ UV-Vis"
         else:

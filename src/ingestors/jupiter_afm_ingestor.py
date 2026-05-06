@@ -8,12 +8,12 @@ from PIL import Image
 import igor2 as igor
 
 
-from utils import get_secret
-from constants import crucible_api_url
-from google_calendar import (find_calendar_event,
-                             parse_calendar_event_for_ownership)
+from ..utils import get_secret
+from ..constants import crucible_api_url
+from ..google_calendar import (find_calendar_event,
+                               parse_calendar_event_for_ownership)
 
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 

@@ -9,17 +9,17 @@ import numpy as np
 import ncempy.io as nio
 import matplotlib.pyplot as plt
 
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-class SerIngestor(CrucibleDatasetIngestor):
-    '''subclass for ingesting ser / emi files'''
+class EmiIngestor(CrucibleDatasetIngestor):
+    '''subclass for ingesting emi files'''
     
-    supported_filetypes: ClassVar[list[str]] = ['ser']
+    supported_filetypes: ClassVar[list[str]] = ['emi']
     
     def is_file_supported(self):
         return np.any([self.file_to_upload.endswith(ftype)
@@ -28,8 +28,9 @@ class SerIngestor(CrucibleDatasetIngestor):
 
     def get_scientific_metadata(self):
         """Extract scientific metadata from the ser file using ncempy."""
-        with nio.ser.fileSER(self.file_to_upload) as ser:
-            self.scientific_metadata.update(ser.getMetadata())
+        CrucibleDatasetIngestor.get_scientific_metadata(self)
+        emi_md = nio.ser.read_emi(self.file_to_upload)
+        self.scientific_metadata.update(emi_md)
 
     
     def get_dataset_metadata(self):
@@ -46,11 +47,13 @@ class SerIngestor(CrucibleDatasetIngestor):
             tia_date_format = "%a %b %d %H:%M:%S %Y"
             self.timestamp = dt.strptime(acquired_date, tia_date_format).isoformat()
 
-        self.measurement = self.scientific_metadata.get('Mode []')
+        self.measurement = self.scientific_metadata.get('Mode []').strip()
         self.dataset_name = Path(self.file_to_upload)
 
-    def generate_thumbnail(self, target_size=(200, 200), dpi=100):
-        
+
+    def generate_thumbnail(self):
+        target_size = (200, 200) # pixels
+        dpi = 100
         fig_size = (target_size[0] / dpi, target_size[1] / dpi) # inches
         with nio.ser.fileSER(self.file_to_upload) as ser:
             data_array = ser.getDataset(0)[0]

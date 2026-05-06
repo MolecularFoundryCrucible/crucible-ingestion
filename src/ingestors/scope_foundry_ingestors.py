@@ -10,7 +10,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 from crucible.utils.io import run_shell
-from ingestors.h5_ingestor import H5Ingestor
+from .h5_ingestor import H5Ingestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -118,21 +118,10 @@ class ALDScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
     creation_location: ClassVar[str] = "67-4210"
 
 
-
-
-
 class SimpleTiledImageScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
     supported_measurements: ClassVar[list[str]] = ['simple_tiled_image']
     creation_location: ClassVar[str] = "67-1207"
-
-    def get_data_files(self):
-        folder_path = self.file_to_upload.replace(".h5", ".h5_images")
-        simple_tiled_files = [os.path.join(folder_path, x) for x in os.listdir(folder_path)]
-        for f in simple_tiled_files:
-            self.add_file(f)
-
-
 
 
 class CanonCaptureScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
@@ -145,11 +134,6 @@ class CanonCaptureScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
         single_image = Image.open(image_file_name)
         self.add_thumbnail(single_image, "Canon Camera Capture")
         
-    def get_data_files(self):
-        image_file_name = f"{self.file_to_upload}.JPG"
-        self.add_file(image_file_name)
-        
-
 
 class SingleSpecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
@@ -212,7 +196,6 @@ class HyperspecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 class HyperspecSweepScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
 
     supported_measurements: ClassVar[list[str]] = ['hyperspec_picam_mcl_sweep']
-
     creation_location: ClassVar[str] = "67-1217"
     
     def get_thumbnails(self):
@@ -454,14 +437,6 @@ class SpinbotCameraCaptureIngestor(SpinBotIngestor):
             except Exception as tnfail:
                 logger.error(f"failed to generate thumbnail for {self.file_to_upload} due to error {tnfail}")
         
-    def get_data_files(self):
-        for format in ['jpg', 'tif']:
-            try:
-                image_file_name = f"{self.file_to_upload}.{format}"
-                self.add_file(image_file_name)
-            except Exception as addfilefail:
-                logger.error(f"failed to add file {image_file_name} due to error {addfilefail}")
-
 
 class SpinbotPhotoRunIngestor(SpinBotIngestor):
     supported_measurements: ClassVar[list[str]] = ['photo_run']
@@ -470,17 +445,7 @@ class SpinbotPhotoRunIngestor(SpinBotIngestor):
 class BioGlowIngestor(ScopeFoundryH5Ingestor):
 
     def is_file_supported(self):
-        return self.file_to_upload.endswith('_bioglow_spec.h5')
-
-    def get_data_files(self):
-        folder_path = os.path.join(os.path.dirname(self.file_to_upload), f"{self.unique_id}_bioglow_spec_blocks")
-        zip_path = f"./generated_files/{self.unique_id}_bioglow_spec_blocks.zip"
-        zip_out = run_shell(f"zip -r -qq -j {zip_path} {folder_path}")
-        logger.info(zip_out.stdout)
-        logger.info(zip_out.stderr)
-        self.add_file(zip_path)
-
-    
+        return self.file_to_upload.endswith('_bioglow_spec.h5')  
 
 
 class QSpleemImageIngestor(ScopeFoundryH5Ingestor):

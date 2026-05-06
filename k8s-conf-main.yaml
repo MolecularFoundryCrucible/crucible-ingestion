@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ingestion-consumer-main
+  name: ingestion-consumer-main
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: ingestion-consumer-main
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 100%
+    type: RollingUpdate
+  # Horizontal Pod Autoscaling
+  template:
+    metadata:
+      annotations:
+        gke-gcsfuse/cpu-limit: "10"
+        gke-gcsfuse/cpu-request: 500m
+        gke-gcsfuse/memory-limit: 1000Gi
+        gke-gcsfuse/memory-request: 1Gi
+        gke-gcsfuse/volumes: "true"
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "10"
+        autoscaling.knative.dev/target: "8"
+      creationTimestamp: null
+      labels:
+        app: ingestion-consumer-main
+      name: ingestion-consumer-main
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: PYTHONUNBUFFERED
+          value: "true"
+        image: us-central1-docker.pkg.dev/mf-crucible/crucible-ingestion/main:latest
+        imagePullPolicy: Always
+        name: ingestion-consumer
+        resources:
+          limits:
+            cpu: 8000m
+            memory: 8Gi
+            ephemeral-storage: 2Gi
+          requests:
+            cpu: 2000m
+            memory: 2Gi
+            ephemeral-storage: 2Gi
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /mnt/gcs
+          name: cruc-upload-vol2
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: kubernetes.io/arch
+        operator: Equal
+        value: amd64
+      volumes:
+      - name: cruc-upload-vol2
+        persistentVolumeClaim:
+          claimName: cruc-upload-pvc2
+          readOnly: true

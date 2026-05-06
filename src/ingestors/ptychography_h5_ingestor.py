@@ -1,11 +1,10 @@
-import os
+
 import h5py
 import numpy as np
 import logging
 
-from crucible.utils.io import checkhash
-from ingestors.h5_ingestor import H5Ingestor
-
+from .h5_ingestor import H5Ingestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -87,32 +86,32 @@ class PtychographyH5Ingestor(H5Ingestor):
         """
         self.measurement = '4D-STEM'
         self.data_format = self.file_to_upload.split('.')[-1]
-        self.sha256_hash_file_to_upload = checkhash(self.file_to_upload)
+        # self.sha256_hash_file_to_upload = checkhash(self.file_to_upload)
         
         super().parse_source_folder()
         super().parse_keywords()
         return "get_dataset_metadata completed"
     
 
-    def get_data_files(self):
-        """
-        Base function that gets called
-        during setup_data()- should call
-        self.add_file(). 
+    # def get_data_files(self):
+    #     """
+    #     Base function that gets called
+    #     during setup_data()- should call
+    #     self.add_file(). 
 
-        Default adds only self.file_to_upload.  
-        """
-        base_path = os.path.dirname(self.file_to_upload)
-        dsname = os.path.basename(self.file_to_upload).split('_master')[0]
-        logger.info(f'{base_path=}, {dsname=}')
+    #     Default adds only self.file_to_upload.  
+    #     """
+    #     base_path = os.path.dirname(self.file_to_upload)
+    #     dsname = os.path.basename(self.file_to_upload).split('_master')[0]
+    #     logger.info(f'{base_path=}, {dsname=}')
 
-        associated_files = [os.path.join(base_path, f) for f in os.listdir(base_path) if dsname in f]
-        logger.info(f'{associated_files=}')
+    #     associated_files = [os.path.join(base_path, f) for f in os.listdir(base_path) if dsname in f]
+    #     logger.info(f'{associated_files=}')
 
-        self.add_file(self.file_to_upload)
-        [self.add_file(f) for f in associated_files]
+    #     self.add_file(self.file_to_upload)
+    #     [self.add_file(f) for f in associated_files]
 
-        return "get_data_files completed"
+    #     return "get_data_files completed"
 
 
 

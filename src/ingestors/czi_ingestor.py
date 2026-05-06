@@ -9,10 +9,10 @@ from aicspylibczi import CziFile
 import matplotlib.pyplot as plt
 import logging
 
-from utils import get_secret
-from constants import crucible_api_url
-from google_calendar import find_calendar_event, parse_calendar_event_for_ownership
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from ..utils import get_secret
+from ..constants import crucible_api_url
+from ..google_calendar import find_calendar_event, parse_calendar_event_for_ownership
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -46,20 +46,19 @@ class CziIngestor(CrucibleDatasetIngestor):
         search_and_replace("HotPixelSettings", metadata)
         self.scientific_metadata.update(metadata)
 
-                
-    def get_dataset_metadata(self):
-        CrucibleDatasetIngestor.get_dataset_metadata(self)
+    def parse_file_timestamp(self):
         try:
             self.timestamp = datetime.strptime(self.scientific_metadata['Information']['Document']['CreationDate'], "%Y-%m-%dT%H:%M:%S").isoformat()
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error(f'failed to parse CZI timestamp with error {e}')
+                
 
-        self.dataset_name = os.path.basename(self.file_to_upload)
+    def parse_keywords(self):
         try:
             self.session_name = self.scientific_metadata['Information']['Image']['Session']['@SessionName']
             self.keywords += [self.session_name]
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error(f'failed to parse CZI session name with error {e}')
 
         try:
             ac_settings = self.scientific_metadata['Experiment']['ExperimentBlocks']['AcquisitionBlock']
@@ -74,9 +73,15 @@ class CziIngestor(CrucibleDatasetIngestor):
 
             self.keywords += [detector, detector_mode, device_mode, laser, objective, ex_wl]
 
-        except Exception:
-            pass
-
+        except Exception as e:
+            logger.error(f'failed to parse usage keywords with error {e}')
+    
+        other_kw_fields = [self.instrument_name, self.measurement]
+        set_kw_fields = [k for k in other_kw_fields if k is not None]
+        self.keywords += set_kw_fields
+        return
+    
+    
     def parse_orcid(self):
         calendars = {
                         "Zeiss Elyra 7": "c_8n0083mccvlarkchrr2dm4lfb4@group.calendar.google.com",

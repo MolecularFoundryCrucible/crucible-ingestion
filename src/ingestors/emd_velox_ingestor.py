@@ -10,12 +10,12 @@ import matplotlib.pyplot as plt
 import logging
 import json
 
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 from crucible import CrucibleClient
 from crucible.models import Dataset
-from utils import get_secret
+from ..utils import get_secret
 
-from constants import crucible_api_url
+from ..constants import crucible_api_url
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

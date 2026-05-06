@@ -8,7 +8,7 @@ Created on Tue Dec  9 15:42:49 2025
 
 import os
 
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 #%%
 

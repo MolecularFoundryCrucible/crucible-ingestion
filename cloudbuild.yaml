@@ -33,7 +33,7 @@ steps:
     args:
     - apply
     - -f
-    - ./k8s-conf.yaml
+    - ./k8s-conf-${BRANCH_NAME}.yaml
     env:
     - CLOUDSDK_COMPUTE_REGION=us-central1
     - CLOUDSDK_CONTAINER_CLUSTER=crucible-cluster
@@ -43,7 +43,7 @@ steps:
     args:
     - set
     - image
-    - deployment/ingestion-consumer
+    - deployment/ingestion-consumer-${BRANCH_NAME}
     - ingestion-consumer=${_IMAGE_PATH}:${SHORT_SHA}
     env:
     - CLOUDSDK_COMPUTE_REGION=us-central1

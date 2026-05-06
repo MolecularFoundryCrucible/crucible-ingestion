@@ -18,8 +18,6 @@ COPY pyproject.toml /root/
 COPY uv.lock /root/
 COPY .python-version /root/
 RUN /bin/uv sync --locked
-RUN uv pip install git+https://github.com/MolecularFoundryCrucible/nano-crucible.git@dev
-
 COPY . .
 
 ARG githash
@@ -28,8 +26,9 @@ ENV GITHASH=$githash
 ARG rmq_routing_suffix
 ENV RMQ_ROUTING_SUFFIX=$rmq_routing_suffix
 
+RUN uv pip install git+https://github.com/MolecularFoundryCrucible/nano-crucible.git@dev
 # Run our flow script when the container starts
-CMD uv run python /root/consumer-ingestion-process.py
+CMD uv run python -m src.consumer_ingestion_process
 
 
 
