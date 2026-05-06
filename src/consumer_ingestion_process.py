@@ -48,20 +48,20 @@ def is_file_lost(message, dataset_to_process, ch, update_status=True):
     return file_lost
 
 
-def is_file_too_big(message, dataset_to_process, ch):
-    reqid = message['reqid']
-    dsid = message['dsid']
-    fsize = os.path.getsize(dataset_to_process)
+# def is_file_too_big(message, dataset_to_process, ch):
+#     reqid = message['reqid']
+#     dsid = message['dsid']
+#     fsize = os.path.getsize(dataset_to_process)
 
-    if fsize > 1e10:
-        logger.warning(f"[x] Received {message} but sending file to large file queue")
-        client.datasets.update_ingestion_status(dsid, reqid, "file too large")
+#     if fsize > 1e10:
+#         logger.warning(f"[x] Received {message} but sending file to large file queue")
+#         client.datasets.update_ingestion_status(dsid, reqid, "file too large")
 
-        too_big = True
-    else:
-        too_big = False
+#         too_big = True
+#     else:
+#         too_big = False
     
-    return too_big
+#     return too_big
 
 
 def callback(ch, method, props, body):
@@ -119,10 +119,10 @@ def callback(ch, method, props, body):
             return
 
     # check file size
-    if is_file_too_big(message, dataset_to_process, ch):
-        logger.info(f"[x] Received {body} but file too large")
-        ch.basic_ack(delivery_tag=method.delivery_tag)
-        return  
+    # if is_file_too_big(message, dataset_to_process, ch):
+    #     logger.info(f"[x] Received {body} but file too large")
+    #     ch.basic_ack(delivery_tag=method.delivery_tag)
+    #     return  
 
     ds, ingestion_class = (None,None)
     try:
