@@ -15,8 +15,7 @@ from ..utils import (get_secret,
                      reduce_filename_and_copy)
 
 from ..constants import (INSTRUMENT_DRIVES,
-                         sql_export_attr,
-                         crucible_api_url)
+                         sql_export_attr)
 
 
 logger = logging.getLogger(__name__)
