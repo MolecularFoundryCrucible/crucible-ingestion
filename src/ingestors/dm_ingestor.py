@@ -10,7 +10,7 @@ import logging
 import ncempy.io as nio
 import matplotlib.pyplot as plt
 
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 
 logger = logging.getLogger(__name__)
@@ -30,10 +30,11 @@ class DigitalMicrographIngestor(CrucibleDatasetIngestor):
    
     def get_scientific_metadata(self):
         """Extract scientific metadata from the DM file using ncempy."""
-        CrucibleDatasetIngestor.get_scientific_metadata(self)
+        meta_data = {}
         with nio.dm.fileDM(self.file_to_upload, on_memory=True) as dm1:
             md = dm1.getMetadata(0)
-            self.scientific_metadata.update(md)
+            meta_data.update(md)
+        self.scientific_metadata = meta_data
 
 
     def get_dataset_metadata(self):
@@ -61,16 +62,21 @@ class DigitalMicrographIngestor(CrucibleDatasetIngestor):
         self.dataset_name = Path(self.file_to_upload).stem # file name without extension
 
 
-    def generate_dm_thumbnail(self):
+    def generate_dm_thumbnail(self, target_size=(200, 200), dpi=100):
         """Generate a thumbnail from a DM image as a PNG.
-
+        
+        Parameters
+        ----------
+        target_size : tuple
+            Desired size of the thumbnail in pixels (width, height).
+        dpi : int
+            Dots per inch for the thumbnail image.
+        
         Returns
         -------
         : PIL.Image
             Thumbnail image as a PIL Image object.
         """
-        target_size = (200, 200) # pixels
-        dpi = 100
         fig_size = (target_size[0] / dpi, target_size[1] / dpi) # inches
         try:
             with nio.dm.fileDM(self.file_to_upload, on_memory=True) as f0:
@@ -86,7 +92,7 @@ class DigitalMicrographIngestor(CrucibleDatasetIngestor):
             im = Image.open(buf)
             return im
         except Exception as e:
-            logger.error(f"Failed to generate thumbnail: {e}")
+            print(f"Failed to generate thumbnail: {e}")
 
     def get_thumbnails(self):
         try:
@@ -94,4 +100,5 @@ class DigitalMicrographIngestor(CrucibleDatasetIngestor):
             if thumbnail:
                 self.add_thumbnail(thumbnail, "DM_Thumbnail")
         except Exception as e:
-            logger.error(f"Failed to extract thumbnail: {e}")
+            print(f"Failed to extract thumbnail: {e}")
+

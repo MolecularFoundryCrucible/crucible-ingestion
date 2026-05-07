@@ -2,6 +2,7 @@
 import base64
 import glob
 from io import BytesIO
+import math
 import os
 import json
 import logging
@@ -13,9 +14,9 @@ import numpy as np
 from datetime import datetime
 from google.cloud import secretmanager
 from google.oauth2 import service_account
-
-from constants import secret_store
 from crucible.utils.io import run_shell
+
+secret_store = os.environ.get("SECRET_STORE")
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -140,7 +141,7 @@ def run_rclone_command(source_path= "",
             "--gcs-client-id=776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com",
             f"--gcs-client-secret={client_secret}",
             "--gcs-project-number=mf-crucible",
-            f"--gcs-service-account-credentials={sa_cred_file.name}",
+            f"--gcs-service-account-file={sa_cred_file.name}",
             "--gcs-bucket-policy-only=true",
             "--gcs-env-auth=true",
         ]
@@ -148,23 +149,18 @@ def run_rclone_command(source_path= "",
         if len(destination_path.strip()) > 0:
             destination_path = f'"{destination_path}"'
 
-        try:
-            rclone_cmd = " ".join([f'rclone {cmd}'] + cmd_args + [f'"{source_path}" {destination_path}'])
-            run_shell_out = run_shell(rclone_cmd, background=background, checkflag=True)
-        except Exception as e:
-            logger.warning(f"Rclone command failed, retrying with config name: {e}")
-            source_path, destination_path = (x.replace(":gcs", gcs_config_name) for x in (source_path, destination_path))
-            rclone_cmd = f'rclone {cmd} "{source_path}" {destination_path}'
-            run_shell_out = run_shell(rclone_cmd, background=background, checkflag=checkflag)
+        rclone_cmd = " ".join([f'rclone {cmd}'] + cmd_args + [f'"{source_path}" {destination_path}'])
+        run_shell_out = run_shell(rclone_cmd, background=background, checkflag=True)
+        
     finally:
         os.unlink(sa_cred_file.name)
 
     return run_shell_out
 
 
-def build_b64_thumbnail(image: Image, max_size = (200,200)): 
+def build_b64_thumbnail(image: Image, max_size = (200,200)):
     image.thumbnail(max_size)
-    image.convert("RGB")
+    image = image.convert("RGB")
     buffered = BytesIO()
     image.save(buffered, format="PNG")
     thumbnail = base64.b64encode(buffered.getvalue()).decode("UTF-8")
@@ -178,8 +174,10 @@ def reduce_filename_and_copy(f, common_file_paths, destination_prefix):
     else:
         rel_file_path = f
 
-    if not f.startswith('/mnt/gcs'):
-        f = f'/mnt/gcs/{f}'
+    if f.startswith('/mnt/gcs/'):
+        f = f':gcs:/crucible-uploads/{f[len("/mnt/gcs/"):]}'
+    else:
+        f = f':gcs:/crucible-uploads/{f.lstrip("/")}'
 
     rclone_out = run_rclone_command(source_path= f, 
                                     destination_path= f"{destination_prefix}/{rel_file_path}",
@@ -217,6 +215,16 @@ class EnhancedJSONEncoder(json.JSONEncoder):
         if isinstance(obj, datetime):
             return(str(obj.isoformat()))
         return json.JSONEncoder.default(self, obj)
+
+
+def sanitize_metadata(obj):
+    if isinstance(obj, dict):
+        return {k: sanitize_metadata(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [sanitize_metadata(v) for v in obj]
+    if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+        return None
+    return obj
 
 
 

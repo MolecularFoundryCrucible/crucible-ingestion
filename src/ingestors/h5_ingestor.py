@@ -1,5 +1,5 @@
 import h5py
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 
 class H5Ingestor(CrucibleDatasetIngestor):

@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 from PIL.TiffTags import TAGS
 
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

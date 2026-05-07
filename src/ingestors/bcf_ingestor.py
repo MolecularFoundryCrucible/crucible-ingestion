@@ -5,7 +5,7 @@ import numpy as np
 import logging
 import hyperspy.api as hs
 import matplotlib.pyplot as plt
-from ingestors.crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -18,18 +18,6 @@ class BcfIngestor(CrucibleDatasetIngestor):
 
     def is_file_supported(self):
         return np.any([self.file_to_upload.endswith(ftype) for ftype in self.supported_filetypes])
-
-        
-    def get_dataset_metadata(self):
-        '''
-        previously parsed data that should be passed through API now is: 
-        - session name
-        - tags
-        - instrument name
-        '''
-        CrucibleDatasetIngestor.get_dataset_metadata(self)
-        self.dataset_name = os.path.basename(self.file_to_upload)
-        self.keywords += [self.session_name] 
 
 
     def get_thumbnails(self):
