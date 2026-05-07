@@ -3,8 +3,6 @@ import json
 import logging
 from .constants import sql_import_attr
 
-logger = logging.getLogger(__name__)
-
 from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
                                                 BioGlowIngestor,
                                                 QSpleemSVRampIngestor,
@@ -39,7 +37,7 @@ from .ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
 from .ingestors.h5_ingestor import H5Ingestor
 from .ingestors.api_upload_ingestor import ApiUploadIngestor
 
-
+logger = logging.getLogger(__name__)
 logger.info("imported all classes")
 ingestor_list = [AFMIngestor,
                 PtychographyH5Ingestor,

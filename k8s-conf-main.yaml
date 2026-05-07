@@ -41,6 +41,14 @@ spec:
           value: "main-small"
         - name: CRUCIBLE_API_URL
           value: "https://crucible.lbl.gov/api/v2"
+        - name: RMQ_HOST
+          value: '10.128.0.31'
+        - name: RMQ_PORT
+          value: '5672'
+        - name: SECRET_STORE
+          value: "projects/776258882599/secrets"
+        - name: GCS_CLIENT_ID
+          value: "776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com"
         image: us-central1-docker.pkg.dev/mf-crucible/crucible-ingestion/main:latest
         imagePullPolicy: Always
         name: ingestion-consumer
@@ -126,6 +134,14 @@ spec:
           value: "main-medium"
         - name: CRUCIBLE_API_URL
           value: "https://crucible.lbl.gov/api/v2"
+        - name: RMQ_HOST
+          value: '10.128.0.31'
+        - name: RMQ_PORT
+          value: '5672'
+        - name: SECRET_STORE
+          value: "projects/776258882599/secrets"
+        - name: GCS_CLIENT_ID
+          value: "776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com"
         image: us-central1-docker.pkg.dev/mf-crucible/crucible-ingestion/main:latest
         imagePullPolicy: Always
         name: ingestion-consumer
@@ -211,6 +227,14 @@ spec:
           value: "main-large"
         - name: CRUCIBLE_API_URL
           value: "https://crucible.lbl.gov/api/v2"
+        - name: RMQ_HOST
+          value: '10.128.0.31'
+        - name: RMQ_PORT
+          value: '5672'
+        - name: SECRET_STORE
+          value: "projects/776258882599/secrets"
+        - name: GCS_CLIENT_ID
+          value: "776258882599-v17f82atu67g16na3oiq6ga3bnudoqrh.apps.googleusercontent.com"
         image: us-central1-docker.pkg.dev/mf-crucible/crucible-ingestion/main:latest
         imagePullPolicy: Always
         name: ingestion-consumer

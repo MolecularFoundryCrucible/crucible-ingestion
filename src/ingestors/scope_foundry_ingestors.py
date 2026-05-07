@@ -144,7 +144,7 @@ class SingleSpecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
             spec = np.array(M['spectrum'])
             raman = np.array(M['raman_shifts'])
         
-        plot_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.spectra_plot.jpg"
+        plot_filename = f"{os.path.basename(self.file_to_upload)}.spectra_plot.jpg"
         plt.plot(raman, spec)
         plt.savefig(plot_filename)
         plot_image = Image.open(plot_filename)
@@ -173,14 +173,14 @@ class HyperspecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
                 wls = np.array(M['wls'])
     
             # spectral map
-            spec_map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.spectra_map.png"
+            spec_map_filename = f"{os.path.basename(self.file_to_upload)}.spectra_map.png"
             plt.imsave(spec_map_filename, spec_map.sum(axis=-1), origin='lower')
             spec_map_image = Image.open(spec_map_filename)
             #self.add_file(spec_map_filename)
             self.add_thumbnail(spec_map_image, "Spectral Map")
     
             #summary spectra
-            avg_spectra_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.sum_spectra.png"
+            avg_spectra_filename = f"{os.path.basename(self.file_to_upload)}.sum_spectra.png"
             plt.plot(wls, spec_map.sum(axis=(0,1)))
             plt.savefig(avg_spectra_filename)
             avg_spectra_image = Image.open(avg_spectra_filename)
@@ -239,14 +239,14 @@ class CLSyncRasterScanIngestor(ScopeFoundryH5Ingestor):
 
         # make a thumbnail for each channel in the ADC map
         for i in range(adc_map.shape[-1]):
-            map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.adc_chan_{i}.png"
+            map_filename = f"{os.path.basename(self.file_to_upload)}.adc_chan_{i}.png"
             plt.imsave(map_filename, adc_map[:,:,i], origin='lower')
             map_image = Image.open(map_filename)
             self.add_thumbnail(map_image, f"ADC Channel {i}")
 
         # make a thumbnail for each channel in the Counter map
         for i in range(ctr_map.shape[-1]):
-            map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.ctr_chan_{i}.png"
+            map_filename = f"{os.path.basename(self.file_to_upload)}.ctr_chan_{i}.png"
             plt.imsave(map_filename, ctr_map[:,:,i], origin='lower')
             map_image = Image.open(map_filename)
             self.add_thumbnail(map_image, f"Counter Channel {i}")
@@ -270,13 +270,13 @@ class CLHyperspecIngestor(ScopeFoundryH5Ingestor):
             wls = np.array(M['wls'])
 
         # spectral map
-        spec_map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.spectra_map.png"
+        spec_map_filename = f"{os.path.basename(self.file_to_upload)}.spectra_map.png"
         plt.imsave(spec_map_filename, spec_map.sum(axis=-1), origin='lower')
         spec_map_image = Image.open(spec_map_filename)
         self.add_thumbnail(spec_map_image, "Spectral Map")
 
         #summary spectra
-        avg_spectra_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.sum_spectra.png"
+        avg_spectra_filename = f"{os.path.basename(self.file_to_upload)}.sum_spectra.png"
         plt.plot(wls, spec_map.sum(axis=(0,1)))
         plt.savefig(avg_spectra_filename)
         avg_spectra_image = Image.open(avg_spectra_filename)
@@ -369,7 +369,7 @@ class SpinbotSpecLineIngestor(SpinBotIngestor):
  
     def get_thumbnails(self):
         try:
-            plot_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.spectra_plot.jpg"
+            plot_filename = f"{os.path.basename(self.file_to_upload)}.spectra_plot.jpg"
             with h5py.File(self.file_to_upload, 'r') as h5file:
                 M = h5file[f"measurement/{self.measurement}"]
                 spectra = np.array(M['spectra'])
@@ -407,7 +407,7 @@ class SpinbotSpecRunIngestor(SpinBotIngestor):
                 M = h5file[f"measurement/{self.measurement}"]
                 dtypes = [x.split("_")[0] for x in list(M.keys()) if x.endswith("spectra")]
                 for dtype in dtypes:
-                    plot_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.{dtype}_spectra_plot.jpg"
+                    plot_filename = f"{os.path.basename(self.file_to_upload)}.{dtype}_spectra_plot.jpg"
                     self.make_spectra_plot(M, f'{dtype}_spectra', f'{dtype}_wls', plot_filename)
                     plot_image = Image.open(plot_filename)
                     self.add_thumbnail(plot_image, f"SpinBot {dtype.upper()} Spectra")
@@ -429,7 +429,7 @@ class SpinbotCameraCaptureIngestor(SpinBotIngestor):
     def get_thumbnails(self):
         for format in ['jpg', 'tif']:
             try:
-                image_file_name = f"./generated_files/{os.path.basename(self.file_to_upload)}.{format}"
+                image_file_name = f"{os.path.basename(self.file_to_upload)}.{format}"
                 single_image = Image.open(image_file_name)
                 self.add_thumbnail(single_image, f"ZWO Capture ({format})")
             except Exception as tnfail:
@@ -457,7 +457,7 @@ class QSpleemImageIngestor(ScopeFoundryH5Ingestor):
         with h5py.File(self.file_to_upload, 'r') as h5file:
             M = h5file[f"measurement/image_save"]
             images = [k for k in list(M.keys()) if 'im_array' in k]
-            imname = f"./generated_files/{os.path.basename(self.file_to_upload)}.image0.jpg"
+            imname = f"{os.path.basename(self.file_to_upload)}.image0.jpg"
             plt.imsave(imname, np.array(M[images[0]]), origin='lower')
             plt.clf()
             op_image = Image.open(imname)
@@ -535,9 +535,9 @@ class QSpleemSVRampIngestor(ScopeFoundryH5Ingestor):
 
     def get_thumbnails(self):
         # file path/prefixes
-        avgplot_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.svramp_im_avg.jpg"
-        diff_image_path = f"./generated_files/{os.path.basename(self.file_to_upload)}.diff_image"
-        basic_image_path = f"./generated_files/{os.path.basename(self.file_to_upload)}.basic_image"
+        avgplot_filename = f"{os.path.basename(self.file_to_upload)}.svramp_im_avg.jpg"
+        diff_image_path = f"{os.path.basename(self.file_to_upload)}.diff_image"
+        basic_image_path = f"{os.path.basename(self.file_to_upload)}.basic_image"
         
         # open h5, make plots
         with h5py.File(self.file_to_upload, 'r') as h5file:
@@ -602,7 +602,7 @@ class QSpleemARRESEKIngestor(ScopeFoundryH5Ingestor):
             uv = np.array(M['uv'])
 
         for i in range(0, spec_series.shape[0]):
-            imname = f"./generated_files/{self.dataset_name}_EKplot_{i+1}.jpg"
+            imname = f"{self.dataset_name}_EKplot_{i+1}.jpg"
             self.plotEK(M, spec_series[i, :, :], E, uv, imname)
             plot_image = Image.open(imname)
             self.add_thumbnail(plot_image, f"QSpleem EK plot {i+1}")
@@ -637,7 +637,7 @@ class QSpleemARRESMMIngestor(ScopeFoundryH5Ingestor):
             e = M['settings'].attrs['E']    
 
         for i in range(0, spec_series.shape[0]):
-            imname = f"./generated_files/{self.dataset_name}_MMplot_{i+1}.jpg"
+            imname = f"{self.dataset_name}_MMplot_{i+1}.jpg"
             self.plotMM(spec_series[i, :, :], kx, ky,e, imname)
             plot_image = Image.open(imname)
             self.add_thumbnail(plot_image, f"QSpleem Momentum Map {i+1}")
