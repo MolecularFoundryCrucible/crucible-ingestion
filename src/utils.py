@@ -157,9 +157,9 @@ def run_rclone_command(source_path= "",
     return run_shell_out
 
 
-def build_b64_thumbnail(image: Image, max_size = (200,200)): 
+def build_b64_thumbnail(image: Image, max_size = (200,200)):
     image.thumbnail(max_size)
-    image.convert("RGB")
+    image = image.convert("RGB")
     buffered = BytesIO()
     image.save(buffered, format="PNG")
     thumbnail = base64.b64encode(buffered.getvalue()).decode("UTF-8")
