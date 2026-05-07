@@ -8,8 +8,6 @@ import numpy as np
 from datetime import datetime
 from PIL import Image
 import matplotlib.pyplot as plt
-
-from crucible.utils.io import run_shell
 from .h5_ingestor import H5Ingestor
 
 logger = logging.getLogger(__name__)

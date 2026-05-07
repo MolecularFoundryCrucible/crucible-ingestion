@@ -15,12 +15,12 @@ from crucible import CrucibleClient
 from crucible.models import Dataset
 from ..utils import get_secret
 
-from ..constants import crucible_api_url
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Crucible Client
+crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
 apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
 client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
