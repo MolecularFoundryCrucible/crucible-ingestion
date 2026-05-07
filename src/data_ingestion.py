@@ -2,8 +2,7 @@
 import json
 import logging
 from .constants import sql_import_attr
-
-logger = logging.getLogger(__name__)
+from .utils import sanitize_metadata
 
 from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
                                                 BioGlowIngestor,
@@ -39,7 +38,7 @@ from .ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
 from .ingestors.h5_ingestor import H5Ingestor
 from .ingestors.api_upload_ingestor import ApiUploadIngestor
 
-
+logger = logging.getLogger(__name__)
 logger.info("imported all classes")
 ingestor_list = [AFMIngestor,
                 PtychographyH5Ingestor,
@@ -182,7 +181,7 @@ def data_ingestion(dataset_to_process: str,
     keywords = D.pop('keywords') 
     ingestion_class = D.pop('ingestion_class')
     thumbnails = D.pop('thumbnails')
-    md = D.pop("scientific_metadata") 
+    md = sanitize_metadata(D.pop("scientific_metadata"))
 
     for remove_field in ['acl', 'ingestion_githash']:
         _ = D.pop(remove_field)

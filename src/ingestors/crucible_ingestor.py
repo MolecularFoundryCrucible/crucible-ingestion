@@ -4,7 +4,6 @@ from datetime import datetime as dt
 from mfid import mfid
 import logging
 import json
-from joblib import Parallel, delayed
 
 from crucible import CrucibleClient
 from crucible.models import Dataset
@@ -16,14 +15,15 @@ from ..utils import (get_secret,
                      reduce_filename_and_copy)
 
 from ..constants import (INSTRUMENT_DRIVES,
-                         sql_export_attr,
-                         crucible_api_url)
+                         sql_export_attr)
 
 
 logger = logging.getLogger(__name__)
 
 # Crucible Client
 apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
+crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
+
 client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
 class CrucibleDatasetIngestor(Dataset):

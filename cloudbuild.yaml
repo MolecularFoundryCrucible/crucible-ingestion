@@ -6,18 +6,18 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args: [-c, 'docker pull ${_IMAGE_PATH}:latest || exit 0']
+
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: 
+    args:
       - -c
       - >
         docker build
         --build-arg githash=$(git rev-parse HEAD)
-        --build-arg rmq_routing_suffix=${BRANCH_NAME}
         -t ${_IMAGE_PATH}:${SHORT_SHA}
         -t ${_IMAGE_PATH}:latest
         --cache-from ${_IMAGE_PATH}:latest
-        . 
+        .
 
   # Push SHA-tagged image
   - name: 'gcr.io/cloud-builders/docker'
@@ -27,8 +27,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', '${_IMAGE_PATH}:latest']
 
-
-  # Apply deployment (creates if doesn't exist, updates if exists)
+  # Apply all deployments
   - name: 'gcr.io/cloud-builders/kubectl'
     args:
     - apply
@@ -38,13 +37,16 @@ steps:
     - CLOUDSDK_COMPUTE_REGION=us-central1
     - CLOUDSDK_CONTAINER_CLUSTER=crucible-cluster
 
-  # Update the deployment with the new SHA-tagged image
+  # Roll out new image to all three size tiers
   - name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
     args:
-    - set
-    - image
-    - deployment/ingestion-consumer-${BRANCH_NAME}
-    - ingestion-consumer=${_IMAGE_PATH}:${SHORT_SHA}
+      - -c
+      - |
+        for size in small medium large; do
+          kubectl set image deployment/ingestion-consumer-${BRANCH_NAME}-$${size} \
+            ingestion-consumer=${_IMAGE_PATH}:${SHORT_SHA}
+        done
     env:
     - CLOUDSDK_COMPUTE_REGION=us-central1
     - CLOUDSDK_CONTAINER_CLUSTER=crucible-cluster

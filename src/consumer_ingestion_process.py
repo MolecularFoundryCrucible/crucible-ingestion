@@ -5,11 +5,13 @@ import logging
 from crucible import CrucibleClient
 
 from .utils import get_secret, setup_pika_client
-from .constants import crucible_api_url, rmq_host, rmq_port
 from crucible.utils.io import get_tz_isoformat
 from .data_ingestion import data_ingestion
 
+crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
 ingestion_githash = os.environ.get('GITHASH')
+rmq_host = os.environ.get('RMQ_HOST')
+rmq_port = os.environ.get('RMQ_PORT')
 RMQ_ROUTING_SUFFIX = os.environ.get('RMQ_ROUTING_SUFFIX')
 
 logger = logging.getLogger(__name__)
@@ -48,20 +50,20 @@ def is_file_lost(message, dataset_to_process, ch, update_status=True):
     return file_lost
 
 
-def is_file_too_big(message, dataset_to_process, ch):
-    reqid = message['reqid']
-    dsid = message['dsid']
-    fsize = os.path.getsize(dataset_to_process)
+# def is_file_too_big(message, dataset_to_process, ch):
+#     reqid = message['reqid']
+#     dsid = message['dsid']
+#     fsize = os.path.getsize(dataset_to_process)
 
-    if fsize > 1e10:
-        logger.warning(f"[x] Received {message} but sending file to large file queue")
-        client.datasets.update_ingestion_status(dsid, reqid, "file too large")
+#     if fsize > 1e10:
+#         logger.warning(f"[x] Received {message} but sending file to large file queue")
+#         client.datasets.update_ingestion_status(dsid, reqid, "file too large")
 
-        too_big = True
-    else:
-        too_big = False
+#         too_big = True
+#     else:
+#         too_big = False
     
-    return too_big
+#     return too_big
 
 
 def callback(ch, method, props, body):
@@ -119,10 +121,10 @@ def callback(ch, method, props, body):
             return
 
     # check file size
-    if is_file_too_big(message, dataset_to_process, ch):
-        logger.info(f"[x] Received {body} but file too large")
-        ch.basic_ack(delivery_tag=method.delivery_tag)
-        return  
+    # if is_file_too_big(message, dataset_to_process, ch):
+    #     logger.info(f"[x] Received {body} but file too large")
+    #     ch.basic_ack(delivery_tag=method.delivery_tag)
+    #     return  
 
     ds, ingestion_class = (None,None)
     try:

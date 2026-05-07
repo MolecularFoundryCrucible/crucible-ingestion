@@ -1,6 +1,7 @@
 import os
 import re
 import logging
+from io import BytesIO
 from typing import ClassVar
 
 import h5py
@@ -8,8 +9,6 @@ import numpy as np
 from datetime import datetime
 from PIL import Image
 import matplotlib.pyplot as plt
-
-from crucible.utils.io import run_shell
 from .h5_ingestor import H5Ingestor
 
 logger = logging.getLogger(__name__)
@@ -145,12 +144,12 @@ class SingleSpecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
             M = h5file[f"measurement/{self.measurement}"]
             spec = np.array(M['spectrum'])
             raman = np.array(M['raman_shifts'])
-        
-        plot_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.spectra_plot.jpg"
         plt.plot(raman, spec)
-        plt.savefig(plot_filename)
-        plot_image = Image.open(plot_filename)
-        self.add_thumbnail(plot_image, "Picam Readout")
+        buf = BytesIO()
+        plt.savefig(buf, format='png')
+        plt.clf()
+        buf.seek(0)
+        self.add_thumbnail(Image.open(buf), "Picam Readout")
         
 
 
@@ -173,21 +172,18 @@ class HyperspecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
                 M = h5file[f'measurement/{self.measurement}']
                 spec_map = np.array(M['spec_map'])[0]
                 wls = np.array(M['wls'])
-    
-            # spectral map
-            spec_map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.spectra_map.png"
-            plt.imsave(spec_map_filename, spec_map.sum(axis=-1), origin='lower')
-            spec_map_image = Image.open(spec_map_filename)
-            #self.add_file(spec_map_filename)
-            self.add_thumbnail(spec_map_image, "Spectral Map")
-    
-            #summary spectra
-            avg_spectra_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.sum_spectra.png"
+
+            buf = BytesIO()
+            plt.imsave(buf, spec_map.sum(axis=-1), origin='lower', format='png')
+            buf.seek(0)
+            self.add_thumbnail(Image.open(buf), "Spectral Map")
+
             plt.plot(wls, spec_map.sum(axis=(0,1)))
-            plt.savefig(avg_spectra_filename)
-            avg_spectra_image = Image.open(avg_spectra_filename)
-            #self.add_file(avg_spectra_filename)
-            self.add_thumbnail(avg_spectra_image, "Sum of Spectra")
+            buf = BytesIO()
+            plt.savefig(buf, format='png')
+            plt.clf()
+            buf.seek(0)
+            self.add_thumbnail(Image.open(buf), "Sum of Spectra")
         except Exception as err:
             logger.error(f"failed to generate thumbnail for {self.file_to_upload} due to error {err}")
 
@@ -241,17 +237,17 @@ class CLSyncRasterScanIngestor(ScopeFoundryH5Ingestor):
 
         # make a thumbnail for each channel in the ADC map
         for i in range(adc_map.shape[-1]):
-            map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.adc_chan_{i}.png"
-            plt.imsave(map_filename, adc_map[:,:,i], origin='lower')
-            map_image = Image.open(map_filename)
-            self.add_thumbnail(map_image, f"ADC Channel {i}")
+            buf = BytesIO()
+            plt.imsave(buf, adc_map[:,:,i], origin='lower', format='png')
+            buf.seek(0)
+            self.add_thumbnail(Image.open(buf), f"ADC Channel {i}")
 
         # make a thumbnail for each channel in the Counter map
         for i in range(ctr_map.shape[-1]):
-            map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.ctr_chan_{i}.png"
-            plt.imsave(map_filename, ctr_map[:,:,i], origin='lower')
-            map_image = Image.open(map_filename)
-            self.add_thumbnail(map_image, f"Counter Channel {i}")
+            buf = BytesIO()
+            plt.imsave(buf, ctr_map[:,:,i], origin='lower', format='png')
+            buf.seek(0)
+            self.add_thumbnail(Image.open(buf), f"Counter Channel {i}")
 
 
 class CLHyperspecIngestor(ScopeFoundryH5Ingestor):
@@ -271,18 +267,17 @@ class CLHyperspecIngestor(ScopeFoundryH5Ingestor):
             spec_map = np.array(M['spec_map'])[0,0]
             wls = np.array(M['wls'])
 
-        # spectral map
-        spec_map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.spectra_map.png"
-        plt.imsave(spec_map_filename, spec_map.sum(axis=-1), origin='lower')
-        spec_map_image = Image.open(spec_map_filename)
-        self.add_thumbnail(spec_map_image, "Spectral Map")
+        buf = BytesIO()
+        plt.imsave(buf, spec_map.sum(axis=-1), origin='lower', format='png')
+        buf.seek(0)
+        self.add_thumbnail(Image.open(buf), "Spectral Map")
 
-        #summary spectra
-        avg_spectra_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.sum_spectra.png"
         plt.plot(wls, spec_map.sum(axis=(0,1)))
-        plt.savefig(avg_spectra_filename)
-        avg_spectra_image = Image.open(avg_spectra_filename)
-        self.add_thumbnail(avg_spectra_image, "Sum of Spectra")   
+        buf = BytesIO()
+        plt.savefig(buf, format='png')
+        plt.clf()
+        buf.seek(0)
+        self.add_thumbnail(Image.open(buf), "Sum of Spectra")
 
 
 class SpinBotIngestor(ScopeFoundryH5Ingestor):
@@ -371,18 +366,18 @@ class SpinbotSpecLineIngestor(SpinBotIngestor):
  
     def get_thumbnails(self):
         try:
-            plot_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.spectra_plot.jpg"
             with h5py.File(self.file_to_upload, 'r') as h5file:
                 M = h5file[f"measurement/{self.measurement}"]
                 spectra = np.array(M['spectra'])
                 wls = np.array(M['wls'])
-            for i in range(0,spectra.shape[0]):
-                plt.plot(wls, spectra[i], label =f" spectra {i+1}")
+            for i in range(0, spectra.shape[0]):
+                plt.plot(wls, spectra[i], label=f" spectra {i+1}")
             plt.legend()
-            plt.savefig(plot_filename)
-            
-            plot_image = Image.open(plot_filename)
-            self.add_thumbnail(plot_image, "SpinBot Spectra")
+            buf = BytesIO()
+            plt.savefig(buf, format='png')
+            plt.clf()
+            buf.seek(0)
+            self.add_thumbnail(Image.open(buf), "SpinBot Spectra")
         except Exception as err:
             logger.error(f"failed to generate thumbnail for {self.file_to_upload} due to error {err}")
 
@@ -392,34 +387,34 @@ class SpinbotSpecRunIngestor(SpinBotIngestor):
 
     supported_measurements: ClassVar[list[str]] = ['spec_run']
     
-    def make_spectra_plot(self, M, s, w, plotfile):
+    def make_spectra_plot(self, M, s, w):
         if len(M[s]) > 0:
             spectra = np.array(M[s])
             logger.info(f"spectra_shape={spectra.shape}")
             wls = np.array(M[w])
-            for i in range(0,spectra.shape[0]):
-                plt.plot(wls, spectra[i], label =f" spectra {i+1}")
+            for i in range(0, spectra.shape[0]):
+                plt.plot(wls, spectra[i], label=f" spectra {i+1}")
             plt.legend()
-            plt.savefig(plotfile)
+            buf = BytesIO()
+            plt.savefig(buf, format='png')
             plt.clf()
-        
+            buf.seek(0)
+            return Image.open(buf)
+        return None
+
     def get_thumbnails(self):
         try:
             with h5py.File(self.file_to_upload, 'r') as h5file:
                 M = h5file[f"measurement/{self.measurement}"]
                 dtypes = [x.split("_")[0] for x in list(M.keys()) if x.endswith("spectra")]
                 for dtype in dtypes:
-                    plot_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.{dtype}_spectra_plot.jpg"
-                    self.make_spectra_plot(M, f'{dtype}_spectra', f'{dtype}_wls', plot_filename)
-                    plot_image = Image.open(plot_filename)
-                    self.add_thumbnail(plot_image, f"SpinBot {dtype.upper()} Spectra")
-
+                    img = self.make_spectra_plot(M, f'{dtype}_spectra', f'{dtype}_wls')
+                    if img is not None:
+                        self.add_thumbnail(img, f"SpinBot {dtype.upper()} Spectra")
 
                 if 'photo' in list(M.keys()):
-                    imfile = f"{self.file_to_upload}.image.png"
                     imarray = np.array(M['photo'])
-                    h5image = Image.fromarray(imarray)
-                    self.add_thumbnail(h5image, "SpinBot SpecRun Image")
+                    self.add_thumbnail(Image.fromarray(imarray), "SpinBot SpecRun Image")
         except Exception as err:
             logger.error(f"failed to generate thumbnail for {self.file_to_upload} due to error {err}")
 
@@ -431,7 +426,7 @@ class SpinbotCameraCaptureIngestor(SpinBotIngestor):
     def get_thumbnails(self):
         for format in ['jpg', 'tif']:
             try:
-                image_file_name = f"./generated_files/{os.path.basename(self.file_to_upload)}.{format}"
+                image_file_name = f"{os.path.basename(self.file_to_upload)}.{format}"
                 single_image = Image.open(image_file_name)
                 self.add_thumbnail(single_image, f"ZWO Capture ({format})")
             except Exception as tnfail:
@@ -459,11 +454,10 @@ class QSpleemImageIngestor(ScopeFoundryH5Ingestor):
         with h5py.File(self.file_to_upload, 'r') as h5file:
             M = h5file[f"measurement/image_save"]
             images = [k for k in list(M.keys()) if 'im_array' in k]
-            imname = f"./generated_files/{os.path.basename(self.file_to_upload)}.image0.jpg"
-            plt.imsave(imname, np.array(M[images[0]]), origin='lower')
-            plt.clf()
-            op_image = Image.open(imname)
-            self.add_thumbnail(op_image, f"Qspleem Image 0")
+            buf = BytesIO()
+            plt.imsave(buf, np.array(M[images[0]]), origin='lower', format='png')
+            buf.seek(0)
+            self.add_thumbnail(Image.open(buf), "Qspleem Image 0")
 
 
 class QSpleemSVRampIngestor(ScopeFoundryH5Ingestor):
@@ -472,93 +466,66 @@ class QSpleemSVRampIngestor(ScopeFoundryH5Ingestor):
     def is_file_supported(self):
         return(self.file_to_upload.endswith('_sv_ramp.h5'))
     
-    def plot_image_at_diffpeak(self, M, image_array_key, plot_filename):
-        descriptions = {"000_im_array":"", 
-                        "000_im_up_array": " (Spin Up)", 
+    def plot_image_at_diffpeak(self, M, image_array_key):
+        descriptions = {"000_im_array":"",
+                        "000_im_up_array": " (Spin Up)",
                         "000_im_down_array": " (Spin Down)"}
-        
         im_descrip = descriptions[image_array_key]
-        imkey_short = image_array_key.replace("000_im", "").replace("_array", "")
-        fname = f"{plot_filename}{imkey_short}.jpg"
-        
-        # to do - average the traces to find the max
         sv_ramp = np.array(M['0000_sv_array'])
-        
         im = np.array(M[image_array_key])
-        imavg= np.array(M['000_imavg_array'])
-        
+        imavg = np.array(M['000_imavg_array'])
         diffpeak = np.argmax(imavg)
         plt.imshow(im[diffpeak,:,:])
-        plt.tick_params(which = 'both', size = 0, labelsize = 0)
+        plt.tick_params(which='both', size=0, labelsize=0)
         plt.title(f"Diffraction at SV {sv_ramp[diffpeak]}{im_descrip}")
-        plt.savefig(fname)
+        buf = BytesIO()
+        plt.savefig(buf, format='png')
         plt.clf()
+        buf.seek(0)
+        self.add_thumbnail(Image.open(buf), f"QSpleem SV Ramp Diffraction{im_descrip}")
 
-        plot_image = Image.open(fname)
-        self.add_thumbnail(plot_image, f"QSpleem SV Ramp Diffraction{im_descrip}")   
-        
-    def plot_basic_image(self, M, image_array_key, plot_filename):
-        descriptions = {"000_im_array":"", 
-                        "000_im_up_array": " (Spin Up)", 
-                        "000_im_down_array":" (Spin Down)"}
-        
-        im_descrip = descriptions[image_array_key]
-        imkey_short = image_array_key.replace("000_im", "").replace("_array", "")
-        fname = f"{plot_filename}{imkey_short}.jpg"
-        
+    def plot_basic_image(self, M, image_array_key):
         im = np.array(M[image_array_key])
         if len(im.shape) != 2:
             return f'unexpected image shape {im.shape} - expecting 2d array'
         plt.imshow(im)
         plt.colorbar()
-        plt.tick_params(which = 'both', size = 0, labelsize = 0)
+        plt.tick_params(which='both', size=0, labelsize=0)
         plt.title(image_array_key)
-        plt.savefig(fname)
+        buf = BytesIO()
+        plt.savefig(buf, format='png')
         plt.clf()
+        buf.seek(0)
+        self.add_thumbnail(Image.open(buf), image_array_key)
 
-        plot_image = Image.open(fname)
-        self.add_thumbnail(plot_image, image_array_key)   
-        
-    def plot_average(self, M, plot_filename):
+    def plot_average(self, M):
         sv_ramp = np.array(M['0000_sv_array'])
-        svarrays = [x for x in list(M.keys()) if 'imavg_array' in x]    
-        avg_arrays = []
+        svarrays = [x for x in list(M.keys()) if 'imavg_array' in x]
         for x in svarrays:
             arr = np.array(M[x])
             if arr.shape[0] == sv_ramp.shape[0]:
                 plt.plot(sv_ramp, arr)
-            avg_arrays += [x]
-
         plt.xlabel("Energy (eV)")
         plt.ylabel("Average Reflectivity")
-        plt.savefig(plot_filename)
+        buf = BytesIO()
+        plt.savefig(buf, format='png')
         plt.clf()
-        return(avg_arrays)
+        buf.seek(0)
+        self.add_thumbnail(Image.open(buf), "QSpleem SV Ramp Average")
 
     def get_thumbnails(self):
-        # file path/prefixes
-        avgplot_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}.svramp_im_avg.jpg"
-        diff_image_path = f"./generated_files/{os.path.basename(self.file_to_upload)}.diff_image"
-        basic_image_path = f"./generated_files/{os.path.basename(self.file_to_upload)}.basic_image"
-        
-        # open h5, make plots
         with h5py.File(self.file_to_upload, 'r') as h5file:
             M = h5file[f"measurement/{self.measurement}"]
-            
+
             if '0000_sv_array' in M.keys():
-                avg_arrays = self.plot_average(M, avgplot_filename)
-                plot_image = Image.open(avgplot_filename)
-                self.add_thumbnail(plot_image, "QSpleem SV Ramp Average")
+                self.plot_average(M)
 
-            # plot if available
             if '000_im_array' in M.keys():
-                self.plot_image_at_diffpeak(M, '000_im_array', diff_image_path)
+                self.plot_image_at_diffpeak(M, '000_im_array')
 
-            # check which arrays were taken
             other_im_keys = ['000_im_up_array', '000_im_down_array']
-            found_im_keys = [x for x in other_im_keys if x in list(M.keys())]
-            for k in found_im_keys:
-                self.plot_basic_image(M, k, basic_image_path)
+            for k in [x for x in other_im_keys if x in list(M.keys())]:
+                self.plot_basic_image(M, k)
 
 
 class QSpleemARRESEKIngestor(ScopeFoundryH5Ingestor):
@@ -568,46 +535,35 @@ class QSpleemARRESEKIngestor(ScopeFoundryH5Ingestor):
         return(any([self.file_to_upload.endswith(f'_{x}.h5') for x in supported_measurements]))
 
 
-    def plotEK(self, M, spec, E, uv, save_file):
-        
+    def plotEK(self, M, spec, E, uv):
         uvmin = f"({str(round(uv[0][0],2))}, {str(round(uv[0][1], 2))})"
         uvmax = f"({str(round(uv[-1][0], 2))}, {str(round(uv[-1][1], 2))})"
-
-    
-        fig,ax = plt.subplots()
-        
-        cax  = ax.imshow(spec, origin = "lower")
+        fig, ax = plt.subplots()
+        ax.imshow(spec, origin="lower")
         fig.set_size_inches(10, 10)
         ax.set_aspect('auto')
-
-        xticks = ax.get_xticks()
-        
-        ax.set_xlim([0,len(uv)-1])
+        ax.set_xlim([0, len(uv)-1])
         ax.set_xticks([0, len(uv)-1], [uvmin, uvmax])
-        
-        ax.set_yticks(range(0, len(E),5), [round(x,1) for i,x in enumerate(E) if i %5 == 0])
+        ax.set_yticks(range(0, len(E), 5), [round(x,1) for i,x in enumerate(E) if i % 5 == 0])
         ax.set_ylabel("Energy (eV)")
         ax.set_xlabel("uv")
-        
-        plt.savefig(save_file, dpi = 400)
+        buf = BytesIO()
+        plt.savefig(buf, format='png', dpi=400)
         plt.clf()
+        buf.seek(0)
+        return Image.open(buf)
 
-    
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
             M = h5file[f"measurement/{self.measurement}"]
             if not 'spectrum' in M.keys():
                 return('no spectrum found')
-                
             spec_series = np.array(M['spectrum'])
             E = np.array(M['eV'])
             uv = np.array(M['uv'])
 
         for i in range(0, spec_series.shape[0]):
-            imname = f"./generated_files/{self.dataset_name}_EKplot_{i+1}.jpg"
-            self.plotEK(M, spec_series[i, :, :], E, uv, imname)
-            plot_image = Image.open(imname)
-            self.add_thumbnail(plot_image, f"QSpleem EK plot {i+1}")
+            self.add_thumbnail(self.plotEK(M, spec_series[i, :, :], E, uv), f"QSpleem EK plot {i+1}")
 
 
 
@@ -618,31 +574,28 @@ class QSpleemARRESMMIngestor(ScopeFoundryH5Ingestor):
         return(any([self.file_to_upload.endswith(f'_{x}.h5') for x in supported_measurements]))
 
     
-    def plotMM(self, spec, kx, ky, e, save_file):
-          
-        fig,ax = plt.subplots()
-        ax.imshow(spec, origin = "lower")
+    def plotMM(self, spec, kx, ky, e):
+        fig, ax = plt.subplots()
+        ax.imshow(spec, origin="lower")
         ax.set_ylabel("ky")
         ax.set_xlabel("kx")
         ax.set_title(f"Energy: {e} eV")
-        
-        plt.savefig(save_file, dpi = 400)
+        buf = BytesIO()
+        plt.savefig(buf, format='png', dpi=400)
         plt.clf()
+        buf.seek(0)
+        return Image.open(buf)
 
-    
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
             M = h5file[f"measurement/{self.measurement}"]
             spec_series = np.array(M['spectrum'])
             kx = np.array(M['kx'])
             ky = np.array(M['ky'])
-            e = M['settings'].attrs['E']    
+            e = M['settings'].attrs['E']
 
         for i in range(0, spec_series.shape[0]):
-            imname = f"./generated_files/{self.dataset_name}_MMplot_{i+1}.jpg"
-            self.plotMM(spec_series[i, :, :], kx, ky,e, imname)
-            plot_image = Image.open(imname)
-            self.add_thumbnail(plot_image, f"QSpleem Momentum Map {i+1}")
+            self.add_thumbnail(self.plotMM(spec_series[i, :, :], kx, ky, e), f"QSpleem Momentum Map {i+1}")
 
 
 class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
