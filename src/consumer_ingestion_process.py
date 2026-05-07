@@ -5,11 +5,13 @@ import logging
 from crucible import CrucibleClient
 
 from .utils import get_secret, setup_pika_client
-from .constants import crucible_api_url, rmq_host, rmq_port
 from crucible.utils.io import get_tz_isoformat
 from .data_ingestion import data_ingestion
 
+crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
 ingestion_githash = os.environ.get('GITHASH')
+rmq_host = os.environ.get('RMQ_HOST')
+rmq_port = os.environ.get('RMQ_PORT')
 RMQ_ROUTING_SUFFIX = os.environ.get('RMQ_ROUTING_SUFFIX')
 
 logger = logging.getLogger(__name__)

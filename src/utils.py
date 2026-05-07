@@ -13,9 +13,9 @@ import numpy as np
 from datetime import datetime
 from google.cloud import secretmanager
 from google.oauth2 import service_account
-
-from .constants import secret_store
 from crucible.utils.io import run_shell
+
+secret_store = os.environ.get("SECRET_STORE")
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
