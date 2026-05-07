@@ -19,11 +19,12 @@ logging.basicConfig(level=logging.INFO)
 class SerIngestor(CrucibleDatasetIngestor):
     '''subclass for ingesting ser / emi files'''
     
-    supported_filetypes: ClassVar[list[str]] = ['ser']
+    supported_filetypes: ClassVar[list[str]] = ['.ser']
     
     def is_file_supported(self):
-        return np.any([self.file_to_upload.endswith(ftype)
-                       for ftype in self.supported_filetypes])
+        """Check if the file to upload is a supported ser file based on its extension and content."""
+        file_extension = Path(self.file_to_upload).suffix.lower()
+        return file_extension in self.supported_filetypes
 
 
     def get_scientific_metadata(self):
@@ -55,6 +56,9 @@ class SerIngestor(CrucibleDatasetIngestor):
         with nio.ser.fileSER(self.file_to_upload) as ser:
             data_array = ser.getDataset(0)[0]
 
+        if data_array is None:
+            raise ValueError("No dataset found in the .ser file for thumbnail generation.")
+        
         # Use the middle slice if it's a 3D array, otherwise use the 2D array directly
         if data_array.ndim > 2:
             # Calculate the middle index for all dimensions EXCEPT the last two
