@@ -2,6 +2,7 @@
 import base64
 import glob
 from io import BytesIO
+import math
 import os
 import json
 import logging
@@ -214,6 +215,16 @@ class EnhancedJSONEncoder(json.JSONEncoder):
         if isinstance(obj, datetime):
             return(str(obj.isoformat()))
         return json.JSONEncoder.default(self, obj)
+
+
+def sanitize_metadata(obj):
+    if isinstance(obj, dict):
+        return {k: sanitize_metadata(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [sanitize_metadata(v) for v in obj]
+    if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+        return None
+    return obj
 
 
 
