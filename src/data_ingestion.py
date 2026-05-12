@@ -118,7 +118,7 @@ def populate_existing_ds_info(ig, client, populate_fields):
             else:
                 setattr(ig, k, found_ds[k])
 
-    assoc_files = client.get_associated_files(ig.unique_id)
+    assoc_files = client.datasets.get_associated_files(ig.unique_id)
     logger.info(f'{ig.unique_id}: {assoc_files=}')
     for af in assoc_files:
         ig.associated_files[af['filename']] = {'size': af['size'], 
@@ -139,9 +139,6 @@ def data_ingestion(dataset_to_process: str,
     storage_bucket = 'mf-storage-prod'
     ingest_json_fname = f"{dsid}_ingest_{timestamp}_{reqid}.json"
 
-    # select ingestion class to use
-    # if no supporting ingestion class found; 
-    # request will get rerouted to "not-supported queue"
     ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class, ingestor_list)
     if ig is None:
         logger.warning("Tried all ingestors with no matches found")
@@ -201,7 +198,7 @@ def data_ingestion(dataset_to_process: str,
     filt_keywords = [kw for kw in keywords if isinstance(kw, str) and kw != ""]
     for kw in filt_keywords:
         try:
-            client.add_dataset_keyword(dsid, kw)
+            client.datasets.add_keyword(dsid, kw)
         except Exception as err:
             logger.error(f"Failed to add keyword {kw} with error {err}")
     

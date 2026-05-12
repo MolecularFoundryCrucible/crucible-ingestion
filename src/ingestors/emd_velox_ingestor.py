@@ -322,7 +322,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
             )
         
-            resp = client.create_new_dataset(
+            resp = client.datasets.create(
                 child_ds,
                 scientific_metadata=md,
                 keywords=self.keywords,
@@ -331,12 +331,12 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
 
             # add thumbnail for child if applicable
             if child_thumbnail is not None:
-                resp = client.add_thumbnail(child_dsid, child_thumbnail, 'Velox_EMD_Thumbnail')
+                resp = client.datasets.add_thumbnail(child_dsid, child_thumbnail, 'Velox_EMD_Thumbnail')
                 logger.info(f'{child_dsid} -- thumbnail -- {resp}')
             else: 
                 logger.info(f'{child_dsid} thumbnail was None')
             # Link child with parent dataset 
-            client.link_datasets(parent_dsid, child_dsid)
+            client.datasets.link_parent_child(parent_dsid, child_dsid)
 
             return child_dsid
         

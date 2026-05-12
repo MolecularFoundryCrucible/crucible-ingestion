@@ -41,30 +41,13 @@ def is_file_lost(message, dataset_to_process, ch, update_status=True):
     file_exists = os.path.exists(dataset_to_process)
     if not file_exists:
         if update_status:
-            client.datasets.update_ingestion_status(dsid, reqid, "file not found")
+            client.files.update_ingestion_status(reqid, status = "file not found")
         file_lost = True
 
     else:
         file_lost = False
 
     return file_lost
-
-
-# def is_file_too_big(message, dataset_to_process, ch):
-#     reqid = message['reqid']
-#     dsid = message['dsid']
-#     fsize = os.path.getsize(dataset_to_process)
-
-#     if fsize > 1e10:
-#         logger.warning(f"[x] Received {message} but sending file to large file queue")
-#         client.datasets.update_ingestion_status(dsid, reqid, "file too large")
-
-#         too_big = True
-#     else:
-#         too_big = False
-    
-#     return too_big
-
 
 def callback(ch, method, props, body):
     '''
@@ -76,14 +59,7 @@ def callback(ch, method, props, body):
               and that the new data will be uploaded to
 
     Will skip requests for files that are: 
-        - Not found at the specified path
-        - Larger than 2GB
         - Not supported by a currently deployed ingestion class
-
-    Will reroute those files to the queues below: 
-        - lost-files
-        - large-files
-        - not-supported
 
     '''
     # get info
@@ -105,7 +81,7 @@ def callback(ch, method, props, body):
     logger.info(f"received message {message} .. starting processing")
     
     # update the SQL database that the ingestion has begun
-    client.datasets.update_ingestion_status(dsid, reqid, "started", ingestion_githash = ingestion_githash)
+    client.files.update_ingestion_status(reqid, status = "started", ingestion_githash = ingestion_githash)
 
     # check file found (retry up to 5 times)
     max_file_retries = 5
@@ -120,17 +96,9 @@ def callback(ch, method, props, body):
             ch.basic_ack(delivery_tag=method.delivery_tag)
             return
 
-    # check file size
-    # if is_file_too_big(message, dataset_to_process, ch):
-    #     logger.info(f"[x] Received {body} but file too large")
-    #     ch.basic_ack(delivery_tag=method.delivery_tag)
-    #     return  
 
     ds, ingestion_class = (None,None)
     try:
-        # /datasets/{dsid}/upload uploads file to crucible-uploads and returns path to client as crucible-uploads/{path-to-file}
-        # client passes the upload path to /datasets/{dsid}/add_associated_file as the filename
-        # /add_associated_file uses the associated_file.filename in the ingestion request message
         ds, ingestion_class = data_ingestion(dataset_to_process = dataset_to_process, 
                                     dsid = dsid,
                                     reqid = reqid,
@@ -140,21 +108,28 @@ def callback(ch, method, props, body):
         
         logger.info(f"{ds=}")
         if ds is None:
-            client.datasets.update_ingestion_status(dsid, reqid, "not supported", ingestion_githash = ingestion_githash)    
+            client.files.update_ingestion_status(reqid, status = "not supported", ingestion_githash = ingestion_githash)    
             ch.basic_publish(exchange = '',
                             routing_key= 'not-supported',
                             body=json.dumps(message))
             logger.warning(f"[x] Received {body} and was not a supported a file type - skipping")
 
         else:
-            client.datasets.update_ingestion_status(dsid, reqid, "complete", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
+            client.files.update_ingestion_status(reqid, 
+                                                 status = "complete",
+                                                 ingestion_githash = ingestion_githash,
+                                                 ingestion_class = ingestion_class)
+            
             logger.info(f"[x] Received {body} and ingested with id: {ds['unique_id']}")
         
         ch.basic_ack(delivery_tag=method.delivery_tag)      
         
     except Exception as err:
         logger.error(f"[x] Received {body} but failed with error {err}")
-        client.datasets.update_ingestion_status(dsid, reqid, "failed", ingestion_githash = ingestion_githash, ingestion_class = ingestion_class)
+        client.files.update_ingestion_status(reqid,
+                                             "failed",
+                                             ingestion_githash = ingestion_githash,
+                                             ingestion_class = ingestion_class)
         ch.basic_publish(exchange = '', routing_key= f'ingestion-{RMQ_ROUTING_SUFFIX}-failed', body=json.dumps(message))
         ch.basic_ack(delivery_tag=method.delivery_tag)    
         return

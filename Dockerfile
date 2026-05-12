@@ -24,6 +24,7 @@ ARG githash
 ENV GITHASH=$githash
 
 RUN uv pip install git+https://github.com/MolecularFoundryCrucible/nano-crucible.git@dev
+
 # Run our flow script when the container starts
 CMD uv run python -m src.consumer_ingestion_process
 
