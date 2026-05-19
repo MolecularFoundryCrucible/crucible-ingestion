@@ -48,7 +48,7 @@ class EmiIngestor(CrucibleDatasetIngestor):
             self.timestamp = dt.strptime(acquired_date, tia_date_format).isoformat()
 
         self.measurement = self.scientific_metadata.get('Mode []').strip()
-        self.dataset_name = Path(self.file_to_upload)
+        self.dataset_name = Path(self.file_to_upload).name
 
 
     def generate_thumbnail(self):
