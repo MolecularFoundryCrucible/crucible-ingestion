@@ -135,7 +135,9 @@ def callback(ch, method, props, body):
         return
         #ch.basic_nack(delivery_tag=method.delivery_tag)      
 
+
 # subscribe to the queue
+channel.basic_qos(prefetch_count=10)  # tune this up
 channel.basic_consume(queue=f'ingestion-{RMQ_ROUTING_SUFFIX}',
                       auto_ack=False,
                       on_message_callback=callback)
