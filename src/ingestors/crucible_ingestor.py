@@ -4,6 +4,7 @@ from datetime import datetime as dt
 from mfid import mfid
 import logging
 import json
+from pathlib import Path
 
 from crucible import CrucibleClient
 from crucible.models import Dataset
@@ -76,7 +77,7 @@ class CrucibleDatasetIngestor(Dataset):
         if self.dataset_name:
             return
         else:
-            self.dataset_name = os.path.basename(self.file_to_upload)
+            self.dataset_name = Path(self.file_to_upload).name
             logger.info(f"{self.dataset_name=}")
             return
     
