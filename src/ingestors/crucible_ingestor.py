@@ -263,9 +263,6 @@ class CrucibleDatasetIngestor(Dataset):
                 
             else:
                continue
-            
-        # if self.project_id:
-        #     self.project_id = self.project_id.split(" ")[0]
 
 
     def to_json_from_ig(self, jsonfile, sql_export_attr, allow_missing=False):

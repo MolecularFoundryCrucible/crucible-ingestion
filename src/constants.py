@@ -1,7 +1,6 @@
-sql_import_attr = [ 'dataset_name', 
-                    'unique_id', 
-                    'timestamp', 
-                    'size',
+sql_import_attr = [ 'dataset_name',
+                    'unique_id',
+                    'timestamp',
                     'source_folder',
                     'owner_orcid',
                     'project_id',
@@ -14,8 +13,9 @@ sql_import_attr = [ 'dataset_name',
                     'ingestion_class',
                     'ingestion_githash']
 
-sql_export_attr = sql_import_attr + ['thumbnails',
-                                     'keywords', 
+sql_export_attr = sql_import_attr + ['size',
+                                     'thumbnails',
+                                     'keywords',
                                      'acl']
 
 INSTRUMENT_DRIVES = {
