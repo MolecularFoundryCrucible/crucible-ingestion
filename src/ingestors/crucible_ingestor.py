@@ -114,12 +114,24 @@ class CrucibleDatasetIngestor(Dataset):
     def parse_instrument(self):
         if self.instrument_name:
             self.acl.append(self.instrument_name)
-    
+
+
+    def parse_measurement(self):
+        """Subclasses override to set self.measurement."""
+        pass
+
+
+    def parse_data_type(self):
+        """Default: mirror measurement. Subclasses may override."""
+        if self.measurement:
+            self.data_type = self.measurement
+
 
     def parse_keywords(self):
-        kw_fields = [self.instrument_name, self.measurement, self.session_name]
+        kw_fields = [self.instrument_name, self.measurement, self.data_type, self.session_name]
         set_kw_fields = [k for k in kw_fields if k is not None]
         self.keywords += set_kw_fields
+        self.keywords = list(set(self.keywords))
         logger.info(f"{self.keywords=}")
         return
 
@@ -134,8 +146,6 @@ class CrucibleDatasetIngestor(Dataset):
         if self.unique_id is None:
             self.unique_id = mfid()[0]
         
-        # if not self.sha256_hash_file_to_upload:
-        #     self.sha256_hash_file_to_upload = checkhash(self.file_to_upload)
         if self.size is None:
             self.size = 0
 
@@ -147,6 +157,8 @@ class CrucibleDatasetIngestor(Dataset):
         self.parse_file_timestamp()
         self.parse_source_folder()
         self.parse_instrument()
+        self.parse_measurement()
+        self.parse_data_type()
         self.parse_keywords()
         return
 
@@ -192,18 +204,6 @@ class CrucibleDatasetIngestor(Dataset):
                 logger.info(f"Project info appended: {self.project_id}")
 
 
-    # def get_data_files(self):
-    #     """
-    #     Base function that gets called
-    #     during setup_data()- should call
-    #     self.add_file(). 
-
-    #     Default adds only self.file_to_upload.  
-    #     """
-    #     self.add_file(self.file_to_upload)
-    #     return "get_data_files completed"
-
-
     def get_thumbnails(self):
         """
         Base function that gets called
@@ -212,22 +212,6 @@ class CrucibleDatasetIngestor(Dataset):
         """
         self.thumbnails = []
         return "get_thumbnails completed"
-        
-        
-    # def add_file(self, file):
-    #     fsize = os.path.getsize(file)
-    #     if file == self.file_to_upload and self.sha256_hash_file_to_upload:
-    #         fhash = self.sha256_hash_file_to_upload
-    #     else:
-    #         fhash = checkhash(file)
-    #     for f,fattr in self.associated_files.items():
-    #         if fattr['sha256_hash'] == fhash:
-    #             logger.info(f'{file} already in associated files')
-    #             return
-            
-    #     logger.info(f'adding {file}')
-    #     self.associated_files[file] = {'size': fsize,
-    #                                    'sha256_hash': fhash}
 
 
     def add_thumbnail(self, image: Image.Image, caption: str, size=(200,200)):

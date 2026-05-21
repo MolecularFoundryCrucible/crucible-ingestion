@@ -77,14 +77,17 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
                         self.header_sample = sample_name
         
 
-    def get_dataset_metadata(self):
-
-        self.instrument_name = self.scientific_metadata[self.header_sample]['settings']['Spectrometer']
-
+    def parse_measurement(self):
         if "transmission" in self.header_file.lower():
             self.measurement = "In Situ UV-Vis"
         else:
             self.measurement = "In Situ PL"
+
+
+    def get_dataset_metadata(self):
+
+        self.instrument_name = self.scientific_metadata[self.header_sample]['settings']['Spectrometer']
+
         CrucibleDatasetIngestor.get_dataset_metadata(self)
         self.keywords += ["In Situ Spectroscopy"]
         self.keywords += list(self.scientific_metadata.keys())

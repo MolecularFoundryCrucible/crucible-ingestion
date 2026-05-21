@@ -77,6 +77,10 @@ class PtychographyH5Ingestor(H5Ingestor):
         self.scientific_metadata.update(d)
         
 
+    def parse_measurement(self):
+        self.measurement = '4D-STEM'
+
+
     def get_dataset_metadata(self):
         """
         Base function that gets called
@@ -84,12 +88,13 @@ class PtychographyH5Ingestor(H5Ingestor):
         should update unique_id, timestamp,
         size, dataset_name, data_format
         """
-        self.measurement = '4D-STEM'
         self.data_format = self.file_to_upload.split('.')[-1]
         # self.sha256_hash_file_to_upload = checkhash(self.file_to_upload)
-        
-        super().parse_source_folder()
-        super().parse_keywords()
+
+        self.parse_source_folder()
+        self.parse_measurement()
+        self.parse_data_type()
+        self.parse_keywords()
         return "get_dataset_metadata completed"
     
 

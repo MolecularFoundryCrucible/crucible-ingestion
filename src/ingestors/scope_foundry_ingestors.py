@@ -49,10 +49,13 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
                            for meas_name in self.supported_measurements])
         return False
     
+    def parse_measurement(self):
+        self.measurement = self.h5file.visit(self._find_measurement)
+
+
     def get_dataset_metadata(self):
         self.instrument_name = self.scientific_metadata['app']['name']
         self.source_folder = self.scientific_metadata['app']['settings']['save_dir']
-        self.measurement= self.h5file.visit(self._find_measurement)
 
         H5Ingestor.get_dataset_metadata(self)
 
@@ -611,7 +614,6 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
     def get_dataset_metadata(self):
         self.instrument_name = 'Nirvana Spectrometer'
         self.source_folder = self.scientific_metadata['app']['settings']['save_dir']
-        self.measurement= self.h5file.visit(self._find_measurement)
 
         H5Ingestor.get_dataset_metadata(self)
 

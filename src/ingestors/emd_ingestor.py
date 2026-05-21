@@ -36,8 +36,6 @@ class BerkeleyEmdIngestor(CrucibleDatasetIngestor):
          # Use parent class method to set data_format, size, and source_folder
         CrucibleDatasetIngestor.get_dataset_metadata(self)
         self.dataset_name = Path(self.file_to_upload).name
-        # TODO: parse this
-        self.measurement = ''
 
 
     def generate_thumbnail(self, target_size=(200, 200), dpi=100):

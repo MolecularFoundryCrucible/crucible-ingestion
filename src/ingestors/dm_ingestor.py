@@ -37,15 +37,23 @@ class DigitalMicrographIngestor(CrucibleDatasetIngestor):
         self.scientific_metadata = meta_data
 
 
+    def parse_measurement(self):
+        # Define the "measurement" based on the TEM lens setup
+        illumination_mode = self.scientific_metadata.get('Microscope Info Illumination Mode', '')
+        imaging_mode = self.scientific_metadata.get('Microscope Info Imaging Mode', '')
+        self.measurement = f"{illumination_mode} {imaging_mode}".strip()
+        logger.info(f'{self.measurement=}')
+
+
     def get_dataset_metadata(self):
         '''
         Set the structured metadata according to Crucible's schema.
-        Suggested ones are: dataset_name, instrument_name, measurement, 
+        Suggested ones are: dataset_name, instrument_name, measurement,
         session_name, timestamp, data_format, source_folder
         '''
         # Use parent class method to set data_format, size, and source_folder
         CrucibleDatasetIngestor.get_dataset_metadata(self)
-        
+
         # Create a datetime from the acquisition date and time if both are available in the metadata
         if 'DataBar Acquisition Date' in self.scientific_metadata and \
            'DataBar Acquisition Time' in self.scientific_metadata:
@@ -54,11 +62,6 @@ class DigitalMicrographIngestor(CrucibleDatasetIngestor):
             "%m/%d/%Y %I:%M:%S %p")
             self.timestamp = dt.isoformat()
 
-        # Define the "measurement" based on the TEM lens setup
-        illumination_mode = self.scientific_metadata.get('Microscope Info Illumination Mode', '')
-        imaging_mode = self.scientific_metadata.get('Microscope Info Imaging Mode', '')
-        self.measurement = f"{illumination_mode} {imaging_mode}".strip()
-        logger.info(f'{self.measurement=}')
         self.dataset_name = Path(self.file_to_upload).name # file name without extension
 
 

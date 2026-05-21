@@ -66,6 +66,10 @@ class AFMIngestor(CrucibleDatasetIngestor):
         self.scientific_metadata['version'] = im['version']
 
 
+    def parse_measurement(self):
+        self.measurement = "AFM Image"
+
+
     def get_kw_from_dataset_name(self):
         name_components = self.dataset_name.split("-")[:-1]
         kw = [x for x in name_components if x != ""]

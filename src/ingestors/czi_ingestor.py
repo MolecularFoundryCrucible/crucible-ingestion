@@ -45,6 +45,10 @@ class CziIngestor(CrucibleDatasetIngestor):
         search_and_replace("HotPixelSettings", metadata)
         self.scientific_metadata.update(metadata)
 
+    def parse_measurement(self):
+        self.measurement = "Confocal Image"
+
+
     def parse_file_timestamp(self):
         try:
             self.timestamp = datetime.strptime(self.scientific_metadata['Information']['Document']['CreationDate'], "%Y-%m-%dT%H:%M:%S").isoformat()

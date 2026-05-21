@@ -33,21 +33,24 @@ class SerIngestor(CrucibleDatasetIngestor):
             self.scientific_metadata.update(ser.getMetadata())
 
     
+    def parse_measurement(self):
+        self.measurement = self.scientific_metadata.get('Mode []')
+
+
     def get_dataset_metadata(self):
         '''
         Set the structured metadata according to Crucible's schema.
-        Suggested ones are: dataset_name, instrument_name, measurement, 
+        Suggested ones are: dataset_name, instrument_name, measurement,
         session_name, timestamp, data_format, source_folder
         '''
         # Use parent class method to set data_format, size, and source_folder
         CrucibleDatasetIngestor.get_dataset_metadata(self)
-        
+
         acquired_date = self.scientific_metadata.get('AcquireDate')
         if acquired_date:
             tia_date_format = "%a %b %d %H:%M:%S %Y"
             self.timestamp = dt.strptime(acquired_date, tia_date_format).isoformat()
 
-        self.measurement = self.scientific_metadata.get('Mode []')
         self.dataset_name = Path(self.file_to_upload).name
 
     def generate_thumbnail(self, target_size=(200, 200), dpi=100):
