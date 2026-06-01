@@ -70,6 +70,8 @@ def callback(ch, method, props, body):
         dataset_to_process = filename
     elif filename.startswith('crucible-uploads'):
         dataset_to_process = filename.replace('crucible-uploads', '/mnt/gcs', 1)
+    elif filename.startswith('mf-storage-prod'):
+        dataset_to_process = filename.replace('mf-storage-prod', '/mnt/gcs/mf-storage-prod', 1)
     else:
         logger.error(f"Unexpected filename format, cannot resolve path: {filename}")
         ch.basic_ack(delivery_tag=method.delivery_tag)
