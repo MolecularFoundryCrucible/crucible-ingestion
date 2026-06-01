@@ -1,7 +1,6 @@
 # packages
-import json
 import logging
-from .constants import sql_import_attr
+from .constants import sql_import_attr, sql_export_attr
 from .utils import sanitize_metadata
 
 from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
@@ -134,10 +133,6 @@ def data_ingestion(dataset_to_process: str,
                    ingestion_class=None):
     
     logger.info("running the data_ingestion function")
-    
-    # set up
-    storage_bucket = 'mf-storage-prod'
-    ingest_json_fname = f"{dsid}_ingest_{timestamp}_{reqid}.json"
 
     ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class, ingestor_list)
     if ig is None:
@@ -166,22 +161,13 @@ def data_ingestion(dataset_to_process: str,
         logger.info("no dataset found to update from")
     
     
-    # send to gcs
-    ig.to_google_cloud_storage(storage_bucket,
-                               jsonfile = ingest_json_fname)
-    logger.info(f"Created json file {ingest_json_fname=} and copied to GCS")
-    
-    # only do this if ingestor found: update SQL database
-    with open(ingest_json_fname) as j:
-        D = json.load(j)
+    keywords = ig.keywords
+    ingestion_class = ig.ingestion_class
+    thumbnails = ig.thumbnails
+    md = sanitize_metadata(ig.scientific_metadata)
 
-    keywords = D.pop('keywords') 
-    ingestion_class = D.pop('ingestion_class')
-    thumbnails = D.pop('thumbnails')
-    md = sanitize_metadata(D.pop("scientific_metadata"))
-
-    for remove_field in ['acl', 'ingestion_githash']:
-        _ = D.pop(remove_field)
+    skip_fields = {'keywords', 'ingestion_class', 'thumbnails', 'scientific_metadata', 'acl', 'ingestion_githash'}
+    D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
 
     # send the data
     ds = client.datasets.update(ig.unique_id, **D)
