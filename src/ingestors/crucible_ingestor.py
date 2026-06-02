@@ -99,7 +99,7 @@ class CrucibleDatasetIngestor(Dataset):
             file_dir = os.path.dirname(self.file_to_upload)
             drive_name = None
 
-            if file_dir.startswith('/mnt/gcs'):
+            if file_dir.startswith('/mnt/gcs/'):
                 crucible_upload_subdir = file_dir.split('/')[4]
                 drive_name = INSTRUMENT_DRIVES.get(crucible_upload_subdir)
             
