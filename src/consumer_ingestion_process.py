@@ -3,10 +3,13 @@ import json
 import time
 import logging
 from crucible import CrucibleClient
+from google.cloud import storage as gcs
 
 from .utils import get_secret, setup_pika_client
 from crucible.utils.io import get_tz_isoformat
 from .data_ingestion import data_ingestion
+
+_GCS_PROD_BUCKET = "mf-storage-prod"
 
 crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
 ingestion_githash = os.environ.get('GITHASH')
@@ -35,19 +38,25 @@ client = CrucibleClient(api_url=crucible_api_url, api_key=crucible_apikey)
 
 # Functions ===========================
 def is_file_lost(message, dataset_to_process, ch, update_status=True):
-
     reqid = message['reqid']
-    dsid = message['dsid']
-    file_exists = os.path.exists(dataset_to_process)
+    filename = message['filename']
+
+    # For prod bucket files, check via GCS client to bypass FUSE cache latency
+    if filename.startswith(_GCS_PROD_BUCKET):
+        blob_name = filename[len(_GCS_PROD_BUCKET) + 1:]
+        try:
+            file_exists = gcs.Client().bucket(_GCS_PROD_BUCKET).blob(blob_name).exists()
+        except Exception as e:
+            logger.warning(f"GCS client check failed for {blob_name}: {e}, falling back to os.path")
+            file_exists = os.path.exists(dataset_to_process)
+    else:
+        file_exists = os.path.exists(dataset_to_process)
+
     if not file_exists:
         if update_status:
-            client.files.update_ingestion_status(reqid, status = "file not found")
-        file_lost = True
-
-    else:
-        file_lost = False
-
-    return file_lost
+            client.files.update_ingestion_status(reqid, status="file not found")
+        return True
+    return False
 
 def callback(ch, method, props, body):
     '''

@@ -46,11 +46,13 @@ get_title_from_md = lambda md: md['General']['title'] if 'title' in  md['General
 PROCESSED_IMAGE_GROUP_NAME = 'EDS_Processed'
 SPECTRUM_IMAGE_GROUP_NAME = 'EDS_SI'
 SPECTRUM_GROUP_NAME = 'EDS_Spectrum'
+
+
 class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
     def __init__(self, filename): 
         super().__init__(filename)
         self._parse_image_titles()
-
+    
     def _find_groups(self):
         """ 
         Find all data groups: spectrum data, image data, and spectrum image. (in that order)
@@ -65,7 +67,7 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
         # only add Spectrum data (to the front of list_data) if there are no Images or Spectrum Images 
         if len(self.list_data) == 0 and 'Data/Spectrum' in self._file_hdl: 
             self.list_data = list(self._file_hdl['Data/Spectrum'].values()) + self.list_data
-
+    
     def _parse_image_titles(self):
         """
         Create a mapping between each image_uuid: 
@@ -74,23 +76,18 @@ class fileEMDVeloxWithSpectra(nio.emdVelox.fileEMDVelox):
         Stores the mapping for in self.img_titles
         """
         self.img_titles = {}
-        
         if "SharedProperties/DisplayGroupItem" not in self._file_hdl: 
             return 
-        
         display_groups = self._file_hdl["SharedProperties/DisplayGroupItem"]
         for group in display_groups.values():
             display_group_dict = parse_dataset_as_dict(group)
             # /Displays/ImageDisplay/___
             image_display_path = display_group_dict['display']
             image_display_dict = parse_dataset_as_dict(self._file_hdl.get(image_display_path))
-            
             # /SharedProperties/ImageSeriesDataReference/___
             data_ref_path = image_display_dict["data"]
             data_ref_dict = parse_dataset_as_dict(self._file_hdl.get(data_ref_path))
-
             data_path = data_ref_dict["dataPath"]
-            # data_path = data_path.split("/")[-1]
             groupType = display_group_dict['groupType'].upper()
             self.img_titles[data_path] = {'groupType': PROCESSED_IMAGE_GROUP_NAME if groupType == "EDS" else groupType, 
                                           'title': display_group_dict['name']} 
