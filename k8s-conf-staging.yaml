@@ -71,6 +71,9 @@ spec:
         - mountPath: /mnt/gcs
           name: cruc-upload-vol2
           readOnly: true
+        - mountPath: /mnt/gcs/mf-storage-prod
+          name: mf-storage-prod-vol
+          readOnly: true
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -89,6 +92,10 @@ spec:
       - name: cruc-upload-vol2
         persistentVolumeClaim:
           claimName: cruc-upload-pvc2
+          readOnly: true
+      - name: mf-storage-prod-vol
+        persistentVolumeClaim:
+          claimName: mf-storage-prod-pvc
           readOnly: true
 ---
 apiVersion: apps/v1
@@ -164,6 +171,9 @@ spec:
         - mountPath: /mnt/gcs
           name: cruc-upload-vol2
           readOnly: true
+        - mountPath: /mnt/gcs/mf-storage-prod
+          name: mf-storage-prod-vol
+          readOnly: true
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -182,6 +192,10 @@ spec:
       - name: cruc-upload-vol2
         persistentVolumeClaim:
           claimName: cruc-upload-pvc2
+          readOnly: true
+      - name: mf-storage-prod-vol
+        persistentVolumeClaim:
+          claimName: mf-storage-prod-pvc
           readOnly: true
 ---
 apiVersion: apps/v1
@@ -257,6 +271,9 @@ spec:
         - mountPath: /mnt/gcs
           name: cruc-upload-vol2
           readOnly: true
+        - mountPath: /mnt/gcs/mf-storage-prod
+          name: mf-storage-prod-vol
+          readOnly: true
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -275,4 +292,8 @@ spec:
       - name: cruc-upload-vol2
         persistentVolumeClaim:
           claimName: cruc-upload-pvc2
+          readOnly: true
+      - name: mf-storage-prod-vol
+        persistentVolumeClaim:
+          claimName: mf-storage-prod-pvc
           readOnly: true
