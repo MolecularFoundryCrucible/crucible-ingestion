@@ -18,12 +18,14 @@ class BerkeleyEmdIngestor(CrucibleDatasetIngestor):
     def is_file_supported(self):
         if not self.file_to_upload.endswith('.emd'):
             return False
-        
-        with nio.emd.fileEMD(self.file_to_upload, readonly=True) as emd1:
-            if len(emd1.list_emds) > 0:
-                return True
-            else:
-                return False
+        try:
+            with nio.emd.fileEMD(self.file_to_upload, readonly=True) as emd1:
+                if len(emd1.list_emds) > 0:
+                    return True
+                else:
+                    return False
+        except:
+            return False
 
     
     def get_scientific_metadata(self):
