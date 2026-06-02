@@ -71,7 +71,7 @@ spec:
         - mountPath: /mnt/gcs
           name: cruc-upload-vol2
           readOnly: true
-        - mountPath: /mnt/gcs/mf-storage-prod
+        - mountPath: /mnt/gcs-prod
           name: mf-storage-prod-vol
           readOnly: true
       dnsPolicy: ClusterFirst
@@ -171,7 +171,7 @@ spec:
         - mountPath: /mnt/gcs
           name: cruc-upload-vol2
           readOnly: true
-        - mountPath: /mnt/gcs/mf-storage-prod
+        - mountPath: /mnt/gcs-prod
           name: mf-storage-prod-vol
           readOnly: true
       dnsPolicy: ClusterFirst
@@ -271,7 +271,7 @@ spec:
         - mountPath: /mnt/gcs
           name: cruc-upload-vol2
           readOnly: true
-        - mountPath: /mnt/gcs/mf-storage-prod
+        - mountPath: /mnt/gcs-prod
           name: mf-storage-prod-vol
           readOnly: true
       dnsPolicy: ClusterFirst
