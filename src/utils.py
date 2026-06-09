@@ -224,6 +224,8 @@ def sanitize_metadata(obj):
         return [sanitize_metadata(v) for v in obj]
     if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
         return None
+    if isinstance(obj, bytes):
+        return obj.decode('utf-8', errors='replace')
     return obj
 
 
