@@ -1,6 +1,7 @@
 # packages
 import logging
 from .constants import sql_import_attr, sql_export_attr
+import orjson
 from .utils import sanitize_metadata
 
 from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
@@ -164,7 +165,7 @@ def data_ingestion(dataset_to_process: str,
     keywords = ig.keywords
     ingestion_class = ig.ingestion_class
     thumbnails = ig.thumbnails
-    md = sanitize_metadata(ig.scientific_metadata)
+    md = orjson.loads(orjson.dumps(sanitize_metadata(ig.scientific_metadata)))
 
     skip_fields = {'keywords', 'ingestion_class', 'thumbnails', 'scientific_metadata', 'acl', 'ingestion_githash'}
     D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
