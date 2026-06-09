@@ -465,70 +465,68 @@ class QSpleemImageIngestor(ScopeFoundryH5Ingestor):
 
 class QSpleemSVRampIngestor(ScopeFoundryH5Ingestor):
     supported_measurements: ClassVar[list[str]] = ['sv_ramp']
+    _LEED_THRESHOLD = 0.25
 
     def is_file_supported(self):
-        return(self.file_to_upload.endswith('_sv_ramp.h5'))
-    
-    def plot_image_at_diffpeak(self, M, image_array_key):
-        descriptions = {"000_im_array":"",
-                        "000_im_up_array": " (Spin Up)",
-                        "000_im_down_array": " (Spin Down)"}
-        im_descrip = descriptions[image_array_key]
-        sv_ramp = np.array(M['0000_sv_array'])
-        im = np.array(M[image_array_key])
-        imavg = np.array(M['000_imavg_array'])
-        diffpeak = np.argmax(imavg)
-        plt.imshow(im[diffpeak,:,:])
-        plt.tick_params(which='both', size=0, labelsize=0)
-        plt.title(f"Diffraction at SV {sv_ramp[diffpeak]}{im_descrip}")
-        buf = BytesIO()
-        plt.savefig(buf, format='png')
-        plt.clf()
-        buf.seek(0)
-        self.add_thumbnail(Image.open(buf), f"QSpleem SV Ramp Diffraction{im_descrip}")
+        return self.file_to_upload.endswith('_sv_ramp.h5')
 
-    def plot_basic_image(self, M, image_array_key):
-        im = np.array(M[image_array_key])
-        if len(im.shape) != 2:
-            return f'unexpected image shape {im.shape} - expecting 2d array'
-        plt.imshow(im)
-        plt.colorbar()
-        plt.tick_params(which='both', size=0, labelsize=0)
-        plt.title(image_array_key)
-        buf = BytesIO()
-        plt.savefig(buf, format='png')
-        plt.clf()
-        buf.seek(0)
-        self.add_thumbnail(Image.open(buf), image_array_key)
-
-    def plot_average(self, M):
-        sv_ramp = np.array(M['0000_sv_array'])
-        svarrays = [x for x in list(M.keys()) if 'imavg_array' in x]
-        for x in svarrays:
-            arr = np.array(M[x])
-            if arr.shape[0] == sv_ramp.shape[0]:
-                plt.plot(sv_ramp, arr)
-        plt.xlabel("Energy (eV)")
-        plt.ylabel("Average Reflectivity")
-        buf = BytesIO()
-        plt.savefig(buf, format='png')
-        plt.clf()
-        buf.seek(0)
-        self.add_thumbnail(Image.open(buf), "QSpleem SV Ramp Average")
+    def parse_data_type(self):
+        try:
+            with h5py.File(self.file_to_upload, 'r') as f:
+                ds = f['measurement/sv_ramp/000_im_array']
+                n = ds.shape[0]
+                frame = ds[int(n * 0.7)].astype(np.float32)
+            p99 = float(np.percentile(frame, 99)) or 1.0
+            ratio = float(np.median(frame)) / p99
+            self.data_type = 'LEED-IV' if ratio < self._LEED_THRESHOLD else 'LEEM-IV'
+        except Exception:
+            self.data_type = 'LEEM-IV'
 
     def get_thumbnails(self):
-        with h5py.File(self.file_to_upload, 'r') as h5file:
-            M = h5file[f"measurement/{self.measurement}"]
+        try:
+            with h5py.File(self.file_to_upload, 'r') as h5file:
+                M = h5file['measurement/sv_ramp']
+                sv    = np.array(M['0000_sv_array'])
+                imavg = np.array(M['000_imavg_array'])
+                wfs   = float(M['0000_wfs_array'][0]) if '0000_wfs_array' in M else None
+                has_images = '000_im_array' in M
 
-            if '0000_sv_array' in M.keys():
-                self.plot_average(M)
+            # ── IV curve ──────────────────────────────────────────────────
+            fig, ax = plt.subplots()
+            ax.plot(sv, imavg, color='tab:blue')
+            if wfs is not None:
+                ax.axvline(wfs, color='gray', linestyle='--', linewidth=1, label=f'WF {wfs:.2f} V')
+                ax.legend(loc='upper right')
+            ax.set_xlabel('Start Voltage (V)')
+            ax.set_ylabel('Image intensity (a.u.)')
+            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+            self.add_thumbnail(Image.open(buf), 'SV Ramp IV Curve')
 
-            if '000_im_array' in M.keys():
-                self.plot_image_at_diffpeak(M, '000_im_array')
+            # ── Image at max intensity after WF ───────────────────────────
+            if has_images:
+                if wfs is not None:
+                    wf_idx = int(np.searchsorted(sv, wfs))
+                    wf_idx = min(wf_idx, len(sv) - 2)
+                else:
+                    wf_idx = 0
+                # Smooth and find bottom of the WF drop, then first peak after that
+                smooth = np.convolve(imavg, np.ones(9)/9, mode="same")
+                grad   = np.gradient(smooth, sv)
+                sign_changes = np.where(np.diff(np.sign(grad[wf_idx:])) > 0)[0]
+                min_idx = wf_idx + sign_changes[0] + 1 if len(sign_changes) > 0 else wf_idx + int(np.argmin(smooth[wf_idx:]))
+                peak = min_idx + int(np.argmax(imavg[min_idx:]))
+                with h5py.File(self.file_to_upload, 'r') as h5file:
+                    frame = h5file['measurement/sv_ramp/000_im_array'][peak]
+                fig, ax = plt.subplots()
+                ax.imshow(frame, cmap='gray', origin='lower')
+                ax.axis('off')
+                wf_note = f' (post-WF {wfs:.2f} V)' if wfs is not None else ''
+                ax.set_title(f'SV = {sv[peak]:.2f} V — max intensity{wf_note}', fontsize=8)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150, bbox_inches='tight'); plt.clf(); buf.seek(0)
+                self.add_thumbnail(Image.open(buf), f'Image at SV {sv[peak]:.2f} V (max post-WF)')
 
-            other_im_keys = ['000_im_up_array', '000_im_down_array']
-            for k in [x for x in other_im_keys if x in list(M.keys())]:
-                self.plot_basic_image(M, k)
+        except Exception as e:
+            logger.warning(f'SVRamp thumbnail generation failed: {e}')
 
 
 class QSpleemARRESEKIngestor(ScopeFoundryH5Ingestor):
@@ -616,6 +614,243 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
         self.source_folder = self.scientific_metadata['app']['settings']['save_dir']
 
         H5Ingestor.get_dataset_metadata(self)
+
+
+class QSpleemSVRampSpinIngestor(ScopeFoundryH5Ingestor):
+    supported_measurements: ClassVar[list[str]] = ['sv_ramp_spin']
+    _LEED_THRESHOLD = 0.25
+
+    def is_file_supported(self):
+        return self.file_to_upload.endswith('_sv_ramp_spin.h5')
+
+    def parse_data_type(self):
+        try:
+            with h5py.File(self.file_to_upload, 'r') as f:
+                ds = f['measurement/sv_ramp_spin/000_im_up_array']
+                n = ds.shape[0]
+                frame = ds[int(n * 0.7)].astype(np.float32)
+            p99 = float(np.percentile(frame, 99)) or 1.0
+            ratio = float(np.median(frame)) / p99
+            self.data_type = 'SPLEED-IV' if ratio < self._LEED_THRESHOLD else 'SPLEEM-IV'
+        except Exception:
+            self.data_type = 'SPLEEM-IV'
+
+    def get_thumbnails(self):
+        try:
+            with h5py.File(self.file_to_upload, 'r') as h5file:
+                M = h5file['measurement/sv_ramp_spin']
+                sv         = np.array(M['0000_sv_array'])
+                imavg_up   = np.array(M['000_imavg_up_array'])
+                imavg_down = np.array(M['000_imavg_down_array'])
+                asym       = np.array(M['000_asym_array'])
+                emga_up    = np.array(M['000_emga_up_array'])   if '000_emga_up_array'   in M else None
+                emga_down  = np.array(M['000_emga_down_array']) if '000_emga_down_array' in M else None
+                has_images = '000_im_up_array' in M
+
+            # ── IV curves: spin up + spin down ────────────────────────────
+            fig, ax = plt.subplots()
+            ax.plot(sv, imavg_up,   color='tab:blue', label='Spin Up')
+            ax.plot(sv, imavg_down, color='tab:red',  label='Spin Down')
+            ax.set_xlabel('Start Voltage (V)')
+            ax.set_ylabel('Mean Intensity (counts)')
+            ax.legend(loc='upper right')
+            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+            self.add_thumbnail(Image.open(buf), 'SV Ramp Spin IV Curves')
+
+            # ── Asymmetry vs SV ───────────────────────────────────────────
+            fig, ax = plt.subplots()
+            ax.plot(sv, asym, color='tab:green')
+            ax.set_xlabel('Start Voltage (V)')
+            ax.set_ylabel('Asymmetry')
+            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+            self.add_thumbnail(Image.open(buf), 'Spin Asymmetry vs SV')
+
+            # ── Emission current (if present) ─────────────────────────────
+            if emga_up is not None or emga_down is not None:
+                fig, ax = plt.subplots()
+                if emga_up   is not None: ax.plot(sv, emga_up,   color='tab:blue', label='Spin Up')
+                if emga_down is not None: ax.plot(sv, emga_down, color='tab:red',  label='Spin Down')
+                ax.set_xlabel('Start Voltage (V)')
+                ax.set_ylabel('Emission Current (A)')
+                ax.legend(loc='upper right')
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                self.add_thumbnail(Image.open(buf), 'GaAs Emission Current vs SV')
+
+            # ── 3-panel image at max |asymmetry| ─────────────────────────
+            if has_images:
+                window = 5
+                asym_smooth = np.convolve(np.abs(asym), np.ones(window) / window, mode='same')
+                peak = int(np.argmax(asym_smooth))
+                with h5py.File(self.file_to_upload, 'r') as h5file:
+                    M = h5file['measurement/sv_ramp_spin']
+                    up   = M['000_im_up_array'][peak].astype(np.float64)
+                    down = M['000_im_down_array'][peak].astype(np.float64)
+                total = up + down
+                asym_frame = np.where(total > 0, (up - down) / total, 0.0)
+
+                def norm_gray(arr):
+                    lo, hi = np.percentile(arr, 2), np.percentile(arr, 98)
+                    return np.clip((arr - lo) / (hi - lo + 1e-9), 0, 1)
+
+                fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+                axes[0].imshow(norm_gray(up),   cmap='gray',   origin='lower'); axes[0].set_title('Spin Up');   axes[0].axis('off')
+                axes[1].imshow(norm_gray(down), cmap='gray',   origin='lower'); axes[1].set_title('Spin Down'); axes[1].axis('off')
+                v = float(np.percentile(np.abs(asym_frame), 98)) or 1.0
+                axes[2].imshow(asym_frame, cmap='RdBu_r', origin='lower', vmin=-v, vmax=v)
+                axes[2].set_title('Asymmetry'); axes[2].axis('off')
+                fig.suptitle(f'SV = {sv[peak]:.2f} V (max |asymmetry|)', fontsize=10)
+                plt.tight_layout()
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                self.add_thumbnail(Image.open(buf), f'Images at SV {sv[peak]:.2f} V (max |asym|)')
+
+        except Exception as e:
+            logger.warning(f'SVRampSpin thumbnail generation failed: {e}')
+
+
+class QSpleemSPLEEMImageIngestor(ScopeFoundryH5Ingestor):
+    supported_measurements: ClassVar[list[str]] = ['SPLEEM_image']
+
+    def is_file_supported(self):
+        return self.file_to_upload.endswith('_SPLEEM_image.h5')
+
+    def get_thumbnails(self):
+        try:
+            with h5py.File(self.file_to_upload, 'r') as h5file:
+                images = np.array(h5file['measurement/SPLEEM_image/images'], dtype=np.float64)
+        except Exception as e:
+            logger.warning(f'Could not read SPLEEM_image data: {e}')
+            return
+
+        avg_up   = images[:, 0, :, :].mean(axis=0)
+        avg_down = images[:, 1, :, :].mean(axis=0)
+        total    = avg_up + avg_down
+        asym     = np.where(total > 0, (avg_up - avg_down) / total, 0.0)
+
+        def to_img_gray(arr):
+            lo, hi = np.percentile(arr, 2), np.percentile(arr, 98)
+            arr = np.clip((arr - lo) / (hi - lo + 1e-9), 0, 1)
+            buf = BytesIO()
+            plt.imsave(buf, arr, cmap='gray', format='png', origin='lower')
+            buf.seek(0)
+            return Image.open(buf)
+
+        def to_img_rdbu(arr):
+            v = np.percentile(np.abs(arr), 98) or 1.0
+            buf = BytesIO()
+            plt.imsave(buf, arr, cmap='RdBu_r', vmin=-v, vmax=v, format='png', origin='lower')
+            buf.seek(0)
+            return Image.open(buf)
+
+        self.add_thumbnail(to_img_gray(avg_up),   'SPLEEM Spin Up (averaged)')
+        self.add_thumbnail(to_img_gray(avg_down), 'SPLEEM Spin Down (averaged)')
+        self.add_thumbnail(to_img_rdbu(asym),     'SPLEEM Asymmetry (averaged)')
+
+
+class QSpleemDepositionMonitorIngestor(ScopeFoundryH5Ingestor):
+    supported_measurements: ClassVar[list[str]] = ['deposition_monitor']
+
+    def is_file_supported(self):
+        return self.file_to_upload.endswith('_deposition_monitor.h5')
+
+    def get_thumbnails(self):
+        ROI_COLORS = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red']
+
+        try:
+            with h5py.File(self.file_to_upload, 'r') as f:
+                M = f['measurement/deposition_monitor']
+                images       = np.array(M['images'])
+                roi_times    = np.array(M['roi_times'])
+                roi_int      = np.array(M['roi_intensity'])
+                ec           = np.array(M['emission_current'])
+                pressure     = np.array(M['pressure_main_chamber'])
+                temperature  = np.array(M['sample_temperature'])
+
+            # Detect spin mode: images is (N, 2, H, W) vs (N, H, W)
+            spin_mode = images.ndim == 4
+
+            # Infer a scalar time axis for ec/pressure/temperature.
+            # roi_times has shape (N,) or (N, 2); use column 0 for axis.
+            t = roi_times[:, 0] if roi_times.ndim == 2 else roi_times
+
+            # ── ROI intensity vs time ─────────────────────────────────────
+            n_roi = roi_int.shape[-1]
+            if n_roi > 0:
+                fig, ax = plt.subplots()
+                if spin_mode:
+                    t_up   = roi_times[:, 0]
+                    t_down = roi_times[:, 1]
+                    for i in range(n_roi):
+                        c = ROI_COLORS[i % len(ROI_COLORS)]
+                        ax.plot(t_up,   roi_int[:, 0, i], color=c, linestyle='-',  label=f'ROI {i+1} Up')
+                        ax.plot(t_down, roi_int[:, 1, i], color=c, linestyle='--', label=f'ROI {i+1} Down')
+                else:
+                    for i in range(n_roi):
+                        ax.plot(t, roi_int[:, i], color=ROI_COLORS[i % len(ROI_COLORS)], label=f'ROI {i+1}')
+                ax.set_xlabel('Time (s)')
+                ax.set_ylabel('Intensity (counts)')
+                ax.legend(fontsize=7)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                self.add_thumbnail(Image.open(buf), 'ROI Intensity vs Time')
+
+            # ── ROI asymmetry vs time (spin mode only) ───────────────────
+            if spin_mode and n_roi > 0:
+                fig, ax = plt.subplots()
+                t_up, t_down = roi_times[:, 0], roi_times[:, 1]
+                for i in range(n_roi):
+                    up, dn = roi_int[:, 0, i], roi_int[:, 1, i]
+                    total = up + dn
+                    asym = np.where(total > 0, (up - dn) / total, np.nan)
+                    ax.plot(t_up, asym, color=ROI_COLORS[i % len(ROI_COLORS)], label=f'ROI {i+1}')
+                ax.set_xlabel('Time (s)')
+                ax.set_ylabel('Asymmetry')
+                ax.legend(fontsize=7)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                self.add_thumbnail(Image.open(buf), 'ROI Asymmetry vs Time')
+
+            # ── First frame with ROI boxes ────────────────────────────────
+            roi_pos = np.array(M['roi_positions'])
+            first = images[0, 0].astype(np.float32) if spin_mode else images[0].astype(np.float32)
+            lo, hi = np.percentile(first, 2), np.percentile(first, 98)
+            first = np.clip((first - lo) / (hi - lo + 1e-9), 0, 1)
+            fig, ax = plt.subplots()
+            ax.imshow(first, cmap='gray', origin='lower')
+            for i in range(n_roi):
+                x, y, w, h = roi_pos[-1, i]
+                rect = plt.Rectangle((x, y), w, h, linewidth=1.5,
+                                     edgecolor=ROI_COLORS[i % len(ROI_COLORS)], facecolor='none')
+                ax.add_patch(rect)
+                ax.text(x + w/2, y + h + 10, f'ROI {i+1}',
+                        color=ROI_COLORS[i % len(ROI_COLORS)], ha='center', fontsize=7)
+            ax.axis('off')
+            ax.set_title('Final frame with ROI positions', fontsize=8, pad=4)
+            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150, bbox_inches='tight'); plt.clf(); buf.seek(0)
+            self.add_thumbnail(Image.open(buf), 'First Frame with ROIs')
+
+            # ── Scalar time series — combined ─────────────────────────────
+            fig, axes = plt.subplots(1, 3, figsize=(12, 3))
+            for ax, arr, ylabel in zip(axes,
+                [ec, pressure, temperature],
+                ['Emission Current (A)', 'Pressure (mbar)', 'Temperature (°C)']):
+                ax.plot(t, arr, color='tab:blue', linewidth=1)
+                ax.set_xlabel('Time (s)'); ax.set_ylabel(ylabel)
+            plt.tight_layout()
+            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+            self.add_thumbnail(Image.open(buf), 'Instrument Parameters vs Time')
+
+            # ── Final frame asymmetry (spin mode only) ────────────────────
+            if spin_mode:
+                up_last   = images[-1, 0].astype(np.float64)
+                down_last = images[-1, 1].astype(np.float64)
+                total = up_last + down_last
+                asym_frame = np.where(total > 0, (up_last - down_last) / total, 0.0)
+                v = float(np.percentile(np.abs(asym_frame), 98)) or 1.0
+                buf = BytesIO()
+                plt.imsave(buf, asym_frame, cmap='RdBu_r', vmin=-v, vmax=v, format='png', origin='lower')
+                buf.seek(0)
+                self.add_thumbnail(Image.open(buf), 'Final Frame Asymmetry')
+
+        except Exception as e:
+            logger.warning(f'DepositionMonitor thumbnail generation failed: {e}')
 
         # overwrite unique ID if one is in the file
         if 'unique_id' in self.h5file.attrs.keys():
