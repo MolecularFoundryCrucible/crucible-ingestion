@@ -615,6 +615,63 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
 
         H5Ingestor.get_dataset_metadata(self)
 
+        # overwrite unique ID if one is in the file
+        if 'unique_id' in self.h5file.attrs.keys():
+            self.unique_id = self.h5file.attrs['unique_id']
+
+        # overwrite creation time and data format
+        self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
+        self.data_format = "ScopeFoundryH5"
+
+        # parse session_name and tags
+        default_tags_value = "list,tags,separated,by,commas (optional)"
+        default_session_value = "(optional)"
+
+        try: 
+            scope_foundry_tags = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['tags'].strip()
+            scope_foundry_session = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['session_name'].strip()
+
+        except Exception:
+            logger.warning("no mf-crucible settings found for tags or session_name")
+            scope_foundry_tags = default_tags_value
+            scope_foundry_session = default_session_value
+
+        if scope_foundry_tags != default_tags_value:
+            self.keywords += [x.strip() for x in scope_foundry_tags.split(",")]
+
+        if scope_foundry_session != default_session_value:
+            self.session_name = scope_foundry_session
+            self.keywords += [self.session_name]
+
+    def parse_samples(self):
+        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        for pos in self.h5file[pos_path]:
+            sample_id = self.h5file[pos_path][pos].attrs['sample_uuid']
+            sample_name = self.h5file[pos_path][pos].attrs['sample_name']
+            sample_description = pos
+            if len(sample_id) > 0:
+                sample = {"unique_id": sample_id, 
+                          "sample_name": sample_name, 
+                          "owner_orcid": self.owner_orcid,
+                          "project_id": self.project_id}
+                
+                # get the rest of the metadata
+                self.samples.append(sample)
+        return
+
+    def parse_orcid(self):
+        if self.owner_orcid:
+            return
+        self.owner_orcid = check_orcid_entry(self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
+        return
+
+    def parse_project_id(self):
+        if self.project_id:
+            return
+        else:
+             self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
+        return 
+
 
 class QSpleemSVRampSpinIngestor(ScopeFoundryH5Ingestor):
     supported_measurements: ClassVar[list[str]] = ['sv_ramp_spin']
