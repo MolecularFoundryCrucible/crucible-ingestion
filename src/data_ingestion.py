@@ -175,8 +175,9 @@ def data_ingestion(dataset_to_process: str,
 
     # link to any parsed samples
     for sample in ig.samples:
-        sql_sample = client.samples.create(sample)
-        client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
+        logger.info(f'{sample=}')
+       # sql_sample = client.samples.create(sample)
+        client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sample['unique_id'])
 
     # thumbnails
     for thumbnail in thumbnails:
