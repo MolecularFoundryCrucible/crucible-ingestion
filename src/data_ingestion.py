@@ -173,6 +173,11 @@ def data_ingestion(dataset_to_process: str,
     # send the data
     ds = client.datasets.update(ig.unique_id, **D)
 
+    # link to any parsed samples
+    for sample in ig.samples:
+        sql_sample = client.samples.create(sample)
+        client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
+
     # thumbnails
     for thumbnail in thumbnails:
         try:
