@@ -21,7 +21,7 @@ class BcfIngestor(CrucibleDatasetIngestor):
 
 
     def get_thumbnails(self):
-        out_image_file_name = f"./generated_files/{os.path.basename(self.file_to_upload)}.png"
+        out_image_file_name = f"{os.path.basename(self.file_to_upload)}.png"
         # Load the BCF file
         data = hs.load(self.file_to_upload)
         

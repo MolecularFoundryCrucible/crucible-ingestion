@@ -20,6 +20,7 @@ COPY .python-version /root/
 RUN /bin/uv sync --locked
 COPY . .
 
+RUN mkdir generated_files
 ARG githash
 ENV GITHASH=$githash
 
