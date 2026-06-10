@@ -348,7 +348,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         
         ### if there's only 1 measurement, don't need to create an additional child dataset. 
         if len(self.scientific_metadata) == 1:
-            self.scientific_metadata = self.scientific_metadata.values()[0] # decapsulate scientific metadata for parent
+            self.scientific_metadata = list(self.scientific_metadata.values())[0] # decapsulate scientific metadata for parent
             return 
         
         ### handle multi-dataset files
@@ -384,6 +384,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
                     spectrum_image_dsid = dsid # keep track of si_dsid 
                 logger.info(f"uploaded {child_ds_name} with dsid {dsid}")
+
 
     def get_illumination_mode(self, metadata_dictionary): 
         """
