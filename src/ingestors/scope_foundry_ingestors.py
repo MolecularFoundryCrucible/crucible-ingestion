@@ -653,9 +653,9 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             sample_description = pos
             if len(sample_id) > 0:
                 sample = {"unique_id": sample_id, 
-                        "sample_name": sample_name, 
-                        "owner_orcid": self.owner_orcid,
-                        "project_id": self.project_id}
+                          "sample_name": sample_name, 
+                          "owner_orcid": self.owner_orcid,
+                          "project_id": self.project_id}
                 
                 # get the rest of the metadata
                 self.samples.append(sample)
