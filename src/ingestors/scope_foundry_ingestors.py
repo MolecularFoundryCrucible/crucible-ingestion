@@ -937,36 +937,19 @@ class QSpleemDepositionMonitorIngestor(ScopeFoundryH5Ingestor):
             self.session_name = scope_foundry_session
             self.keywords += [self.session_name]
 
-    def parse_samples(self):
-        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
-        for pos in self.h5file[pos_path]:
-            sample_id = self.h5file[pos_path][pos].attrs['sample_uuid']
-            sample_name = self.h5file[pos_path][pos].attrs['sample_name']
-            sample_description = pos
-            if len(sample_id) > 0:
-                sample = {"unique_id": sample_id, 
-                          "sample_name": sample_name, 
-                          "owner_orcid": self.owner_orcid,
-                          "project_id": self.project_id}
-                
-                # get the rest of the metadata
-                self.samples.append(sample)
-        return
+    # def parse_orcid(self):
+    #     if self.owner_orcid:
+    #         return
+    #     self.owner_orcid = check_orcid_entry(self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
+    #     return
 
 
-    def parse_orcid(self):
-        if self.owner_orcid:
-            return
-        self.owner_orcid = check_orcid_entry(self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
-        return
-
-
-    def parse_project_id(self):
-        if self.project_id:
-            return
-        else:
-             self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
-        return 
+    # def parse_project_id(self):
+    #     if self.project_id:
+    #         return
+    #     else:
+    #          self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
+    #     return 
 
 
 
