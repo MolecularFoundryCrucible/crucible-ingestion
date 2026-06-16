@@ -26,7 +26,7 @@ from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5I
                                                 SpinbotPhotoRunIngestor,
                                                 NirvanaMultiPosLineScanIngestor,
                                                 ScopeFoundryH5Ingestor)
-
+from .ingestors.rga_tey_batch_ingestor import RgaTeyBatchIngestor
 from .ingestors.image_ingestor import ImageIngestor
 from .ingestors.insitu_pl_ingestor import InSituPlIngestor
 from .ingestors.dm_ingestor import DigitalMicrographIngestor
@@ -54,6 +54,7 @@ ingestor_list = [AFMIngestor,
                 QSpleemDepositionMonitorIngestor,
                 QSpleemARRESEKIngestor,
                 QSpleemARRESMMIngestor,
+                RgaTeyBatchIngestor,
                 CanonCaptureScopeFoundryH5Ingestor, 
                 SingleSpecScopeFoundryH5Ingestor,
                 HyperspecScopeFoundryH5Ingestor,
