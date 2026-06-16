@@ -4,7 +4,7 @@ from datetime import timezone
 import logging
 import zipfile
 import pandas as pd
-from .utils import get_secret
+from ..utils import get_secret
 from crucible import CrucibleClient
 from .crucible_ingestor import CrucibleDatasetIngestor
 logger = logging.getLogger(__name__)
