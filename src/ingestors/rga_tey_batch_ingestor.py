@@ -10,10 +10,10 @@ from .crucible_ingestor import CrucibleDatasetIngestor
 logger = logging.getLogger(__name__)
 
 # Crucible Client
-# apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
-# crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
+apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
+crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
 
-client = CrucibleClient()
+client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
 
 # from Kas / Ed code base
