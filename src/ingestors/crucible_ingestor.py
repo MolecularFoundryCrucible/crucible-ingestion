@@ -13,7 +13,8 @@ from ..utils import (get_secret,
                      run_rclone_command,
                      build_b64_thumbnail,
                      EnhancedJSONEncoder,
-                     reduce_filename_and_copy)
+                     reduce_filename_and_copy,
+                     deep_merge_skip_empty)
 
 from ..constants import (INSTRUMENT_DRIVES,
                          sql_export_attr)
@@ -241,7 +242,7 @@ class CrucibleDatasetIngestor(Dataset):
                     else:
                         # should be an empty dictionary; but just in case
                         existing_metadata = dataset_obj[attr]
-                    self.scientific_metadata.update(existing_metadata)
+                    deep_merge_skip_empty(self.scientific_metadata, existing_metadata)
                     continue
                     
                 logger.info(f"setting {attr} to {dataset_obj[attr]} as set in sql")

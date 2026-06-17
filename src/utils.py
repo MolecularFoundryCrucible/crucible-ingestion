@@ -229,4 +229,32 @@ def sanitize_metadata(obj):
     return obj
 
 
+def deep_merge_skip_empty(target, source):
+    """Recursively merge source into target. Source values win, except None/
+    empty-string/'unknown' values, which never overwrite existing target data.
+    Nested dicts are merged key-by-key rather than replaced wholesale."""
+    for key, src_val in source.items():
+        if isinstance(src_val, dict) and isinstance(target.get(key), dict):
+            deep_merge_skip_empty(target[key], src_val)
+            continue
+        if src_val is None or src_val == "" or src_val == "unknown":
+            continue
+        target[key] = src_val
+    return target
+
+
+def deep_merge_skip_empty(target, source):
+    """Recursively merge source into target. Source values win, except None/
+    empty-string/'unknown' values, which never overwrite existing target data.
+    Nested dicts are merged key-by-key rather than replaced wholesale."""
+    for key, src_val in source.items():
+        if isinstance(src_val, dict) and isinstance(target.get(key), dict):
+            deep_merge_skip_empty(target[key], src_val)
+            continue
+        if src_val is None or src_val == "" or src_val == "unknown":
+            continue
+        target[key] = src_val
+    return target
+
+
 
