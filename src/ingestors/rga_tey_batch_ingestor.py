@@ -62,7 +62,7 @@ class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
         """
         extract_path = os.path.basename(self.file_to_upload).replace('.zip', '')
         with zipfile.ZipFile(self.file_to_upload) as zf:
-            zf.extractall()
+            zf.extractall(extract_path)
         logger.info(f'{extract_path=}')
         logger.info(f'{os.listdir()=}')
         samples_in_project= client.samples.list(project_id = '10k_perovskites', sample_type = 'thin film', limit = 10000)
