@@ -64,7 +64,8 @@ class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
         with zipfile.ZipFile(self.file_to_upload) as zf:
             zf.extractall()
         
-        samples_by_name = client.samples.list(project_id = '10k_perovksites', sample_type = 'thin film', limit = 10000)
+        # TODO - update this to not require sample_type = thin film? 
+        samples_by_name = client.samples.list(project_id = self.project_id, sample_type = 'thin film', limit = 10000)
         df = build_sample_table(extract_path, samples_by_name)
         self.scientific_metadata["samples"] = df.set_index("sample spot").to_dict(orient="index")
     
