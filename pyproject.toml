@@ -29,7 +29,11 @@ dependencies = [
     "pyyaml>=6.0.3",
     "xmltodict>=1.0.4",
     "pandas>=3.0.3",
+    "nano-crucible",
 ]
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[tool.uv.sources]
+nano-crucible = { git = "https://github.com/MolecularFoundryCrucible/nano-crucible", rev = "dev" }
