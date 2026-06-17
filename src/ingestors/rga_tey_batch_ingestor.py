@@ -60,11 +60,12 @@ class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
         populate the metadata_dictionary
         of the object.
         """
+        extract_path = os.path.basename(self.file_to_upload).replace('.zip', '')
         with zipfile.ZipFile(self.file_to_upload) as zf:
-            zf.extractall()
+            zf.extractall(extract_path)
         
         samples_by_name = client.samples.list(project_id = '10k_perovksites', sample_type = 'thin film', limit = 10000)
-        df = build_sample_table(self.file_to_upload.replace('.zip', ''), samples_by_name)
+        df = build_sample_table(extract_path, samples_by_name)
         self.scientific_metadata["samples"] = df.set_index("sample spot").to_dict(orient="index")
     
 
