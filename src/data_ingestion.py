@@ -205,6 +205,7 @@ def data_ingestion(dataset_to_process: str,
     logger.info(f"Keyword addition complete Added these keywords: {keywords}")
 
     # scientific metadata
+    logger.info(f"Updating scientific metadata with {md=}")
     res = client.datasets.update_scientific_metadata(dsid, md, overwrite = False)
     logger.info(f"Scientific metadata update complete. Response: {res}")
     return (ds, ingestion_class)
