@@ -69,6 +69,7 @@ class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
        # logger.info(f'{samples_by_name[0]=}... {len(samples_by_name)=}')
         df = build_sample_table(extract_path, samples_by_name)
         self.scientific_metadata["samples"] = df.set_index("sample spot").to_dict(orient="index")
+        logger.info(f'{self.scientific_metadata["samples"]=}')
     
 
     def parse_file_timestamp(self):
