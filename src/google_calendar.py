@@ -105,6 +105,7 @@ def filter_events_at_time(data_ctime, events):
 
 def find_calendar_event(event_time, cal_id, service_account_file = "", tz = "America/Los_Angeles"): 
     # date information
+    print(f'{event_time=}')
     pst = pytz.timezone(tz)
     dt_pst = datetime.fromisoformat(event_time).replace(tzinfo=pst)
     mintime, maxtime = generate_time_range(dt_pst)
