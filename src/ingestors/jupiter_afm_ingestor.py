@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import igor2 as igor
 
+import numpy as np
+from datetime import datetime, timedelta
+from pathlib import Path
 
 from ..utils import get_secret
 from ..google_calendar import (find_calendar_event,
@@ -14,7 +17,11 @@ from ..google_calendar import (find_calendar_event,
 from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
+
+from crucible import CrucibleClient
 crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
+crucible_apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
+
 
 def decode_recurse(x):
     if isinstance(x, dict):
@@ -34,81 +41,219 @@ def decode_recurse(x):
     return(x)
 
 
+def parse_note(raw_note):
+    """Your existing note parser, extracted as a function."""
+    newnote = {}
+    for y in [x.split(":") for x in raw_note.split("\r")]:
+        if len(y) == 2:
+            newnote[y[0].strip()] = y[1].strip()
+        elif len(y) > 2:
+            newnote[y[0].strip()] = ":".join(y[1:]).strip()
+        elif y[0] != "":
+            newnote[y[0].strip()] = None
+        else:
+            continue
+    for x in ['SaveImage', 'SaveForce', 'LastSaveImage', 'LastSaveForce']:
+        if x in newnote and newnote[x] is not None:
+            newnote[x] = newnote[x].replace(":", "/")
+    return newnote
 
+
+def safe_float(val, default=None):
+    try:
+        return float(val)
+    except (TypeError, ValueError):
+        return default
+
+
+def extract_channel_names(labels):
+    """Extract non-empty channel names from labels[2]."""
+    try:
+        return [l for l in labels[2] if l and l.strip()]
+    except (IndexError, TypeError):
+        return []
+
+
+def compute_channel_stats(wData, channel_names):
+    """Compute per-channel quality stats."""
+    stats = {}
+    # wData shape: (nx, ny, n_channels) but channel index may be offset by 1
+    # labels[2] has a leading empty string, so channel 'HeightRetrace' is index 1
+    for i, name in enumerate(channel_names):
+        ch_idx = i + 1  # offset for leading empty label
+        try:
+            channel = wData[:, :, ch_idx].astype(np.float64)
+            finite_vals = channel[np.isfinite(channel)]
+            stats[name] = {
+                "min": float(np.min(finite_vals)) if len(finite_vals) else None,
+                "max": float(np.max(finite_vals)) if len(finite_vals) else None,
+                "std": float(np.std(finite_vals)) if len(finite_vals) else None,
+                "range": float(np.ptp(finite_vals)) if len(finite_vals) else None,
+                "has_nan_or_inf": bool(not np.all(np.isfinite(channel))),
+                "fraction_finite": float(len(finite_vals) / channel.size),
+            }
+        except (IndexError, ValueError) as e:
+            stats[name] = {"error": str(e)}
+    return stats
+
+    
 class AFMIngestor(CrucibleDatasetIngestor):
     supported_filetypes: ClassVar[list[str]] = ['ibw']
 
     def is_file_supported(self):
         return np.any([self.file_to_upload.endswith(ftype) for ftype in self.supported_filetypes])
 
-
+        
     def get_scientific_metadata(self):
-        CrucibleDatasetIngestor.get_scientific_metadata(self)
+        # --- Load and decode ---
         im = igor.binarywave.load(self.file_to_upload)
         im = decode_recurse(im)
+        
+        note = parse_note(im['wave']['note'])
+        wh = im['wave']['wave_header']
+        wData = im['wave']['wData']
+        labels = im['wave']['labels']
+        channel_names = extract_channel_names(labels)
+    
+        # --- Spatial ---
+        nDim = wh['nDim']
+        nx, ny, n_channels = int(nDim[0]), int(nDim[1]), int(nDim[2])
+        sfA = wh['sfA']
+        pixel_size_m = float(sfA[0])
+        scan_size_x_m = pixel_size_m * nx
+        scan_size_y_m = float(sfA[1]) * ny
+    
+        # --- Channel stats ---
+        channel_stats = compute_channel_stats(wData, channel_names)
+    
+        # Convenience: pull Height stats to top level if available
+        height_key = next((k for k in channel_names if 'Height' in k), None)
+        height_stats = channel_stats.get(height_key, {}) if height_key else {}
+    
+        # --- Build metadata dict ---
+        self.scientific_metadata = {
+            # ---- Identity ----
+            "ibw_version": int(im['version']),
+            "file_last_modified": wh.get('modDate'), # gets popped into dataset metadata as timestamp
+            
+            # ---- Spatial ----
+            "image_size_px": [nx, ny],
+            "is_square": nx == ny,
+            "pixel_size_m": pixel_size_m,
+            "scan_size_x_m": scan_size_x_m,
+            "scan_size_y_m": scan_size_y_m,
+            "x_offset_m": float(sfA[1]) if len(sfA) > 1 else None,  # sfB would be offset
+    
+            # ---- Channels ----
+            "n_channels": n_channels,
+            "channel_names": channel_names,
+            "has_height": any('Height' in c for c in channel_names),
+            "has_phase": any('Phase' in c for c in channel_names),
+            "has_amplitude": any('Amplitude' in c for c in channel_names),
+            "has_zsensor": any('ZSensor' in c for c in channel_names),
+            "data_type": str(wData.dtype),
+    
+            # ---- Data quality (top-level height channel) ----
+            "height_z_range_nm": height_stats.get('range', None) and height_stats['range'] * 1e9,
+            "height_z_std_nm": height_stats.get('std', None) and height_stats['std'] * 1e9,
+            "height_has_nan_or_inf": height_stats.get('has_nan_or_inf', None),
+            "height_fraction_finite": height_stats.get('fraction_finite', None),
+    
+            # ---- Per-channel stats (nested) ----
+            "channel_stats": channel_stats,
+    
+            # ---- Acquisition (from note) ----
+            "imaging_mode": note.get('ImagingMode'),
+            "scan_rate_hz": safe_float(note.get('ScanRate')),
+            "scan_angle_deg": safe_float(note.get('ScanAngle')),
+            "setpoint": safe_float(note.get('Setpoint')),
+            "setpoint_units": note.get('SetpointUnits'),
+            "drive_amplitude_v": safe_float(note.get('DriveAmplitude')),
+            "drive_frequency_hz": safe_float(note.get('DriveFrequency')),
+            "spring_constant_n_m": safe_float(note.get('SpringConstant')),
+            "deflection_invols": safe_float(note.get('InvOLS')),
+            "z_range_m": safe_float(note.get('FastMapZRange') or note.get('ZRange')),
+    
+            # ---- Sample/experiment context (from note) ----
+            "x_offset_um": safe_float(note.get('XOffset')) and safe_float(note.get('XOffset')) * 1e6,
+            "y_offset_um": safe_float(note.get('YOffset')) and safe_float(note.get('YOffset')) * 1e6,
+            "scan_angle_deg": safe_float(note.get('ScanAngle')),
+            "tip_serial": note.get('MicroscopeID'),
+            "temperature": safe_float(note.get('Temperature')),
+            "humidity": safe_float(note.get('Humidity')),
+        }
 
-        newnote = {}
-        for y in [x.split(":") for x in im['wave']['note'].split("\r")]:
-            if len(y) == 2:
-                newnote[y[0].strip()] = y[1].strip()
-            elif len(y) > 2:
-                newnote[y[0].strip()] = ":".join(y[1:]).strip()
-            elif y[0] != "":
-                newnote[y[0].strip()] = None
-            else:
-                continue
+    
+    def parse_dataset_name(self):
+        informative_path = self.file_to_upload.split("Asylum Research Data")[-1]
+        self.dataset_name = informative_path.strip("/").replace("/", "-") 
 
-        for x in ['SaveImage', 'SaveForce',  'LastSaveImage', 'LastSaveForce']:
-            newnote[x] = newnote[x].replace(":", "/")
-        im['wave']['note'] = newnote
+    
+    def parse_file_timestamp(self):
+        lastMod = self.scientific_metadata.pop('file_last_modified')
+        try:
+            igor_epoch = datetime(1904, 1, 1)
+            last_modified_isoformat = (igor_epoch + timedelta(seconds=int(lastMod))).isoformat()
+            self.timestamp = last_modified_isoformat
+        except Exception as err:
+            print(f'{err=}')
+            self.timestamp = None
 
-        self.scientific_metadata.update(im['wave'])
-        self.scientific_metadata['version'] = im['version']
+    
+    def parse_instrument(self):
+        self.instrument_name = 'jupiterafm'
+        self.acl.append(self.instrument_name)
 
-
+    
     def parse_measurement(self):
-        self.measurement = "AFM Image"
-
-
-    def get_kw_from_dataset_name(self):
-        name_components = self.dataset_name.split("-")[:-1]
-        kw = [x for x in name_components if x != ""]
-        return kw
-    
-
-    def get_dataset_metadata(self):
-        # instrument_name
-        CrucibleDatasetIngestor.get_dataset_metadata(self)
-        self.data_format = self.file_to_upload.split('.')[-1]
-        self.dataset_name = self.file_to_upload.split("Asylum Research Data")[-1].strip("/").replace("/", "-")
+        """
+        Returns measurement type string:
+        - Single channel: "ImagingMode::ChannelName"
+        - Multi channel:  "MultiChannelAFM - Mode1::Ch1,Ch2,..."
         
-        fpath = os.path.dirname(self.file_to_upload)
+        Assumes all channels share the same imaging mode (typical for Jupiter AFM).
+        """
+        imaging_mode = self.scientific_metadata['imaging_mode']
+        print(f'{imaging_mode=}')
+        channel_names = self.scientific_metadata['channel_names']
+        print(f'{channel_names=}')
         
-        self.session_name = fpath.split("/")[-1]
-        self.keywords += [self.instrument_name, self.session_name]
+        if not channel_names:
+            self.measurement = imaging_mode
+        
+        if len(channel_names) == 1:
+            self.measurement = f"{imaging_mode}::{channel_names[0]}"
+        else:
+            channel_str = ",".join(channel_names)
+            self.measurement =  f"MultiChannelAFM - {imaging_mode}::{channel_str}"
 
-        kw_from_filename = self.get_kw_from_dataset_name()
-        self.keywords += kw_from_filename
-        self.keywords = list(set(self.keywords))
+            
+    def parse_keywords(self):
+        parent_folder = os.path.dirname(self.file_to_upload).split('/')[-1]
+        self.keywords = [self.instrument_name,
+                         self.measurement,
+                         self.data_type,
+                         parent_folder]
     
-    
+
+
     def parse_orcid(self):
-
+        client = CrucibleClient(crucible_api_url, crucible_apikey)
+        
         if self.owner_orcid:
             return
         
         cal_id = 'c_550eaa9a91952a820fb6d76a3306f5583abcffc7cf42e72573fd2a0cae1b1c8f@group.calendar.google.com'
-        cal_event = find_calendar_event(self.timestamp, cal_id, service_account_file = f"{os.getenv('HOME')}/.config/mf-crucible-9009d3780383.json")
+        sa_file = f"{os.getenv('HOME')}/.config/mf-crucible-9009d3780383.json"
+        cal_event = find_calendar_event(self.timestamp, cal_id, service_account_file = sa_file)
         
         if cal_event:
             self.email, self.project_id = parse_calendar_event_for_ownership(cal_event)
-
-            apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
-            by_email = requests.get(f"{crucible_api_url}/users?email={self.email}", headers = {"Authorization":f"Bearer {apikey}"}).json()
-            by_lbl_email = requests.get(f"{crucible_api_url}/users?lbl_email={self.email}", headers = {"Authorization":f"Bearer {apikey}"}).json()
-            user_info =  by_email + by_lbl_email 
-            self.owner_orcid = user_info[-1]['orcid']
-        
+            try:
+                user_info = client.users.get(self.email)
+                self.owner_orcid = user_info['unique_id']
+            except:
+                logger.info(f'user with email {self.email} not found')
         else:
             return
 
@@ -116,9 +261,9 @@ class AFMIngestor(CrucibleDatasetIngestor):
     def parse_project_id(self):
                 
         cal_id = 'c_550eaa9a91952a820fb6d76a3306f5583abcffc7cf42e72573fd2a0cae1b1c8f@group.calendar.google.com'
-        
+        sa_file = f"{os.getenv('HOME')}/.config/mf-crucible-9009d3780383.json"
         if not self.project_id:
-            cal_event = find_calendar_event(self.timestamp, cal_id, service_account_file = f"{os.getenv('HOME')}/.config/mf-crucible-9009d3780383.json")
+            cal_event = find_calendar_event(self.timestamp, cal_id, service_account_file = sa_file)
             if cal_event:
                 self.email, self.project_id = parse_calendar_event_for_ownership(cal_event)
         
@@ -130,7 +275,7 @@ class AFMIngestor(CrucibleDatasetIngestor):
 
     
     def make_retrace_plot(self, array, pname):
-        spec_map_filename = f"./generated_files/{os.path.basename(self.file_to_upload)}_{pname}.png"
+        spec_map_filename = f"{os.path.basename(self.file_to_upload)}_{pname}.png"
      
         plt.imshow(array, cmap='Greys')  # You can choose any colormap you like
         plt.title(pname)
