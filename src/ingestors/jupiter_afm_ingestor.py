@@ -276,11 +276,13 @@ class AFMIngestor(CrucibleDatasetIngestor):
     
     def make_retrace_plot(self, array, pname):
         spec_map_filename = f"{os.path.basename(self.file_to_upload)}_{pname}.png"
-     
-        plt.imshow(array, cmap='Greys')  # You can choose any colormap you like
-        plt.axis('off')  # Turn off axis labels and ticks
-    
-        plt.savefig(spec_map_filename, dpi = 1000 )
+
+        fig, ax = plt.subplots()
+        ax.imshow(array, cmap='Greys')
+        ax.axis('off')
+
+        fig.savefig(spec_map_filename, dpi=200, bbox_inches='tight', pad_inches=0)
+        plt.close(fig)
         return(Image.open(spec_map_filename))
 
     
