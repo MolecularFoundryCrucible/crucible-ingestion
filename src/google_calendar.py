@@ -13,17 +13,16 @@ import pytz
 import json
 import os
 
+from .utils import _get_sa_credentials
+
 
 def setup_client(service_account_file = "", cred_env_var = "GCS_SA", scopes = ["https://www.googleapis.com/auth/calendar.readonly"]):
-    if os.path.exists(service_account_file):
-        print(f"{service_account_file=} was found using os.path.exists")
-    else:
-        service_account_file = "temp_creds.json"
-        J = json.loads(os.getenv(cred_env_var))
-        with open("temp_creds.json", "w") as f:
-            json.dump(J, f)
-            
-    credentials = service_account.Credentials.from_service_account_file(service_account_file, scopes=scopes)
+    # Resolve the SA credential the same way the rest of the pipeline does:
+    # a local ~/.config/mf-crucible*.json file (dev), else Google Secret Manager
+    # via the workload's own GKE service account (no file/env needed in cloud).
+    sa_json = _get_sa_credentials(os.getenv("HOME"))
+    info = json.loads(sa_json) if isinstance(sa_json, str) else sa_json
+    credentials = service_account.Credentials.from_service_account_info(info, scopes=scopes)
     service = build("calendar", "v3", credentials=credentials)
     return(service)
 
