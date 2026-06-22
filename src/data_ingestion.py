@@ -125,7 +125,7 @@ def populate_existing_ds_info(ig, client, populate_fields):
             else:
                 setattr(ig, k, found_ds[k])
 
-    assoc_files = client.datasets.get_associated_files(ig.unique_id)
+    assoc_files = client.datasets.list_files(ig.unique_id)
     logger.info(f'{ig.unique_id}: {assoc_files=}')
     for af in assoc_files:
         ig.associated_files[af['filename']] = {'size': af['size'], 

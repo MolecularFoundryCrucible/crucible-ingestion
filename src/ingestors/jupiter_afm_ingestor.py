@@ -278,7 +278,6 @@ class AFMIngestor(CrucibleDatasetIngestor):
         spec_map_filename = f"{os.path.basename(self.file_to_upload)}_{pname}.png"
      
         plt.imshow(array, cmap='Greys')  # You can choose any colormap you like
-        plt.title(pname)
         plt.axis('off')  # Turn off axis labels and ticks
     
         plt.savefig(spec_map_filename, dpi = 1000 )
