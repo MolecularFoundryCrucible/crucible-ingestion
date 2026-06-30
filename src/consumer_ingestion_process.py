@@ -157,28 +157,3 @@ channel.basic_consume(queue=f'ingestion-{RMQ_ROUTING_SUFFIX}',
 logger.info('[*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
