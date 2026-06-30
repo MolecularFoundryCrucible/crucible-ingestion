@@ -4,6 +4,7 @@ from datetime import timezone
 import logging
 import zipfile
 import pandas as pd
+from pathlib import Path
 from ..utils import get_secret
 from crucible import CrucibleClient
 from .crucible_ingestor import CrucibleDatasetIngestor
@@ -20,6 +21,13 @@ client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 def build_sample_table(directory, samples_by_name):
     logger.info(os.listdir(directory))
     logger.info(directory)
+
+    # check if extracted files got double nested
+    subfolder_name = Path(directory).stem
+    if subfolder_name in os.listdir(directory):
+        directory = f'{directory}/{subfolder_name}'
+        logger.info(f'Found subfolder in extract_path directory: updating directory to {directory=}')
+
     matching_files = [
         f for f in os.listdir(directory)
         if f.startswith("sample_holder_position_readout_") and f.endswith(".txt")
@@ -62,7 +70,7 @@ class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
         """
         extract_path = os.path.basename(self.file_to_upload).replace('.zip', '')
         with zipfile.ZipFile(self.file_to_upload) as zf:
-            zf.extractall()
+            zf.extractall(extract_path)
         logger.info(f'{extract_path=}')
         logger.info(f'{os.listdir()=}')
         samples_in_project= client.samples.list(project_id = '10k_perovskites', sample_type = 'thin film', limit = 10000)
