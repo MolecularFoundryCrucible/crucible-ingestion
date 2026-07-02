@@ -77,6 +77,12 @@ class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
         samples_by_name = {sample["sample_name"]: sample for sample in samples_in_project}
        
         df = build_sample_table(extract_path, samples_by_name)
+        # Multiple readout files can cover the same physical sample spot. Collapse
+        # rows that agree on every column; a spot with differing rows is a conflict.
+        df = df.drop_duplicates()
+        conflicts = df[df.duplicated(subset="sample spot", keep=False)]["sample spot"].unique().tolist()
+        if conflicts:
+            raise ValueError(f"Conflicting readouts for sample spot(s): {conflicts}")
         self.scientific_metadata["samples"] = df.set_index("sample spot").to_dict(orient="index")
         logger.info(f'{self.scientific_metadata["samples"]=}')
     
