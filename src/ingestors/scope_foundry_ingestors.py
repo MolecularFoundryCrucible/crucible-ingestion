@@ -1,5 +1,6 @@
 import os
 import re
+import functools
 import logging
 from io import BytesIO
 from typing import ClassVar
@@ -446,13 +447,68 @@ class BioGlowIngestor(ScopeFoundryH5Ingestor):
         return self.file_to_upload.endswith('_bioglow_spec.h5')  
 
 
-class QSpleemImageIngestor(ScopeFoundryH5Ingestor):
+class QSpleemIngestor(ScopeFoundryH5Ingestor):
+    """Base for QSpleem ingestors implementing the field convention:
+
+        measurement -> human-readable name (e.g. 'LEEM-IV')
+        data_type   -> 'ScopeFoundryH5.qspleem_<sf_group>.<subform>'
+
+    The data_format prefix is hardcoded because ScopeFoundryH5Ingestor only sets
+    self.data_format after parse_data_type() has already run.
+    """
+    _INSTRUMENT = 'qspleem'
+    _GROUP = None            # ScopeFoundry measurement group, e.g. 'ARRES_EK'
+    _LEED_THRESHOLD = 0.25   # median/p99 below this => diffraction (sparse frame)
+
+    def _data_type(self, subform):
+        return f"ScopeFoundryH5.{self._INSTRUMENT}_{self._GROUP.lower()}.{subform}"
+
+    def _has_images(self):
+        """True if this file carries a per-pixel diffraction stack."""
+        try:
+            return 'images' in self.h5file[f"measurement/{self._GROUP}"]
+        except Exception:
+            return False
+
+    def _classify_plane(self, frame):
+        """'diffraction' (LEED/SPLEED, sparse) or 'real_space' (LEEM/SPLEEM):
+        a diffraction frame is mostly dark, so its median/p99 ratio is small."""
+        frame = np.asarray(frame, dtype=np.float32)
+        p99 = float(np.percentile(frame, 99)) or 1.0
+        return 'diffraction' if float(np.median(frame)) / p99 < self._LEED_THRESHOLD else 'real_space'
+
+    def _detect_imaging_mode(self, stack_path):
+        """imaging_mode from a representative frame ~70% through an image stack;
+        defaults to 'real_space' if the stack can't be read."""
+        try:
+            ds = self.h5file[stack_path]
+            return self._classify_plane(ds[int(ds.shape[0] * 0.7)])
+        except Exception:
+            return 'real_space'
+
+
+class QSpleemImageIngestor(QSpleemIngestor):
     supported_measurements: ClassVar[list[str]] = ['image_save']
+    _GROUP = 'image_save'
 
     def is_file_supported(self):
         return(self.file_to_upload.endswith('_image_save.h5'))
 
-    
+    @functools.cached_property
+    def imaging_mode(self):
+        try:
+            M = self.h5file['measurement/image_save']
+            key = next(k for k in M.keys() if 'im_array' in k)
+            return self._classify_plane(M[key][()])
+        except Exception:
+            return 'real_space'
+
+    def parse_measurement(self):
+        self.measurement = 'LEED Image' if self.imaging_mode == 'diffraction' else 'LEEM Image'
+
+    def parse_data_type(self):
+        self.data_type = self._data_type(self.imaging_mode)
+
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
             M = h5file[f"measurement/image_save"]
@@ -463,24 +519,22 @@ class QSpleemImageIngestor(ScopeFoundryH5Ingestor):
             self.add_thumbnail(Image.open(buf), "Qspleem Image 0")
 
 
-class QSpleemSVRampIngestor(ScopeFoundryH5Ingestor):
+class QSpleemSVRampIngestor(QSpleemIngestor):
     supported_measurements: ClassVar[list[str]] = ['sv_ramp']
-    _LEED_THRESHOLD = 0.25
+    _GROUP = 'sv_ramp'
 
     def is_file_supported(self):
         return self.file_to_upload.endswith('_sv_ramp.h5')
 
+    @functools.cached_property
+    def imaging_mode(self):
+        return self._detect_imaging_mode('measurement/sv_ramp/000_im_array')
+
+    def parse_measurement(self):
+        self.measurement = 'LEED-IV' if self.imaging_mode == 'diffraction' else 'LEEM-IV'
+
     def parse_data_type(self):
-        try:
-            with h5py.File(self.file_to_upload, 'r') as f:
-                ds = f['measurement/sv_ramp/000_im_array']
-                n = ds.shape[0]
-                frame = ds[int(n * 0.7)].astype(np.float32)
-            p99 = float(np.percentile(frame, 99)) or 1.0
-            ratio = float(np.median(frame)) / p99
-            self.data_type = 'LEED-IV' if ratio < self._LEED_THRESHOLD else 'LEEM-IV'
-        except Exception:
-            self.data_type = 'LEEM-IV'
+        self.data_type = self._data_type(self.imaging_mode)
 
     def get_thumbnails(self):
         try:
@@ -529,18 +583,45 @@ class QSpleemSVRampIngestor(ScopeFoundryH5Ingestor):
             logger.warning(f'SVRamp thumbnail generation failed: {e}')
 
 
-class QSpleemARRESEKIngestor(ScopeFoundryH5Ingestor):
+def _arres_robust_vlim(values, k):
+    """Linear vmin/vmax that emphasizes the low-intensity (material) signal.
+
+    The bright specular regions are a high-value minority where we are not
+    probing the material, so a median + k*MAD ceiling keeps the color range on
+    the low-intensity structure and lets the specular saturate. MAD adapts per
+    dataset, avoiding fragile fixed percentiles. Zeros (unmeasured points) are
+    excluded from the statistics.
+    """
+    m = values[np.isfinite(values) & (values != 0)]
+    if m.size == 0:
+        return None, None
+    med = float(np.median(m))
+    mad = float(np.median(np.abs(m - med)))
+    vmin = float(np.percentile(m, 2))
+    vmax = med + k * 1.4826 * mad if mad > 0 else float(np.percentile(m, 98))
+    return vmin, vmax
+
+
+class QSpleemARRESEKIngestor(QSpleemIngestor):
+    _GROUP = 'ARRES_EK'
+    _MAD_K = 3
 
     def is_file_supported(self):
         supported_measurements = ['ARRES_EK']
         return(any([self.file_to_upload.endswith(f'_{x}.h5') for x in supported_measurements]))
 
+    def parse_measurement(self):
+        self.measurement = 'ARRES E(k)'
+
+    def parse_data_type(self):
+        self.data_type = self._data_type('diffraction' if self._has_images() else 'spectrum')
 
     def plotEK(self, M, spec, E, uv):
         uvmin = f"({str(round(uv[0][0],2))}, {str(round(uv[0][1], 2))})"
         uvmax = f"({str(round(uv[-1][0], 2))}, {str(round(uv[-1][1], 2))})"
         fig, ax = plt.subplots()
-        ax.imshow(spec, origin="lower")
+        vmin, vmax = _arres_robust_vlim(spec, self._MAD_K)
+        ax.imshow(spec, origin="lower", vmin=vmin, vmax=vmax)
         fig.set_size_inches(10, 10)
         ax.set_aspect('auto')
         ax.set_xlim([0, len(uv)-1])
@@ -556,7 +637,7 @@ class QSpleemARRESEKIngestor(ScopeFoundryH5Ingestor):
 
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
-            M = h5file[f"measurement/{self.measurement}"]
+            M = h5file["measurement/ARRES_EK"]
             if not 'spectrum' in M.keys():
                 return('no spectrum found')
             spec_series = np.array(M['spectrum'])
@@ -568,16 +649,27 @@ class QSpleemARRESEKIngestor(ScopeFoundryH5Ingestor):
 
 
 
-class QSpleemARRESMMIngestor(ScopeFoundryH5Ingestor):
+class QSpleemARRESMMIngestor(QSpleemIngestor):
+    _GROUP = 'ARRES_MM'
+    _MAD_K = 3
 
     def is_file_supported(self):
         supported_measurements = ['ARRES_MM']
         return(any([self.file_to_upload.endswith(f'_{x}.h5') for x in supported_measurements]))
 
-    
+    def parse_measurement(self):
+        self.measurement = 'ARRES Constant Energy Surface'
+
+    def parse_data_type(self):
+        self.data_type = self._data_type('diffraction' if self._has_images() else 'momentum_map')
+
     def plotMM(self, spec, kx, ky, e):
         fig, ax = plt.subplots()
-        ax.imshow(spec, origin="lower")
+        vmin, vmax = _arres_robust_vlim(spec, self._MAD_K)
+        disp = np.where(spec == 0, np.nan, spec)
+        cmap = plt.get_cmap('viridis').copy()
+        cmap.set_bad('lightgray')
+        ax.imshow(disp, origin="lower", vmin=vmin, vmax=vmax, cmap=cmap)
         ax.set_ylabel("ky")
         ax.set_xlabel("kx")
         ax.set_title(f"Energy: {e} eV")
@@ -589,7 +681,7 @@ class QSpleemARRESMMIngestor(ScopeFoundryH5Ingestor):
 
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
-            M = h5file[f"measurement/{self.measurement}"]
+            M = h5file["measurement/ARRES_MM"]
             spec_series = np.array(M['spectrum'])
             kx = np.array(M['kx'])
             ky = np.array(M['ky'])
@@ -673,24 +765,22 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
         return 
 
 
-class QSpleemSVRampSpinIngestor(ScopeFoundryH5Ingestor):
+class QSpleemSVRampSpinIngestor(QSpleemIngestor):
     supported_measurements: ClassVar[list[str]] = ['sv_ramp_spin']
-    _LEED_THRESHOLD = 0.25
+    _GROUP = 'sv_ramp_spin'
 
     def is_file_supported(self):
         return self.file_to_upload.endswith('_sv_ramp_spin.h5')
 
+    @functools.cached_property
+    def imaging_mode(self):
+        return self._detect_imaging_mode('measurement/sv_ramp_spin/000_im_up_array')
+
+    def parse_measurement(self):
+        self.measurement = 'SPLEED-IV' if self.imaging_mode == 'diffraction' else 'SPLEEM-IV'
+
     def parse_data_type(self):
-        try:
-            with h5py.File(self.file_to_upload, 'r') as f:
-                ds = f['measurement/sv_ramp_spin/000_im_up_array']
-                n = ds.shape[0]
-                frame = ds[int(n * 0.7)].astype(np.float32)
-            p99 = float(np.percentile(frame, 99)) or 1.0
-            ratio = float(np.median(frame)) / p99
-            self.data_type = 'SPLEED-IV' if ratio < self._LEED_THRESHOLD else 'SPLEEM-IV'
-        except Exception:
-            self.data_type = 'SPLEEM-IV'
+        self.data_type = self._data_type(self.imaging_mode)
 
     def get_thumbnails(self):
         try:
@@ -740,8 +830,8 @@ class QSpleemSVRampSpinIngestor(ScopeFoundryH5Ingestor):
                 peak = int(np.argmax(asym_smooth))
                 with h5py.File(self.file_to_upload, 'r') as h5file:
                     M = h5file['measurement/sv_ramp_spin']
-                    up   = M['000_im_up_array'][peak].astype(np.float64)
-                    down = M['000_im_down_array'][peak].astype(np.float64)
+                    up   = M['000_im_up_array'][peak].astype(np.float32)
+                    down = M['000_im_down_array'][peak].astype(np.float32)
                 total = up + down
                 asym_frame = np.where(total > 0, (up - down) / total, 0.0)
 
@@ -764,16 +854,23 @@ class QSpleemSVRampSpinIngestor(ScopeFoundryH5Ingestor):
             logger.warning(f'SVRampSpin thumbnail generation failed: {e}')
 
 
-class QSpleemSPLEEMImageIngestor(ScopeFoundryH5Ingestor):
+class QSpleemSPLEEMImageIngestor(QSpleemIngestor):
     supported_measurements: ClassVar[list[str]] = ['SPLEEM_image']
+    _GROUP = 'SPLEEM_image'
 
     def is_file_supported(self):
         return self.file_to_upload.endswith('_SPLEEM_image.h5')
 
+    def parse_measurement(self):
+        self.measurement = 'SPLEEM Image'
+
+    def parse_data_type(self):
+        self.data_type = self._data_type('real_space')
+
     def get_thumbnails(self):
         try:
             with h5py.File(self.file_to_upload, 'r') as h5file:
-                images = np.array(h5file['measurement/SPLEEM_image/images'], dtype=np.float64)
+                images = np.array(h5file['measurement/SPLEEM_image/images'], dtype=np.float32)
         except Exception as e:
             logger.warning(f'Could not read SPLEEM_image data: {e}')
             return
@@ -803,11 +900,18 @@ class QSpleemSPLEEMImageIngestor(ScopeFoundryH5Ingestor):
         self.add_thumbnail(to_img_rdbu(asym),     'SPLEEM Asymmetry (averaged)')
 
 
-class QSpleemDepositionMonitorIngestor(ScopeFoundryH5Ingestor):
+class QSpleemDepositionMonitorIngestor(QSpleemIngestor):
     supported_measurements: ClassVar[list[str]] = ['deposition_monitor']
+    _GROUP = 'deposition_monitor'
 
     def is_file_supported(self):
         return self.file_to_upload.endswith('_deposition_monitor.h5')
+
+    def parse_measurement(self):
+        self.measurement = 'Deposition Monitor'
+
+    def parse_data_type(self):
+        self.data_type = self._data_type('time_series')
 
     def get_thumbnails(self):
         ROI_COLORS = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red']
@@ -896,8 +1000,8 @@ class QSpleemDepositionMonitorIngestor(ScopeFoundryH5Ingestor):
 
             # ── Final frame asymmetry (spin mode only) ────────────────────
             if spin_mode:
-                up_last   = images[-1, 0].astype(np.float64)
-                down_last = images[-1, 1].astype(np.float64)
+                up_last   = images[-1, 0].astype(np.float32)
+                down_last = images[-1, 1].astype(np.float32)
                 total = up_last + down_last
                 asym_frame = np.where(total > 0, (up_last - down_last) / total, 0.0)
                 v = float(np.percentile(np.abs(asym_frame), 98)) or 1.0
