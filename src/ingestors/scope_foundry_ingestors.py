@@ -607,8 +607,8 @@ class QSpleemARRESEKIngestor(QSpleemIngestor):
     _MAD_K = 3
 
     def is_file_supported(self):
-        supported_measurements = ['ARRES_EK']
-        return(any([self.file_to_upload.endswith(f'_{x}.h5') for x in supported_measurements]))
+        # base + image companions: _ARRES_EK.h5, _ARRES_EK_images.h5, _ARRES_EK_images_0000.h5
+        return bool(re.search(r'_ARRES_EK(_images(_\d+)?)?\.h5$', self.file_to_upload))
 
     def parse_measurement(self):
         self.measurement = 'ARRES E(k)'
@@ -654,8 +654,8 @@ class QSpleemARRESMMIngestor(QSpleemIngestor):
     _MAD_K = 3
 
     def is_file_supported(self):
-        supported_measurements = ['ARRES_MM']
-        return(any([self.file_to_upload.endswith(f'_{x}.h5') for x in supported_measurements]))
+        # base + image companions: _ARRES_MM.h5, _ARRES_MM_images.h5, _ARRES_MM_images_0000.h5
+        return bool(re.search(r'_ARRES_MM(_images(_\d+)?)?\.h5$', self.file_to_upload))
 
     def parse_measurement(self):
         self.measurement = 'ARRES Constant Energy Surface'
