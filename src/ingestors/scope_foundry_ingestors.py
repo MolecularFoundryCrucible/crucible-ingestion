@@ -486,6 +486,15 @@ class QSpleemIngestor(ScopeFoundryH5Ingestor):
         except Exception:
             return 'real_space'
 
+    def _add_diffraction_thumbnail(self, frame, caption):
+        """Render one detector frame (p1-p99 grayscale) as a thumbnail."""
+        frame = np.asarray(frame, dtype=np.float32)
+        vmin, vmax = np.percentile(frame, 1), np.percentile(frame, 99)
+        buf = BytesIO()
+        plt.imsave(buf, frame, cmap='gray', format='png', origin='lower', vmin=vmin, vmax=vmax)
+        buf.seek(0)
+        self.add_thumbnail(Image.open(buf), caption)
+
 
 class QSpleemImageIngestor(QSpleemIngestor):
     supported_measurements: ClassVar[list[str]] = ['image_save']
@@ -638,6 +647,19 @@ class QSpleemARRESEKIngestor(QSpleemIngestor):
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
             M = h5file["measurement/ARRES_EK"]
+            if 'images' in M:
+                # diffraction child: off-normal frame at 0.75 of max (u,v), at the highest energy
+                spec = np.array(M['spectrum'])            # (spin, energy, k)
+                E = np.array(M['eV'])
+                uv = np.array(M['uv'])
+                uv_max = uv[int(np.argmax(uv[:, 0] ** 2 + uv[:, 1] ** 2))]
+                k_idx = int(np.argmin(np.sum((uv - 0.75 * uv_max) ** 2, axis=1)))
+                e_idx = int(np.argmax(E))
+                for spin in range(spec.shape[0]):
+                    frame = M['images'][spin, e_idx, k_idx]  # lazy (H, W) slice
+                    self._add_diffraction_thumbnail(
+                        frame, f"EK diffraction (spin {spin+1}, {E[e_idx]:.1f} eV, uv=({uv[k_idx][0]:.2f},{uv[k_idx][1]:.2f}))")
+                return
             if not 'spectrum' in M.keys():
                 return('no spectrum found')
             spec_series = np.array(M['spectrum'])
@@ -682,6 +704,21 @@ class QSpleemARRESMMIngestor(QSpleemIngestor):
     def get_thumbnails(self):
         with h5py.File(self.file_to_upload, 'r') as h5file:
             M = h5file["measurement/ARRES_MM"]
+            if 'images' in M:
+                # diffraction child: representative pattern at the 25th-percentile reflectivity point
+                spec = np.array(M['spectrum'])            # (spin, kx, ky)
+                for spin in range(spec.shape[0]):
+                    s = spec[spin]
+                    measured = s[np.isfinite(s) & (s != 0)]
+                    if measured.size == 0:
+                        continue
+                    target = np.percentile(measured, 25)
+                    s_masked = np.where(s == 0, np.nan, s)
+                    idx = int(np.nanargmin(np.abs(s_masked - target)))
+                    kxi, kyi = np.unravel_index(idx, s.shape)
+                    frame = M['images'][spin, kxi, kyi]   # lazy (H, W) slice
+                    self._add_diffraction_thumbnail(frame, f"MM diffraction (spin {spin+1}, 25th pct reflectivity)")
+                return
             spec_series = np.array(M['spectrum'])
             kx = np.array(M['kx'])
             ky = np.array(M['ky'])
