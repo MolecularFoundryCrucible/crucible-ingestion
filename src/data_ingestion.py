@@ -116,7 +116,8 @@ def find_supported_ingestor(dataset_to_process,
 
 def populate_existing_ds_info(ig, client, populate_fields):
     found_ds = client.datasets.get(ig.unique_id, include_metadata=True)
-
+    logger.info(f'{found_ds=}')
+    
     # add required info to IG
     if found_ds:
         for k in populate_fields:

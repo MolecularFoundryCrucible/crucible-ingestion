@@ -144,10 +144,14 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
                              'sample_links':[sample_id]})
 
     def parse_orcid(self):
+        if self.owner_orcid:
+            return
         self.owner_orcid = self.file_contents.get('user_orcid', None)
 
 
     def parse_project_id(self):
+        if self.project_id:
+            return
         self.project_id = self.file_contents.get('project_id', None)
 
 
