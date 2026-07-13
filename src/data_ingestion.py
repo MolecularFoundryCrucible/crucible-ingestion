@@ -134,7 +134,43 @@ def populate_existing_ds_info(ig, client, populate_fields):
         ig.associated_files[af['filename']] = {'size': af['size'], 
                                                'sha256_hash': af['sha256_hash']}
     return ig, found_ds
+
+
+def run_sample_linking(client, ig, ds):
+    for sample in ig.samples:
+        logger.info(f'{sample=}')
+        sample_parents = []
+        if 'parent_ids' in sample:
+            sample_parents = sample.pop('parent_ids')
         
+        link_to_dataset = True
+        if 'link_to_dataset' in sample:
+            link_to_dataset = sample.pop('link_to_dataset')
+
+        # create sample
+        try:
+            sql_sample = client.samples.create(**sample)
+            logger.info(f'created new sample {sql_sample}')
+        except:
+            existing_samples = client.samples.list(sample_name = sample['sample_name'],
+                                                   project_id = sample['project_id'])
+            if len(existing_samples) > 0:
+                sql_sample = existing_samples[-1]
+                logger.info(f'found existing sample {sql_sample}')
+            else:
+                sql_sample = None
+                logger.info(f'sample creation failed, but sample not found')
+                return
+            
+        # link to dataset
+        if link_to_dataset is True:
+            client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
+
+        # link to parents if listed
+        for parent in sample_parents:
+            client.samples.link(parent_id = parent, child_id = sql_sample['unique_id'])
+        return
+           
 
 def data_ingestion(dataset_to_process: str,
                    dsid: str,
@@ -184,38 +220,9 @@ def data_ingestion(dataset_to_process: str,
     ds = client.datasets.update(ig.unique_id, **D)
 
     # link to any parsed samples
-    for sample in ig.samples:
-        logger.info(f'{sample=}')
-        sample_parents = []
-        if 'parent_ids' in sample:
-            sample_parents = sample.pop('parent_ids')
-        
-        link_to_dataset = True
-        if 'link_to_dataset' in sample:
-            link_to_dataset = sample.pop('link_to_dataset')
+    run_sample_linking(client, ig, ds)
 
-        # create sample
-        try:
-            sql_sample = client.samples.create(**sample)
-            logger.info(f'created new sample {sql_sample}')
-        except:
-            existing_samples = client.samples.list(sample_name = sample['sample_name'],
-                                                   project_id = sample['project_id'])
-            if len(existing_samples) > 0:
-                sql_sample = existing_samples[-1]
-                logger.info(f'found existing sample {sql_sample}')
-            else:
-                sql_sample = None
-                logger.info(f'sample creation failed, but sample not found')
-
-        # link to dataset
-        if link_to_dataset is True:
-            client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
-
-        # link to parents if listed
-        for parent in sample_parents:
-            client.samples.link(parent_id = parent, child_id = sql_sample['unique_id'])
-
+    
     # add children
     for child in ig.children:
         child_ds = child['dataset']
