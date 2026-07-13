@@ -185,7 +185,9 @@ def data_ingestion(dataset_to_process: str,
     # link to any parsed samples
     for sample in ig.samples:
         logger.info(f'{sample=}')
-        sample_parents = sample.pop('parent_ids')
+        sample_parents = []
+        if 'parent_ids' in sample:
+            sample_parents = sample.pop('parent_ids')
         
         # create sample
         try:
