@@ -50,7 +50,7 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
     def parse_sample_metadata(self, sample_mfid):
         samples = self.file_contents.get('samples')
         additional_info = {k:v for k,v in self.file_contents.items() if k != 'samples'}
-        sample_info = [s for s in samples if s['sample_id'] == sample_mfid]
+        sample_info = [s for s in samples if s['sample_id'] == sample_mfid][0]
         sample_info.update(additional_info)
         return sample_info
 
