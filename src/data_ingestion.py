@@ -117,7 +117,7 @@ def find_supported_ingestor(dataset_to_process,
 def populate_existing_ds_info(ig, client, populate_fields):
     found_ds = client.datasets.get(ig.unique_id, include_metadata=True)
     logger.info(f'{found_ds=}')
-    
+
     # add required info to IG
     if found_ds:
         for k in populate_fields:
@@ -193,14 +193,17 @@ def data_ingestion(dataset_to_process: str,
         # create sample
         try:
             sql_sample = client.samples.create(**sample)
+            logger.info(f'created new sample {sql_sample}')
         except:
             existing_samples = client.samples.list(sample_name = sample['sample_name'],
                                                    project_id = sample['project_id'])
             if len(existing_samples) > 0:
                 sql_sample = existing_samples[-1]
+                logger.info(f'found existing sample {sql_sample}')
             else:
                 sql_sample = None
-
+                logger.info(f'sample creation failed, but sample not found')
+                
         # link to dataset
         client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
 

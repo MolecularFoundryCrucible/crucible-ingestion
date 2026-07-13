@@ -52,9 +52,9 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
         samples = self.file_contents.get('samples')
         logger.info([s['sample_id'] for s in samples])
         additional_info = {k:v for k,v in self.file_contents.items() if k != 'samples'}
-        sample_info = [s for s in samples if s['sample_id'] == sample_mfid][0]
-        sample_info.update(additional_info)
-        return sample_info
+        sample_info = next(s for s in samples if s['sample_id'] == sample_mfid)
+        return {**sample_info, **additional_info}
+
 
     def parse_measurement(self):
         self.measurement = self.file_contents.get('measurement')
@@ -111,16 +111,17 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
 
             # samples have precursor parents
             precursor_name = s.get('precursor_solution_name')
-            found_ps = client.samples.list(sample_name = precursor_name,
-                                           project_id = self.project_id)
+            if precursor_name:
+                found_ps = client.samples.list(sample_name = precursor_name,
+                                            project_id = self.project_id)
             
-            # if the PS exists; add to sample parents
-            if len(found_ps) > 0:
-                precursor_id = found_ps[-1]['unique_id']
-                sample['parent_ids'].append(precursor_id)
+                # if the PS exists; add to sample parents
+                if len(found_ps) > 0:
+                    precursor_id = found_ps[-1]['unique_id']
+                    sample['parent_ids'].append(precursor_id)
         
-        # add sample to list to be created
-        self.samples.append(sample)
+            # add sample to list to be created
+            self.samples.append(sample)
         return
 
 
