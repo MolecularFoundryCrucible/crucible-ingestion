@@ -89,7 +89,8 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
                 'sample_name': s.get('sample_name'),
                 'owner_orcid': self.owner_orcid,
                 'project_id': self.project_id,
-                'parent_ids': []
+                'parent_ids': [],
+                'link_to_dataset': True
             }
 
             # samples have 'batch' (tray) parents
@@ -101,7 +102,8 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
                     'sample_name': s.get('batch_name'),
                     'owner_orcid': self.owner_orcid,
                     'project_id': self.project_id,
-                    'parent_ids': []
+                    'parent_ids': [],
+                    'link_to_dataset': False
                 }
 
                 # add batch to sample list to make sure it gets created

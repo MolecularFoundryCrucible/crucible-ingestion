@@ -190,6 +190,10 @@ def data_ingestion(dataset_to_process: str,
         if 'parent_ids' in sample:
             sample_parents = sample.pop('parent_ids')
         
+        link_to_dataset = True
+        if 'link_to_dataset' in sample:
+            link_to_dataset = sample.pop('link_to_dataset')
+
         # create sample
         try:
             sql_sample = client.samples.create(**sample)
@@ -203,9 +207,10 @@ def data_ingestion(dataset_to_process: str,
             else:
                 sql_sample = None
                 logger.info(f'sample creation failed, but sample not found')
-                
+
         # link to dataset
-        client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
+        if link_to_dataset is True:
+            client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
 
         # link to parents if listed
         for parent in sample_parents:
