@@ -123,10 +123,6 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
 
 
     def parse_children(self):
-        from crucible.models import Dataset
-        from crucible import CrucibleClient
-        client = CrucibleClient()
-        
         for sample in self.samples:
             sample_name = sample['sample_name']
             child_ds_name = f'Spin Run for {sample_name} - {self.unique_id[0:13]}'
