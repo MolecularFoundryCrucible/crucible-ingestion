@@ -1,4 +1,12 @@
 # packages
+# Allow running this module directly (python dry_run_data_ingestion.py) while
+# keeping the relative imports below working by establishing the package context.
+if __package__ in (None, ""):
+    import os
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    __package__ = "src"
+
 import logging
 from .constants import sql_import_attr, sql_export_attr
 import orjson
@@ -26,6 +34,7 @@ from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5I
                                                 SpinbotPhotoRunIngestor,
                                                 NirvanaMultiPosLineScanIngestor,
                                                 ScopeFoundryH5Ingestor)
+
 from .ingestors.rga_tey_batch_ingestor import RgaTeyBatchIngestor
 from .ingestors.image_ingestor import ImageIngestor
 from .ingestors.insitu_pl_ingestor import InSituPlIngestor
@@ -180,7 +189,7 @@ def data_ingestion(dataset_to_process: str,
     D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
 
     # send the data
-    ds = client.datasets.update(ig.unique_id, **D)
+    logger.info(f'call client.datasets.update({ig.unique_id=}, {D=})')
 
     # link to any parsed samples
     for sample in ig.samples:
@@ -191,7 +200,7 @@ def data_ingestion(dataset_to_process: str,
         
         # create sample
         try:
-            sql_sample = client.samples.create(**sample)
+            logger.info(f'call client.samples.create({sample=})')
         except:
             existing_samples = client.samples.list(sample_name = sample['sample_name'],
                                                    project_id = sample['project_id'])
@@ -201,11 +210,11 @@ def data_ingestion(dataset_to_process: str,
                 sql_sample = None
 
         # link to dataset
-        client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
+        logger.info(f'linking {ig.unique_id=} to {sample["unique_id"]=}')
 
         # link to parents if listed
         for parent in sample_parents:
-            client.samples.link(parent_id = parent, child_id = sql_sample['unique_id'])
+            logger.info(f'linking {parent=} to {sample["unique_id"]=}')
 
     # add children
     for child in ig.children:
@@ -213,23 +222,19 @@ def data_ingestion(dataset_to_process: str,
         md = child['scientific_metadata']
         parent_id = child['parent_id']
         sample_ids = child['sample_links']
-
-        resp = client.datasets.create(child_ds, md)
-        child_dsid = resp['dsid']
-
+        logger.info(f'Creating {child_ds=} with {md=}')
+        
         # link to run dataset
-        client.datasets.link(parent_id = parent_id, child_id = child_dsid)
+        logger.info(f'linking to {parent_id=}')
 
         # link to thin film
         for sample_id in sample_ids:
-            client.datasets.add_sample(dataset_id = child_dsid, sample_id = sample_id)
-
+            logger.info(f'linking to {sample_id=}')
 
     # thumbnails
     for thumbnail in thumbnails:
         try:
             logger.info(f"Adding thumbnail image: {thumbnail['caption']=}")
-            res = client.datasets.add_thumbnail(dsid, thumbnail['thumbnail'], thumbnail['caption'])
         except Exception as err:
             logger.error(f"Failed to add thumbnail with error {err}")
     
@@ -237,7 +242,7 @@ def data_ingestion(dataset_to_process: str,
     filt_keywords = [kw for kw in keywords if isinstance(kw, str) and kw != ""]
     for kw in filt_keywords:
         try:
-            client.datasets.add_keyword(dsid, kw)
+            logger.info(f'adding keyword {kw}')
         except Exception as err:
             logger.error(f"Failed to add keyword {kw} with error {err}")
     
@@ -245,11 +250,37 @@ def data_ingestion(dataset_to_process: str,
 
     # scientific metadata
     logger.info(f"Updating scientific metadata with {md=}")
-    res = client.datasets.update_scientific_metadata(dsid, md, overwrite = False)
-    logger.info(f"Scientific metadata update complete. Response: {res}")
-    return (ds, ingestion_class)
 
 
+if __name__ == '__main__':
+    import os
+    import sys
+    from crucible import CrucibleClient
+
+    logging.basicConfig(level=logging.INFO)
+
+    if len(sys.argv) < 4:
+        raise SystemExit(
+            "usage: python -m dry_run_data_ingestion <dataset_path> <dsid> <ingestor>"
+        )
+
+    dataset_to_process = sys.argv[1]
+    dsid = sys.argv[2]
+    ingestion_class = sys.argv[3]
+    logger.info(f"{dataset_to_process=}")
+    logger.info(f"{dsid=}")
+    logger.info(f"{ingestion_class=}")
+
+    client = CrucibleClient()
+
+    data_ingestion(
+        dataset_to_process=dataset_to_process,
+        dsid=dsid,
+        reqid=None,
+        timestamp=None,
+        client=client,
+        ingestion_class=ingestion_class,
+    )
 
 
 
