@@ -40,6 +40,7 @@ from .ingestors.czi_ingestor import CziIngestor
 from .ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
 from .ingestors.h5_ingestor import H5Ingestor
 from .ingestors.api_upload_ingestor import ApiUploadIngestor
+from .ingestors.autobot_spinrun_ingestor import SpinRunIngestor
 
 logger = logging.getLogger(__name__)
 logger.info("imported all classes")
@@ -65,6 +66,7 @@ ingestor_list = [AFMIngestor,
                 SpinbotSpecLineIngestor,
                 SpinbotCameraCaptureIngestor, 
                 SpinbotPhotoRunIngestor, 
+                SpinRunIngestor,
                 InSituPlIngestor,
                 CziIngestor,
                 DigitalMicrographIngestor,
@@ -183,8 +185,26 @@ def data_ingestion(dataset_to_process: str,
     # link to any parsed samples
     for sample in ig.samples:
         logger.info(f'{sample=}')
-        sql_sample = client.samples.create(**sample)
+        sample_parents = sample.pop('parent_ids')
+        
+        # create sample
+        try:
+            sql_sample = client.samples.create(**sample)
+        except:
+            existing_samples = client.samples.list(sample_name = sample['sample_name'],
+                                                   project_id = sample['project_id'])
+            if len(existing_samples) > 0:
+                sql_sample = existing_samples[-1]
+            else:
+                sql_sample = None
+
+        # link to dataset
         client.datasets.add_sample(dataset_id = ds['unique_id'], sample_id = sql_sample['unique_id'])
+
+        # link to parents if listed
+        for parent in sample_parents:
+            client.samples.link(parent_id = parent, child_id = sql_sample['unique_id'])
+
 
     # thumbnails
     for thumbnail in thumbnails:
