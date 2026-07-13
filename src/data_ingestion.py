@@ -218,7 +218,7 @@ def data_ingestion(dataset_to_process: str,
         child_dsid = resp['dsid']
 
         # link to run dataset
-        client.datasets.link_parent_child(parent_id = parent_id, child_id = child_dsid)
+        client.datasets.link_parent_child(parent_dataset_id = parent_id, child_dataset_id = child_dsid)
 
         # link to thin film
         for sample_id in sample_ids:
