@@ -125,8 +125,10 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
 
 
     def parse_children(self):
+        self.children = []
         for sample in self.file_contents.get('samples', []):
             sample_name = sample['sample_name']
+            sample_id = sample['sample_id']
             child_ds_name = f'Spin Run for {sample_name} - {self.unique_id[0:13]}'
             child_ds = Dataset(
                         measurement = self.measurement,
@@ -136,15 +138,10 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
                         data_format = 'yaml' )
             
             md = self.parse_sample_metadata(sample['sample_id'])
-            resp = client.datasets.create(child_ds, md)
-            child_dsid = resp['dsid']
-
-            # link to run dataset
-            client.datasets.link(parent_id = self.unique_id, child_id = child_dsid)
-
-            # link to thin film
-            client.datasets.add_sample(dataset_id = child_dsid, sample_id = sample['samplee_id'])
-
+            self.children.append({'dataset': child_ds,
+                             'scientific_metadata': md,
+                             'parent_id': self.unique_id,
+                             'sample_links':[sample_id]})
 
     def parse_orcid(self):
         self.owner_orcid = self.file_contents.get('user_orcid', None)

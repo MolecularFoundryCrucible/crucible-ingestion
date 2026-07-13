@@ -38,7 +38,8 @@ class CrucibleDatasetIngestor(Dataset):
     associated_files: dict = {} 
     thumbnails: list = []
     samples: list = []
-
+    children: list = []
+    
     @property
     def ingestion_class(self):
         return type(self).__name__
