@@ -655,8 +655,15 @@ class QSpleemARRESEKIngestor(QSpleemIngestor):
                 uv_max = uv[int(np.argmax(uv[:, 0] ** 2 + uv[:, 1] ** 2))]
                 k_idx = int(np.argmin(np.sum((uv - 0.75 * uv_max) ** 2, axis=1)))
                 e_idx = int(np.argmax(E))
+                img = M['images']
+                # Split image companions carry the FULL metadata (spectrum/eV/uv) but
+                # only a slice of `images`; clamp the frame indices to what this file
+                # actually holds so a representative frame is always in range — works
+                # for any number of split parts.
+                e_idx = min(e_idx, img.shape[1] - 1)
+                k_idx = min(k_idx, img.shape[2] - 1)
                 for spin in range(spec.shape[0]):
-                    frame = M['images'][spin, e_idx, k_idx]  # lazy (H, W) slice
+                    frame = img[spin, e_idx, k_idx]  # lazy (H, W) slice
                     self._add_diffraction_thumbnail(
                         frame, f"EK diffraction (spin {spin+1}, {E[e_idx]:.1f} eV, uv=({uv[k_idx][0]:.2f},{uv[k_idx][1]:.2f}))")
                 return
@@ -707,6 +714,10 @@ class QSpleemARRESMMIngestor(QSpleemIngestor):
             if 'images' in M:
                 # diffraction child: representative pattern at the 25th-percentile reflectivity point
                 spec = np.array(M['spectrum'])            # (spin, kx, ky)
+                img = M['images']
+                # Split image companions carry the FULL metadata but only a slice of
+                # `images`; clamp the frame indices to this file's actual shape so a
+                # representative frame is always in range — works for any number of parts.
                 for spin in range(spec.shape[0]):
                     s = spec[spin]
                     measured = s[np.isfinite(s) & (s != 0)]
@@ -716,7 +727,9 @@ class QSpleemARRESMMIngestor(QSpleemIngestor):
                     s_masked = np.where(s == 0, np.nan, s)
                     idx = int(np.nanargmin(np.abs(s_masked - target)))
                     kxi, kyi = np.unravel_index(idx, s.shape)
-                    frame = M['images'][spin, kxi, kyi]   # lazy (H, W) slice
+                    kxi = min(int(kxi), img.shape[1] - 1)
+                    kyi = min(int(kyi), img.shape[2] - 1)
+                    frame = img[spin, kxi, kyi]   # lazy (H, W) slice
                     self._add_diffraction_thumbnail(frame, f"MM diffraction (spin {spin+1}, 25th pct reflectivity)")
                 return
             spec_series = np.array(M['spectrum'])
