@@ -306,21 +306,27 @@ def data_ingestion(dataset_to_process: str,
 
 
 if __name__ == '__main__':
+    import argparse
     import os
-    import sys
     from crucible import CrucibleClient
 
     logging.basicConfig(level=logging.INFO)
 
-    if len(sys.argv) < 4:
-        raise SystemExit(
-            "usage: python -m dry_run_data_ingestion <dataset_path> <dsid> <ingestor> [output_dir]"
-        )
+    parser = argparse.ArgumentParser(prog="dry_run_data_ingestion")
+    parser.add_argument("--file", required=True,
+                        help="path to the dataset to process")
+    parser.add_argument("--dsid", default="xxx",
+                        help="dataset unique id (default: xxx)")
+    parser.add_argument("--ingestor", default=None,
+                        help="ingestor class name (default: auto-detect via find_supported_ingestor)")
+    parser.add_argument("--output-dir", dest="output_dir", default=None,
+                        help="directory for dry run outputs")
+    args = parser.parse_args()
 
-    dataset_to_process = sys.argv[1]
-    dsid = sys.argv[2]
-    ingestion_class = sys.argv[3]
-    output_dir = sys.argv[4] if len(sys.argv) > 4 else None
+    dataset_to_process = args.file
+    dsid = args.dsid
+    ingestion_class = args.ingestor
+    output_dir = args.output_dir
     logger.info(f"{dataset_to_process=}")
     logger.info(f"{dsid=}")
     logger.info(f"{ingestion_class=}")
