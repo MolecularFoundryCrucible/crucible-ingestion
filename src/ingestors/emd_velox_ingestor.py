@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Crucible Client
 crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
-apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
+apikey = get_secret("CRUCIBLE_APIKEY", "crucible_admin_apikey/versions/4")
 client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
 def parse_dataset_as_dict(dataset): 

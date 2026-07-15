@@ -7,10 +7,17 @@ if __package__ in (None, ""):
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     __package__ = "src"
 
+import base64
+import json
 import logging
+import os
+from io import BytesIO
+
+from PIL import Image
+
 from .constants import sql_import_attr, sql_export_attr
 import orjson
-from .utils import sanitize_metadata
+from .utils import sanitize_metadata, EnhancedJSONEncoder
 
 from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
                                                 BioGlowIngestor,
@@ -124,7 +131,12 @@ def find_supported_ingestor(dataset_to_process,
 
 
 def populate_existing_ds_info(ig, client, populate_fields):
-    found_ds = client.datasets.get(ig.unique_id, include_metadata=True)
+    try:
+        found_ds = client.datasets.get(ig.unique_id, include_metadata=True)
+        assoc_files = client.datasets.list_files(ig.unique_id)
+    except:
+        found_ds = None
+        assoc_files = []
 
     # add required info to IG
     if found_ds:
@@ -136,7 +148,7 @@ def populate_existing_ds_info(ig, client, populate_fields):
             else:
                 setattr(ig, k, found_ds[k])
 
-    assoc_files = client.datasets.list_files(ig.unique_id)
+    
     logger.info(f'{ig.unique_id}: {assoc_files=}')
     for af in assoc_files:
         ig.associated_files[af['filename']] = {'size': af['size'], 
@@ -149,9 +161,15 @@ def data_ingestion(dataset_to_process: str,
                    reqid: str,
                    timestamp: str,
                    client = None,
-                   ingestion_class=None):
-    
+                   ingestion_class=None,
+                   output_dir=None):
+
     logger.info("running the data_ingestion function")
+
+    if output_dir is None:
+        output_dir = os.path.join(os.getcwd(), "dry_run_output", str(dsid))
+    os.makedirs(output_dir, exist_ok=True)
+    logger.info(f"dry run outputs will be written to {output_dir}")
 
     ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class, ingestor_list)
     if ig is None:
@@ -188,11 +206,25 @@ def data_ingestion(dataset_to_process: str,
     skip_fields = {'keywords', 'ingestion_class', 'thumbnails', 'scientific_metadata', 'acl', 'ingestion_githash'}
     D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
 
+    # collect everything parsed into a single report for inspection
+    report = {
+        "dataset_path": dataset_to_process,
+        "unique_id": ig.unique_id,
+        "ingestion_class": ingestion_class,
+        "dataset_fields": D,
+        "scientific_metadata": md,
+        "keywords": None,
+        "samples": [],
+        "children": [],
+        "thumbnails": [],
+    }
+
     # send the data
     logger.info(f'call client.datasets.update({ig.unique_id=}, {D=})')
 
     # link to any parsed samples
     for sample in ig.samples:
+        report["samples"].append(dict(sample))
         logger.info(f'{sample=}')
         sample_parents = []
         if 'parent_ids' in sample:
@@ -222,8 +254,14 @@ def data_ingestion(dataset_to_process: str,
         md = child['scientific_metadata']
         parent_id = child['parent_id']
         sample_ids = child['sample_links']
+        report["children"].append({
+            "dataset": child_ds,
+            "scientific_metadata": md,
+            "parent_id": parent_id,
+            "sample_links": sample_ids,
+        })
         logger.info(f'Creating {child_ds=} with {md=}')
-        
+
         # link to run dataset
         logger.info(f'linking to {parent_id=}')
 
@@ -231,13 +269,21 @@ def data_ingestion(dataset_to_process: str,
         for sample_id in sample_ids:
             logger.info(f'linking to {sample_id=}')
 
-    # thumbnails
-    for thumbnail in thumbnails:
+    # thumbnails - decode the base64 payloads and save as jpg files to inspect
+    thumbnails_dir = os.path.join(output_dir, "thumbnails")
+    os.makedirs(thumbnails_dir, exist_ok=True)
+    for i, thumbnail in enumerate(thumbnails):
         try:
-            logger.info(f"Adding thumbnail image: {thumbnail['caption']=}")
+            caption = thumbnail.get('caption', '')
+            logger.info(f"Adding thumbnail image: {caption=}")
+            image = Image.open(BytesIO(base64.b64decode(thumbnail['thumbnail']))).convert("RGB")
+            jpg_path = os.path.join(thumbnails_dir, f"thumbnail_{i:03d}.jpg")
+            image.save(jpg_path, format="JPEG")
+            logger.info(f"Saved thumbnail to {jpg_path}")
+            report["thumbnails"].append({"caption": caption, "file": jpg_path})
         except Exception as err:
             logger.error(f"Failed to add thumbnail with error {err}")
-    
+
     # keywords
     filt_keywords = [kw for kw in keywords if isinstance(kw, str) and kw != ""]
     for kw in filt_keywords:
@@ -245,11 +291,18 @@ def data_ingestion(dataset_to_process: str,
             logger.info(f'adding keyword {kw}')
         except Exception as err:
             logger.error(f"Failed to add keyword {kw} with error {err}")
-    
+
     logger.info(f"Keyword addition complete Added these keywords: {keywords}")
+    report["keywords"] = filt_keywords
 
     # scientific metadata
     logger.info(f"Updating scientific metadata with {md=}")
+
+    # write the collected report to a json file for inspection
+    report_path = os.path.join(output_dir, "ingestion_report.json")
+    with open(report_path, "w") as f:
+        json.dump(report, f, cls=EnhancedJSONEncoder, indent=4)
+    logger.info(f"Wrote dry run report to {report_path}")
 
 
 if __name__ == '__main__':
@@ -261,17 +314,22 @@ if __name__ == '__main__':
 
     if len(sys.argv) < 4:
         raise SystemExit(
-            "usage: python -m dry_run_data_ingestion <dataset_path> <dsid> <ingestor>"
+            "usage: python -m dry_run_data_ingestion <dataset_path> <dsid> <ingestor> [output_dir]"
         )
 
     dataset_to_process = sys.argv[1]
     dsid = sys.argv[2]
     ingestion_class = sys.argv[3]
+    output_dir = sys.argv[4] if len(sys.argv) > 4 else None
     logger.info(f"{dataset_to_process=}")
     logger.info(f"{dsid=}")
     logger.info(f"{ingestion_class=}")
 
-    client = CrucibleClient()
+    # authenticate with CRUCIBLE_APIKEY; fall back to SDK config if unset
+    client = CrucibleClient(
+        api_url=os.environ.get('CRUCIBLE_API_URL'),
+        api_key=os.environ.get('CRUCIBLE_APIKEY'),
+    )
 
     data_ingestion(
         dataset_to_process=dataset_to_process,
@@ -280,6 +338,7 @@ if __name__ == '__main__':
         timestamp=None,
         client=client,
         ingestion_class=ingestion_class,
+        output_dir=output_dir,
     )
 
 

@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 from crucible import CrucibleClient
 crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
-crucible_apikey = get_secret("ADMIN_APIKEY", "crucible_admin_apikey/versions/4")
+crucible_apikey = get_secret("CRUCIBLE_APIKEY", "crucible_admin_apikey/versions/4")
 
 
 def decode_recurse(x):

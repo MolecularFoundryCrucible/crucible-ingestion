@@ -56,7 +56,7 @@ def get_credentials_from_env():
 
 def get_secret(secret_env_var, gcs_secret_name = None, sa_creds: str = None, secret_store = secret_store): 
     '''
-    Running locally: Edit .env file in ingestion-consumer with the ADMIN_APIKEY for the crucible api
+    Running locally: Edit .env file in ingestion-consumer with the CRUCIBLE_APIKEY for the crucible api
     Running in the cloud: Environment variables will be available through google secret manager
 
     General: 
