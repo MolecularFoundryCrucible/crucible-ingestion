@@ -165,8 +165,18 @@ def data_ingestion(dataset_to_process: str,
     # if found; overwrite parsed data with what already existed in SQL
     # to overwrite use "update" endpoint; not "ingestion-request"
     if found_ds:
-        ig.to_ig_from_sql(found_ds, sql_import_attr) 
+        ig.to_ig_from_sql(found_ds, sql_import_attr)
         logger.info("updated Ingestor object with found data")
+
+        # After merging Crucible scientific_metadata, honour any uploader-specified exclusions.
+        # "skipped thin films" is only present for Nirvana "from file" mode with user exclusions.
+        skipped = set(ig.scientific_metadata.get("skipped thin films", []))
+        for sample in ig.samples:
+            if sample.get("unique_id") in skipped:
+                sample["link_to_dataset"] = False
+        if skipped:
+            ig.children = [c for c in ig.children
+                           if not set(c.get("sample_links", [])).intersection(skipped)]
 
     else:
         logger.info("no dataset found to update from")

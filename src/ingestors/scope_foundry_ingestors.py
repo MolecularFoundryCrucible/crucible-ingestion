@@ -1,5 +1,6 @@
 import os
 import re
+import uuid as uuid_lib
 import functools
 import logging
 from io import BytesIO
@@ -11,9 +12,18 @@ from datetime import datetime
 from PIL import Image
 import matplotlib.pyplot as plt
 from .h5_ingestor import H5Ingestor
+from crucible.models import Dataset
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+
+def _is_valid_uuid(val: str) -> bool:
+    try:
+        uuid_lib.UUID(str(val))
+        return True
+    except ValueError:
+        return False
 
 
 def check_orcid_entry(orcid_string):
@@ -786,19 +796,75 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             self.keywords += [self.session_name]
 
     def parse_samples(self):
+        trays_seen = set()
         pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
         for pos in self.h5file[pos_path]:
-            sample_id = self.h5file[pos_path][pos].attrs['sample_uuid']
-            sample_name = self.h5file[pos_path][pos].attrs['sample_name']
-            sample_description = pos
-            if len(sample_id) > 0:
-                sample = {"unique_id": sample_id, 
-                          "sample_name": sample_name, 
-                          "owner_orcid": self.owner_orcid,
-                          "project_id": self.project_id}
-                
-                # get the rest of the metadata
-                self.samples.append(sample)
+            attrs = self.h5file[pos_path][pos].attrs
+            sample_id = str(attrs['sample_uuid'])
+            sample_name = str(attrs['sample_name'])
+            tray_id = str(attrs['tray_uuid'])
+            tray_name = str(attrs['tray_name'])
+
+            # Add tray once per unique valid UUID — linked to parent dataset
+            if tray_id not in trays_seen and _is_valid_uuid(tray_id):
+                trays_seen.add(tray_id)
+                self.samples.append({
+                    "unique_id": tray_id,
+                    "sample_name": tray_name,
+                    "owner_orcid": self.owner_orcid,
+                    "project_id": self.project_id,
+                    "link_to_dataset": True,
+                })
+
+            # Thin film — not linked to parent dataset (linked at child dataset level)
+            if not _is_valid_uuid(sample_id):
+                logger.info(f"skipping position {pos}: invalid UUID '{sample_id}'")
+                continue
+
+            sample = {
+                "unique_id": sample_id,
+                "sample_name": sample_name,
+                "owner_orcid": self.owner_orcid,
+                "project_id": self.project_id,
+                "link_to_dataset": False,
+            }
+            if _is_valid_uuid(tray_id):
+                sample["parent_ids"] = [tray_id]
+            self.samples.append(sample)
+        return
+
+    def parse_children(self):
+        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        for pos in self.h5file[pos_path]:
+            attrs = self.h5file[pos_path][pos].attrs
+            sample_id = str(attrs['sample_uuid'])
+            sample_name = str(attrs['sample_name'])
+
+            if not _is_valid_uuid(sample_id):
+                continue
+
+            child_ds = Dataset(
+                measurement=self.measurement,
+                project_id=self.project_id,
+                owner_orcid=self.owner_orcid,
+                dataset_name=f"Child Nirvana scan for {sample_name}",
+                data_format=self.data_format,
+                instrument_name=self.instrument_name,
+                timestamp=self.timestamp,
+            )
+            child_md = {
+                "integration_time": float(attrs['integration_time']),
+                "x_center": float(attrs['x_center']),
+                "y_center": float(attrs['y_center']),
+                "x_positions": attrs['x_positions'].tolist(),
+                "y_positions": attrs['y_positions'].tolist(),
+            }
+            self.children.append({
+                "dataset": child_ds,
+                "scientific_metadata": child_md,
+                "parent_id": self.unique_id,
+                "sample_links": [sample_id],
+            })
         return
 
     def parse_orcid(self):
