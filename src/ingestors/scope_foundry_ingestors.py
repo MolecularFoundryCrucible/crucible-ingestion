@@ -967,143 +967,125 @@ class QSpleemDepositionMonitorIngestor(QSpleemIngestor):
         ROI_COLORS = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red']
 
         try:
+            # Images are saved on their own (tunable) interval, so the image
+            # stack and the continuously-sampled monitoring arrays are on
+            # different axes / lengths. Only the first and last frames are
+            # needed here, so read them lazily rather than the whole stack.
             with h5py.File(self.file_to_upload, 'r') as f:
                 M = f['measurement/deposition_monitor']
-                images       = np.array(M['images'])
+                imgs = M['images']
+                spin_mode = imgs.ndim == 4   # (N, 2, H, W) vs (N, H, W)
+                first_frame = np.asarray(imgs[0, 0] if spin_mode else imgs[0], dtype=np.float32)
+                last_up     = np.asarray(imgs[-1, 0] if spin_mode else imgs[-1], dtype=np.float32)
+                last_down   = np.asarray(imgs[-1, 1], dtype=np.float32) if spin_mode else None
                 roi_times    = np.array(M['roi_times'])
                 roi_int      = np.array(M['roi_intensity'])
+                roi_pos      = np.array(M['roi_positions'])
                 ec           = np.array(M['emission_current'])
                 pressure     = np.array(M['pressure_main_chamber'])
                 temperature  = np.array(M['sample_temperature'])
 
-            # Detect spin mode: images is (N, 2, H, W) vs (N, H, W)
-            spin_mode = images.ndim == 4
-
             # Infer a scalar time axis for ec/pressure/temperature.
             # roi_times has shape (N,) or (N, 2); use column 0 for axis.
             t = roi_times[:, 0] if roi_times.ndim == 2 else roi_times
+            n_roi = roi_int.shape[-1]
+
+            def _frame_with_rois(frame, roi_row, caption):
+                lo, hi = np.percentile(frame, 2), np.percentile(frame, 98)
+                norm = np.clip((frame - lo) / (hi - lo + 1e-9), 0, 1)
+                fig, ax = plt.subplots()
+                ax.imshow(norm, cmap='gray', origin='lower')
+                for i in range(n_roi):
+                    x, y, w, h = roi_row[i]
+                    rect = plt.Rectangle((x, y), w, h, linewidth=1.5,
+                                         edgecolor=ROI_COLORS[i % len(ROI_COLORS)], facecolor='none')
+                    ax.add_patch(rect)
+                    ax.text(x + w/2, y + h + 10, f'ROI {i+1}',
+                            color=ROI_COLORS[i % len(ROI_COLORS)], ha='center', fontsize=7)
+                ax.axis('off')
+                ax.set_title(caption, fontsize=8, pad=4)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150, bbox_inches='tight'); plt.clf(); buf.seek(0)
+                self.add_thumbnail(Image.open(buf), caption)
 
             # ── ROI intensity vs time ─────────────────────────────────────
-            n_roi = roi_int.shape[-1]
-            if n_roi > 0:
-                fig, ax = plt.subplots()
-                if spin_mode:
-                    t_up   = roi_times[:, 0]
-                    t_down = roi_times[:, 1]
-                    for i in range(n_roi):
-                        c = ROI_COLORS[i % len(ROI_COLORS)]
-                        ax.plot(t_up,   roi_int[:, 0, i], color=c, linestyle='-',  label=f'ROI {i+1} Up')
-                        ax.plot(t_down, roi_int[:, 1, i], color=c, linestyle='--', label=f'ROI {i+1} Down')
-                else:
-                    for i in range(n_roi):
-                        ax.plot(t, roi_int[:, i], color=ROI_COLORS[i % len(ROI_COLORS)], label=f'ROI {i+1}')
-                ax.set_xlabel('Time (s)')
-                ax.set_ylabel('Intensity (counts)')
-                ax.legend(fontsize=7)
-                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
-                self.add_thumbnail(Image.open(buf), 'ROI Intensity vs Time')
+            try:
+                if n_roi > 0:
+                    fig, ax = plt.subplots()
+                    if spin_mode:
+                        t_up   = roi_times[:, 0]
+                        t_down = roi_times[:, 1]
+                        for i in range(n_roi):
+                            c = ROI_COLORS[i % len(ROI_COLORS)]
+                            ax.plot(t_up,   roi_int[:, 0, i], color=c, linestyle='-',  label=f'ROI {i+1} Up')
+                            ax.plot(t_down, roi_int[:, 1, i], color=c, linestyle='--', label=f'ROI {i+1} Down')
+                    else:
+                        for i in range(n_roi):
+                            ax.plot(t, roi_int[:, i], color=ROI_COLORS[i % len(ROI_COLORS)], label=f'ROI {i+1}')
+                    ax.set_xlabel('Time (s)')
+                    ax.set_ylabel('Intensity (counts)')
+                    ax.legend(fontsize=7)
+                    buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                    self.add_thumbnail(Image.open(buf), 'ROI Intensity vs Time')
+            except Exception as e:
+                logger.warning(f'DepositionMonitor ROI intensity thumbnail failed: {e}')
 
             # ── ROI asymmetry vs time (spin mode only) ───────────────────
-            if spin_mode and n_roi > 0:
-                fig, ax = plt.subplots()
-                t_up, t_down = roi_times[:, 0], roi_times[:, 1]
-                for i in range(n_roi):
-                    up, dn = roi_int[:, 0, i], roi_int[:, 1, i]
-                    total = up + dn
-                    asym = np.where(total > 0, (up - dn) / total, np.nan)
-                    ax.plot(t_up, asym, color=ROI_COLORS[i % len(ROI_COLORS)], label=f'ROI {i+1}')
-                ax.set_xlabel('Time (s)')
-                ax.set_ylabel('Asymmetry')
-                ax.legend(fontsize=7)
-                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
-                self.add_thumbnail(Image.open(buf), 'ROI Asymmetry vs Time')
+            try:
+                if spin_mode and n_roi > 0:
+                    fig, ax = plt.subplots()
+                    t_up, t_down = roi_times[:, 0], roi_times[:, 1]
+                    for i in range(n_roi):
+                        up, dn = roi_int[:, 0, i], roi_int[:, 1, i]
+                        total = up + dn
+                        asym = np.where(total > 0, (up - dn) / total, np.nan)
+                        ax.plot(t_up, asym, color=ROI_COLORS[i % len(ROI_COLORS)], label=f'ROI {i+1}')
+                    ax.set_xlabel('Time (s)')
+                    ax.set_ylabel('Asymmetry')
+                    ax.legend(fontsize=7)
+                    buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                    self.add_thumbnail(Image.open(buf), 'ROI Asymmetry vs Time')
+            except Exception as e:
+                logger.warning(f'DepositionMonitor ROI asymmetry thumbnail failed: {e}')
 
-            # ── First frame with ROI boxes ────────────────────────────────
-            roi_pos = np.array(M['roi_positions'])
-            first = images[0, 0].astype(np.float32) if spin_mode else images[0].astype(np.float32)
-            lo, hi = np.percentile(first, 2), np.percentile(first, 98)
-            first = np.clip((first - lo) / (hi - lo + 1e-9), 0, 1)
-            fig, ax = plt.subplots()
-            ax.imshow(first, cmap='gray', origin='lower')
-            for i in range(n_roi):
-                x, y, w, h = roi_pos[-1, i]
-                rect = plt.Rectangle((x, y), w, h, linewidth=1.5,
-                                     edgecolor=ROI_COLORS[i % len(ROI_COLORS)], facecolor='none')
-                ax.add_patch(rect)
-                ax.text(x + w/2, y + h + 10, f'ROI {i+1}',
-                        color=ROI_COLORS[i % len(ROI_COLORS)], ha='center', fontsize=7)
-            ax.axis('off')
-            ax.set_title('Final frame with ROI positions', fontsize=8, pad=4)
-            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150, bbox_inches='tight'); plt.clf(); buf.seek(0)
-            self.add_thumbnail(Image.open(buf), 'First Frame with ROIs')
+            # ── First frame with first ROIs / final frame with final ROIs ─
+            try:
+                _frame_with_rois(first_frame, roi_pos[0], 'First Frame with ROIs')
+            except Exception as e:
+                logger.warning(f'DepositionMonitor first-frame thumbnail failed: {e}')
+            try:
+                _frame_with_rois(last_up, roi_pos[-1], 'Final Frame with ROIs')
+            except Exception as e:
+                logger.warning(f'DepositionMonitor final-frame thumbnail failed: {e}')
 
             # ── Scalar time series — combined ─────────────────────────────
-            fig, axes = plt.subplots(1, 3, figsize=(12, 3))
-            for ax, arr, ylabel in zip(axes,
-                [ec, pressure, temperature],
-                ['Emission Current (A)', 'Pressure (mbar)', 'Temperature (°C)']):
-                ax.plot(t, arr, color='tab:blue', linewidth=1)
-                ax.set_xlabel('Time (s)'); ax.set_ylabel(ylabel)
-            plt.tight_layout()
-            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
-            self.add_thumbnail(Image.open(buf), 'Instrument Parameters vs Time')
+            try:
+                fig, axes = plt.subplots(1, 3, figsize=(12, 3))
+                for ax, arr, ylabel in zip(axes,
+                    [ec, pressure, temperature],
+                    ['Emission Current (A)', 'Pressure (mbar)', 'Temperature (°C)']):
+                    ax.plot(t, arr, color='tab:blue', linewidth=1)
+                    ax.set_xlabel('Time (s)'); ax.set_ylabel(ylabel)
+                plt.tight_layout()
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                self.add_thumbnail(Image.open(buf), 'Instrument Parameters vs Time')
+            except Exception as e:
+                logger.warning(f'DepositionMonitor instrument-parameters thumbnail failed: {e}')
 
             # ── Final frame asymmetry (spin mode only) ────────────────────
-            if spin_mode:
-                up_last   = images[-1, 0].astype(np.float32)
-                down_last = images[-1, 1].astype(np.float32)
-                total = up_last + down_last
-                asym_frame = np.where(total > 0, (up_last - down_last) / total, 0.0)
-                v = float(np.percentile(np.abs(asym_frame), 98)) or 1.0
-                buf = BytesIO()
-                plt.imsave(buf, asym_frame, cmap='RdBu_r', vmin=-v, vmax=v, format='png', origin='lower')
-                buf.seek(0)
-                self.add_thumbnail(Image.open(buf), 'Final Frame Asymmetry')
+            try:
+                if spin_mode:
+                    total = last_up + last_down
+                    asym_frame = np.where(total > 0, (last_up - last_down) / total, 0.0)
+                    v = float(np.percentile(np.abs(asym_frame), 98)) or 1.0
+                    buf = BytesIO()
+                    plt.imsave(buf, asym_frame, cmap='RdBu_r', vmin=-v, vmax=v, format='png', origin='lower')
+                    buf.seek(0)
+                    self.add_thumbnail(Image.open(buf), 'Final Frame Asymmetry')
+            except Exception as e:
+                logger.warning(f'DepositionMonitor final-frame-asymmetry thumbnail failed: {e}')
 
         except Exception as e:
             logger.warning(f'DepositionMonitor thumbnail generation failed: {e}')
-
-        # overwrite unique ID if one is in the file
-        if 'unique_id' in self.h5file.attrs.keys():
-            self.unique_id = self.h5file.attrs['unique_id']
-
-        # overwrite creation time and data format
-        self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
-        self.data_format = "ScopeFoundryH5"
-
-        # parse session_name and tags
-        default_tags_value = "list,tags,separated,by,commas (optional)"
-        default_session_value = "(optional)"
-
-        try: 
-            scope_foundry_tags = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['tags'].strip()
-            scope_foundry_session = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['session_name'].strip()
-
-        except Exception:
-            logger.warning("no mf-crucible settings found for tags or session_name")
-            scope_foundry_tags = default_tags_value
-            scope_foundry_session = default_session_value
-
-        if scope_foundry_tags != default_tags_value:
-            self.keywords += [x.strip() for x in scope_foundry_tags.split(",")]
-
-        if scope_foundry_session != default_session_value:
-            self.session_name = scope_foundry_session
-            self.keywords += [self.session_name]
-
-    # def parse_orcid(self):
-    #     if self.owner_orcid:
-    #         return
-    #     self.owner_orcid = check_orcid_entry(self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
-    #     return
-
-
-    # def parse_project_id(self):
-    #     if self.project_id:
-    #         return
-    #     else:
-    #          self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
-    #     return 
 
 
 
