@@ -57,6 +57,7 @@ from .ingestors.ptychography_h5_ingestor import PtychographyH5Ingestor
 from .ingestors.h5_ingestor import H5Ingestor
 from .ingestors.api_upload_ingestor import ApiUploadIngestor
 from .ingestors.autobot_spinrun_ingestor import SpinRunIngestor
+from .ingestors.inorganic_xrd_ingestor import InorganicXRDIngestor
 
 logger = logging.getLogger(__name__)
 logger.info("imported all classes")
@@ -83,6 +84,7 @@ ingestor_list = [AFMIngestor,
                 SpinbotCameraCaptureIngestor, 
                 SpinbotPhotoRunIngestor, 
                 SpinRunIngestor,
+                InorganicXRDIngestor,
                 InSituPlIngestor,
                 CziIngestor,
                 DigitalMicrographIngestor,
