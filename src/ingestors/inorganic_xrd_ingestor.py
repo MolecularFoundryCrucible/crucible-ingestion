@@ -1,9 +1,7 @@
-import os
 import logging
 from io import BytesIO
 from pathlib import Path
 
-import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 
@@ -25,8 +23,18 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
             return False
 
     def get_scientific_metadata(self):
+        """
+        Detect child vs standalone via 'position' in Crucible scimd.
+
+        'position' is written at dataset create time (before ingestion runs) so
+        it's timing-safe. Hierarchy checks (list_children, include_links) are NOT
+        used: parent-child dataset links are created by the uploader *after*
+        create_dataset() returns, meaning they don't exist yet when this ingestor
+        runs. To distinguish a parent dataset from a standalone, the uploader should
+        write a create-time marker (e.g. upload_mode='parent') to the dataset's
+        scimd — not yet implemented on the uploader side.
+        """
         self.scientific_metadata = {}
-        self._xrd_mode = 'standalone'
         self._xrd_sample_idx = 0
 
         ds = client.datasets.get(self.unique_id, include_metadata=True)
@@ -41,59 +49,13 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
             position = None
 
         if position:
-            self._xrd_mode = 'child'
             self._xrd_sample_idx = int(position[1:]) - 1
-        elif self._is_xrd_parent():
-            self._xrd_mode = 'parent'
 
-        if self._xrd_mode in ('child', 'standalone'):
-            angles, intensities = self._read_column(self._xrd_sample_idx)
-            self.scientific_metadata = {
-                'angle_deg': angles,
-                'intensity_cps': intensities,
-            }
-
-    def _is_xrd_parent(self):
-        """
-        True if this dataset is a from-holders parent: it has child datasets in
-        Crucible AND those children's samples are child samples of this dataset's
-        samples (dataset hierarchy agrees with sample hierarchy).
-        """
-        try:
-            children = client.datasets.list_children(parent_dataset_id=self.unique_id)
-            if not children:
-                return False
-
-            my_links = client.datasets.get(self.unique_id, include_links=True)
-            my_sample_ids = set()
-            if my_links and 'links' in my_links:
-                my_sample_ids = {lnk.get('unique_id') or lnk.get('id')
-                                 for lnk in my_links['links']
-                                 if lnk.get('resource_type') == 'sample'}
-            my_sample_ids.discard(None)
-
-            if not my_sample_ids:
-                return False
-
-            for child_ds in children:
-                child_dsid = child_ds['unique_id']
-                child_links = client.datasets.get(child_dsid, include_links=True)
-                if not child_links or 'links' not in child_links:
-                    continue
-                child_sample_ids = {lnk.get('unique_id') or lnk.get('id')
-                                    for lnk in child_links['links']
-                                    if lnk.get('resource_type') == 'sample'}
-                child_sample_ids.discard(None)
-
-                for child_sid in child_sample_ids:
-                    child_sample_parents = client.samples.list_parents(child_sid) or []
-                    ancestor_ids = {p['unique_id'] for p in child_sample_parents}
-                    if ancestor_ids & my_sample_ids:
-                        return True
-        except Exception as err:
-            logger.warning(f"_is_xrd_parent check failed: {err}")
-
-        return False
+        angles, intensities = self._read_column(self._xrd_sample_idx)
+        self.scientific_metadata = {
+            'angle_deg': angles,
+            'intensity_cps': intensities,
+        }
 
     def _read_column(self, sample_idx):
         """
@@ -144,8 +106,6 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
 
     def get_thumbnails(self):
         self.thumbnails = []
-        if self._xrd_mode == 'parent':
-            return
         try:
             angles, intensities = self._read_column(self._xrd_sample_idx)
             if not angles:

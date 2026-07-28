@@ -891,10 +891,13 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
     def _detect_child_position(self):
         """
         Return the position string (e.g. 'S03') if this dataset is a from-holders
-        child (uploader wrote 'position' to its scimd and created the parent-child
-        dataset link). Returns None for parent or from-file datasets.
-        Uses both the scimd 'position' field AND the dataset/sample hierarchy as
-        a double-check to avoid false positives.
+        child, or None otherwise.
+
+        'position' is written into the dataset record by the uploader at create time,
+        before ingestion runs — making it the only timing-safe discriminator. Hierarchy
+        checks (list_parents, include_links) cannot be used here because the parent-child
+        dataset link and sample links are created by the uploader after create_dataset()
+        returns (i.e., after this ingestor has already finished).
         """
         ds = client.datasets.get(self.unique_id, include_metadata=True)
         if not ds:
@@ -906,43 +909,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
         else:
             actual_scimd = raw_scimd or {}
 
-        position = actual_scimd.get('position')
-        if not position:
-            return None
-
-        # Double-check: dataset hierarchy must agree with sample hierarchy
-        parents = client.datasets.list_parents(child_dataset_id=self.unique_id)
-        if not parents:
-            return None
-
-        my_links = client.datasets.get(self.unique_id, include_links=True)
-        my_sample_ids = set()
-        if my_links and 'links' in my_links:
-            my_sample_ids = {lnk.get('unique_id') or lnk.get('id')
-                             for lnk in my_links['links']
-                             if lnk.get('resource_type') == 'sample'}
-        my_sample_ids.discard(None)
-
-        if not my_sample_ids:
-            return None
-
-        for parent_ds in parents:
-            parent_dsid = parent_ds['unique_id']
-            parent_links = client.datasets.get(parent_dsid, include_links=True)
-            parent_sample_ids = set()
-            if parent_links and 'links' in parent_links:
-                parent_sample_ids = {lnk.get('unique_id') or lnk.get('id')
-                                     for lnk in parent_links['links']
-                                     if lnk.get('resource_type') == 'sample'}
-            parent_sample_ids.discard(None)
-
-            for my_sid in my_sample_ids:
-                my_sample_parents = client.samples.list_parents(my_sid) or []
-                ancestor_ids = {p['unique_id'] for p in my_sample_parents}
-                if ancestor_ids & parent_sample_ids:
-                    return position
-
-        return None
+        return actual_scimd.get('position')
 
     def _setup_as_from_holders_child(self):
         """Run ingestion for a from-holders child dataset."""
