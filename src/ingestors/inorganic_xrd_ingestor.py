@@ -24,18 +24,15 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
 
     def get_scientific_metadata(self):
         """
-        Detect child vs standalone via 'position' in Crucible scimd.
-
-        'position' is written at dataset create time (before ingestion runs) so
-        it's timing-safe. Hierarchy checks (list_children, include_links) are NOT
-        used: parent-child dataset links are created by the uploader *after*
-        create_dataset() returns, meaning they don't exist yet when this ingestor
-        runs. To distinguish a parent dataset from a standalone, the uploader should
-        write a create-time marker (e.g. upload_mode='parent') to the dataset's
-        scimd — not yet implemented on the uploader side.
+        Detect mode via create-time fields in Crucible scimd (both written by the
+        uploader before create_dataset() returns, so timing-safe):
+          'position'    → child dataset; extract that column
+          'upload_mode' == 'parent' → parent dataset; skip data extraction
+          neither       → standalone single-sample dataset; extract column 0
         """
         self.scientific_metadata = {}
         self._xrd_sample_idx = 0
+        self._xrd_is_parent = False
 
         ds = client.datasets.get(self.unique_id, include_metadata=True)
         if ds:
@@ -45,11 +42,16 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
             else:
                 actual_scimd = raw_scimd or {}
             position = actual_scimd.get('position')
+            upload_mode = actual_scimd.get('upload_mode')
         else:
             position = None
+            upload_mode = None
 
         if position:
             self._xrd_sample_idx = int(position[1:]) - 1
+        elif upload_mode == 'parent':
+            self._xrd_is_parent = True
+            return
 
         angles, intensities = self._read_column(self._xrd_sample_idx)
         self.scientific_metadata = {
@@ -106,6 +108,8 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
 
     def get_thumbnails(self):
         self.thumbnails = []
+        if self._xrd_is_parent:
+            return
         try:
             angles, intensities = self._read_column(self._xrd_sample_idx)
             if not angles:
