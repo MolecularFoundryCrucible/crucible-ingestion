@@ -54,7 +54,7 @@ def is_file_lost(message, dataset_to_process, ch, update_status=True):
 
     if not file_exists:
         if update_status:
-            client.files.update_ingestion_status(reqid, status="file not found")
+            client.ingestions.update(reqid, status="file not found")
         return True
     return False
 
@@ -92,7 +92,7 @@ def callback(ch, method, props, body):
     logger.info(f"received message {message} .. starting processing")
     
     # update the SQL database that the ingestion has begun
-    client.files.update_ingestion_status(reqid, status = "started", ingestion_githash = ingestion_githash)
+    client.ingestions.update(reqid, status = "started", ingestion_githash = ingestion_githash)
 
     # check file found (retry up to 5 times)
     max_file_retries = 5
@@ -119,17 +119,17 @@ def callback(ch, method, props, body):
         
         logger.info(f"{ds=}")
         if ds is None:
-            client.files.update_ingestion_status(reqid, status = "not supported", ingestion_githash = ingestion_githash)    
+            client.ingestions.update(reqid, status = "not supported", ingestion_githash = ingestion_githash)
             ch.basic_publish(exchange = '',
                             routing_key= 'not-supported',
                             body=json.dumps(message))
             logger.warning(f"[x] Received {body} and was not a supported a file type - skipping")
 
         else:
-            client.files.update_ingestion_status(reqid, 
-                                                 status = "complete",
-                                                 ingestion_githash = ingestion_githash,
-                                                 ingestion_class = ingestion_class)
+            client.ingestions.update(reqid,
+                                     status = "complete",
+                                     ingestion_githash = ingestion_githash,
+                                     ingestion_class = ingestion_class)
             
             logger.info(f"[x] Received {body} and ingested with id: {ds['unique_id']}")
         
@@ -137,10 +137,10 @@ def callback(ch, method, props, body):
         
     except Exception as err:
         logger.error(f"[x] Received {body} but failed with error {err}")
-        client.files.update_ingestion_status(reqid,
-                                             "failed",
-                                             ingestion_githash = ingestion_githash,
-                                             ingestion_class = ingestion_class)
+        client.ingestions.update(reqid,
+                                 "failed",
+                                 ingestion_githash = ingestion_githash,
+                                 ingestion_class = ingestion_class)
         ch.basic_publish(exchange = '', routing_key= f'ingestion-{RMQ_ROUTING_SUFFIX}-failed', body=json.dumps(message))
         ch.basic_ack(delivery_tag=method.delivery_tag)    
         return

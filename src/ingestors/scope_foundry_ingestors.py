@@ -1,5 +1,6 @@
 import os
 import re
+import uuid as uuid_lib
 import functools
 import logging
 from io import BytesIO
@@ -11,9 +12,19 @@ from datetime import datetime
 from PIL import Image
 import matplotlib.pyplot as plt
 from .h5_ingestor import H5Ingestor
+from .crucible_ingestor import client
+from crucible.models import Dataset
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+
+def _is_valid_uuid(val: str) -> bool:
+    try:
+        uuid_lib.UUID(str(val))
+        return True
+    except ValueError:
+        return False
 
 
 def check_orcid_entry(orcid_string):
@@ -786,19 +797,75 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             self.keywords += [self.session_name]
 
     def parse_samples(self):
+        trays_seen = set()
         pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
         for pos in self.h5file[pos_path]:
-            sample_id = self.h5file[pos_path][pos].attrs['sample_uuid']
-            sample_name = self.h5file[pos_path][pos].attrs['sample_name']
-            sample_description = pos
-            if len(sample_id) > 0:
-                sample = {"unique_id": sample_id, 
-                          "sample_name": sample_name, 
-                          "owner_orcid": self.owner_orcid,
-                          "project_id": self.project_id}
-                
-                # get the rest of the metadata
-                self.samples.append(sample)
+            attrs = self.h5file[pos_path][pos].attrs
+            sample_id = str(attrs['sample_uuid'])
+            sample_name = str(attrs['sample_name'])
+            tray_id = str(attrs['tray_uuid'])
+            tray_name = str(attrs['tray_name'])
+
+            # Add tray once per unique valid UUID — linked to parent dataset
+            if tray_id not in trays_seen and _is_valid_uuid(tray_id):
+                trays_seen.add(tray_id)
+                self.samples.append({
+                    "unique_id": tray_id,
+                    "sample_name": tray_name,
+                    "owner_orcid": self.owner_orcid,
+                    "project_id": self.project_id,
+                    "link_to_dataset": True,
+                })
+
+            # Thin film — not linked to parent dataset (linked at child dataset level)
+            if not _is_valid_uuid(sample_id):
+                logger.info(f"skipping position {pos}: invalid UUID '{sample_id}'")
+                continue
+
+            sample = {
+                "unique_id": sample_id,
+                "sample_name": sample_name,
+                "owner_orcid": self.owner_orcid,
+                "project_id": self.project_id,
+                "link_to_dataset": False,
+            }
+            if _is_valid_uuid(tray_id):
+                sample["parent_ids"] = [tray_id]
+            self.samples.append(sample)
+        return
+
+    def parse_children(self):
+        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        for pos in self.h5file[pos_path]:
+            attrs = self.h5file[pos_path][pos].attrs
+            sample_id = str(attrs['sample_uuid'])
+            sample_name = str(attrs['sample_name'])
+
+            if not _is_valid_uuid(sample_id):
+                continue
+
+            child_ds = Dataset(
+                measurement=self.measurement,
+                project_id=self.project_id,
+                owner_orcid=self.owner_orcid,
+                dataset_name=f"Child Nirvana scan for {sample_name}",
+                data_format=self.data_format,
+                instrument_name=self.instrument_name,
+                timestamp=self.timestamp,
+            )
+            child_md = {
+                "integration_time": float(attrs['integration_time']),
+                "x_center": float(attrs['x_center']),
+                "y_center": float(attrs['y_center']),
+                "x_positions": attrs['x_positions'].tolist(),
+                "y_positions": attrs['y_positions'].tolist(),
+            }
+            self.children.append({
+                "dataset": child_ds,
+                "scientific_metadata": child_md,
+                "parent_id": self.unique_id,
+                "sample_links": [sample_id],
+            })
         return
 
     def parse_orcid(self):
@@ -812,7 +879,93 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             return
         else:
              self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
-        return 
+        return
+
+    def setup_data(self):
+        self._child_position = self._detect_child_position()
+        if self._child_position is not None:
+            self._setup_as_from_holders_child()
+        else:
+            super().setup_data()
+
+    def _detect_child_position(self):
+        """
+        Return the position string (e.g. 'S03') if this dataset is a from-holders
+        child, or None otherwise.
+
+        'position' is written into the dataset record by the uploader at create time,
+        before ingestion runs — making it the only timing-safe discriminator. Hierarchy
+        checks (list_parents, include_links) cannot be used here because the parent-child
+        dataset link and sample links are created by the uploader after create_dataset()
+        returns (i.e., after this ingestor has already finished).
+        """
+        ds = client.datasets.get(self.unique_id, include_metadata=True)
+        if not ds:
+            return None
+
+        raw_scimd = ds.get('scientific_metadata', {})
+        if isinstance(raw_scimd, dict) and 'scientific_metadata' in raw_scimd:
+            actual_scimd = raw_scimd['scientific_metadata']
+        else:
+            actual_scimd = raw_scimd or {}
+
+        return actual_scimd.get('position')
+
+    def _setup_as_from_holders_child(self):
+        """Run ingestion for a from-holders child dataset."""
+        self.get_scientific_metadata()
+        self.get_dataset_metadata()
+        self.get_acl_information()
+        self._apply_child_scientific_metadata()
+        self.thumbnails = []
+        self._add_spectrum_thumbnail()
+
+    def _position_key(self, position):
+        """Convert position string (e.g. 'S03') to the h5 group key at that index."""
+        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        idx = int(position[1:]) - 1
+        return list(self.h5file[pos_path].keys())[idx]
+
+    def _apply_child_scientific_metadata(self):
+        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        pos_key = self._position_key(self._child_position)
+        attrs = self.h5file[pos_path][pos_key].attrs
+        self.scientific_metadata = {
+            "integration_time": float(attrs['integration_time']),
+            "x_center": float(attrs['x_center']),
+            "y_center": float(attrs['y_center']),
+            "x_positions": attrs['x_positions'].tolist(),
+            "y_positions": attrs['y_positions'].tolist(),
+        }
+
+    def _add_spectrum_thumbnail(self):
+        try:
+            pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+            pos_key = self._position_key(self._child_position)
+            pos = self.h5file[pos_path][pos_key]
+
+            wls = np.array(self.h5file['measurement/pollux_oospec_multipos_line_scan/wavelengths'])
+            raw = np.array(pos['raw_intensities'])     # (N_scans, N_wl)
+            dark = np.array(pos['dark_intensities'])   # (N_wl,)
+            blank = np.array(pos['blank_intensities']) # (N_wl,)
+
+            denom = blank - dark
+            denom = np.where(np.abs(denom) < 1, 1.0, denom)
+            T = (raw.mean(axis=0) - dark) / denom
+            absorbance = -np.log10(T.clip(1e-9))
+
+            fig, ax = plt.subplots()
+            ax.plot(wls, absorbance)
+            ax.set_xlabel("Wavelength (nm)")
+            ax.set_ylabel("Absorbance")
+            ax.set_title(f"Position {self._child_position}")
+            buf = BytesIO()
+            plt.savefig(buf, format='png', dpi=150)
+            plt.clf()
+            buf.seek(0)
+            self.add_thumbnail(Image.open(buf), f"Absorbance Spectrum ({self._child_position})")
+        except Exception as err:
+            logger.error(f"Failed to generate spectrum thumbnail for position {self._child_position}: {err}")
 
 
 class QSpleemSVRampSpinIngestor(QSpleemIngestor):
