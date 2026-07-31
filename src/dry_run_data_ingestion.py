@@ -18,6 +18,7 @@ from PIL import Image
 from .constants import sql_import_attr, sql_export_attr
 import orjson
 from .utils import sanitize_metadata, EnhancedJSONEncoder
+from .data_ingestion import find_existing_sample
 
 from .ingestors.scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
                                                 BioGlowIngestor,
@@ -232,16 +233,12 @@ def data_ingestion(dataset_to_process: str,
         if 'parent_ids' in sample:
             sample_parents = sample.pop('parent_ids')
         
-        # create sample
-        try:
+        # get or create sample
+        existing = find_existing_sample(client, sample)
+        if existing:
+            logger.info(f'would reuse existing sample {existing["unique_id"]}')
+        else:
             logger.info(f'call client.samples.create({sample=})')
-        except:
-            existing_samples = client.samples.list(sample_name = sample['sample_name'],
-                                                   project_id = sample['project_id'])
-            if len(existing_samples) > 0:
-                sql_sample = existing_samples[-1]
-            else:
-                sql_sample = None
 
         # link to dataset
         logger.info(f'linking {ig.unique_id=} to {sample["unique_id"]=}')
