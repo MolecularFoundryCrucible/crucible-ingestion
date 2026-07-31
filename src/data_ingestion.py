@@ -157,7 +157,7 @@ def data_ingestion(dataset_to_process: str,
     populate_fields = ['dataset_name', 'public', 'owner_orcid',
                        'project_id', 'measurement', 'session_name',
                        'instrument_name', 'data_type', 'timestamp',
-                       'data_format', 'size', 'source_folder']
+                       'data_format', 'size']
     
     ig, found_ds = populate_existing_ds_info(ig, client, populate_fields)
         

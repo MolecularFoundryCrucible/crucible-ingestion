@@ -67,7 +67,6 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
 
     def get_dataset_metadata(self):
         self.instrument_name = self.scientific_metadata['app']['name']
-        self.source_folder = self.scientific_metadata['app']['settings']['save_dir']
 
         H5Ingestor.get_dataset_metadata(self)
 
@@ -764,7 +763,6 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
     
     def get_dataset_metadata(self):
         self.instrument_name = 'Nirvana Spectrometer'
-        self.source_folder = self.scientific_metadata['app']['settings']['save_dir']
 
         H5Ingestor.get_dataset_metadata(self)
 

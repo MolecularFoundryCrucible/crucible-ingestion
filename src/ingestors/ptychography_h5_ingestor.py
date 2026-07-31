@@ -91,7 +91,6 @@ class PtychographyH5Ingestor(H5Ingestor):
         self.data_format = self.file_to_upload.split('.')[-1]
         # self.sha256_hash_file_to_upload = checkhash(self.file_to_upload)
 
-        self.parse_source_folder()
         self.parse_measurement()
         self.parse_data_type()
         self.parse_keywords()

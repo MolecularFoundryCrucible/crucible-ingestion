@@ -127,12 +127,11 @@ class LmpIngestor(CrucibleDatasetIngestor):
 
     def get_dataset_metadata(self):
         
-        # sets dataset_name, timestamp, size, data_format, sha256, source_folder, instrument_name, keywords
+        # sets dataset_name, timestamp, size, data_format, sha256, instrument_name, keywords
 
         # dataset_name set to the name of file_to_upload without the extension
         # timestamp set using file metadata ctime
         # data_format default to file extension
-        # source_folder will be the path in the crucible-uploads gcs bucket
         # tries to set instrument_name based on path in crucible-uploads; defaults to None
         # default keywords are instrument_name, measurement, and session_name if those attributes exist 
         CrucibleDatasetIngestor.get_dataset_metadata(self) 

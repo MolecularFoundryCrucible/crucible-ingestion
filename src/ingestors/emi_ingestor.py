@@ -43,9 +43,9 @@ class EmiIngestor(CrucibleDatasetIngestor):
         '''
         Set the structured metadata according to Crucible's schema.
         Suggested ones are: dataset_name, instrument_name, measurement,
-        session_name, timestamp, data_format, source_folder
+        session_name, timestamp, data_format
         '''
-        # Use parent class method to set data_format, size, and source_folder
+        # Use parent class method to set data_format and size
         CrucibleDatasetIngestor.get_dataset_metadata(self)
 
         acquired_date = self.scientific_metadata.get('AcquireDate')

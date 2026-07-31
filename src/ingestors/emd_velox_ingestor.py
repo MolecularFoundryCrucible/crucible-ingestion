@@ -174,7 +174,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         # logger.info(f'Got metadata from Velox EMD: {self.scientific_metadata=}')
 
     def get_dataset_metadata(self):
-         # Use parent class method to set data_format, size, and source_folder
+         # Use parent class method to set data_format and size
         CrucibleDatasetIngestor.get_dataset_metadata(self)
         
     def parse_dataset_name(self):
@@ -315,7 +315,6 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 # public         = self.public,
                 # instrument_name = self.instrument_name, # TODO: update instrument
                 data_format    = self.data_format,
-                source_folder  = self.source_folder,
                 # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
             )
         

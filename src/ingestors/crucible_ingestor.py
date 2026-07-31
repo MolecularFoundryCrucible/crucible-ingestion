@@ -16,8 +16,7 @@ from ..utils import (get_secret,
                      reduce_filename_and_copy,
                      deep_merge_skip_empty)
 
-from ..constants import (INSTRUMENT_DRIVES,
-                         sql_export_attr)
+from ..constants import sql_export_attr
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +30,7 @@ client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
 
 class CrucibleDatasetIngestor(Dataset):
-    ingestion_githash: str = os.environ.get("GITHASH") 
+    ingestion_githash: str = os.environ.get("GITHASH")
     scientific_metadata: dict = {} 
     keywords: list = []
     acl: list = []
@@ -96,25 +95,6 @@ class CrucibleDatasetIngestor(Dataset):
             return
 
 
-    def parse_source_folder(self):
-        if self.source_folder:
-            return
-        else:
-            file_dir = os.path.dirname(self.file_to_upload)
-            drive_name = None
-
-            if file_dir.startswith('/mnt/gcs/'):
-                crucible_upload_subdir = file_dir.split('/')[4]
-                drive_name = INSTRUMENT_DRIVES.get(crucible_upload_subdir)
-            
-            if drive_name:
-                self.source_folder = file_dir.replace(f'/mnt/gcs/{crucible_upload_subdir}', drive_name)
-            else:
-                self.source_folder = file_dir
-            logger.info(f"{self.source_folder=}")
-            return
-        
-
     def parse_instrument(self):
         if self.instrument_name:
             self.acl.append(self.instrument_name)
@@ -159,7 +139,6 @@ class CrucibleDatasetIngestor(Dataset):
 
         self.parse_dataset_name()
         self.parse_file_timestamp()
-        self.parse_source_folder()
         self.parse_instrument()
         self.parse_measurement()
         self.parse_data_type()
