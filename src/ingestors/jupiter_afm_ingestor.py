@@ -250,7 +250,7 @@ class AFMIngestor(CrucibleDatasetIngestor):
         if cal_event:
             self.email, self.project_id = parse_calendar_event_for_ownership(cal_event)
             try:
-                user_info = client.users.get(self.email)
+                user_info = client.users.get(email=self.email)
                 self.owner_orcid = user_info['unique_id']
             except:
                 logger.info(f'user with email {self.email} not found')
