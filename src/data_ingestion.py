@@ -1,5 +1,6 @@
 # packages
 import logging
+import requests
 from .constants import sql_import_attr, sql_export_attr
 import orjson
 from .utils import sanitize_metadata
@@ -116,6 +117,32 @@ def find_supported_ingestor(dataset_to_process,
     return None, None
 
 
+def find_existing_sample(client, sample):
+    """Return the Crucible record for this sample if it already exists, else None.
+
+    unique_id is authoritative when the ingestor supplied one. Falling back to the
+    name is only safe for samples with no id, since names are not unique within a
+    project.
+    """
+    unique_id = sample.get('unique_id')
+    if unique_id:
+        try:
+            return client.samples.get(unique_id)
+        except requests.exceptions.HTTPError as err:
+            if err.response is not None and err.response.status_code == 404:
+                return None
+            raise
+
+    found = client.samples.list(sample_name=sample['sample_name'],
+                                project_id=sample.get('project_id'))
+    if len(found) > 1:
+        raise ValueError(
+            f"unique_id not provided and sample name {sample['sample_name']!r} is ambiguous "
+            f"in project {sample.get('project_id')!r}: {[s['unique_id'] for s in found]}"
+        )
+    return found[0] if found else None
+
+
 def populate_existing_ds_info(ig, client, populate_fields):
     found_ds = client.datasets.get(ig.unique_id, include_metadata=True)
     logger.info(f'{found_ds=}')
@@ -206,21 +233,13 @@ def data_ingestion(dataset_to_process: str,
         if 'link_to_dataset' in sample:
             link_to_dataset = sample.pop('link_to_dataset')
 
-        # create sample
-        try:
+        # get or create sample; re-ingesting the same file must not duplicate samples
+        sql_sample = find_existing_sample(client, sample)
+        if sql_sample:
+            logger.info(f'found existing sample {sql_sample}')
+        else:
             sql_sample = client.samples.create(**sample)
             logger.info(f'created new sample {sql_sample}')
-        except:
-            # this should probably search on unique ID
-            existing_samples = client.samples.list(sample_name = sample['sample_name'],
-                                                   project_id = sample['project_id'])
-            if len(existing_samples) > 0:
-                sql_sample = existing_samples[-1]
-                logger.info(f'found existing sample {sql_sample}')
-            else:
-                sql_sample = None
-                logger.info(f'sample ID exists in a different project')
-                continue
 
         # link to dataset
         if link_to_dataset is True:

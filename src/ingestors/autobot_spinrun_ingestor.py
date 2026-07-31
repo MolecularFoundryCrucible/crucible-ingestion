@@ -82,10 +82,18 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
     def parse_samples(self):
         parent_list = []
         sample_list = self.file_contents.get('samples', [])
-        for s in sample_list: 
+        for s in sample_list:
+            # IDs are required: without them samples cannot be deduplicated on re-ingest
+            sample_id = s.get('sample_id')
+            batch_id = s.get('batch_id')
+            if not sample_id:
+                raise ValueError(f"spin run sample {s.get('sample_name')!r} is missing 'sample_id'")
+            if not batch_id:
+                raise ValueError(f"spin run sample {s.get('sample_name')!r} is missing 'batch_id'")
+
             # collect the basic sample info
             sample = {
-                'unique_id': s.get('sample_id'),
+                'unique_id': sample_id,
                 'sample_name': s.get('sample_name'),
                 'owner_orcid': self.owner_orcid,
                 'project_id': self.project_id,
@@ -94,11 +102,10 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
             }
 
             # samples have 'batch' (tray) parents
-            batch_id = s.get('batch_id')
             if not batch_id in parent_list:
                 parent_list.append(batch_id)
                 batch_sample = {
-                    'unique_id': s.get('batch_id'),
+                    'unique_id': batch_id,
                     'sample_name': s.get('batch_name'),
                     'owner_orcid': self.owner_orcid,
                     'project_id': self.project_id,
@@ -112,18 +119,28 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
             sample['parent_ids'].append(batch_id)
 
             # samples have precursor parents
+            # precursors need to get ID's in instrument control software
+            precursor_mfid = s.get('precursor_mfid')
             precursor_name = s.get('precursor_solution_name')
-            if precursor_name:
+            if precursor_mfid:
+                sample['parent_ids'].append(precursor_mfid)
+
+            elif precursor_name:
                 found_ps = client.samples.list(sample_name = precursor_name,
-                                            project_id = self.project_id)
-            
-                # if the PS exists; add to sample parents
-                if len(found_ps) > 0:
-                    precursor_id = found_ps[-1]['unique_id']
-                    sample['parent_ids'].append(precursor_id)
-        
+                                               project_id = self.project_id)
+                # only resolve by name when it is unambiguous
+                if len(found_ps) == 1:
+                    sample['parent_ids'].append(found_ps[-1]['unique_id'])
+
+                elif len(found_ps) > 1:
+                    raise Exception(f'Precursor Unique ID not provided and multiple samples with name found in this project: {found_ps}')
+
+                else:
+                    logger.info(f'Precursor ID not provided and no sample named {precursor_name!r} found in this project')
+
             # add sample to list to be created
             self.samples.append(sample)
+
         return
 
 

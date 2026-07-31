@@ -1,6 +1,5 @@
 import os
 import re
-import uuid as uuid_lib
 import functools
 import logging
 from io import BytesIO
@@ -19,12 +18,13 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def _is_valid_uuid(val: str) -> bool:
-    try:
-        uuid_lib.UUID(str(val))
-        return True
-    except ValueError:
-        return False
+def _is_mfid(val) -> bool:
+    """True if val is an MFID: a 26-character Crockford Base32 encoding of a UUID.
+
+    The h5 attributes are named *_uuid but hold MFIDs, which are not parseable
+    by uuid.UUID().
+    """
+    return isinstance(val, str) and len(val) == 26 and val.isalnum()
 
 
 def check_orcid_entry(orcid_string):
@@ -343,8 +343,11 @@ class SpinBotIngestor(ScopeFoundryH5Ingestor):
         full_batch_id = self.scientific_metadata['hardware']['mf_crucible_spinbot']['settings']['batch_id']
         crucible_batch_id = full_batch_id.split('_')[2]
         batch_name = full_batch_id.split('_')[1]
+        if not _is_mfid(crucible_batch_id):
+            raise ValueError(f"batch id {crucible_batch_id!r} parsed from {full_batch_id!r} is not an MFID")
         owner_orcid = self.scientific_metadata['hardware']['mf_crucible_spinbot']['settings']['orcid']
-        sample_info = {"unique_id": crucible_batch_id, "sample_name": batch_name, "owner_orcid": owner_orcid, "description": full_batch_id}
+        sample_info = {"unique_id": crucible_batch_id, "sample_name": batch_name, "owner_orcid": owner_orcid,
+                       "project_id": self.project_id, "description": full_batch_id}
         self.batch = sample_info
         return(sample_info)
 
@@ -359,14 +362,15 @@ class SpinBotIngestor(ScopeFoundryH5Ingestor):
             logger.info(f"{sample_label}")
             
         owner_orcid = self.scientific_metadata['hardware']['mf_crucible_spinbot']['settings']['orcid']
-        if len(sample_label) == 26 and sample_label.isalnum():
-            sample_id = sample_label
-        else:
-            sample_id = None
-            
-        sample = {"unique_id": sample_id, 
+        # the label must carry an MFID: without it samples cannot be deduplicated on re-ingest
+        if not _is_mfid(sample_label):
+            raise ValueError(f"sample label {sample_label!r} is not an MFID; cannot identify the sample")
+        sample_id = sample_label
+
+        sample = {"unique_id": sample_id,
                   "sample_name": sample_label, 
                   "owner_orcid": owner_orcid,
+                  "project_id": self.project_id,
                   "parents": [{'unique_id': self.batch['unique_id']}]}
         
         # get the rest of the metadata
@@ -806,8 +810,8 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             tray_id = str(attrs['tray_uuid'])
             tray_name = str(attrs['tray_name'])
 
-            # Add tray once per unique valid UUID — linked to parent dataset
-            if tray_id not in trays_seen and _is_valid_uuid(tray_id):
+            # Add tray once per unique valid MFID — linked to parent dataset
+            if tray_id not in trays_seen and _is_mfid(tray_id):
                 trays_seen.add(tray_id)
                 self.samples.append({
                     "unique_id": tray_id,
@@ -818,8 +822,8 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                 })
 
             # Thin film — not linked to parent dataset (linked at child dataset level)
-            if not _is_valid_uuid(sample_id):
-                logger.info(f"skipping position {pos}: invalid UUID '{sample_id}'")
+            if not _is_mfid(sample_id):
+                logger.info(f"skipping position {pos}: invalid MFID '{sample_id}'")
                 continue
 
             sample = {
@@ -829,7 +833,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                 "project_id": self.project_id,
                 "link_to_dataset": False,
             }
-            if _is_valid_uuid(tray_id):
+            if _is_mfid(tray_id):
                 sample["parent_ids"] = [tray_id]
             self.samples.append(sample)
         return
@@ -841,7 +845,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             sample_id = str(attrs['sample_uuid'])
             sample_name = str(attrs['sample_name'])
 
-            if not _is_valid_uuid(sample_id):
+            if not _is_mfid(sample_id):
                 continue
 
             child_ds = Dataset(
