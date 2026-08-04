@@ -95,7 +95,7 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
             sample = {
                 'unique_id': sample_id,
                 'sample_name': s.get('sample_name'),
-                'sample_type' = 'thin film',
+                'sample_type': 'thin film',
                 'owner_orcid': self.owner_orcid,
                 'project_id': self.project_id,
                 'parent_ids': [],
@@ -108,7 +108,7 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
                 batch_sample = {
                     'unique_id': batch_id,
                     'sample_name': s.get('batch_name'),
-                    'sample_type' = 'spinbot tray',
+                    'sample_type': 'spinbot tray',
                     'owner_orcid': self.owner_orcid,
                     'project_id': self.project_id,
                     'parent_ids': [],
