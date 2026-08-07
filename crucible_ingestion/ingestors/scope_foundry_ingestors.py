@@ -11,7 +11,7 @@ from datetime import datetime
 from PIL import Image
 import matplotlib.pyplot as plt
 from .h5_ingestor import H5Ingestor
-from .crucible_ingestor import client
+from ..client import get_client
 from crucible.models import Dataset
 
 logger = logging.getLogger(__name__)
@@ -901,7 +901,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
         dataset link and sample links are created by the uploader after create_dataset()
         returns (i.e., after this ingestor has already finished).
         """
-        ds = client.datasets.get(self.unique_id, include_metadata=True)
+        ds = get_client().datasets.get(self.unique_id, include_metadata=True)
         if not ds:
             return None
 

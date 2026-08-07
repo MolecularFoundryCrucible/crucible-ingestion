@@ -1,28 +1,17 @@
 import os
-import re
 import io
-
-from pathlib import Path
 from PIL import Image
-import numpy as np
 import ncempy.io as nio
 import matplotlib.pyplot as plt
 import logging
 import json
 
 from .crucible_ingestor import CrucibleDatasetIngestor
-from crucible import CrucibleClient
 from crucible.models import Dataset
-from ..utils import get_secret
-
+from ..client import get_client
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-
-# Crucible Client
-crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
-apikey = get_secret("CRUCIBLE_APIKEY", "crucible_admin_apikey/versions/4")
-client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
 
 def parse_dataset_as_dict(dataset): 
     """
@@ -318,7 +307,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
                 # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
             )
         
-            resp = client.datasets.create(
+            resp = get_client().datasets.create(
                 child_ds,
                 scientific_metadata=md,
                 keywords=self.keywords,
@@ -327,12 +316,12 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
 
             # add thumbnail for child if applicable
             if child_thumbnail is not None:
-                resp = client.datasets.add_thumbnail(child_dsid, child_thumbnail, 'Velox_EMD_Thumbnail')
+                resp = get_client().datasets.add_thumbnail(child_dsid, child_thumbnail, 'Velox_EMD_Thumbnail')
                 logger.info(f'{child_dsid} -- thumbnail -- {resp}')
             else: 
                 logger.info(f'{child_dsid} thumbnail was None')
             # Link child with parent dataset 
-            client.datasets.link_parent_child(parent_dsid, child_dsid)
+            get_client().datasets.link_parent_child(parent_dsid, child_dsid)
 
             return child_dsid
         
@@ -352,8 +341,8 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         
         ### handle multi-dataset files
 
-        # create parent_child_map for caching client.list_children() results 
-        parent_child_map = {self.unique_id: client.datasets.list_children(self.unique_id)} # self.unique_id = file_dsid
+        # create parent_child_map for caching get_client().list_children() results 
+        parent_child_map = {self.unique_id: get_client().datasets.list_children(self.unique_id)} # self.unique_id = file_dsid
         spectrum_image_dsid = None
 
         # upload children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
@@ -366,7 +355,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             if parent_dsid in parent_child_map: 
                 existing_children = parent_child_map[parent_dsid]
             else: 
-                existing_children = client.datasets.list_children(parent_dsid)
+                existing_children = get_client().datasets.list_children(parent_dsid)
                 parent_child_map[parent_dsid] = existing_children # update parent_child_map
 
             child_ds_name = f"{self.dataset_name} ({get_title_from_md(md)})"

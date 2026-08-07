@@ -5,17 +5,9 @@ import logging
 import zipfile
 import pandas as pd
 from pathlib import Path
-from ..utils import get_secret
-from crucible import CrucibleClient
+
 from .crucible_ingestor import CrucibleDatasetIngestor
 logger = logging.getLogger(__name__)
-
-# Crucible Client
-apikey = get_secret("CRUCIBLE_APIKEY", "crucible_admin_apikey/versions/4")
-crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
-
-client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
-
 
 # from Kas / Ed code base
 def build_sample_table(directory, samples_by_name):
@@ -73,7 +65,7 @@ class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
             zf.extractall(extract_path)
         logger.info(f'{extract_path=}')
         logger.info(f'{os.listdir()=}')
-        samples_in_project= client.samples.list(project_id = '10k_perovskites', sample_type = 'thin film', limit = 10000)
+        samples_in_project= get_client().samples.list(project_id = '10k_perovskites', sample_type = 'thin film', limit = 10000)
         samples_by_name = {sample["sample_name"]: sample for sample in samples_in_project}
        
         df = build_sample_table(extract_path, samples_by_name)

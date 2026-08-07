@@ -1,7 +1,6 @@
 import os
 from typing import ClassVar
 import numpy as np
-import requests
 import logging
 import matplotlib.pyplot as plt
 from PIL import Image
@@ -9,19 +8,11 @@ import igor2 as igor
 
 import numpy as np
 from datetime import datetime, timedelta
-from pathlib import Path
 
-from ..utils import get_secret
-from ..google_calendar import (find_calendar_event,
-                               parse_calendar_event_for_ownership)
 from .crucible_ingestor import CrucibleDatasetIngestor
+from ..client import get_client
 
 logger = logging.getLogger(__name__)
-
-from crucible import CrucibleClient
-crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
-crucible_apikey = get_secret("CRUCIBLE_APIKEY", "crucible_admin_apikey/versions/4")
-
 
 def decode_recurse(x):
     if isinstance(x, dict):
@@ -237,43 +228,6 @@ class AFMIngestor(CrucibleDatasetIngestor):
     
 
 
-    def parse_orcid(self):
-        client = CrucibleClient(crucible_api_url, crucible_apikey)
-        
-        if self.owner_orcid:
-            return
-        
-        cal_id = 'c_550eaa9a91952a820fb6d76a3306f5583abcffc7cf42e72573fd2a0cae1b1c8f@group.calendar.google.com'
-        sa_file = f"{os.getenv('HOME')}/.config/mf-crucible-9009d3780383.json"
-        cal_event = find_calendar_event(self.timestamp, cal_id, service_account_file = sa_file)
-        
-        if cal_event:
-            self.email, self.project_id = parse_calendar_event_for_ownership(cal_event)
-            try:
-                user_info = client.users.get(email=self.email)
-                self.owner_orcid = user_info['unique_id']
-            except:
-                logger.info(f'user with email {self.email} not found')
-        else:
-            return
-
-
-    def parse_project_id(self):
-                
-        cal_id = 'c_550eaa9a91952a820fb6d76a3306f5583abcffc7cf42e72573fd2a0cae1b1c8f@group.calendar.google.com'
-        sa_file = f"{os.getenv('HOME')}/.config/mf-crucible-9009d3780383.json"
-        if not self.project_id:
-            cal_event = find_calendar_event(self.timestamp, cal_id, service_account_file = sa_file)
-            if cal_event:
-                self.email, self.project_id = parse_calendar_event_for_ownership(cal_event)
-        
-        if not self.project_id:
-            return
-        
-        if "Internal Research" in self.project_id and self.email is not None:
-            self.project_id = f"MFUSER_{self.email.split('@')[0]}"
-
-    
     def make_retrace_plot(self, array, pname):
         spec_map_filename = f"{os.path.basename(self.file_to_upload)}_{pname}.png"
 

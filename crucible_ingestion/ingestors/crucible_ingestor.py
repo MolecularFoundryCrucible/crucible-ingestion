@@ -5,29 +5,15 @@ from mfid import mfid
 import logging
 import json
 from pathlib import Path
-
-from crucible import CrucibleClient
 from crucible.models import Dataset
 
-from ..utils import (get_secret,
-                     run_rclone_command,
-                     build_b64_thumbnail,
+from ..utils import (build_b64_thumbnail,
                      EnhancedJSONEncoder,
-                     reduce_filename_and_copy,
                      deep_merge_skip_empty)
 
-from ..constants import sql_export_attr
-
+from ..client import get_client
 
 logger = logging.getLogger(__name__)
-
-# Crucible Client
-apikey = get_secret("CRUCIBLE_APIKEY", "crucible_admin_apikey/versions/4")
-crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
-
-client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
-
-
 
 class CrucibleDatasetIngestor(Dataset):
     ingestion_githash: str = os.environ.get("GITHASH")
@@ -178,7 +164,7 @@ class CrucibleDatasetIngestor(Dataset):
         self.parse_project_id()
         logger.info("parse project_id complete")
         if self.project_id:
-            project = client.projects.get(self.project_id)
+            project = get_client().projects.get(self.project_id)
             if not project:
                 raise ValueError(f"Project with ID '{self.project_id}' does not exist in the database.")
             else:
@@ -245,44 +231,6 @@ class CrucibleDatasetIngestor(Dataset):
 
         with open(jsonfile, "w") as f:
             json.dump(export_metadata, f, cls = EnhancedJSONEncoder, indent = 4)
-
-
-    def to_google_cloud_storage(self,
-                                storage_bucket,
-                                jsonfile,
-                                common_file_paths=None):
-
-        if common_file_paths is None:
-            common_file_paths = []
-        file_to_upload_path = os.path.dirname(self.file_to_upload)
-        logger.info(f'{file_to_upload_path=}')
-        common_file_paths += ["./generated_files", 
-                              file_to_upload_path, 
-                              f'/mnt/gcs/{file_to_upload_path}', 
-                              f'/mnt/gcs/api-uploads/{file_to_upload_path}',
-                              f'/mnt/gcs/manual-uploads/{file_to_upload_path}']
-        
-        dsid = self.unique_id
-        destination = f":gcs:/{storage_bucket}/{dsid}"
-        
-        # copy data
-        reduce_filename_and_copy(self.file_to_upload, common_file_paths, destination)
-        # if copy_assoc_files is True:
-        #     logger.info(f'Copying associated files to {destination}')
-        #     Parallel(n_jobs=num_cores)(delayed(reduce_filename_and_copy)\
-        #                               (f, common_file_paths, destination) \
-        #                                for f in self.associated_files.keys())
-
-        self.to_json_from_ig(jsonfile, sql_export_attr)
-        logger.info(f'Final destination: {destination}')
-        out = run_rclone_command(source_path= jsonfile, 
-                                 destination_path= f"{destination}/",
-                                 cmd="copy",
-                                 checkflag = False)
-        logger.info(out.stdout)
-        if out.stderr is not None:
-            logger.error(out.stderr)
-        return 
 
 
 

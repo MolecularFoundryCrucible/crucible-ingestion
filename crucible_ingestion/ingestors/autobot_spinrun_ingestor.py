@@ -3,18 +3,11 @@ import yaml
 import logging
 
 from .crucible_ingestor import CrucibleDatasetIngestor
-from crucible import CrucibleClient
 from crucible.models import Dataset
-from ..utils import get_secret
+from ..client import get_client
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-
-# Crucible Client
-crucible_api_url = os.environ.get('CRUCIBLE_API_URL')
-apikey = get_secret("CRUCIBLE_APIKEY", "crucible_admin_apikey/versions/4")
-client = CrucibleClient(api_url=crucible_api_url, api_key=apikey)
-
 
 class SpinRunIngestor(CrucibleDatasetIngestor):
 
@@ -128,7 +121,7 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
                 sample['parent_ids'].append(precursor_mfid)
 
             elif precursor_name:
-                found_ps = client.samples.list(sample_name = precursor_name,
+                found_ps = get_client().samples.list(sample_name = precursor_name,
                                                project_id = self.project_id)
                 # only resolve by name when it is unambiguous
                 if len(found_ps) == 1:

@@ -5,8 +5,8 @@ from pathlib import Path
 from PIL import Image
 import matplotlib.pyplot as plt
 
-from .crucible_ingestor import CrucibleDatasetIngestor, client
-
+from .crucible_ingestor import CrucibleDatasetIngestor
+from ..client import get_client
 logger = logging.getLogger(__name__)
 
 
@@ -34,7 +34,7 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
         self._xrd_sample_idx = 0
         self._xrd_is_parent = False
 
-        ds = client.datasets.get(self.unique_id, include_metadata=True)
+        ds = get_client().datasets.get(self.unique_id, include_metadata=True)
         if ds:
             raw_scimd = ds.get('scientific_metadata', {})
             if isinstance(raw_scimd, dict) and 'scientific_metadata' in raw_scimd:

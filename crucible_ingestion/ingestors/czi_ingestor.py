@@ -1,6 +1,5 @@
 import os
 from typing import ClassVar
-import requests
 from datetime import datetime
 from PIL import Image
 import numpy as np
@@ -9,8 +8,6 @@ from aicspylibczi import CziFile
 import matplotlib.pyplot as plt
 import logging
 
-from ..utils import get_secret
-from ..google_calendar import find_calendar_event, parse_calendar_event_for_ownership
 from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
@@ -85,59 +82,13 @@ class CziIngestor(CrucibleDatasetIngestor):
         return
     
     
-    def parse_orcid(self):
-        calendars = {
-                        "Zeiss Elyra 7": "c_8n0083mccvlarkchrr2dm4lfb4@group.calendar.google.com",
-                        "Zeiss LSM710 Confocal Microscope": "lbl.gov_58klse6vdp80p7k00trm5fr9cg@group.calendar.google.com"
-                    }
-        
-        if self.owner_orcid:
-            return
-        
-        if self.instrument_name in calendars.keys():
-            cal_id = calendars[self.instrument_name]
-            cal_event = find_calendar_event(self.timestamp, cal_id, service_account_file = f"{os.getenv('HOME')}/.config/mf-crucible-9009d3780383.json")
-        else:
-            cal_event = None
-        if cal_event:
-            self.email, self.project_id = parse_calendar_event_for_ownership(cal_event)
-
-            apikey = get_secret("CRUCIBLE_APIKEY", "crucible_admin_apikey/versions/4")
-            by_email = requests.get(f"{crucible_api_url}/users?email={self.email}", headers = {"Authorization":f"Bearer {apikey}"}).json()
-            by_lbl_email = requests.get(f"{crucible_api_url}/users?lbl_email={self.email}", headers = {"Authorization":f"Bearer {apikey}"}).json()
-            user_info =  by_email + by_lbl_email 
-            self.owner_orcid = user_info[-1]['orcid']
-        
-        else:
-            return
-
-
-    def parse_project_id(self):
-                
-        calendars = {
-                        "Zeiss Elyra 7": "c_8n0083mccvlarkchrr2dm4lfb4@group.calendar.google.com",
-                        "Zeiss LSM710 Confocal Microscope": "lbl.gov_58klse6vdp80p7k00trm5fr9cg@group.calendar.google.com"
-                    }
-        
-        found_calendar = self.instrument_name in calendars.keys()
-        
-        if not self.project_id and found_calendar:
-            cal_id = calendars[self.instrument_name]
-            cal_event = find_calendar_event(self.timestamp, cal_id, service_account_file = f"{os.getenv('HOME')}/.config/mf-crucible-9009d3780383.json")
-            if cal_event:
-                self.email, self.project_id = parse_calendar_event_for_ownership(cal_event)
-        
-        if not self.project_id:
-            return
-        
-        if "Internal Research" in self.project_id and self.email is not None:
-            self.project_id = f"MFUSER_{self.email.split('@')[0]}"
 
 
     def get_thumbnails(self):
-        if not os.path.exists("./generated_files"):
-            os.makedirs("./generated_files")
-        out_image_file_name = f"./generated_files/{os.path.basename(self.file_to_upload)}.png"
+        tmp_dir = './tmp_files'
+        os.makedirs(tmp_dir, exist_ok = True)
+        out_image_file_name = f"{tmp_dir}/{os.path.basename(self.file_to_upload)}.png"
+
         czi = CziFile(self.file_to_upload)
         logger.info(f"{czi.get_dims_shape()=}")
         full_img, shp = czi.read_image(S = 0, Z=0)
