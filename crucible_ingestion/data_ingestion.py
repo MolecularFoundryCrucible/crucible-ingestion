@@ -126,11 +126,7 @@ def build_packet(dataset_to_process, dsid, ingestion_class=None):
         )
 
 
-def push_packet(packet, jsonfile = None, write_json_record = False):
-    if write_json_record:
-      packet.to_json(jsonfile)
-      get_client().datasets.add_file(packet.unique_id, jsonfile)
-
+def push_packet(packet):
     # send the data
     ds = get_client().datasets.update(packet.unique_id, **packet.dataset_fields)
 
