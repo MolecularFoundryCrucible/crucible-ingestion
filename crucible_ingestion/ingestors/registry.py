@@ -22,7 +22,7 @@ from .scope_foundry_ingestors import ( SimpleTiledImageScopeFoundryH5Ingestor,
                                                 NirvanaMultiPosLineScanIngestor,
                                                 ScopeFoundryH5Ingestor)
 from .rga_tey_batch_ingestor import RgaTeyBatchIngestor
-from .image_ingestor import ImageIngestor
+from .image_ingestor import ImageIngestor, TifIngestor
 from .insitu_pl_ingestor import InSituPlIngestor
 from .dm_ingestor import DigitalMicrographIngestor
 from .emi_ingestor import EmiIngestor
@@ -75,6 +75,7 @@ ingestor_list = [AFMIngestor,
                 VeloxEmdIngestor,
                 SpinbotSpecRunIngestor,
                 ImageIngestor,
+                TifIngestor,
                 NirvanaMultiPosLineScanIngestor,
                 ScopeFoundryH5Ingestor,
                 H5Ingestor] 

@@ -1,0 +1,343 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "emi",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "TEM uP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "TEM_Diff_Camera_BM-Ultrascan_DiffPattern.emi",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": "TEM uP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 4202663,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-03-31T09:07:31",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "EmiIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "TEM uP SA Zoom Diffraction"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "AcceleratingVoltage": {
+          "const": 300000,
+          "type": "number"
+        },
+        "AcquireDate": {
+          "const": "Tue Mar 31 09:07:31 2026",
+          "type": "string"
+        },
+        "Binning": {
+          "const": 2,
+          "type": "number"
+        },
+        "C1 Aperture [um]": {
+          "const": 2000,
+          "type": "number"
+        },
+        "C2 Aperture [um]": {
+          "const": 150,
+          "type": "number"
+        },
+        "C2 lens [%]": {
+          "const": 48.124,
+          "type": "number"
+        },
+        "C3 lens [%]": {
+          "const": 36.256,
+          "type": "number"
+        },
+        "Camera length [m]": {
+          "const": 1.5,
+          "type": "number"
+        },
+        "CameraNamePath": {
+          "const": "BM-UltraScan",
+          "type": "string"
+        },
+        "Defocus []": {
+          "const": -10.545,
+          "type": "number"
+        },
+        "DetectorPixelHeight": {
+          "const": "2048",
+          "type": "string"
+        },
+        "DetectorPixelWidth": {
+          "const": "2048",
+          "type": "string"
+        },
+        "DetectorRange_EndX": {
+          "const": 2048.0,
+          "type": "number"
+        },
+        "DetectorRange_EndY": {
+          "const": 2048.0,
+          "type": "number"
+        },
+        "DetectorRange_StartX": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "DetectorRange_StartY": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Diffraction lens [%]": {
+          "const": 30.367,
+          "type": "number"
+        },
+        "DwellTimePath": {
+          "const": 0.1,
+          "type": "number"
+        },
+        "Emission [uA]": {
+          "const": 61.0,
+          "type": "number"
+        },
+        "Extraction voltage [V]": {
+          "const": 4500,
+          "type": "number"
+        },
+        "Filter mode []": {
+          "const": "",
+          "type": "string"
+        },
+        "Gun lens []": {
+          "const": 4,
+          "type": "number"
+        },
+        "Gun type []": {
+          "const": "FEG",
+          "type": "string"
+        },
+        "High tension [kV]": {
+          "const": 300,
+          "type": "number"
+        },
+        "Illuminated Area Diameter [um]": {
+          "const": 15.924,
+          "type": "number"
+        },
+        "Image shift X [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Image shift Y [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Magnification": {
+          "const": "1 X",
+          "type": "string"
+        },
+        "Manufacturer": {
+          "const": "FEI",
+          "type": "string"
+        },
+        "Microscope []": {
+          "const": "Microscope Titan 300 kV D3165 SuperTwin",
+          "type": "string"
+        },
+        "Mode []": {
+          "const": " TEM uP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "OBJ Aperture []": {
+          "const": "retracted",
+          "type": "string"
+        },
+        "Objective lens [%]": {
+          "const": 87.895,
+          "type": "number"
+        },
+        "SA Aperture []": {
+          "const": "retracted",
+          "type": "string"
+        },
+        "Spot size []": {
+          "const": 3,
+          "type": "number"
+        },
+        "Stage A [deg]": {
+          "const": 0.01,
+          "type": "number"
+        },
+        "Stage B [deg]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Stage X [um]": {
+          "const": 0.232,
+          "type": "number"
+        },
+        "Stage Y [um]": {
+          "const": -0.146,
+          "type": "number"
+        },
+        "Stage Z [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Super-X selected detectors []": {
+          "const": "1; 2; 3; 4; ",
+          "type": "string"
+        },
+        "Tilt1": {
+          "const": 0.000247,
+          "type": "number"
+        },
+        "Tilt2": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "User []": {
+          "const": "Service",
+          "type": "string"
+        },
+        "Uuid": {
+          "const": "6f1e24f5-6524-45b2-a4ff-4442cfe8055c",
+          "type": "string"
+        }
+      },
+      "required": [
+        "AcceleratingVoltage",
+        "AcquireDate",
+        "Binning",
+        "C1 Aperture [um]",
+        "C2 Aperture [um]",
+        "C2 lens [%]",
+        "C3 lens [%]",
+        "Camera length [m]",
+        "CameraNamePath",
+        "Defocus []",
+        "DetectorPixelHeight",
+        "DetectorPixelWidth",
+        "DetectorRange_EndX",
+        "DetectorRange_EndY",
+        "DetectorRange_StartX",
+        "DetectorRange_StartY",
+        "Diffraction lens [%]",
+        "DwellTimePath",
+        "Emission [uA]",
+        "Extraction voltage [V]",
+        "Filter mode []",
+        "Gun lens []",
+        "Gun type []",
+        "High tension [kV]",
+        "Illuminated Area Diameter [um]",
+        "Image shift X [um]",
+        "Image shift Y [um]",
+        "Magnification",
+        "Manufacturer",
+        "Microscope []",
+        "Mode []",
+        "OBJ Aperture []",
+        "Objective lens [%]",
+        "SA Aperture []",
+        "Spot size []",
+        "Stage A [deg]",
+        "Stage B [deg]",
+        "Stage X [um]",
+        "Stage Y [um]",
+        "Stage Z [um]",
+        "Super-X selected detectors []",
+        "Tilt1",
+        "Tilt2",
+        "User []",
+        "Uuid"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

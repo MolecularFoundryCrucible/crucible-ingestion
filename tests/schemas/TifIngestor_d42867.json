@@ -1,0 +1,240 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "tif",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "TIFF Image",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "tif_example.tif",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": "TIFF Image",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 11694624,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-08-07T12:22:47.015755",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "TifIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "TIFF Image"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "BitsPerSample": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 8
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "Compression": {
+          "const": 1,
+          "type": "number"
+        },
+        "ImageDescription": {
+          "const": "{\"shape\": [2822, 4144]}",
+          "type": "string"
+        },
+        "ImageLength": {
+          "const": 2822,
+          "type": "number"
+        },
+        "ImageWidth": {
+          "const": 4144,
+          "type": "number"
+        },
+        "PhotometricInterpretation": {
+          "const": 1,
+          "type": "number"
+        },
+        "ResolutionUnit": {
+          "const": 1,
+          "type": "number"
+        },
+        "RowsPerStrip": {
+          "const": 2822,
+          "type": "number"
+        },
+        "SamplesPerPixel": {
+          "const": 1,
+          "type": "number"
+        },
+        "Software": {
+          "const": "tifffile.py",
+          "type": "string"
+        },
+        "StripByteCounts": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 11694368
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "StripOffsets": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 256
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "XResolution": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "YResolution": {
+          "const": 1.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "BitsPerSample",
+        "Compression",
+        "ImageDescription",
+        "ImageLength",
+        "ImageWidth",
+        "PhotometricInterpretation",
+        "ResolutionUnit",
+        "RowsPerStrip",
+        "SamplesPerPixel",
+        "Software",
+        "StripByteCounts",
+        "StripOffsets",
+        "XResolution",
+        "YResolution"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "tif_example.tif",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

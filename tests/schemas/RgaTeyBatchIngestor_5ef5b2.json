@@ -1,0 +1,771 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "zip",
+          "type": "string"
+        },
+        "data_type": {},
+        "dataset_name": {
+          "const": "10k_RGA_batch_run_example.zip",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {},
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 839156,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-08-10T20:02:15.013787+00:00",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "RgaTeyBatchIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "samples": {
+          "additionalProperties": true,
+          "properties": {
+            "A1": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006010",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -38.7,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 40.1,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykvcnvkz002m4yxjmr5ng",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006010",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "A2": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006011",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -23.1,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 40.1,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykvcnvkz003yznnpfwgsw",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006011",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "A3": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006012",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -7.4,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 40.1,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykvcnvkz004rs76r52tg0",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006012",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "A4": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006013",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": 8.2,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 40.1,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykvcnvkz005scktttdrwg",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006013",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "A5": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006014",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": 23.9,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 40.1,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykvcnvkz006r7rpp1rxgc",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006014",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "A6": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006015",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": 39.5,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 40.1,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykvcnvkz0076rv3q09e50",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006015",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "B1": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006016",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -38.7,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 24.4,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykvcnvkz008rdawnhgagr",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006016",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "B2": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006017",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -23.1,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 24.4,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykwqdwcx001k44edpppb0",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006017",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "B3": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006018",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -7.4,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 24.4,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykwqdwcx002hstqnbwjhm",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006018",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "B4": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006019",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": 8.2,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 24.4,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykwqdwcx0035m3wg8sbmw",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006019",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "B5": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006020",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": 23.9,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 24.4,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykwqdwcx004hp0f6afybc",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006020",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "B6": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006021",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": 39.5,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 24.4,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykwqdwcx00562dqtmqq1r",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006021",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "C1": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006022",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -38.7,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 8.8,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykwqdwcx006xf9sf5sp0r",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006022",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "C2": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006023",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -23.1,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 8.8,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykwqdwcx007g593dh1ya8",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006023",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            },
+            "C3": {
+              "additionalProperties": true,
+              "properties": {
+                "group_name": {
+                  "const": "TF006024",
+                  "type": "string"
+                },
+                "mass range, amu": {
+                  "const": 300,
+                  "type": "number"
+                },
+                "sample x": {
+                  "const": -7.4,
+                  "type": "number"
+                },
+                "sample y": {
+                  "const": 8.8,
+                  "type": "number"
+                },
+                "sample_id": {
+                  "const": "0thhwykwqdwcx0084aaswvn7k0",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006024",
+                  "type": "string"
+                },
+                "shutter open,s": {
+                  "const": 150,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "group_name",
+                "mass range, amu",
+                "sample x",
+                "sample y",
+                "sample_id",
+                "sample_name",
+                "shutter open,s"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "A1",
+            "A2",
+            "A3",
+            "A4",
+            "A5",
+            "A6",
+            "B1",
+            "B2",
+            "B3",
+            "B4",
+            "B5",
+            "B6",
+            "C1",
+            "C2",
+            "C3"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "samples"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

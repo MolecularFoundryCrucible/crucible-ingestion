@@ -120,7 +120,7 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
             ax.set_ylabel("Intensity (cps)")
             buf = BytesIO()
             plt.savefig(buf, format='png', dpi=150)
-            plt.clf()
+            plt.close(fig)
             buf.seek(0)
             label = f"XRD Pattern (S{self._xrd_sample_idx + 1:02d})"
             self.add_thumbnail(Image.open(buf), label)

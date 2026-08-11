@@ -89,6 +89,7 @@ class BerkeleyEmdIngestor(CrucibleDatasetIngestor):
             buf = io.BytesIO()
             fg.savefig(buf, bbox_inches='tight', pad_inches=0.05, dpi=dpi)
             im = Image.open(buf)
+            plt.close(fg)
             return im
         except Exception as e:
             print(f"Failed to generate thumbnail: {e}")

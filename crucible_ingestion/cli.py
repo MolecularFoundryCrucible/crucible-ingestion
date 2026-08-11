@@ -5,7 +5,7 @@ import os
 from io import BytesIO
 from PIL import Image
 
-from .data_ingestion import build_packet, push_packet
+from .data_ingestion import parse, push_packet
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     # parse
-    packet = build_packet(args.file, args.dsid, args.ingestor)
+    packet = parse(args.file, args.dsid, args.ingestor)
     if packet is None: 
         logger.error(f"no ingestor supports {args.file}")
         return 1

@@ -1,0 +1,342 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "emi",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "STEM nP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "Spectre_STEM_HAADF_TIA.emi",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": "STEM nP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 2105851,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2025-09-25T16:55:22",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "EmiIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "STEM nP SA Zoom Diffraction"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "AcceleratingVoltage": {
+          "const": 60000.0,
+          "type": "number"
+        },
+        "AcquireDate": {
+          "const": "Thu Sep 25 16:55:22 2025",
+          "type": "string"
+        },
+        "C1 Aperture []": {
+          "const": "H-1.0",
+          "type": "string"
+        },
+        "C2 Aperture [um]": {
+          "const": 150,
+          "type": "number"
+        },
+        "C2 lens [%]": {
+          "const": 62.557,
+          "type": "number"
+        },
+        "C3 Aperture [um]": {
+          "const": 50,
+          "type": "number"
+        },
+        "C3 lens [%]": {
+          "const": 43.13,
+          "type": "number"
+        },
+        "Camera length [m]": {
+          "const": 0.11,
+          "type": "number"
+        },
+        "Convergence angle [mrad]": {
+          "const": 39.17,
+          "type": "number"
+        },
+        "Defocus [um]": {
+          "const": 0.032,
+          "type": "number"
+        },
+        "DetectorPixelHeight": {},
+        "DetectorPixelWidth": {},
+        "DetectorRange_EndX": {
+          "const": 10.0,
+          "type": "number"
+        },
+        "DetectorRange_EndY": {
+          "const": 10.0,
+          "type": "number"
+        },
+        "DetectorRange_StartX": {
+          "const": -10.0,
+          "type": "number"
+        },
+        "DetectorRange_StartY": {
+          "const": -10.0,
+          "type": "number"
+        },
+        "Diffraction lens [%]": {
+          "const": 19.101,
+          "type": "number"
+        },
+        "DwellTimePath": {
+          "const": 1.2e-05,
+          "type": "number"
+        },
+        "Emission [uA]": {
+          "const": 110.7,
+          "type": "number"
+        },
+        "Extraction voltage [V]": {
+          "const": 3650,
+          "type": "number"
+        },
+        "Filter mode []": {
+          "const": "",
+          "type": "string"
+        },
+        "FrameTime": {
+          "const": 15.0995,
+          "type": "number"
+        },
+        "Gun lens []": {
+          "const": 774,
+          "type": "number"
+        },
+        "Gun type []": {
+          "const": "FEG",
+          "type": "string"
+        },
+        "High tension [kV]": {
+          "const": 60,
+          "type": "number"
+        },
+        "Illuminated Area Diameter [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Magnification": {
+          "const": "5100000 X",
+          "type": "string"
+        },
+        "Magnification [x]": {
+          "const": 5100000,
+          "type": "number"
+        },
+        "Manufacturer": {
+          "const": "FEI (STEM)",
+          "type": "string"
+        },
+        "Microscope []": {
+          "const": "Microscope SpectraUltra 300 kV D4228 SuperTwin_Prime",
+          "type": "string"
+        },
+        "Mode []": {
+          "const": " STEM nP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "OBJ Aperture []": {
+          "const": "retracted",
+          "type": "string"
+        },
+        "Objective lens [%]": {
+          "const": 69.993,
+          "type": "number"
+        },
+        "Spot size []": {
+          "const": 11,
+          "type": "number"
+        },
+        "Stage A [deg]": {
+          "const": 1.77,
+          "type": "number"
+        },
+        "Stage B [deg]": {
+          "const": -0.6,
+          "type": "number"
+        },
+        "Stage X [um]": {
+          "const": -134.99,
+          "type": "number"
+        },
+        "Stage Y [um]": {
+          "const": 81.075,
+          "type": "number"
+        },
+        "Stage Z [um]": {
+          "const": 71.904,
+          "type": "number"
+        },
+        "Stem rotation [deg]": {
+          "const": 90.0,
+          "type": "number"
+        },
+        "Stem rotation correction [deg]": {
+          "const": 65.0,
+          "type": "number"
+        },
+        "Super-X selected detectors []": {
+          "const": "1; 2; 3; 4; ",
+          "type": "string"
+        },
+        "Tilt1": {
+          "const": 0.030931,
+          "type": "number"
+        },
+        "Tilt2": {
+          "const": -0.010441,
+          "type": "number"
+        },
+        "User []": {
+          "const": "Service",
+          "type": "string"
+        },
+        "Uuid": {
+          "const": "0837fe49-3039-4037-b98a-14b37165169b",
+          "type": "string"
+        }
+      },
+      "required": [
+        "AcceleratingVoltage",
+        "AcquireDate",
+        "C1 Aperture []",
+        "C2 Aperture [um]",
+        "C2 lens [%]",
+        "C3 Aperture [um]",
+        "C3 lens [%]",
+        "Camera length [m]",
+        "Convergence angle [mrad]",
+        "Defocus [um]",
+        "DetectorPixelHeight",
+        "DetectorPixelWidth",
+        "DetectorRange_EndX",
+        "DetectorRange_EndY",
+        "DetectorRange_StartX",
+        "DetectorRange_StartY",
+        "Diffraction lens [%]",
+        "DwellTimePath",
+        "Emission [uA]",
+        "Extraction voltage [V]",
+        "Filter mode []",
+        "FrameTime",
+        "Gun lens []",
+        "Gun type []",
+        "High tension [kV]",
+        "Illuminated Area Diameter [um]",
+        "Magnification",
+        "Magnification [x]",
+        "Manufacturer",
+        "Microscope []",
+        "Mode []",
+        "OBJ Aperture []",
+        "Objective lens [%]",
+        "Spot size []",
+        "Stage A [deg]",
+        "Stage B [deg]",
+        "Stage X [um]",
+        "Stage Y [um]",
+        "Stage Z [um]",
+        "Stem rotation [deg]",
+        "Stem rotation correction [deg]",
+        "Super-X selected detectors []",
+        "Tilt1",
+        "Tilt2",
+        "User []",
+        "Uuid"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

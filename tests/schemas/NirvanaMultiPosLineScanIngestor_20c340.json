@@ -1,0 +1,5655 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 12,
+      "minItems": 12,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006093",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj4e3vff9xnh001pk5n09zdec"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00309,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 173.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 173.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -161.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -157.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -157.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -158.77777777777777
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -159.66666666666666
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -160.55555555555554
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -161.44444444444446
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -162.33333333333334
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -163.22222222222223
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -164.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -165.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006094",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj4e3vff9xnh002rr1br1r9br"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00312,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 143.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 143.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -161.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -157.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -157.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -158.77777777777777
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -159.66666666666666
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -160.55555555555554
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -161.44444444444446
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -162.33333333333334
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -163.22222222222223
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -164.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -165.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006095",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj4e3vff9xnh003f69794krkm"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00312,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 113.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 113.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -161.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -157.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -157.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -158.77777777777777
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -159.66666666666666
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -160.55555555555554
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -161.44444444444446
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -162.33333333333334
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -163.22222222222223
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -164.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -165.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006096",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj4e3vff9xnh004w5hemxyq5c"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00309,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 83.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 83.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -161.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -157.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -157.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -158.77777777777777
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -159.66666666666666
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -160.55555555555554
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -161.44444444444446
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -162.33333333333334
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -163.22222222222223
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -164.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -165.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006097",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h0016tvbmw6qn8"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00324,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 173.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 173.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -68.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -64.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -64.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -65.77777777777777
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -66.66666666666667
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -67.55555555555556
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -68.44444444444444
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -69.33333333333333
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -70.22222222222223
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -71.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -72.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006098",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h002tzaspgfv6c"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00321,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 143.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 143.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -68.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -64.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -64.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -65.77777777777777
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -66.66666666666667
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -67.55555555555556
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -68.44444444444444
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -69.33333333333333
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -70.22222222222223
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -71.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -72.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006099",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h0032ptzn5w874"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00321,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 113.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 113.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -68.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -64.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -64.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -65.77777777777777
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -66.66666666666667
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -67.55555555555556
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -68.44444444444444
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -69.33333333333333
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -70.22222222222223
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -71.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -72.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006100",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h0043g3b12n09c"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00321,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 83.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 83.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -68.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -64.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -64.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -65.77777777777777
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -66.66666666666667
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -67.55555555555556
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -68.44444444444444
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -69.33333333333333
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -70.22222222222223
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -71.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -72.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006101",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h0055xdnk566qm"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00333,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 173.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 173.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -28.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -24.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -24.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -25.77777777777778
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -26.666666666666668
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -27.555555555555557
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -28.444444444444443
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -29.333333333333332
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -30.22222222222222
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -31.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -32.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006102",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h006zn80akpebg"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00333,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 143.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 143.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -28.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -24.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -24.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -25.77777777777778
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -26.666666666666668
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -27.555555555555557
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -28.444444444444443
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -29.333333333333332
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -30.22222222222222
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -31.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -32.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006103",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h007kjgtrqsgvm"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00321,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 113.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 113.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -28.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -24.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -24.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -25.77777777777778
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -26.666666666666668
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -27.555555555555557
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -28.444444444444443
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -29.333333333333332
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -30.22222222222222
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -31.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -32.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "ScopeFoundryH5",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Child Nirvana scan for TF006104",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {
+                  "const": "Nirvana Spectrometer",
+                  "type": "string"
+                },
+                "links": {},
+                "measurement": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "10k_perovskites",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {
+                  "const": "2026-07-01T13:55:12",
+                  "type": "string"
+                },
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tj5ftr59szcd0000g7f5yd9xr",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h0082qgmfm11gm"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "integration_time": {
+                  "const": 0.00327,
+                  "type": "number"
+                },
+                "x_center": {
+                  "const": 83.0,
+                  "type": "number"
+                },
+                "x_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": 83.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                },
+                "y_center": {
+                  "const": -28.0,
+                  "type": "number"
+                },
+                "y_positions": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": -24.0
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -24.88888888888889
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -25.77777777777778
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -26.666666666666668
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -27.555555555555557
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -28.444444444444443
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -29.333333333333332
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -30.22222222222222
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -31.11111111111111
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": -32.0
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "number"
+                  },
+                  "maxItems": 10,
+                  "minItems": 10,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "integration_time",
+                "x_center",
+                "x_positions",
+                "y_center",
+                "y_positions"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "ScopeFoundryH5",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "pollux_oospec_multipos_line_scan",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "260701_135512_pollux_oospec_multipos_line_scan.h5",
+          "type": "string"
+        },
+        "instrument_name": {
+          "const": "nirvana spectrometer",
+          "type": "string"
+        },
+        "measurement": {
+          "const": "pollux_oospec_multipos_line_scan",
+          "type": "string"
+        },
+        "owner_orcid": {
+          "const": "0tf1adtg65vf9000fw8t5ddy0g",
+          "type": "string"
+        },
+        "project_id": {
+          "const": "10k_perovskites",
+          "type": "string"
+        },
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {
+          "const": "as-synthesized",
+          "type": "string"
+        },
+        "size": {
+          "const": 4150632,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-07-01T13:55:12",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "0tj5ftr59szcd0000g7f5yd9xr",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "NirvanaMultiPosLineScanIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "Nirvana Spectrometer"
+          }
+        },
+        {
+          "contains": {
+            "const": "as-synthesized"
+          }
+        },
+        {
+          "contains": {
+            "const": "by"
+          }
+        },
+        {
+          "contains": {
+            "const": "commas"
+          }
+        },
+        {
+          "contains": {
+            "const": "pollux_oospec_multipos_line_scan"
+          }
+        },
+        {
+          "contains": {
+            "const": "separated"
+          }
+        },
+        {
+          "contains": {
+            "const": "tags"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 8,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 14,
+      "minItems": 14,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TRAY00763",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj4e3vff9xnh00052mj4sgvtc",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj4e3vff9xnh00052mj4sgvtc"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006093",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj4e3vff9xnh001pk5n09zdec",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj4e3vff9xnh00052mj4sgvtc"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006094",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj4e3vff9xnh002rr1br1r9br",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj4e3vff9xnh00052mj4sgvtc"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006095",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj4e3vff9xnh003f69794krkm",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj4e3vff9xnh00052mj4sgvtc"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006096",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj4e3vff9xnh004w5hemxyq5c",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TRAY00764",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h000bf9bpj59n0",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h000bf9bpj59n0"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006097",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h0016tvbmw6qn8",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h000bf9bpj59n0"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006098",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h002tzaspgfv6c",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h000bf9bpj59n0"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006099",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h0032ptzn5w874",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h000bf9bpj59n0"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006100",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h0043g3b12n09c",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h000bf9bpj59n0"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006101",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h0055xdnk566qm",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h000bf9bpj59n0"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006102",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h006zn80akpebg",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h000bf9bpj59n0"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006103",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h007kjgtrqsgvm",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tj5csymm1v8h000bf9bpj59n0"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "10k_perovskites",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006104",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tj5csymm1v8h0082qgmfm11gm",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "unique_id"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "app": {
+          "additionalProperties": true,
+          "properties": {
+            "ScopeFoundry_type": {
+              "const": "App",
+              "type": "string"
+            },
+            "name": {
+              "const": "nirvana_app",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "dark_mode": {
+                  "const": 0,
+                  "type": "number"
+                },
+                "data_fname_format": {
+                  "const": "{timestamp:%y%m%d_%H%M%S}_{measurement.name}.{ext}",
+                  "type": "string"
+                },
+                "propose_from_file": {
+                  "const": "C:\\Users\\lab\\Documents\\nirvana",
+                  "type": "string"
+                },
+                "sample": {
+                  "const": "",
+                  "type": "string"
+                },
+                "save_dir": {
+                  "const": "C:/Users/lab/Documents/nirvana/data",
+                  "type": "string"
+                },
+                "units": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "wheel manipulation": {
+                  "const": true,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "dark_mode",
+                "data_fname_format",
+                "propose_from_file",
+                "sample",
+                "save_dir",
+                "units",
+                "wheel manipulation"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "ScopeFoundry_type",
+            "name",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "hardware": {
+          "additionalProperties": true,
+          "properties": {
+            "ScopeFoundry_type": {
+              "const": "HardwareList",
+              "type": "string"
+            },
+            "mf_crucible_nirvana": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "mf_crucible_nirvana",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "comments": {
+                      "const": "comments",
+                      "type": "string"
+                    },
+                    "connected": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "email": {
+                      "const": "timkodalle@lbl.gov",
+                      "type": "string"
+                    },
+                    "orcid": {
+                      "const": "0000-0002-8792-9669",
+                      "type": "string"
+                    },
+                    "project": {
+                      "const": "10k_perovskites",
+                      "type": "string"
+                    },
+                    "session_name": {
+                      "const": "as-synthesized",
+                      "type": "string"
+                    },
+                    "tags": {
+                      "const": "tags,separated,by,commas",
+                      "type": "string"
+                    },
+                    "tray1_name": {
+                      "const": "TRAY00763",
+                      "type": "string"
+                    },
+                    "tray1_sample1_name": {
+                      "const": "TF006093",
+                      "type": "string"
+                    },
+                    "tray1_sample1_uuid": {
+                      "const": "0tj4e3vff9xnh001pk5n09zdec",
+                      "type": "string"
+                    },
+                    "tray1_sample2_name": {
+                      "const": "TF006094",
+                      "type": "string"
+                    },
+                    "tray1_sample2_uuid": {
+                      "const": "0tj4e3vff9xnh002rr1br1r9br",
+                      "type": "string"
+                    },
+                    "tray1_sample3_name": {
+                      "const": "TF006095",
+                      "type": "string"
+                    },
+                    "tray1_sample3_uuid": {
+                      "const": "0tj4e3vff9xnh003f69794krkm",
+                      "type": "string"
+                    },
+                    "tray1_sample4_name": {
+                      "const": "TF006096",
+                      "type": "string"
+                    },
+                    "tray1_sample4_uuid": {
+                      "const": "0tj4e3vff9xnh004w5hemxyq5c",
+                      "type": "string"
+                    },
+                    "tray1_sample5_name": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tray1_sample5_uuid": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tray1_sample6_name": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tray1_sample6_uuid": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tray1_sample7_name": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tray1_sample7_uuid": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tray1_sample8_name": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tray1_sample8_uuid": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tray1_uuid": {
+                      "const": "0tj4e3vff9xnh00052mj4sgvtc",
+                      "type": "string"
+                    },
+                    "tray2_name": {
+                      "const": "TRAY00764",
+                      "type": "string"
+                    },
+                    "tray2_sample1_name": {
+                      "const": "TF006097",
+                      "type": "string"
+                    },
+                    "tray2_sample1_uuid": {
+                      "const": "0tj5csymm1v8h0016tvbmw6qn8",
+                      "type": "string"
+                    },
+                    "tray2_sample2_name": {
+                      "const": "TF006098",
+                      "type": "string"
+                    },
+                    "tray2_sample2_uuid": {
+                      "const": "0tj5csymm1v8h002tzaspgfv6c",
+                      "type": "string"
+                    },
+                    "tray2_sample3_name": {
+                      "const": "TF006099",
+                      "type": "string"
+                    },
+                    "tray2_sample3_uuid": {
+                      "const": "0tj5csymm1v8h0032ptzn5w874",
+                      "type": "string"
+                    },
+                    "tray2_sample4_name": {
+                      "const": "TF006100",
+                      "type": "string"
+                    },
+                    "tray2_sample4_uuid": {
+                      "const": "0tj5csymm1v8h0043g3b12n09c",
+                      "type": "string"
+                    },
+                    "tray2_sample5_name": {
+                      "const": "TF006101",
+                      "type": "string"
+                    },
+                    "tray2_sample5_uuid": {
+                      "const": "0tj5csymm1v8h0055xdnk566qm",
+                      "type": "string"
+                    },
+                    "tray2_sample6_name": {
+                      "const": "TF006102",
+                      "type": "string"
+                    },
+                    "tray2_sample6_uuid": {
+                      "const": "0tj5csymm1v8h006zn80akpebg",
+                      "type": "string"
+                    },
+                    "tray2_sample7_name": {
+                      "const": "TF006103",
+                      "type": "string"
+                    },
+                    "tray2_sample7_uuid": {
+                      "const": "0tj5csymm1v8h007kjgtrqsgvm",
+                      "type": "string"
+                    },
+                    "tray2_sample8_name": {
+                      "const": "TF006104",
+                      "type": "string"
+                    },
+                    "tray2_sample8_uuid": {
+                      "const": "0tj5csymm1v8h0082qgmfm11gm",
+                      "type": "string"
+                    },
+                    "tray2_uuid": {
+                      "const": "0tj5csymm1v8h000bf9bpj59n0",
+                      "type": "string"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {},
+                      "required": [],
+                      "type": "object"
+                    },
+                    "user_name": {
+                      "const": "Tim Kodalle",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "comments",
+                    "connected",
+                    "debug_mode",
+                    "email",
+                    "orcid",
+                    "project",
+                    "session_name",
+                    "tags",
+                    "tray1_name",
+                    "tray1_sample1_name",
+                    "tray1_sample1_uuid",
+                    "tray1_sample2_name",
+                    "tray1_sample2_uuid",
+                    "tray1_sample3_name",
+                    "tray1_sample3_uuid",
+                    "tray1_sample4_name",
+                    "tray1_sample4_uuid",
+                    "tray1_sample5_name",
+                    "tray1_sample5_uuid",
+                    "tray1_sample6_name",
+                    "tray1_sample6_uuid",
+                    "tray1_sample7_name",
+                    "tray1_sample7_uuid",
+                    "tray1_sample8_name",
+                    "tray1_sample8_uuid",
+                    "tray1_uuid",
+                    "tray2_name",
+                    "tray2_sample1_name",
+                    "tray2_sample1_uuid",
+                    "tray2_sample2_name",
+                    "tray2_sample2_uuid",
+                    "tray2_sample3_name",
+                    "tray2_sample3_uuid",
+                    "tray2_sample4_name",
+                    "tray2_sample4_uuid",
+                    "tray2_sample5_name",
+                    "tray2_sample5_uuid",
+                    "tray2_sample6_name",
+                    "tray2_sample6_uuid",
+                    "tray2_sample7_name",
+                    "tray2_sample7_uuid",
+                    "tray2_sample8_name",
+                    "tray2_sample8_uuid",
+                    "tray2_uuid",
+                    "units",
+                    "user_name"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            },
+            "micros_pollux_stage": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "micros_pollux_stage",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "acceleration_x": {
+                      "const": 500.0,
+                      "type": "number"
+                    },
+                    "acceleration_y": {
+                      "const": 500.0,
+                      "type": "number"
+                    },
+                    "baudrate": {
+                      "const": 19200,
+                      "type": "number"
+                    },
+                    "connected": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "deceleration_x": {
+                      "const": 500.0,
+                      "type": "number"
+                    },
+                    "deceleration_y": {
+                      "const": 500.0,
+                      "type": "number"
+                    },
+                    "port": {
+                      "const": "COM3",
+                      "type": "string"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "acceleration_x": {
+                          "const": "units/s\u00b2",
+                          "type": "string"
+                        },
+                        "acceleration_y": {
+                          "const": "units/s\u00b2",
+                          "type": "string"
+                        },
+                        "deceleration_x": {
+                          "const": "units/s\u00b2",
+                          "type": "string"
+                        },
+                        "deceleration_y": {
+                          "const": "units/s\u00b2",
+                          "type": "string"
+                        },
+                        "velocity_x": {
+                          "const": "units/s",
+                          "type": "string"
+                        },
+                        "velocity_y": {
+                          "const": "units/s",
+                          "type": "string"
+                        },
+                        "x_position": {
+                          "const": "mm",
+                          "type": "string"
+                        },
+                        "x_target": {
+                          "const": "mm",
+                          "type": "string"
+                        },
+                        "y_position": {
+                          "const": "mm",
+                          "type": "string"
+                        },
+                        "y_target": {
+                          "const": "mm",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "acceleration_x",
+                        "acceleration_y",
+                        "deceleration_x",
+                        "deceleration_y",
+                        "velocity_x",
+                        "velocity_y",
+                        "x_position",
+                        "x_target",
+                        "y_position",
+                        "y_target"
+                      ],
+                      "type": "object"
+                    },
+                    "velocity_x": {
+                      "const": 1000.0,
+                      "type": "number"
+                    },
+                    "velocity_y": {
+                      "const": 100.0,
+                      "type": "number"
+                    },
+                    "x_moving": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "x_position": {
+                      "const": 25.0,
+                      "type": "number"
+                    },
+                    "x_target": {
+                      "const": 25.0,
+                      "type": "number"
+                    },
+                    "y_moving": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "y_position": {
+                      "const": -161.041022,
+                      "type": "number"
+                    },
+                    "y_target": {
+                      "const": -200.0,
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "acceleration_x",
+                    "acceleration_y",
+                    "baudrate",
+                    "connected",
+                    "debug_mode",
+                    "deceleration_x",
+                    "deceleration_y",
+                    "port",
+                    "units",
+                    "velocity_x",
+                    "velocity_y",
+                    "x_moving",
+                    "x_position",
+                    "x_target",
+                    "y_moving",
+                    "y_position",
+                    "y_target"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            },
+            "ocean_optics_spec": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "ocean_optics_spec",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "connected": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "int_time": {
+                      "const": 0.00315,
+                      "type": "number"
+                    },
+                    "serial_num": {
+                      "const": "FLMT07611",
+                      "type": "string"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "int_time": {
+                          "const": "s",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "int_time"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "connected",
+                    "debug_mode",
+                    "int_time",
+                    "serial_num",
+                    "units"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "ScopeFoundry_type",
+            "mf_crucible_nirvana",
+            "micros_pollux_stage",
+            "ocean_optics_spec"
+          ],
+          "type": "object"
+        },
+        "measurement": {
+          "additionalProperties": true,
+          "properties": {
+            "pollux_oospec_multipos_line_scan": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Measurement",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "pollux_oospec_multipos_line_scan",
+                  "type": "string"
+                },
+                "positions": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "pos_000_TF006093": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00309,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006093",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj4e3vff9xnh001pk5n09zdec",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00763",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj4e3vff9xnh00052mj4sgvtc",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 173.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 173.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -161.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -157.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -157.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -158.77777777777777
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -159.66666666666666
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -160.55555555555554
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -161.44444444444446
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -162.33333333333334
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -163.22222222222223
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -164.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -165.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_001_TF006094": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00312,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006094",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj4e3vff9xnh002rr1br1r9br",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00763",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj4e3vff9xnh00052mj4sgvtc",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 143.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 143.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -161.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -157.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -157.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -158.77777777777777
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -159.66666666666666
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -160.55555555555554
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -161.44444444444446
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -162.33333333333334
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -163.22222222222223
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -164.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -165.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_002_TF006095": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00312,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006095",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj4e3vff9xnh003f69794krkm",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00763",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj4e3vff9xnh00052mj4sgvtc",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 113.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 113.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -161.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -157.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -157.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -158.77777777777777
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -159.66666666666666
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -160.55555555555554
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -161.44444444444446
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -162.33333333333334
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -163.22222222222223
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -164.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -165.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_003_TF006096": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00309,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006096",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj4e3vff9xnh004w5hemxyq5c",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00763",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj4e3vff9xnh00052mj4sgvtc",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 83.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 83.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -161.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -157.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -157.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -158.77777777777777
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -159.66666666666666
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -160.55555555555554
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -161.44444444444446
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -162.33333333333334
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -163.22222222222223
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -164.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -165.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_008_TF006097": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00324,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006097",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj5csymm1v8h0016tvbmw6qn8",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00764",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj5csymm1v8h000bf9bpj59n0",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 173.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 173.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -68.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -64.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -64.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -65.77777777777777
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -66.66666666666667
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -67.55555555555556
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -68.44444444444444
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -69.33333333333333
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -70.22222222222223
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -71.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -72.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_009_TF006098": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00321,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006098",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj5csymm1v8h002tzaspgfv6c",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00764",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj5csymm1v8h000bf9bpj59n0",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 143.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 143.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -68.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -64.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -64.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -65.77777777777777
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -66.66666666666667
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -67.55555555555556
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -68.44444444444444
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -69.33333333333333
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -70.22222222222223
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -71.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -72.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_010_TF006099": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00321,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006099",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj5csymm1v8h0032ptzn5w874",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00764",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj5csymm1v8h000bf9bpj59n0",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 113.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 113.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -68.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -64.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -64.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -65.77777777777777
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -66.66666666666667
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -67.55555555555556
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -68.44444444444444
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -69.33333333333333
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -70.22222222222223
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -71.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -72.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_011_TF006100": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00321,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006100",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj5csymm1v8h0043g3b12n09c",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00764",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj5csymm1v8h000bf9bpj59n0",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 83.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 83.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -68.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -64.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -64.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -65.77777777777777
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -66.66666666666667
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -67.55555555555556
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -68.44444444444444
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -69.33333333333333
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -70.22222222222223
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -71.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -72.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_012_TF006101": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00333,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006101",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj5csymm1v8h0055xdnk566qm",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00764",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj5csymm1v8h000bf9bpj59n0",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 173.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 173.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -28.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -24.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -24.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -25.77777777777778
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -26.666666666666668
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -27.555555555555557
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -28.444444444444443
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -29.333333333333332
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -30.22222222222222
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -31.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -32.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_013_TF006102": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00333,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006102",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj5csymm1v8h006zn80akpebg",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00764",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj5csymm1v8h000bf9bpj59n0",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 143.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 143.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -28.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -24.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -24.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -25.77777777777778
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -26.666666666666668
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -27.555555555555557
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -28.444444444444443
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -29.333333333333332
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -30.22222222222222
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -31.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -32.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_014_TF006103": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00321,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006103",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj5csymm1v8h007kjgtrqsgvm",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00764",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj5csymm1v8h000bf9bpj59n0",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 113.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 113.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -28.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -24.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -24.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -25.77777777777778
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -26.666666666666668
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -27.555555555555557
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -28.444444444444443
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -29.333333333333332
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -30.22222222222222
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -31.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -32.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    },
+                    "pos_015_TF006104": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "blank_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "dark_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "integration_time": {
+                          "const": 0.00327,
+                          "type": "number"
+                        },
+                        "raw_intensities": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "sample_name": {
+                          "const": "TF006104",
+                          "type": "string"
+                        },
+                        "sample_uuid": {
+                          "const": "0tj5csymm1v8h0082qgmfm11gm",
+                          "type": "string"
+                        },
+                        "tray_name": {
+                          "const": "TRAY00764",
+                          "type": "string"
+                        },
+                        "tray_uuid": {
+                          "const": "0tj5csymm1v8h000bf9bpj59n0",
+                          "type": "string"
+                        },
+                        "x_center": {
+                          "const": 83.0,
+                          "type": "number"
+                        },
+                        "x_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": 83.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        },
+                        "y_center": {
+                          "const": -28.0,
+                          "type": "number"
+                        },
+                        "y_positions": {
+                          "allOf": [
+                            {
+                              "contains": {
+                                "const": -24.0
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -24.88888888888889
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -25.77777777777778
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -26.666666666666668
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -27.555555555555557
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -28.444444444444443
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -29.333333333333332
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -30.22222222222222
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -31.11111111111111
+                              }
+                            },
+                            {
+                              "contains": {
+                                "const": -32.0
+                              }
+                            }
+                          ],
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 10,
+                          "minItems": 10,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "blank_intensities",
+                        "dark_intensities",
+                        "integration_time",
+                        "raw_intensities",
+                        "sample_name",
+                        "sample_uuid",
+                        "tray_name",
+                        "tray_uuid",
+                        "x_center",
+                        "x_positions",
+                        "y_center",
+                        "y_positions"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "pos_000_TF006093",
+                    "pos_001_TF006094",
+                    "pos_002_TF006095",
+                    "pos_003_TF006096",
+                    "pos_008_TF006097",
+                    "pos_009_TF006098",
+                    "pos_010_TF006099",
+                    "pos_011_TF006100",
+                    "pos_012_TF006101",
+                    "pos_013_TF006102",
+                    "pos_014_TF006103",
+                    "pos_015_TF006104"
+                  ],
+                  "type": "object"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "activation": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "csv_filepath": {
+                      "const": "C:/Users/lab/Documents/nirvana/example_positions_02_19_centered.csv",
+                      "type": "string"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "h5_to_upload": {
+                      "const": "C:/Users/lab/Documents/nirvana/data/260701_135120_pollux_oospec_multipos_line_scan.h5",
+                      "type": "string"
+                    },
+                    "num_points": {
+                      "const": 10,
+                      "type": "number"
+                    },
+                    "num_positions": {
+                      "const": 18,
+                      "type": "number"
+                    },
+                    "profile": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "progress": {
+                      "const": 50.0,
+                      "type": "number"
+                    },
+                    "run_state": {
+                      "const": "run_thread_run",
+                      "type": "string"
+                    },
+                    "save_h5": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "scan_acceleration": {
+                      "const": 500.0,
+                      "type": "number"
+                    },
+                    "scan_velocity": {
+                      "const": 100.0,
+                      "type": "number"
+                    },
+                    "settle_time": {
+                      "const": 0.1,
+                      "type": "number"
+                    },
+                    "spec_integration_time": {
+                      "const": 0.0025,
+                      "type": "number"
+                    },
+                    "spectra_per_pixel": {
+                      "const": 20,
+                      "type": "number"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "progress": {
+                          "const": "%",
+                          "type": "string"
+                        },
+                        "scan_acceleration": {
+                          "const": "mm/s\u00b2",
+                          "type": "string"
+                        },
+                        "scan_velocity": {
+                          "const": "mm/s",
+                          "type": "string"
+                        },
+                        "settle_time": {
+                          "const": "s",
+                          "type": "string"
+                        },
+                        "spec_integration_time": {
+                          "const": "s",
+                          "type": "string"
+                        },
+                        "y_scan_length": {
+                          "const": "mm",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "progress",
+                        "scan_acceleration",
+                        "scan_velocity",
+                        "settle_time",
+                        "spec_integration_time",
+                        "y_scan_length"
+                      ],
+                      "type": "object"
+                    },
+                    "update_live_spectrum": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "y_scan_length": {
+                      "const": 8.0,
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "activation",
+                    "csv_filepath",
+                    "debug_mode",
+                    "h5_to_upload",
+                    "num_points",
+                    "num_positions",
+                    "profile",
+                    "progress",
+                    "run_state",
+                    "save_h5",
+                    "scan_acceleration",
+                    "scan_velocity",
+                    "settle_time",
+                    "spec_integration_time",
+                    "spectra_per_pixel",
+                    "units",
+                    "update_live_spectrum",
+                    "y_scan_length"
+                  ],
+                  "type": "object"
+                },
+                "wavelengths": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "positions",
+                "settings",
+                "wavelengths"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "pollux_oospec_multipos_line_scan"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "app",
+        "hardware",
+        "measurement"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "0tj5ftr59szcd0000g7f5yd9xr",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

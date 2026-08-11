@@ -3,6 +3,7 @@ import logging
 import requests
 from .constants import sql_import_attr, sql_export_attr
 import orjson
+from crucible.models import Dataset
 from .utils import sanitize_metadata
 from .ingestors.registry import find_supported_ingestor
 from .packet import IngestionPacket
@@ -66,7 +67,7 @@ def populate_existing_ds_info(ig, populate_fields):
     return ig, found_ds
         
 
-def build_packet(dataset_to_process, dsid, ingestion_class=None):    
+def parse(dataset_to_process, dsid, ingestion_class=None):    
     logger.info("running build packet...")
 
     ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class)
@@ -84,7 +85,10 @@ def build_packet(dataset_to_process, dsid, ingestion_class=None):
     ig, found_ds = populate_existing_ds_info(ig, populate_fields)
         
     # parse the file + add any additional metadata
-    ig.setup_data()
+    try:
+        ig.setup_data()
+    finally:
+        ig.cleanup()
 
     # if found; overwrite parsed data with what already existed in SQL
     # to overwrite use "update" endpoint; not "ingestion-request"
@@ -133,20 +137,18 @@ def push_packet(packet):
     # link to any parsed samples
     for sample in packet.samples:
         logger.info(f'{sample=}')
-        sample_parents = []
-        if 'parent_ids' in sample:
-            sample_parents = sample.pop('parent_ids')
-        
-        link_to_dataset = True
-        if 'link_to_dataset' in sample:
-            link_to_dataset = sample.pop('link_to_dataset')
+        # read without mutating: the packet must survive a retry or a second push
+        sample_parents = sample.get('parent_ids', [])
+        link_to_dataset = sample.get('link_to_dataset', True)
+        sample_fields = {k: v for k, v in sample.items()
+                         if k not in ('parent_ids', 'link_to_dataset')}
 
         # get or create sample; re-ingesting the same file must not duplicate samples
-        sql_sample = find_existing_sample(sample)
+        sql_sample = find_existing_sample(sample_fields)
         if sql_sample:
             logger.info(f'found existing sample {sql_sample}')
         else:
-            sql_sample = get_client().samples.create(**sample)
+            sql_sample = get_client().samples.create(**sample_fields)
             logger.info(f'created new sample {sql_sample}')
 
         # link to dataset
@@ -160,14 +162,26 @@ def push_packet(packet):
                                       child_id = sql_sample['unique_id'])
 
     # add children
+    existing_children = {}
     for child in packet.children:
         child_ds = child['dataset']
         child_md = child['scientific_metadata']
         parent_id = child['parent_id']
         sample_ids = child['sample_links']
 
-        resp = get_client().datasets.create(child_ds, child_md)
+        # re-pushing the same file must not create a second set of children
+        if parent_id not in existing_children:
+            existing_children[parent_id] = {c['dataset_name']: c['unique_id']
+                                            for c in get_client().datasets.list_children(parent_id)}
+
+        found_dsid = existing_children[parent_id].get(child_ds['dataset_name'])
+        if found_dsid:
+            logger.info(f"child {child_ds['dataset_name']!r} already exists as {found_dsid}; skipping")
+            continue
+
+        resp = get_client().datasets.create(Dataset(**child_ds), child_md)
         child_dsid = resp['dsid']
+        existing_children[parent_id][child_ds['dataset_name']] = child_dsid
 
         # link to run dataset
         get_client().datasets.link_parent_child(parent_dataset_id = parent_id,
@@ -210,7 +224,7 @@ def push_packet(packet):
 
 def data_ingestion(dataset_to_process, dsid, ingestion_class=None):
     
-    packet = build_packet(dataset_to_process, dsid, ingestion_class)
+    packet = parse(dataset_to_process, dsid, ingestion_class)
 
     if packet is None:
         return (None, None)

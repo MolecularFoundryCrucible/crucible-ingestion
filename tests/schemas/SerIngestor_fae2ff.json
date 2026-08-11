@@ -1,0 +1,244 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "ser",
+          "type": "string"
+        },
+        "data_type": {},
+        "dataset_name": {
+          "const": "ser_emi_example_titanx.ser",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {},
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 2097286,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-08-07T12:22:47.015580",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "SerIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "ByteOrder": {
+          "const": 18761.0,
+          "type": "number"
+        },
+        "DataOffsetArray": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 76
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "DataTypeID": {
+          "const": 16674.0,
+          "type": "number"
+        },
+        "Dimensions": {
+          "maxItems": 1,
+          "minItems": 1,
+          "prefixItems": [
+            {
+              "additionalProperties": true,
+              "properties": {
+                "CalibrationDelta": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "CalibrationElement": {
+                  "const": 0.0,
+                  "type": "number"
+                },
+                "CalibrationOffset": {
+                  "const": 0.0,
+                  "type": "number"
+                },
+                "Description": {
+                  "const": "Number",
+                  "type": "string"
+                },
+                "DimensionSize": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "Units": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "CalibrationDelta",
+                "CalibrationElement",
+                "CalibrationOffset",
+                "Description",
+                "DimensionSize",
+                "Units"
+              ],
+              "type": "object"
+            }
+          ],
+          "type": "array"
+        },
+        "NumberDimensions": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "OffsetArrayOffset": {
+          "const": 68.0,
+          "type": "number"
+        },
+        "SeriesID": {
+          "const": 407.0,
+          "type": "number"
+        },
+        "SeriesVersion": {
+          "const": 528.0,
+          "type": "number"
+        },
+        "TagOffsetArray": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 2097278
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "TagTypeID": {
+          "const": 16722.0,
+          "type": "number"
+        },
+        "TotalNumberElements": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "ValidNumberElements": {
+          "const": 1.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "ByteOrder",
+        "DataOffsetArray",
+        "DataTypeID",
+        "Dimensions",
+        "NumberDimensions",
+        "OffsetArrayOffset",
+        "SeriesID",
+        "SeriesVersion",
+        "TagOffsetArray",
+        "TagTypeID",
+        "TotalNumberElements",
+        "ValidNumberElements"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "TIA_Thumbnail",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,1372 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "h5",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "4D-STEM",
+          "type": "string"
+        },
+        "dataset_name": {},
+        "instrument_name": {},
+        "measurement": {
+          "const": "4D-STEM",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {},
+        "timestamp": {},
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "PtychographyH5Ingestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "4D-STEM"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "entry": {
+          "additionalProperties": true,
+          "properties": {
+            "DECTRIS_lab_geometry": {
+              "const": "mcstas",
+              "type": "string"
+            },
+            "NX_class": {
+              "const": "NXentry",
+              "type": "string"
+            },
+            "data": {
+              "additionalProperties": true,
+              "properties": {
+                "NX_class": {
+                  "const": "NXdata",
+                  "type": "string"
+                },
+                "signal": {
+                  "const": "data_000001",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "NX_class",
+                "signal"
+              ],
+              "type": "object"
+            },
+            "default": {
+              "const": "data",
+              "type": "string"
+            },
+            "definition": {
+              "additionalProperties": true,
+              "properties": {
+                "value": {
+                  "const": "NXmx",
+                  "type": "string"
+                },
+                "version": {
+                  "const": "1.4",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value",
+                "version"
+              ],
+              "type": "object"
+            },
+            "instrument": {
+              "additionalProperties": true,
+              "properties": {
+                "NX_class": {
+                  "const": "NXinstrument",
+                  "type": "string"
+                },
+                "beam": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "NX_class": {
+                      "const": "NXbeam",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "NX_class"
+                  ],
+                  "type": "object"
+                },
+                "detector": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "NX_class": {
+                      "const": "NXdetector",
+                      "type": "string"
+                    },
+                    "beam_center_x": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "pixel",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 0.0,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "beam_center_y": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "pixel",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 0.0,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "bit_depth_image": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": 32,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "bit_depth_readout": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": 8,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "count_time": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "s",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 0.00019950000569224358,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "countrate_correction_applied": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": 1,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "description": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": "Dectris ARINA CZT",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "detectorSpecific": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "NX_class": {
+                          "const": "NXcollection",
+                          "type": "string"
+                        },
+                        "auto_summation": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": 1,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "compression": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": "bslz4",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "countrate_correction_count_cutoff": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": 16738,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "countrate_correction_lookup_table": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "countrate_correction_table": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "data_collection_date": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": "2026-03-06T13:08:58.731+01:00",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "eiger_fw_version": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": "release-2024.1",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "element": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": "",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "flatfield": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "frame_count_time": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "units": {
+                              "const": "s",
+                              "type": "string"
+                            },
+                            "value": {
+                              "const": 3.990588235294118e-05,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "frame_period": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "units": {
+                              "const": "s",
+                              "type": "string"
+                            },
+                            "value": {
+                              "const": 3.990588235294118e-05,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "nimages": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": 1,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "ntrigger": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": 262144,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "number_of_excluded_pixels": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": 0,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "photon_energy": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "units": {
+                              "const": "eV",
+                              "type": "string"
+                            },
+                            "value": {
+                              "const": 300000.0,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "pixel_mask": {
+                          "additionalProperties": true,
+                          "properties": {},
+                          "required": [],
+                          "type": "object"
+                        },
+                        "roi_mode": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": "",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "software_version": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": "1.8.0",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "trigger_mode": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": "exts",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "x_pixels_in_detector": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": 192,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "y_pixels_in_detector": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": 192,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "NX_class",
+                        "auto_summation",
+                        "compression",
+                        "countrate_correction_count_cutoff",
+                        "countrate_correction_lookup_table",
+                        "countrate_correction_table",
+                        "data_collection_date",
+                        "eiger_fw_version",
+                        "element",
+                        "flatfield",
+                        "frame_count_time",
+                        "frame_period",
+                        "nimages",
+                        "ntrigger",
+                        "number_of_excluded_pixels",
+                        "photon_energy",
+                        "pixel_mask",
+                        "roi_mode",
+                        "software_version",
+                        "trigger_mode",
+                        "x_pixels_in_detector",
+                        "y_pixels_in_detector"
+                      ],
+                      "type": "object"
+                    },
+                    "detector_distance": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "m",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 0.0,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "detector_number": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": "A-01-0011",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "detector_readout_time": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "s",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 1e-07,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "flatfield_correction_applied": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": 0,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "frame_time": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "s",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 0.00019960000569224358,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "geometry": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "NX_class": {
+                          "const": "NXgeometry",
+                          "type": "string"
+                        },
+                        "orientation": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "NX_class": {
+                              "const": "NXorientation",
+                              "type": "string"
+                            },
+                            "value": {
+                              "additionalProperties": true,
+                              "properties": {
+                                "value": {
+                                  "allOf": [
+                                    {
+                                      "contains": {
+                                        "const": -1.0
+                                      }
+                                    },
+                                    {
+                                      "contains": {
+                                        "const": 0.0
+                                      }
+                                    }
+                                  ],
+                                  "items": {
+                                    "type": "number"
+                                  },
+                                  "maxItems": 6,
+                                  "minItems": 6,
+                                  "type": "array"
+                                }
+                              },
+                              "required": [
+                                "value"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "required": [
+                            "NX_class",
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "translation": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "NX_class": {
+                              "const": "NXtranslation",
+                              "type": "string"
+                            },
+                            "distances": {
+                              "additionalProperties": true,
+                              "properties": {
+                                "units": {
+                                  "const": "m",
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "allOf": [
+                                    {
+                                      "contains": {
+                                        "const": 0.0
+                                      }
+                                    }
+                                  ],
+                                  "items": {
+                                    "type": "number"
+                                  },
+                                  "maxItems": 3,
+                                  "minItems": 3,
+                                  "type": "array"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "value"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "required": [
+                            "NX_class",
+                            "distances"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "NX_class",
+                        "orientation",
+                        "translation"
+                      ],
+                      "type": "object"
+                    },
+                    "goniometer": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "NX_class": {
+                          "const": "NXtransformations",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "NX_class"
+                      ],
+                      "type": "object"
+                    },
+                    "module": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "NX_class": {
+                          "const": "NXdetector_module",
+                          "type": "string"
+                        },
+                        "data_origin": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 2,
+                              "minItems": 2,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "data_size": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 192
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 2,
+                              "minItems": 2,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "fast_pixel_direction": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "depends_on": {
+                              "const": ".",
+                              "type": "string"
+                            },
+                            "offset": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            },
+                            "transformation_type": {
+                              "const": "translation",
+                              "type": "string"
+                            },
+                            "units": {
+                              "const": "m",
+                              "type": "string"
+                            },
+                            "value": {
+                              "const": 0.0001,
+                              "type": "number"
+                            },
+                            "vector": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": -1.0
+                                  }
+                                },
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "depends_on",
+                            "offset",
+                            "transformation_type",
+                            "units",
+                            "value",
+                            "vector"
+                          ],
+                          "type": "object"
+                        },
+                        "module_index": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "value": {
+                              "const": 0,
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "module_offset": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "depends_on": {
+                              "const": "/entry/instrument/detector/transformations/translation",
+                              "type": "string"
+                            },
+                            "offset": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            },
+                            "transformation_type": {
+                              "const": "translation",
+                              "type": "string"
+                            },
+                            "units": {
+                              "const": "m",
+                              "type": "string"
+                            },
+                            "value": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            },
+                            "vector": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "depends_on",
+                            "offset",
+                            "transformation_type",
+                            "units",
+                            "value",
+                            "vector"
+                          ],
+                          "type": "object"
+                        },
+                        "slow_pixel_direction": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "depends_on": {
+                              "const": ".",
+                              "type": "string"
+                            },
+                            "offset": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            },
+                            "transformation_type": {
+                              "const": "translation",
+                              "type": "string"
+                            },
+                            "units": {
+                              "const": "m",
+                              "type": "string"
+                            },
+                            "value": {
+                              "const": 0.0001,
+                              "type": "number"
+                            },
+                            "vector": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": -1.0
+                                  }
+                                },
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "depends_on",
+                            "offset",
+                            "transformation_type",
+                            "units",
+                            "value",
+                            "vector"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "NX_class",
+                        "data_origin",
+                        "data_size",
+                        "fast_pixel_direction",
+                        "module_index",
+                        "module_offset",
+                        "slow_pixel_direction"
+                      ],
+                      "type": "object"
+                    },
+                    "pixel_mask_applied": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": 1,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "saturation_value": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": 16738,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "sensor_material": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": "CZT",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "sensor_thickness": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "m",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 0.0015,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "threshold_energy": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "eV",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 17500.0,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "transformations": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "NX_class": {
+                          "const": "NXtransformations",
+                          "type": "string"
+                        },
+                        "translation": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "depends_on": {
+                              "const": ".",
+                              "type": "string"
+                            },
+                            "offset": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            },
+                            "transformation_type": {
+                              "const": "translation",
+                              "type": "string"
+                            },
+                            "units": {
+                              "const": "m",
+                              "type": "string"
+                            },
+                            "value": {
+                              "const": 0.0,
+                              "type": "number"
+                            },
+                            "vector": {
+                              "allOf": [
+                                {
+                                  "contains": {
+                                    "const": 0.0
+                                  }
+                                },
+                                {
+                                  "contains": {
+                                    "const": 1.0
+                                  }
+                                }
+                              ],
+                              "items": {
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "depends_on",
+                            "offset",
+                            "transformation_type",
+                            "units",
+                            "value",
+                            "vector"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "NX_class",
+                        "translation"
+                      ],
+                      "type": "object"
+                    },
+                    "type": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": "HPC",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "virtual_pixel_correction_applied": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "value": {
+                          "const": 1,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "x_pixel_size": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "m",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 0.0001,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "y_pixel_size": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "units": {
+                          "const": "m",
+                          "type": "string"
+                        },
+                        "value": {
+                          "const": 0.0001,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "units",
+                        "value"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "NX_class",
+                    "beam_center_x",
+                    "beam_center_y",
+                    "bit_depth_image",
+                    "bit_depth_readout",
+                    "count_time",
+                    "countrate_correction_applied",
+                    "description",
+                    "detectorSpecific",
+                    "detector_distance",
+                    "detector_number",
+                    "detector_readout_time",
+                    "flatfield_correction_applied",
+                    "frame_time",
+                    "geometry",
+                    "goniometer",
+                    "module",
+                    "pixel_mask_applied",
+                    "saturation_value",
+                    "sensor_material",
+                    "sensor_thickness",
+                    "threshold_energy",
+                    "transformations",
+                    "type",
+                    "virtual_pixel_correction_applied",
+                    "x_pixel_size",
+                    "y_pixel_size"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "NX_class",
+                "beam",
+                "detector"
+              ],
+              "type": "object"
+            },
+            "sample": {
+              "additionalProperties": true,
+              "properties": {
+                "NX_class": {
+                  "const": "NXsample",
+                  "type": "string"
+                },
+                "goniometer": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "NX_class": {
+                      "const": "NXtransformations",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "NX_class"
+                  ],
+                  "type": "object"
+                },
+                "transformations": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "NX_class": {
+                      "const": "NXtransformations",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "NX_class"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "NX_class",
+                "goniometer",
+                "transformations"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "DECTRIS_lab_geometry",
+            "NX_class",
+            "data",
+            "default",
+            "definition",
+            "instrument",
+            "sample"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "entry"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

@@ -8,7 +8,7 @@ from aicspylibczi import CziFile
 import matplotlib.pyplot as plt
 import logging
 
-from .crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor, TMP_DIR
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -85,9 +85,8 @@ class CziIngestor(CrucibleDatasetIngestor):
 
 
     def get_thumbnails(self):
-        tmp_dir = './tmp_files'
-        os.makedirs(tmp_dir, exist_ok = True)
-        out_image_file_name = f"{tmp_dir}/{os.path.basename(self.file_to_upload)}.png"
+        os.makedirs(TMP_DIR, exist_ok = True)
+        out_image_file_name = f"{TMP_DIR}/{os.path.basename(self.file_to_upload)}.png"
 
         czi = CziFile(self.file_to_upload)
         logger.info(f"{czi.get_dims_shape()=}")
@@ -106,10 +105,11 @@ class CziIngestor(CrucibleDatasetIngestor):
         caption = f"CZI image ({', '.join(capadds)})"
     
         try:
-            plt.figure(figsize=(10, 10))
+            fig = plt.figure(figsize=(10, 10))
             plt.imshow(img_slice)
             plt.axis('off')
             plt.savefig(out_image_file_name)
+            plt.close(fig)
             single_image = Image.open(out_image_file_name)
             self.add_thumbnail(single_image, caption)
         except Exception:

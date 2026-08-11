@@ -1,0 +1,181 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "emd",
+          "type": "string"
+        },
+        "data_type": {},
+        "dataset_name": {
+          "const": "Rotation_2.emd",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {},
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 4220840,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-08-10T13:13:31.482647",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "BerkeleyEmdIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "User name": {
+          "const": "",
+          "type": "string"
+        },
+        "binning": {
+          "const": 4.0,
+          "type": "number"
+        },
+        "camera length": {
+          "const": 0.085,
+          "type": "number"
+        },
+        "convergence angle": {
+          "const": 0.024979373255162828,
+          "type": "number"
+        },
+        "defocus": {
+          "const": 6.761511926296307e-06,
+          "type": "number"
+        },
+        "dwell time": {
+          "const": 1e-06,
+          "type": "number"
+        },
+        "high tension": {
+          "const": 200000.0,
+          "type": "number"
+        },
+        "magnification": {
+          "const": 5100000.0,
+          "type": "number"
+        },
+        "max binning": {
+          "const": 4096.0,
+          "type": "number"
+        },
+        "name": {
+          "const": "TEAM 0.5",
+          "type": "string"
+        },
+        "sample name": {
+          "const": "",
+          "type": "string"
+        },
+        "spot size": {
+          "const": 7.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "User name",
+        "binning",
+        "camera length",
+        "convergence angle",
+        "defocus",
+        "dwell time",
+        "high tension",
+        "magnification",
+        "max binning",
+        "name",
+        "sample name",
+        "spot size"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "EMD_Thumbnail",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

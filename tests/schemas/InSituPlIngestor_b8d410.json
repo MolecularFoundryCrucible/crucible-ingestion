@@ -1,0 +1,961 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "zip",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "In Situ UV-Vis",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "insitu_uvvis_example.zip",
+          "type": "string"
+        },
+        "instrument_name": {
+          "const": "QEP02071",
+          "type": "string"
+        },
+        "measurement": {
+          "const": "In Situ UV-Vis",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 47501407,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-08-10T12:43:06.000577",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "InSituPlIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "In Situ Spectroscopy"
+          }
+        },
+        {
+          "contains": {
+            "const": "In Situ UV-Vis"
+          }
+        },
+        {
+          "contains": {
+            "const": "QEP02071"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample1 wo"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample10 pcbm"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample2 wo"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample3 wo"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample4"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample5 wo"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample6 pcbm"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample7 pcbm"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample8 pcbm"
+          }
+        },
+        {
+          "contains": {
+            "const": "sample9 pcbm"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 13,
+      "minItems": 13,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "sample1 wo": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample1 wo",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample10 pcbm": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample10 pcbm",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 18",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample2 wo": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample2 wo",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample3 wo": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample3 wo",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample4": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample4",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample5 wo": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample5 wo",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample6 pcbm": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample6 pcbm",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample7 pcbm": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample7 pcbm",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample8 pcbm": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample8 pcbm",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "sample9 pcbm": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_uvvis_example/sample9 pcbm",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Tue Mar 31 17",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-2",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "5",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "sample1 wo",
+        "sample10 pcbm",
+        "sample2 wo",
+        "sample3 wo",
+        "sample4",
+        "sample5 wo",
+        "sample6 pcbm",
+        "sample7 pcbm",
+        "sample8 pcbm",
+        "sample9 pcbm"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,546 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "zip",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "In Situ PL",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "insitu_pl_example.zip",
+          "type": "string"
+        },
+        "instrument_name": {
+          "const": "QEP02071",
+          "type": "string"
+        },
+        "measurement": {
+          "const": "In Situ PL",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 22460087,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-08-10T12:05:14.851876",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "InSituPlIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "FAPI2"
+          }
+        },
+        {
+          "contains": {
+            "const": "FAPII"
+          }
+        },
+        {
+          "contains": {
+            "const": "FAPI_Dummy"
+          }
+        },
+        {
+          "contains": {
+            "const": "FAPI_MACl"
+          }
+        },
+        {
+          "contains": {
+            "const": "FAPI_MACl_dummy"
+          }
+        },
+        {
+          "contains": {
+            "const": "In Situ PL"
+          }
+        },
+        {
+          "contains": {
+            "const": "In Situ Spectroscopy"
+          }
+        },
+        {
+          "contains": {
+            "const": "QEP02071"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 8,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "FAPI2": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_pl_example/FAPI2",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Fri Feb 17 11",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-1",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "1",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "FAPII": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_pl_example/FAPII",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Fri Feb 17 11",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-1",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "1",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "FAPI_Dummy": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_pl_example/FAPI_Dummy",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Fri Feb 17 11",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-1",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "1",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "FAPI_MACl": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_pl_example/FAPI_MACl",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Fri Feb 17 11",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-1",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "1",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "FAPI_MACl_dummy": {
+          "additionalProperties": true,
+          "properties": {
+            "sample_folder": {
+              "const": "./tmp_files/insitu_pl_example/FAPI_MACl_dummy",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "Boxcar width": {
+                  "const": "0",
+                  "type": "string"
+                },
+                "Date": {
+                  "const": "Fri Feb 17 11",
+                  "type": "string"
+                },
+                "Electric dark correction enabled": {
+                  "const": "true",
+                  "type": "string"
+                },
+                "Integration Time (sec)": {
+                  "const": "2.000000E-1",
+                  "type": "string"
+                },
+                "Nonlinearity correction enabled": {
+                  "const": "false",
+                  "type": "string"
+                },
+                "Number of Pixels in Spectrum": {
+                  "const": "1044",
+                  "type": "string"
+                },
+                "Scans to average": {
+                  "const": "1",
+                  "type": "string"
+                },
+                "Spectrometer": {
+                  "const": "QEP02071",
+                  "type": "string"
+                },
+                "Trigger mode": {
+                  "const": "4",
+                  "type": "string"
+                },
+                "User": {
+                  "const": "Perovskites",
+                  "type": "string"
+                },
+                "XAxis mode": {
+                  "const": "Wavelengths",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Boxcar width",
+                "Date",
+                "Electric dark correction enabled",
+                "Integration Time (sec)",
+                "Nonlinearity correction enabled",
+                "Number of Pixels in Spectrum",
+                "Scans to average",
+                "Spectrometer",
+                "Trigger mode",
+                "User",
+                "XAxis mode"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "sample_folder",
+            "settings"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "FAPI2",
+        "FAPII",
+        "FAPI_Dummy",
+        "FAPI_MACl",
+        "FAPI_MACl_dummy"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

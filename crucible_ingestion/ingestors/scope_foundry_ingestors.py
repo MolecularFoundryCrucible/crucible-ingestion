@@ -161,7 +161,7 @@ class SingleSpecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
         plt.plot(raman, spec)
         buf = BytesIO()
         plt.savefig(buf, format='png')
-        plt.clf()
+        plt.close()
         buf.seek(0)
         self.add_thumbnail(Image.open(buf), "Picam Readout")
         
@@ -195,7 +195,7 @@ class HyperspecScopeFoundryH5Ingestor(ScopeFoundryH5Ingestor):
             plt.plot(wls, spec_map.sum(axis=(0,1)))
             buf = BytesIO()
             plt.savefig(buf, format='png')
-            plt.clf()
+            plt.close()
             buf.seek(0)
             self.add_thumbnail(Image.open(buf), "Sum of Spectra")
         except Exception as err:
@@ -289,7 +289,7 @@ class CLHyperspecIngestor(ScopeFoundryH5Ingestor):
         plt.plot(wls, spec_map.sum(axis=(0,1)))
         buf = BytesIO()
         plt.savefig(buf, format='png')
-        plt.clf()
+        plt.close()
         buf.seek(0)
         self.add_thumbnail(Image.open(buf), "Sum of Spectra")
 
@@ -393,7 +393,7 @@ class SpinbotSpecLineIngestor(SpinBotIngestor):
             plt.legend()
             buf = BytesIO()
             plt.savefig(buf, format='png')
-            plt.clf()
+            plt.close()
             buf.seek(0)
             self.add_thumbnail(Image.open(buf), "SpinBot Spectra")
         except Exception as err:
@@ -415,7 +415,7 @@ class SpinbotSpecRunIngestor(SpinBotIngestor):
             plt.legend()
             buf = BytesIO()
             plt.savefig(buf, format='png')
-            plt.clf()
+            plt.close()
             buf.seek(0)
             return Image.open(buf)
         return None
@@ -576,7 +576,7 @@ class QSpleemSVRampIngestor(QSpleemIngestor):
                 ax.legend(loc='upper right')
             ax.set_xlabel('Start Voltage (V)')
             ax.set_ylabel('Image intensity (a.u.)')
-            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.close(fig); buf.seek(0)
             self.add_thumbnail(Image.open(buf), 'SV Ramp IV Curve')
 
             # ── Image at max intensity after WF ───────────────────────────
@@ -599,7 +599,7 @@ class QSpleemSVRampIngestor(QSpleemIngestor):
                 ax.axis('off')
                 wf_note = f' (post-WF {wfs:.2f} V)' if wfs is not None else ''
                 ax.set_title(f'SV = {sv[peak]:.2f} V — max intensity{wf_note}', fontsize=8)
-                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150, bbox_inches='tight'); plt.clf(); buf.seek(0)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150, bbox_inches='tight'); plt.close(fig); buf.seek(0)
                 self.add_thumbnail(Image.open(buf), f'Image at SV {sv[peak]:.2f} V (max post-WF)')
 
         except Exception as e:
@@ -654,7 +654,7 @@ class QSpleemARRESEKIngestor(QSpleemIngestor):
         ax.set_xlabel("uv")
         buf = BytesIO()
         plt.savefig(buf, format='png', dpi=400)
-        plt.clf()
+        plt.close(fig)
         buf.seek(0)
         return Image.open(buf)
 
@@ -718,7 +718,7 @@ class QSpleemARRESMMIngestor(QSpleemIngestor):
         ax.set_title(f"Energy: {e} eV")
         buf = BytesIO()
         plt.savefig(buf, format='png', dpi=400)
-        plt.clf()
+        plt.close(fig)
         buf.seek(0)
         return Image.open(buf)
 
@@ -758,7 +758,7 @@ class QSpleemARRESMMIngestor(QSpleemIngestor):
 class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
 
     def is_file_supported(self):
-        file_regex = f'.*pollux_oospec_multipos_line_scan.*\.h5'
+        file_regex = r'.*pollux_oospec_multipos_line_scan.*\.h5'
         if re.match(file_regex, self.file_to_upload):
             return True
         else:
@@ -854,7 +854,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                 data_format=self.data_format,
                 instrument_name=self.instrument_name,
                 timestamp=self.timestamp,
-            )
+            ).model_dump()
             child_md = {
                 "integration_time": float(attrs['integration_time']),
                 "x_center": float(attrs['x_center']),
@@ -963,7 +963,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             ax.set_title(f"Position {self._child_position}")
             buf = BytesIO()
             plt.savefig(buf, format='png', dpi=150)
-            plt.clf()
+            plt.close(fig)
             buf.seek(0)
             self.add_thumbnail(Image.open(buf), f"Absorbance Spectrum ({self._child_position})")
         except Exception as err:
@@ -1006,7 +1006,7 @@ class QSpleemSVRampSpinIngestor(QSpleemIngestor):
             ax.set_xlabel('Start Voltage (V)')
             ax.set_ylabel('Mean Intensity (counts)')
             ax.legend(loc='upper right')
-            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.close(fig); buf.seek(0)
             self.add_thumbnail(Image.open(buf), 'SV Ramp Spin IV Curves')
 
             # ── Asymmetry vs SV ───────────────────────────────────────────
@@ -1014,7 +1014,7 @@ class QSpleemSVRampSpinIngestor(QSpleemIngestor):
             ax.plot(sv, asym, color='tab:green')
             ax.set_xlabel('Start Voltage (V)')
             ax.set_ylabel('Asymmetry')
-            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+            buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.close(fig); buf.seek(0)
             self.add_thumbnail(Image.open(buf), 'Spin Asymmetry vs SV')
 
             # ── Emission current (if present) ─────────────────────────────
@@ -1025,7 +1025,7 @@ class QSpleemSVRampSpinIngestor(QSpleemIngestor):
                 ax.set_xlabel('Start Voltage (V)')
                 ax.set_ylabel('Emission Current (A)')
                 ax.legend(loc='upper right')
-                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.close(fig); buf.seek(0)
                 self.add_thumbnail(Image.open(buf), 'GaAs Emission Current vs SV')
 
             # ── 3-panel image at max |asymmetry| ─────────────────────────
@@ -1052,7 +1052,7 @@ class QSpleemSVRampSpinIngestor(QSpleemIngestor):
                 axes[2].set_title('Asymmetry'); axes[2].axis('off')
                 fig.suptitle(f'SV = {sv[peak]:.2f} V (max |asymmetry|)', fontsize=10)
                 plt.tight_layout()
-                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.close(fig); buf.seek(0)
                 self.add_thumbnail(Image.open(buf), f'Images at SV {sv[peak]:.2f} V (max |asym|)')
 
         except Exception as e:
@@ -1159,7 +1159,7 @@ class QSpleemDepositionMonitorIngestor(QSpleemIngestor):
                             color=ROI_COLORS[i % len(ROI_COLORS)], ha='center', fontsize=7)
                 ax.axis('off')
                 ax.set_title(caption, fontsize=8, pad=4)
-                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150, bbox_inches='tight'); plt.clf(); buf.seek(0)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150, bbox_inches='tight'); plt.close(fig); buf.seek(0)
                 self.add_thumbnail(Image.open(buf), caption)
 
             # ── ROI intensity vs time ─────────────────────────────────────
@@ -1179,7 +1179,7 @@ class QSpleemDepositionMonitorIngestor(QSpleemIngestor):
                     ax.set_xlabel('Time (s)')
                     ax.set_ylabel('Intensity (counts)')
                     ax.legend(fontsize=7)
-                    buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                    buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.close(fig); buf.seek(0)
                     self.add_thumbnail(Image.open(buf), 'ROI Intensity vs Time')
             except Exception as e:
                 logger.warning(f'DepositionMonitor ROI intensity thumbnail failed: {e}')
@@ -1197,7 +1197,7 @@ class QSpleemDepositionMonitorIngestor(QSpleemIngestor):
                     ax.set_xlabel('Time (s)')
                     ax.set_ylabel('Asymmetry')
                     ax.legend(fontsize=7)
-                    buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                    buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.close(fig); buf.seek(0)
                     self.add_thumbnail(Image.open(buf), 'ROI Asymmetry vs Time')
             except Exception as e:
                 logger.warning(f'DepositionMonitor ROI asymmetry thumbnail failed: {e}')
@@ -1221,7 +1221,7 @@ class QSpleemDepositionMonitorIngestor(QSpleemIngestor):
                     ax.plot(t, arr, color='tab:blue', linewidth=1)
                     ax.set_xlabel('Time (s)'); ax.set_ylabel(ylabel)
                 plt.tight_layout()
-                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.clf(); buf.seek(0)
+                buf = BytesIO(); plt.savefig(buf, format='png', dpi=150); plt.close(fig); buf.seek(0)
                 self.add_thumbnail(Image.open(buf), 'Instrument Parameters vs Time')
             except Exception as e:
                 logger.warning(f'DepositionMonitor instrument-parameters thumbnail failed: {e}')

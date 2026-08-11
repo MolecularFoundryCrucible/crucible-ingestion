@@ -1,0 +1,374 @@
+{
+  "03f9e497ce1dbdef483768eebd481ecc2baf69cd475044eae8d1152f0fb2982c": {
+    "dsid": "xxx",
+    "file": "team05/STEM_imaging_pixelated.dm4",
+    "ingestor": "DigitalMicrographIngestor",
+    "schema": "DigitalMicrographIngestor_03f9e4.json"
+  },
+  "06ca283fc286b30dafab121b66f3ce4aec8d6e53f17001c774471ea59ce9a80c": {
+    "dsid": "xxx",
+    "file": "ser_emi_example_titanx.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_06ca28.json"
+  },
+  "0ed1f9030ded26e272f8095cabfcdb4b6585fd4fb8427b94ae6fc413ae464b5b": {
+    "dsid": "xxx",
+    "file": "team05/TimeSeries_2.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_0ed1f9.json"
+  },
+  "0f6b62a10850f910d491c0ac9339b3b5ed5ce1f174f9cfcfe8ae926793921494": {
+    "dsid": "xxx",
+    "file": "titanx_tia/STEM_Image_Detector_Dwell-time_ADF image.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_0f6b62.json"
+  },
+  "0f706132f2ab1639df0fffa910d924bbc81507bc57521f7a65efedb36f374487": {
+    "dsid": "xxx",
+    "file": "team05/0tekyc7z4nxak000sk68215t4c.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_0f7061.json"
+  },
+  "11209d262b042f0cb9dacd6b793e3d66ca23a1ef94688386176a4877de729c78": {
+    "dsid": "xxx",
+    "file": "4dstem_h5_master.h5",
+    "ingestor": "PtychographyH5Ingestor",
+    "schema": "PtychographyH5Ingestor_11209d.json"
+  },
+  "14c11fff04b473bde88e73d7db408ae237998d647bb68d84632e5e03a7c40440": {
+    "dsid": "xxx",
+    "file": "team05/STEM_imaging_non-pixelated.dm4",
+    "ingestor": "DigitalMicrographIngestor",
+    "schema": "DigitalMicrographIngestor_14c11f.json"
+  },
+  "1740ecb80dfd5a07b25cec0029d17a9fb71ea0ba3e03553df86dd79d4fed3159": {
+    "dsid": "xxx",
+    "file": "team05/STEM_diffraction_non-pixelated.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_1740ec.json"
+  },
+  "1b882727feb906dcc93f512e2e5382c3b577841170c0a340fc870834c63651db": {
+    "dsid": "xxx",
+    "file": "titanx_tia/STEM_Diff_Camera_BM-Ultrascan_4DSTEM frame_2.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_1b8827.json"
+  },
+  "20c340d70cba3d3bf4882ebc2c33af448d0cdb314b2751cabb5b9980ca6e8a92": {
+    "dsid": "0tj5ftr59szcd0000g7f5yd9xr",
+    "file": "example_pollux_oospec_multipos_line_scan.h5",
+    "ingestor": "NirvanaMultiPosLineScanIngestor",
+    "schema": "NirvanaMultiPosLineScanIngestor_20c340.json"
+  },
+  "39bcce2c6093e91f14e43b1fbac4c962384b1468079911829c4e3703193c3bca": {
+    "dsid": "xxx",
+    "file": "titanx_tia/STEM_Diff_Camera_BM-Ultrascan_4DSTEM frame.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_39bcce.json"
+  },
+  "3c67373b2b09123a98a76c0140793368a9fc180b7cc58da5fcb5521bfd7bfd85": {
+    "dsid": "xxx",
+    "file": "team05/STEM_diffraction_non-pixelated.dm4",
+    "ingestor": "DigitalMicrographIngestor",
+    "schema": "DigitalMicrographIngestor_3c6737.json"
+  },
+  "3e026783d4869b1375fb4e50de8ba67267387d275ed665f8d8a1d88af02cdc63": {
+    "dsid": "xxx",
+    "file": "insitu_pl_example.zip",
+    "ingestor": "InSituPlIngestor",
+    "schema": "InSituPlIngestor_3e0267.json"
+  },
+  "410b2d2f783b953d52c8056cac55c1efc96ccc078cb45e79e4aaa82f5a2f9937": {
+    "dsid": "xxx",
+    "file": "spectre/ser-emi/Spectre_TEM_imaging_CETA_TIA.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_410b2d.json"
+  },
+  "45ee8bcc5ae0c7b71e9e3c81a60b2ba9372578b39a98bf5c73f3a0de87406ed8": {
+    "dsid": "xxx",
+    "file": "team05/alignment01.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_45ee8b.json"
+  },
+  "475bc63df58ca2c6cb3397f478a9a44eca6f85b36b9461d0e8b5b6f2f2529840": {
+    "dsid": "xxx",
+    "file": "example_deposition_monitor.h5",
+    "ingestor": "QSpleemDepositionMonitorIngestor",
+    "schema": "QSpleemDepositionMonitorIngestor_475bc6.json"
+  },
+  "4afdc0c282743fcdf5a748c732842f84a9d1dcb4a0d1bff58756fee0d40256c2": {
+    "dsid": "xxx",
+    "file": "team05/12.54.58 Scanning Acquire_0o_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_4afdc0.json"
+  },
+  "4c7c25d081622a48e8fc16da24df461c0b6aabae9b0e9daf2ac40d0f0f85c801": {
+    "dsid": "xxx",
+    "file": "titanx_tia/STEM_Image_Detector_Dwell-time_ADF image_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_4c7c25.json"
+  },
+  "509a55b43ade06047028945246ef769c4ff69b4aab58391569d2e6a177ae223b": {
+    "dsid": "0tjn7m45qxzqk000gp2c4m4mag",
+    "file": "autobot_spinrun_output_example.yaml",
+    "ingestor": "SpinRunIngestor",
+    "schema": "SpinRunIngestor_509a55.json"
+  },
+  "5889c8214fa9ca72e555752b5b4a60665da518c48f8c2404b6b64b66e195cf29": {
+    "dsid": "xxx",
+    "file": "titanx_tia/STEM_Image_Camera_BM-Ultrascan_Image of probe_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_5889c8.json"
+  },
+  "59374278d31b3fb92d560d48db92c757e36968f64d5e6cacf9187f3be97eee86": {
+    "dsid": "xxx",
+    "file": "jpg_example.jpg",
+    "ingestor": "ImageIngestor",
+    "schema": "ImageIngestor_593742.json"
+  },
+  "5c73f7965dc1465fb1de86c42639d50ab53153e8e6a55209a57bafc71e41c894": {
+    "dsid": "xxx",
+    "file": "spectre/ser-emi/Spectre_STEM_HAADF_TIA.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_5c73f7.json"
+  },
+  "5ef5b23e3dce4c76bb1ccf91c706b4afae3601329db58231c3c1a82afbf7f358": {
+    "dsid": "xxx",
+    "file": "10k_RGA_batch_run_example.zip",
+    "ingestor": "RgaTeyBatchIngestor",
+    "schema": "RgaTeyBatchIngestor_5ef5b2.json"
+  },
+  "5f545b834dc832d78cc8c7c734ca586b1501611e6ba50ed0bc289e5bc1778ef7": {
+    "dsid": "xxx",
+    "file": "png_example.png",
+    "ingestor": "ImageIngestor",
+    "schema": "ImageIngestor_5f545b.json"
+  },
+  "610b8e704d0fbd53ca5577a08d31c5d3c337e7a0d83708b21ccdbdd47e2c3fcd": {
+    "dsid": "xxx",
+    "file": "berkeley_emd_team05.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_610b8e.json"
+  },
+  "626e952489180e1b223cfa78c9566ea23840b804ed7e215894ee0ce97367da76": {
+    "dsid": "xxx",
+    "file": "team05/alignment01_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_626e95.json"
+  },
+  "6f5d30e16af8f41a4fef2fbf117dfefcb7171e73be53a506fa89b67951d7bfda": {
+    "dsid": "xxx",
+    "file": "team05/10.26.48 CCD Acquire_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_6f5d30.json"
+  },
+  "73a47323f4128b84198d2876c462b3e372f32926c91a796a552f92f2cd106bcc": {
+    "dsid": "xxx",
+    "file": "team05/STEM_imaging_non-pixelated_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_73a473.json"
+  },
+  "740734bcf9fbe2a5d948a4872780c31f78137f3ad53cdc52e93cb1a03798ee05": {
+    "dsid": "xxx",
+    "file": "team05/10.25.36 CCD Acquire_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_740734.json"
+  },
+  "76f2c01fc80ab0d25172a0ffbd30e6dac1e2891a2b6a94570160de4b832ce33b": {
+    "dsid": "xxx",
+    "file": "team05/Acquire_0000.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_76f2c0.json"
+  },
+  "8412555dd072b12ece578735a2d34e2c57b0c46dbd1627a3e3e6c9e0c5b3585d": {
+    "dsid": "xxx",
+    "file": "team05/10.25.36 CCD Acquire.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_841255.json"
+  },
+  "85761e8d80ba0eab23c14624c8eee58854e177fcf2e98332c7e5b6ee8e97308d": {
+    "dsid": "xxx",
+    "file": "team05/300kV_16.5kX__0121.dm4",
+    "ingestor": "DigitalMicrographIngestor",
+    "schema": "DigitalMicrographIngestor_85761e.json"
+  },
+  "8576d28ea1fdcf248ff83e958e33ac21cbaebb0f02036dc69f02860ce9f2d07c": {
+    "dsid": "xxx",
+    "file": "spectre/ser-emi/Spectre_STEM_Diffraction_Pixelated_CETA_TIA_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_8576d2.json"
+  },
+  "8d0459dcfd6940b2f97718c3355e82b00aa0f9c2b462764fb9808c121b2efa78": {
+    "dsid": "xxx",
+    "file": "team05/0tcmxf8jvswnk000ybc7qh7g6c.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_8d0459.json"
+  },
+  "8d3b10347c45b116e810c2e28fd3a9d7f31c2b49be729afcee2052429b9daadd": {
+    "dsid": "xxx",
+    "file": "team05/0tekya6wq5t85000ck46y2cxrr.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_8d3b10.json"
+  },
+  "8e100180d8bb1a5fa6f5a26009266cddadf3a6fd904c9b2065fcdafa0f80ec03": {
+    "dsid": "xxx",
+    "file": "example_ARRES_MM.h5",
+    "ingestor": "QSpleemARRESMMIngestor",
+    "schema": "QSpleemARRESMMIngestor_8e1001.json"
+  },
+  "90cba8d2771e1bf1879843130b3bb3e6850a6f1c0a7e3dc57e4eb230f2993627": {
+    "dsid": "xxx",
+    "file": "team05/STEM_imaging_non-pixelated.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_90cba8.json"
+  },
+  "97f876c0de5a8020191d7c3b3eb449500ddcadd7e0b0cb3701d0cbcad437a0a1": {
+    "dsid": "xxx",
+    "file": "spectre/ser-emi/Spectre_STEM_Diffraction_Pixelated_CETA_TIA.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_97f876.json"
+  },
+  "9856f96df12192f0c3a832f07705704127b12a827468775993a3c9ad4dd0113a": {
+    "dsid": "xxx",
+    "file": "team05/10.26.48 CCD Acquire.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_9856f9.json"
+  },
+  "9ad88081388196f023f8ed89162aba104aeed8aa0eb90f996b4480606785b252": {
+    "dsid": "xxx",
+    "file": "titanx_tia/TEM_Image_Camera_BM-Ultrascan_TEMimage_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_9ad880.json"
+  },
+  "9d5461da397d45faa53d205af591f198cba6316be317cf980be9d2d76c097709": {
+    "dsid": "xxx",
+    "file": "team05/12.54.58 Scanning Acquire_0o.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_9d5461.json"
+  },
+  "9f72de5f20ea937c2694c1ccc52a939b41478b57f02d099a5f958cb5bd94a0c2": {
+    "dsid": "xxx",
+    "file": "spectre/ser-emi/Spectre_STEM_HAADF_TIA_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_9f72de.json"
+  },
+  "a15eb40e710e95d5048e1358127bcaac0b03d2aaa99d4c44db209aff773d48bd": {
+    "dsid": "xxx",
+    "file": "team05/300kV_78kX_Au alignment sample_0096.dm4",
+    "ingestor": "DigitalMicrographIngestor",
+    "schema": "DigitalMicrographIngestor_a15eb4.json"
+  },
+  "a535d9d3ac3f713a68d189b6789efe2611d0b263c6348dfc623ca773688e1922": {
+    "dsid": "xxx",
+    "file": "team05/STEM_diffraction_pixelated.dm4",
+    "ingestor": "DigitalMicrographIngestor",
+    "schema": "DigitalMicrographIngestor_a535d9.json"
+  },
+  "a8ed62873c46c60e57eebcc9750acfde7757f9bf86b8a6c4b22fe51056928b4b": {
+    "dsid": "xxx",
+    "file": "titanx_tia/TEM_Diff_Camera_BM-Ultrascan_DiffPattern_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_a8ed62.json"
+  },
+  "ab6afe531b6c3faecdb990826ebacb4ae6f1b641c0d8131b74857f34617e4946": {
+    "dsid": "xxx",
+    "file": "titanx_tia/TEM_Diff_Camera_BM-Ultrascan_DiffPattern.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_ab6afe.json"
+  },
+  "b6527d2fe46a740516fa7e0f8e5ca890dc965fb3e474f0cbbeba3ba292e7ec4f": {
+    "dsid": "xxx",
+    "file": "example_afm.ibw",
+    "ingestor": "AFMIngestor",
+    "schema": "AFMIngestor_b6527d.json"
+  },
+  "b8d4102c724d4ff9a8345757a1dd10232b53c15202405d30a2e1db121877f38b": {
+    "dsid": "xxx",
+    "file": "insitu_uvvis_example.zip",
+    "ingestor": "InSituPlIngestor",
+    "schema": "InSituPlIngestor_b8d410.json"
+  },
+  "b96a61015c252500425b27482a68ed0866f29fb7100c4fc236a396f638079423": {
+    "dsid": "xxx",
+    "file": "team05/Rotation_2.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_b96a61.json"
+  },
+  "b9bf10f900726b3a8bdc668d9794748e704cd22a0a3c1fb36d434a0a3e4b34fd": {
+    "dsid": "xxx",
+    "file": "spectre/ser-emi/Spectre_TEM_imaging_CETA_TIA_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_b9bf10.json"
+  },
+  "bcfd6ef22831ff0cd9dfcf43a922b703609a0be1ce25dc1964c7a864a1016470": {
+    "dsid": "xxx",
+    "file": "team05/0tekykmds5ygx000rbp2jnn4br.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_bcfd6e.json"
+  },
+  "c0d4ecb3c535b20c011c04972e4b1dd30710e7d2f7a97bf449d7a26a685e6eb0": {
+    "dsid": "xxx",
+    "file": "team05/Acquire_0001.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_c0d4ec.json"
+  },
+  "c759f318cd0f04f7e4cfbf45cd398472153bd5a2ef435ab322f2b0ef98e3fcc7": {
+    "dsid": "xxx",
+    "file": "team05/Acquisition_0.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_c759f3.json"
+  },
+  "cb682a8a02a6bed77e8c5142e2b8101ec966f65d587481e15438e1f7a5b462a1": {
+    "dsid": "xxx",
+    "file": "team05/STEM_diffraction_non-pixelated_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_cb682a.json"
+  },
+  "ce49c0065ae151b42a798c8656df578f31b7f13c86a6b241d8e19f035ad615df": {
+    "dsid": "xxx",
+    "file": "titanx_tia/TEM_Image_Camera_BM-Ultrascan_TEMimage.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_ce49c0.json"
+  },
+  "d42867b4032607d6b3ff77dfd75fdd5a18af38236b82ff53bae35a8e2314c08a": {
+    "dsid": "xxx",
+    "file": "tif_example.tif",
+    "ingestor": "TifIngestor",
+    "schema": "TifIngestor_d42867.json"
+  },
+  "e517ba52c34d3494f82e3230ab06e7e593eb9a71f8186c66175cb8f83d55f6a6": {
+    "dsid": "xxx",
+    "file": "example_sv_ramp.h5",
+    "ingestor": "QSpleemSVRampIngestor",
+    "schema": "QSpleemSVRampIngestor_e517ba.json"
+  },
+  "e9e8b5e51f97a56e9ad779cdd01106f9f5f7dbfcb09596baf809ca810a62a693": {
+    "dsid": "xxx",
+    "file": "team05/300kV_530X_Au alignment sample_0097.dm4",
+    "ingestor": "DigitalMicrographIngestor",
+    "schema": "DigitalMicrographIngestor_e9e8b5.json"
+  },
+  "ed2d7d6a63dbe64441635f90b2ba98e2a4c243b80c782bf3527e68b057dbe4f9": {
+    "dsid": "xxx",
+    "file": "titanx_tia/STEM_Diff_Camera_BM-Ultrascan_4DSTEM frame_1.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_ed2d7d.json"
+  },
+  "f6227d028e759b23554742dc89e9f46f2ab61d645bf71c881ddba13c69b7ab15": {
+    "dsid": "xxx",
+    "file": "team05/FocalSeries_1.emd",
+    "ingestor": "BerkeleyEmdIngestor",
+    "schema": "BerkeleyEmdIngestor_f6227d.json"
+  },
+  "f928f7977b90412fb5c3b6523a2786db87f35ba0d2918d8202007741d7cb7def": {
+    "dsid": "xxx",
+    "file": "titanx_tia/STEM_Image_Camera_BM-Ultrascan_Image of probe.emi",
+    "ingestor": "EmiIngestor",
+    "schema": "EmiIngestor_f928f7.json"
+  },
+  "fae2ff2b58f81ed560302b4d11956e0894cb66a96b69b508b83363d4da8584c3": {
+    "dsid": "xxx",
+    "file": "ser_emi_example_titanx.ser",
+    "ingestor": "SerIngestor",
+    "schema": "SerIngestor_fae2ff.json"
+  }
+}

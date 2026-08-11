@@ -3,7 +3,7 @@
 Python classes and framework for parsing metadata out of scientific data files and into
 the Crucible Data Platform.
 
-Parsing and sending are separate. `build_packet()` reads a file and returns an
+Parsing and sending are separate. `parse()` reads a file and returns an
 `IngestionPacket` describing everything that would be sent; `push_packet()` takes that
 packet and writes it to Crucible. Nothing is uploaded during parsing, and the file bytes
 themselves are never sent — only the parsed metadata.
@@ -52,16 +52,16 @@ record exists, parsing starts from scratch.
 ## Using it from Python
 
 ```python
-from crucible_ingestion import build_packet, push_packet
+from crucible_ingestion import parse, push_packet
 
-packet = build_packet(path_to_file, dsid)
+packet = parse(path_to_file, dsid)
 if packet is not None:
     # inspect packet.dataset_fields, packet.scientific_metadata,
     # packet.keywords, packet.samples, packet.children, packet.thumbnails
     push_packet(packet)
 ```
 
-`build_packet` returns `None` when no ingestor supports the file.
+`parse` returns `None` when no ingestor supports the file.
 
 ## Adding a new ingestor
 
@@ -80,7 +80,25 @@ Parsing must not call Crucible. Anything that needs to be created or linked belo
 `self.samples`, `self.children`, `self.keywords`, or `self.thumbnails`, and is written by
 `push_packet`.
 
+## Test data
+
+The files the tests parse live in GCS, not in this repo. Pull them before running the
+tests:
+
+```
+gcloud storage rsync -r gs://crucible-ingestion-test-data tests/data
+```
+
+Push new or updated files back up:
+
+```
+gcloud storage rsync -r tests/data gs://crucible-ingestion-test-data
+```
+
+Both directions only transfer what is missing or changed, and neither deletes anything at
+the destination. Removing a file from the bucket has to be done explicitly.
+
 ## Running in the cloud
 
 The RabbitMQ consumer that runs this package in GCP lives in a separate repo,
-`crucible-consumers`.
+`ingestion-cloud-consumer`.

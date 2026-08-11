@@ -1,5 +1,5 @@
-tests/*
 test-data/*
+tests/data/
 .DS_Store
 
 # Byte-compiled / optimized / DLL files

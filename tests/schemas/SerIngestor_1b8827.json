@@ -1,0 +1,1080 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "ser",
+          "type": "string"
+        },
+        "data_type": {
+          "const": " STEM uP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "STEM_Diff_Camera_BM-Ultrascan_4DSTEM frame_2.ser",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": " STEM uP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 4851068,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-03-31T08:49:00",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "SerIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": " STEM uP SA Zoom Diffraction"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "AcceleratingVoltage": {
+          "const": 300000,
+          "type": "number"
+        },
+        "AcquireDate": {
+          "const": "Tue Mar 31 08:49:00 2026",
+          "type": "string"
+        },
+        "Binning": {
+          "const": 2,
+          "type": "number"
+        },
+        "ByteOrder": {
+          "const": 18761.0,
+          "type": "number"
+        },
+        "C1 Aperture [um]": {
+          "const": 2000,
+          "type": "number"
+        },
+        "C2 Aperture [um]": {
+          "const": 40,
+          "type": "number"
+        },
+        "C2 lens [%]": {
+          "const": 38.68,
+          "type": "number"
+        },
+        "C3 lens [%]": {
+          "const": 52.831,
+          "type": "number"
+        },
+        "Camera length [m]": {
+          "const": 0.13,
+          "type": "number"
+        },
+        "CameraNamePath": {
+          "const": "BM-UltraScan",
+          "type": "string"
+        },
+        "DataOffsetArray": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 1051494
+              }
+            },
+            {
+              "contains": {
+                "const": 1132336
+              }
+            },
+            {
+              "contains": {
+                "const": 1213178
+              }
+            },
+            {
+              "contains": {
+                "const": 1294020
+              }
+            },
+            {
+              "contains": {
+                "const": 1374862
+              }
+            },
+            {
+              "contains": {
+                "const": 1455704
+              }
+            },
+            {
+              "contains": {
+                "const": 1536546
+              }
+            },
+            {
+              "contains": {
+                "const": 1617388
+              }
+            },
+            {
+              "contains": {
+                "const": 162232
+              }
+            },
+            {
+              "contains": {
+                "const": 1698230
+              }
+            },
+            {
+              "contains": {
+                "const": 1779072
+              }
+            },
+            {
+              "contains": {
+                "const": 1859914
+              }
+            },
+            {
+              "contains": {
+                "const": 1940756
+              }
+            },
+            {
+              "contains": {
+                "const": 2021598
+              }
+            },
+            {
+              "contains": {
+                "const": 2102440
+              }
+            },
+            {
+              "contains": {
+                "const": 2183282
+              }
+            },
+            {
+              "contains": {
+                "const": 2264124
+              }
+            },
+            {
+              "contains": {
+                "const": 2344966
+              }
+            },
+            {
+              "contains": {
+                "const": 2425808
+              }
+            },
+            {
+              "contains": {
+                "const": 243074
+              }
+            },
+            {
+              "contains": {
+                "const": 2506650
+              }
+            },
+            {
+              "contains": {
+                "const": 2587492
+              }
+            },
+            {
+              "contains": {
+                "const": 2668334
+              }
+            },
+            {
+              "contains": {
+                "const": 2749176
+              }
+            },
+            {
+              "contains": {
+                "const": 2830018
+              }
+            },
+            {
+              "contains": {
+                "const": 2910860
+              }
+            },
+            {
+              "contains": {
+                "const": 2991702
+              }
+            },
+            {
+              "contains": {
+                "const": 3072544
+              }
+            },
+            {
+              "contains": {
+                "const": 3153386
+              }
+            },
+            {
+              "contains": {
+                "const": 3234228
+              }
+            },
+            {
+              "contains": {
+                "const": 323916
+              }
+            },
+            {
+              "contains": {
+                "const": 3315070
+              }
+            },
+            {
+              "contains": {
+                "const": 3395912
+              }
+            },
+            {
+              "contains": {
+                "const": 3476754
+              }
+            },
+            {
+              "contains": {
+                "const": 3557596
+              }
+            },
+            {
+              "contains": {
+                "const": 3638438
+              }
+            },
+            {
+              "contains": {
+                "const": 3719280
+              }
+            },
+            {
+              "contains": {
+                "const": 3800122
+              }
+            },
+            {
+              "contains": {
+                "const": 3880964
+              }
+            },
+            {
+              "contains": {
+                "const": 3961806
+              }
+            },
+            {
+              "contains": {
+                "const": 4042648
+              }
+            },
+            {
+              "contains": {
+                "const": 404758
+              }
+            },
+            {
+              "contains": {
+                "const": 4123490
+              }
+            },
+            {
+              "contains": {
+                "const": 4204332
+              }
+            },
+            {
+              "contains": {
+                "const": 4285174
+              }
+            },
+            {
+              "contains": {
+                "const": 4366016
+              }
+            },
+            {
+              "contains": {
+                "const": 4446858
+              }
+            },
+            {
+              "contains": {
+                "const": 4527700
+              }
+            },
+            {
+              "contains": {
+                "const": 4608542
+              }
+            },
+            {
+              "contains": {
+                "const": 4689384
+              }
+            },
+            {
+              "contains": {
+                "const": 4770226
+              }
+            },
+            {
+              "contains": {
+                "const": 485600
+              }
+            },
+            {
+              "contains": {
+                "const": 548
+              }
+            },
+            {
+              "contains": {
+                "const": 566442
+              }
+            },
+            {
+              "contains": {
+                "const": 647284
+              }
+            },
+            {
+              "contains": {
+                "const": 728126
+              }
+            },
+            {
+              "contains": {
+                "const": 808968
+              }
+            },
+            {
+              "contains": {
+                "const": 81390
+              }
+            },
+            {
+              "contains": {
+                "const": 889810
+              }
+            },
+            {
+              "contains": {
+                "const": 970652
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 60,
+          "minItems": 60,
+          "type": "array"
+        },
+        "DataTypeID": {
+          "const": 16674.0,
+          "type": "number"
+        },
+        "Defocus [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "DetectorPixelHeight": {
+          "const": "2048",
+          "type": "string"
+        },
+        "DetectorPixelWidth": {
+          "const": "2048",
+          "type": "string"
+        },
+        "DetectorRange_EndX": {
+          "const": 2048.0,
+          "type": "number"
+        },
+        "DetectorRange_EndY": {
+          "const": 2048.0,
+          "type": "number"
+        },
+        "DetectorRange_StartX": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "DetectorRange_StartY": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Diffraction lens [%]": {
+          "const": 37.802,
+          "type": "number"
+        },
+        "Dimensions": {
+          "maxItems": 1,
+          "minItems": 1,
+          "prefixItems": [
+            {
+              "additionalProperties": true,
+              "properties": {
+                "CalibrationDelta": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "CalibrationElement": {
+                  "const": 0.0,
+                  "type": "number"
+                },
+                "CalibrationOffset": {
+                  "const": 0.0,
+                  "type": "number"
+                },
+                "Description": {
+                  "const": "Number",
+                  "type": "string"
+                },
+                "DimensionSize": {
+                  "const": 60.0,
+                  "type": "number"
+                },
+                "Units": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "CalibrationDelta",
+                "CalibrationElement",
+                "CalibrationOffset",
+                "Description",
+                "DimensionSize",
+                "Units"
+              ],
+              "type": "object"
+            }
+          ],
+          "type": "array"
+        },
+        "DwellTimePath": {
+          "const": 0.1,
+          "type": "number"
+        },
+        "Emission [uA]": {
+          "const": 51.0,
+          "type": "number"
+        },
+        "Extraction voltage [V]": {
+          "const": 4100,
+          "type": "number"
+        },
+        "Filter mode []": {
+          "const": "",
+          "type": "string"
+        },
+        "Gun lens []": {
+          "const": 8,
+          "type": "number"
+        },
+        "Gun type []": {
+          "const": "FEG",
+          "type": "string"
+        },
+        "High tension [kV]": {
+          "const": 300,
+          "type": "number"
+        },
+        "Illuminated Area Diameter [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Magnification": {
+          "const": "0 X",
+          "type": "string"
+        },
+        "Magnification [x]": {
+          "const": 115000,
+          "type": "number"
+        },
+        "Manufacturer": {
+          "const": "FEI",
+          "type": "string"
+        },
+        "Microscope []": {
+          "const": "Microscope Titan 300 kV D3165 SuperTwin",
+          "type": "string"
+        },
+        "Mode []": {
+          "const": " STEM uP SA Zoom Diffraction",
+          "type": "string"
+        },
+        "NumberDimensions": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "OBJ Aperture []": {
+          "const": "retracted",
+          "type": "string"
+        },
+        "Objective lens [%]": {
+          "const": 76.883,
+          "type": "number"
+        },
+        "OffsetArrayOffset": {
+          "const": 68.0,
+          "type": "number"
+        },
+        "SA Aperture []": {
+          "const": "retracted",
+          "type": "string"
+        },
+        "SeriesID": {
+          "const": 407.0,
+          "type": "number"
+        },
+        "SeriesVersion": {
+          "const": 528.0,
+          "type": "number"
+        },
+        "Spot size []": {
+          "const": 8,
+          "type": "number"
+        },
+        "Stage A [deg]": {
+          "const": 0.01,
+          "type": "number"
+        },
+        "Stage B [deg]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Stage X [um]": {
+          "const": 0.635,
+          "type": "number"
+        },
+        "Stage Y [um]": {
+          "const": -0.082,
+          "type": "number"
+        },
+        "Stage Z [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Stem rotation [deg]": {
+          "const": -49.0,
+          "type": "number"
+        },
+        "Stem rotation correction [deg]": {
+          "const": 7.3,
+          "type": "number"
+        },
+        "Super-X selected detectors []": {
+          "const": "1; 2; 3; 4; ",
+          "type": "string"
+        },
+        "TagOffsetArray": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 1051486
+              }
+            },
+            {
+              "contains": {
+                "const": 1132328
+              }
+            },
+            {
+              "contains": {
+                "const": 1213170
+              }
+            },
+            {
+              "contains": {
+                "const": 1294012
+              }
+            },
+            {
+              "contains": {
+                "const": 1374854
+              }
+            },
+            {
+              "contains": {
+                "const": 1455696
+              }
+            },
+            {
+              "contains": {
+                "const": 1536538
+              }
+            },
+            {
+              "contains": {
+                "const": 1617380
+              }
+            },
+            {
+              "contains": {
+                "const": 162224
+              }
+            },
+            {
+              "contains": {
+                "const": 1698222
+              }
+            },
+            {
+              "contains": {
+                "const": 1779064
+              }
+            },
+            {
+              "contains": {
+                "const": 1859906
+              }
+            },
+            {
+              "contains": {
+                "const": 1940748
+              }
+            },
+            {
+              "contains": {
+                "const": 2021590
+              }
+            },
+            {
+              "contains": {
+                "const": 2102432
+              }
+            },
+            {
+              "contains": {
+                "const": 2183274
+              }
+            },
+            {
+              "contains": {
+                "const": 2264116
+              }
+            },
+            {
+              "contains": {
+                "const": 2344958
+              }
+            },
+            {
+              "contains": {
+                "const": 2425800
+              }
+            },
+            {
+              "contains": {
+                "const": 243066
+              }
+            },
+            {
+              "contains": {
+                "const": 2506642
+              }
+            },
+            {
+              "contains": {
+                "const": 2587484
+              }
+            },
+            {
+              "contains": {
+                "const": 2668326
+              }
+            },
+            {
+              "contains": {
+                "const": 2749168
+              }
+            },
+            {
+              "contains": {
+                "const": 2830010
+              }
+            },
+            {
+              "contains": {
+                "const": 2910852
+              }
+            },
+            {
+              "contains": {
+                "const": 2991694
+              }
+            },
+            {
+              "contains": {
+                "const": 3072536
+              }
+            },
+            {
+              "contains": {
+                "const": 3153378
+              }
+            },
+            {
+              "contains": {
+                "const": 3234220
+              }
+            },
+            {
+              "contains": {
+                "const": 323908
+              }
+            },
+            {
+              "contains": {
+                "const": 3315062
+              }
+            },
+            {
+              "contains": {
+                "const": 3395904
+              }
+            },
+            {
+              "contains": {
+                "const": 3476746
+              }
+            },
+            {
+              "contains": {
+                "const": 3557588
+              }
+            },
+            {
+              "contains": {
+                "const": 3638430
+              }
+            },
+            {
+              "contains": {
+                "const": 3719272
+              }
+            },
+            {
+              "contains": {
+                "const": 3800114
+              }
+            },
+            {
+              "contains": {
+                "const": 3880956
+              }
+            },
+            {
+              "contains": {
+                "const": 3961798
+              }
+            },
+            {
+              "contains": {
+                "const": 4042640
+              }
+            },
+            {
+              "contains": {
+                "const": 404750
+              }
+            },
+            {
+              "contains": {
+                "const": 4123482
+              }
+            },
+            {
+              "contains": {
+                "const": 4204324
+              }
+            },
+            {
+              "contains": {
+                "const": 4285166
+              }
+            },
+            {
+              "contains": {
+                "const": 4366008
+              }
+            },
+            {
+              "contains": {
+                "const": 4446850
+              }
+            },
+            {
+              "contains": {
+                "const": 4527692
+              }
+            },
+            {
+              "contains": {
+                "const": 4608534
+              }
+            },
+            {
+              "contains": {
+                "const": 4689376
+              }
+            },
+            {
+              "contains": {
+                "const": 4770218
+              }
+            },
+            {
+              "contains": {
+                "const": 4851060
+              }
+            },
+            {
+              "contains": {
+                "const": 485592
+              }
+            },
+            {
+              "contains": {
+                "const": 566434
+              }
+            },
+            {
+              "contains": {
+                "const": 647276
+              }
+            },
+            {
+              "contains": {
+                "const": 728118
+              }
+            },
+            {
+              "contains": {
+                "const": 808960
+              }
+            },
+            {
+              "contains": {
+                "const": 81382
+              }
+            },
+            {
+              "contains": {
+                "const": 889802
+              }
+            },
+            {
+              "contains": {
+                "const": 970644
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 60,
+          "minItems": 60,
+          "type": "array"
+        },
+        "TagTypeID": {
+          "const": 16722.0,
+          "type": "number"
+        },
+        "Tilt1": {
+          "const": 0.000247,
+          "type": "number"
+        },
+        "Tilt2": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "TotalNumberElements": {
+          "const": 60.0,
+          "type": "number"
+        },
+        "User []": {
+          "const": "Service",
+          "type": "string"
+        },
+        "Uuid": {
+          "const": "68640379-8630-4797-a9a8-843ed84944db",
+          "type": "string"
+        },
+        "ValidNumberElements": {
+          "const": 60.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "AcceleratingVoltage",
+        "AcquireDate",
+        "Binning",
+        "ByteOrder",
+        "C1 Aperture [um]",
+        "C2 Aperture [um]",
+        "C2 lens [%]",
+        "C3 lens [%]",
+        "Camera length [m]",
+        "CameraNamePath",
+        "DataOffsetArray",
+        "DataTypeID",
+        "Defocus [um]",
+        "DetectorPixelHeight",
+        "DetectorPixelWidth",
+        "DetectorRange_EndX",
+        "DetectorRange_EndY",
+        "DetectorRange_StartX",
+        "DetectorRange_StartY",
+        "Diffraction lens [%]",
+        "Dimensions",
+        "DwellTimePath",
+        "Emission [uA]",
+        "Extraction voltage [V]",
+        "Filter mode []",
+        "Gun lens []",
+        "Gun type []",
+        "High tension [kV]",
+        "Illuminated Area Diameter [um]",
+        "Magnification",
+        "Magnification [x]",
+        "Manufacturer",
+        "Microscope []",
+        "Mode []",
+        "NumberDimensions",
+        "OBJ Aperture []",
+        "Objective lens [%]",
+        "OffsetArrayOffset",
+        "SA Aperture []",
+        "SeriesID",
+        "SeriesVersion",
+        "Spot size []",
+        "Stage A [deg]",
+        "Stage B [deg]",
+        "Stage X [um]",
+        "Stage Y [um]",
+        "Stage Z [um]",
+        "Stem rotation [deg]",
+        "Stem rotation correction [deg]",
+        "Super-X selected detectors []",
+        "TagOffsetArray",
+        "TagTypeID",
+        "Tilt1",
+        "Tilt2",
+        "TotalNumberElements",
+        "User []",
+        "Uuid",
+        "ValidNumberElements"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "TIA_Thumbnail",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

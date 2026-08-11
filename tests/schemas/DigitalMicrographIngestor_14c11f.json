@@ -1,0 +1,372 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "dm4",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "STEM IMAGING",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "STEM_imaging_non-pixelated.dm4",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": "STEM IMAGING",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 1660910,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-04-01T09:25:56",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "DigitalMicrographIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "STEM IMAGING"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "Calibrations Brightness Origin": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Calibrations Brightness Scale": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Calibrations Brightness Units": {
+          "const": "",
+          "type": "string"
+        },
+        "Calibrations Dimension 1 Origin": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Calibrations Dimension 1 Scale": {
+          "const": 0.4097994,
+          "type": "number"
+        },
+        "Calibrations Dimension 1 Units": {
+          "const": "nm",
+          "type": "string"
+        },
+        "Calibrations Dimension 2 Origin": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Calibrations Dimension 2 Scale": {
+          "const": 0.4097994,
+          "type": "number"
+        },
+        "Calibrations Dimension 2 Units": {
+          "const": "nm",
+          "type": "string"
+        },
+        "Calibrations DisplayCalibratedUnits": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "DataBar Acquisition Date": {
+          "const": "4/1/2026",
+          "type": "string"
+        },
+        "DataBar Acquisition Time": {
+          "const": "9:25:56 AM",
+          "type": "string"
+        },
+        "DataBar Acquisition Time (OS)": {
+          "const": 1.341953435612407e+17,
+          "type": "number"
+        },
+        "DataBar Device Name": {
+          "const": "DigiScan",
+          "type": "string"
+        },
+        "DataBar Exposure Number": {
+          "const": 1684836.0,
+          "type": "number"
+        },
+        "DataBar Signal Name": {
+          "const": "HAADF",
+          "type": "string"
+        },
+        "Meta Data Format": {
+          "const": "Image",
+          "type": "string"
+        },
+        "Meta Data Signal": {
+          "const": "DigiScan",
+          "type": "string"
+        },
+        "Microscope Info Cs(mm)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info Emission Current (\u00b5A)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info Field of View (\u00b5m)": {
+          "const": 0.29840682262073864,
+          "type": "number"
+        },
+        "Microscope Info Formatted Indicated Mag": {
+          "const": "450kx",
+          "type": "string"
+        },
+        "Microscope Info Formatted Voltage": {
+          "const": "300kV",
+          "type": "string"
+        },
+        "Microscope Info Illumination Mode": {
+          "const": "STEM",
+          "type": "string"
+        },
+        "Microscope Info Illumination Sub-mode": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info Imaging Mode": {
+          "const": "IMAGING",
+          "type": "string"
+        },
+        "Microscope Info Indicated Magnification": {
+          "const": 450000.0,
+          "type": "number"
+        },
+        "Microscope Info Magnification Interpolated": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info Name": {
+          "const": "FEI Tecnai Remote TCPIP",
+          "type": "string"
+        },
+        "Microscope Info Operation Mode": {
+          "const": "SCANNING",
+          "type": "string"
+        },
+        "Microscope Info Operation Mode Type": {
+          "const": 7.0,
+          "type": "number"
+        },
+        "Microscope Info Probe Current (nA)": {
+          "const": 0.1,
+          "type": "number"
+        },
+        "Microscope Info Probe Size (nm)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info STEM Camera Length": {
+          "const": 170.0,
+          "type": "number"
+        },
+        "Microscope Info Stage Position Stage Alpha": {
+          "const": 0.002439998066344124,
+          "type": "number"
+        },
+        "Microscope Info Stage Position Stage X": {
+          "const": 23.0506,
+          "type": "number"
+        },
+        "Microscope Info Stage Position Stage Y": {
+          "const": -28.2509,
+          "type": "number"
+        },
+        "Microscope Info Stage Position Stage Z": {
+          "const": -260.231,
+          "type": "number"
+        },
+        "Microscope Info Voltage": {
+          "const": 300000.0,
+          "type": "number"
+        },
+        "Session Info Microscope": {
+          "const": "TEAM 0.5",
+          "type": "string"
+        },
+        "Session Info Operator": {
+          "const": "Peter Ercius",
+          "type": "string"
+        },
+        "Session Info Sample maker": {
+          "const": "",
+          "type": "string"
+        },
+        "Session Info Screen current": {
+          "const": "40",
+          "type": "string"
+        },
+        "Session Info Specimen": {
+          "const": "Au alignmnet sample",
+          "type": "string"
+        },
+        "Session Info TIA rotation": {
+          "const": "0",
+          "type": "string"
+        },
+        "Session Info convergence angle": {
+          "const": "25",
+          "type": "string"
+        },
+        "Session Info date updated": {
+          "const": "20260401",
+          "type": "string"
+        }
+      },
+      "required": [
+        "Calibrations Brightness Origin",
+        "Calibrations Brightness Scale",
+        "Calibrations Brightness Units",
+        "Calibrations Dimension 1 Origin",
+        "Calibrations Dimension 1 Scale",
+        "Calibrations Dimension 1 Units",
+        "Calibrations Dimension 2 Origin",
+        "Calibrations Dimension 2 Scale",
+        "Calibrations Dimension 2 Units",
+        "Calibrations DisplayCalibratedUnits",
+        "DataBar Acquisition Date",
+        "DataBar Acquisition Time",
+        "DataBar Acquisition Time (OS)",
+        "DataBar Device Name",
+        "DataBar Exposure Number",
+        "DataBar Signal Name",
+        "Meta Data Format",
+        "Meta Data Signal",
+        "Microscope Info Cs(mm)",
+        "Microscope Info Emission Current (\u00b5A)",
+        "Microscope Info Field of View (\u00b5m)",
+        "Microscope Info Formatted Indicated Mag",
+        "Microscope Info Formatted Voltage",
+        "Microscope Info Illumination Mode",
+        "Microscope Info Illumination Sub-mode",
+        "Microscope Info Imaging Mode",
+        "Microscope Info Indicated Magnification",
+        "Microscope Info Magnification Interpolated",
+        "Microscope Info Name",
+        "Microscope Info Operation Mode",
+        "Microscope Info Operation Mode Type",
+        "Microscope Info Probe Current (nA)",
+        "Microscope Info Probe Size (nm)",
+        "Microscope Info STEM Camera Length",
+        "Microscope Info Stage Position Stage Alpha",
+        "Microscope Info Stage Position Stage X",
+        "Microscope Info Stage Position Stage Y",
+        "Microscope Info Stage Position Stage Z",
+        "Microscope Info Voltage",
+        "Session Info Microscope",
+        "Session Info Operator",
+        "Session Info Sample maker",
+        "Session Info Screen current",
+        "Session Info Specimen",
+        "Session Info TIA rotation",
+        "Session Info convergence angle",
+        "Session Info date updated"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "DM_Thumbnail",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

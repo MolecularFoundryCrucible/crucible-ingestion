@@ -1,4 +1,5 @@
 import os
+import shutil
 from PIL import Image
 from datetime import datetime as dt
 from mfid import mfid
@@ -14,6 +15,9 @@ from ..utils import (build_b64_thumbnail,
 from ..client import get_client
 
 logger = logging.getLogger(__name__)
+
+TMP_DIR = './tmp_files'
+
 
 class CrucibleDatasetIngestor(Dataset):
     ingestion_githash: str = os.environ.get("GITHASH")
@@ -50,6 +54,10 @@ class CrucibleDatasetIngestor(Dataset):
         # logger.info("getting data files complete")
         self.get_thumbnails()
         logger.info("getting thumbnails complete")
+
+
+    def cleanup(self):
+        shutil.rmtree(TMP_DIR, ignore_errors=True)
 
 
     def get_scientific_metadata(self):

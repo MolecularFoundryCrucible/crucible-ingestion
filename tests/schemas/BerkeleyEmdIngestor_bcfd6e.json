@@ -1,0 +1,265 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "emd",
+          "type": "string"
+        },
+        "data_type": {},
+        "dataset_name": {
+          "const": "0tekykmds5ygx000rbp2jnn4br.emd",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {},
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 67153384,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-08-10T13:13:31.482714",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "BerkeleyEmdIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "camera length": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "camera length index": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "condenser stigmator": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 0.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "convergence angle": {
+          "const": 0.0250447522802341,
+          "type": "number"
+        },
+        "defocus": {
+          "const": 1.2192702302323317e-06,
+          "type": "number"
+        },
+        "diffraction shift": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 0.0
+              }
+            },
+            {
+              "contains": {
+                "const": 0.0011180339887498947
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "high tension": {
+          "const": 300000.0,
+          "type": "number"
+        },
+        "microscope name": {
+          "const": "TEAM 0.5",
+          "type": "string"
+        },
+        "sample name": {
+          "const": "",
+          "type": "string"
+        },
+        "spot size index": {
+          "const": 7.0,
+          "type": "number"
+        },
+        "stage position": {
+          "allOf": [
+            {
+              "contains": {
+                "const": -0.00028556946
+              }
+            },
+            {
+              "contains": {
+                "const": -2.1120344000000002e-05
+              }
+            },
+            {
+              "contains": {
+                "const": -2.441244e-05
+              }
+            },
+            {
+              "contains": {
+                "const": -8.51720674973233e-06
+              }
+            },
+            {
+              "contains": {
+                "const": 0.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "type": "array"
+        },
+        "stem field of view": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 8.829056584664326e-08
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "stem magnification": {
+          "const": 910000.0,
+          "type": "number"
+        },
+        "stem rotation": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "user name": {
+          "const": "Claude",
+          "type": "string"
+        }
+      },
+      "required": [
+        "camera length",
+        "camera length index",
+        "condenser stigmator",
+        "convergence angle",
+        "defocus",
+        "diffraction shift",
+        "high tension",
+        "microscope name",
+        "sample name",
+        "spot size index",
+        "stage position",
+        "stem field of view",
+        "stem magnification",
+        "stem rotation",
+        "user name"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "EMD_Thumbnail",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

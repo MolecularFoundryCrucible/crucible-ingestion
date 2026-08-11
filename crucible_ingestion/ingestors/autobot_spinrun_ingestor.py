@@ -150,8 +150,8 @@ class SpinRunIngestor(CrucibleDatasetIngestor):
                         project_id = self.project_id,
                         owner_orcid = self.owner_orcid,
                         dataset_name = child_ds_name,
-                        data_format = 'yaml' )
-            
+                        data_format = 'yaml' ).model_dump()
+
             md = self.parse_sample_metadata(sample['sample_id'])
             self.children.append({'dataset': child_ds,
                              'scientific_metadata': md,

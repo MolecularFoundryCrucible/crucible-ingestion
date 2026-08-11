@@ -1,0 +1,1820 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "ScopeFoundryH5",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "ScopeFoundryH5.qspleem_deposition_monitor.time_series",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "example_deposition_monitor.h5",
+          "type": "string"
+        },
+        "instrument_name": {
+          "const": "QSPLEEM_microscope",
+          "type": "string"
+        },
+        "measurement": {
+          "const": "Deposition Monitor",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {
+          "const": "",
+          "type": "string"
+        },
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 308694104,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-06-10T15:21:07",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "0th9wd9k7nsh30000frfg5xcwm",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "QSpleemDepositionMonitorIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "Deposition Monitor"
+          }
+        },
+        {
+          "contains": {
+            "const": "QSPLEEM_microscope"
+          }
+        },
+        {
+          "contains": {
+            "const": "ScopeFoundryH5.qspleem_deposition_monitor.time_series"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "app": {
+          "additionalProperties": true,
+          "properties": {
+            "ScopeFoundry_type": {
+              "const": "App",
+              "type": "string"
+            },
+            "name": {
+              "const": "QSPLEEM_microscope",
+              "type": "string"
+            },
+            "settings": {
+              "additionalProperties": true,
+              "properties": {
+                "dark_mode": {
+                  "const": 0.0,
+                  "type": "number"
+                },
+                "data_fname_format": {
+                  "const": "{timestamp:%y%m%d_%H%M%S}_{measurement.name}.{ext}",
+                  "type": "string"
+                },
+                "propose_from_file": {
+                  "const": "C:\\Users\\lab\\Documents\\qspleem_control_llm",
+                  "type": "string"
+                },
+                "sample": {
+                  "const": "15ML film 2nd anneal",
+                  "type": "string"
+                },
+                "save_dir": {
+                  "const": "G:/My Drive/Raw Data/2026/06-June/10-10ML-Fe-W110",
+                  "type": "string"
+                },
+                "units": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "wheel manipulation": {
+                  "const": true,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "dark_mode",
+                "data_fname_format",
+                "propose_from_file",
+                "sample",
+                "save_dir",
+                "units",
+                "wheel manipulation"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "ScopeFoundry_type",
+            "name",
+            "settings"
+          ],
+          "type": "object"
+        },
+        "git": {
+          "additionalProperties": true,
+          "properties": {
+            "project_branch": {
+              "const": "session-260606-130827-TR-SPLEEM",
+              "type": "string"
+            },
+            "project_commit_hash": {
+              "const": "ac07b9d8b45ed03ddb0b4720a22365af7b6b9de5",
+              "type": "string"
+            },
+            "project_has_uncommitted_changes": {
+              "const": true,
+              "type": "boolean"
+            },
+            "project_origin_url": {
+              "const": "https://github.com/MolecularFoundry/qspleem_control.git",
+              "type": "string"
+            },
+            "project_remote_origin": {
+              "const": "https://github.com/MolecularFoundry/qspleem_control.git",
+              "type": "string"
+            },
+            "project_repo_root": {
+              "const": "C:/Users/lab/Documents/qspleem_control_llm",
+              "type": "string"
+            },
+            "project_short_hash": {
+              "const": "ac07b9d8",
+              "type": "string"
+            },
+            "project_status": {
+              "const": "M crucible-upload",
+              "type": "string"
+            },
+            "scopefoundry_branch": {
+              "const": "dev230",
+              "type": "string"
+            },
+            "scopefoundry_commit_hash": {
+              "const": "9e976d5d950c28d60a89ac490ddcdc7429f2664b",
+              "type": "string"
+            },
+            "scopefoundry_has_uncommitted_changes": {
+              "const": false,
+              "type": "boolean"
+            },
+            "scopefoundry_installation_type": {
+              "const": "git_repository",
+              "type": "string"
+            },
+            "scopefoundry_origin_url": {
+              "const": "https://github.com/ScopeFoundry/ScopeFoundry.git",
+              "type": "string"
+            },
+            "scopefoundry_remote_origin": {
+              "const": "https://github.com/ScopeFoundry/ScopeFoundry.git",
+              "type": "string"
+            },
+            "scopefoundry_repo_root": {
+              "const": "C:/Users/lab/Documents/qspleem_control_llm/ScopeFoundry",
+              "type": "string"
+            },
+            "scopefoundry_short_hash": {
+              "const": "9e976d5d",
+              "type": "string"
+            }
+          },
+          "required": [
+            "project_branch",
+            "project_commit_hash",
+            "project_has_uncommitted_changes",
+            "project_origin_url",
+            "project_remote_origin",
+            "project_repo_root",
+            "project_short_hash",
+            "project_status",
+            "scopefoundry_branch",
+            "scopefoundry_commit_hash",
+            "scopefoundry_has_uncommitted_changes",
+            "scopefoundry_installation_type",
+            "scopefoundry_origin_url",
+            "scopefoundry_remote_origin",
+            "scopefoundry_repo_root",
+            "scopefoundry_short_hash"
+          ],
+          "type": "object"
+        },
+        "hardware": {
+          "additionalProperties": true,
+          "properties": {
+            "ScopeFoundry_type": {
+              "const": "HardwareList",
+              "type": "string"
+            },
+            "git_session_manager": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "git_session_manager",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "connected": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "current_branch": {
+                      "const": "session-260606-130827-TR-SPLEEM",
+                      "type": "string"
+                    },
+                    "current_commit_hash": {
+                      "const": "ac07b9d8b45ed03ddb0b4720a22365af7b6b9de5",
+                      "type": "string"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "has_uncommitted_changes": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "manage_submodules": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "parent_branch": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "repo_path": {
+                      "const": "C:\\Users\\lab\\Documents\\qspleem_control_llm",
+                      "type": "string"
+                    },
+                    "session_active": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "session_branch": {
+                      "const": "session-260606-130827-TR-SPLEEM",
+                      "type": "string"
+                    },
+                    "session_name": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {},
+                      "required": [],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "connected",
+                    "current_branch",
+                    "current_commit_hash",
+                    "debug_mode",
+                    "has_uncommitted_changes",
+                    "manage_submodules",
+                    "parent_branch",
+                    "repo_path",
+                    "session_active",
+                    "session_branch",
+                    "session_name",
+                    "units"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            },
+            "keithley_sv": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "keithley_sv",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "I": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "STV": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "address": {
+                      "const": "192.168.1.152",
+                      "type": "string"
+                    },
+                    "connected": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "I": {
+                          "const": "A",
+                          "type": "string"
+                        },
+                        "STV": {
+                          "const": "V",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "I",
+                        "STV"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "I",
+                    "STV",
+                    "address",
+                    "connected",
+                    "debug_mode",
+                    "units"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            },
+            "keysight_power_supply": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "keysight_power_supply",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "connected": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "device_id": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "measured_current": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "measured_voltage": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "set_current": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "set_voltage": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {},
+                      "required": [],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "connected",
+                    "debug_mode",
+                    "device_id",
+                    "measured_current",
+                    "measured_voltage",
+                    "set_current",
+                    "set_voltage",
+                    "units"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            },
+            "mcp_server": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "mcp_server",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "connected": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "host": {
+                      "const": "localhost",
+                      "type": "string"
+                    },
+                    "last_error": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "port": {
+                      "const": 8000.0,
+                      "type": "number"
+                    },
+                    "server_running": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {},
+                      "required": [],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "connected",
+                    "debug_mode",
+                    "host",
+                    "last_error",
+                    "port",
+                    "server_running",
+                    "units"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            },
+            "mf_crucible": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "mf_crucible",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "comments": {
+                      "const": "add any desired comments here (optional)",
+                      "type": "string"
+                    },
+                    "connected": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "email": {
+                      "const": "user-email@lbl.gov",
+                      "type": "string"
+                    },
+                    "orcid": {
+                      "const": "XXXX-XXXX-XXXX-XXXX",
+                      "type": "string"
+                    },
+                    "proposal": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "session_name": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "tags": {
+                      "const": "list,tags,separated,by,commas (optional)",
+                      "type": "string"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {},
+                      "required": [],
+                      "type": "object"
+                    },
+                    "user_name": {
+                      "const": "",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "comments",
+                    "connected",
+                    "debug_mode",
+                    "email",
+                    "orcid",
+                    "proposal",
+                    "session_name",
+                    "tags",
+                    "units",
+                    "user_name"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            },
+            "newport_dl225": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "newport_dl225",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "acceleration_mm_s2": {
+                      "const": 3900.0,
+                      "type": "number"
+                    },
+                    "connected": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "delay_ps": {
+                      "const": -2675.273612120022,
+                      "type": "number"
+                    },
+                    "is_moving": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "move_to_mm": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "position_mm": {
+                      "const": 200.50671,
+                      "type": "number"
+                    },
+                    "t0_mm": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "acceleration_mm_s2": {
+                          "const": "mm/s\u00b2",
+                          "type": "string"
+                        },
+                        "delay_ps": {
+                          "const": "ps",
+                          "type": "string"
+                        },
+                        "move_to_mm": {
+                          "const": "mm",
+                          "type": "string"
+                        },
+                        "position_mm": {
+                          "const": "mm",
+                          "type": "string"
+                        },
+                        "t0_mm": {
+                          "const": "mm",
+                          "type": "string"
+                        },
+                        "velocity_mm_s": {
+                          "const": "mm/s",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "acceleration_mm_s2",
+                        "delay_ps",
+                        "move_to_mm",
+                        "position_mm",
+                        "t0_mm",
+                        "velocity_mm_s"
+                      ],
+                      "type": "object"
+                    },
+                    "velocity_mm_s": {
+                      "const": 300.0,
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "acceleration_mm_s2",
+                    "connected",
+                    "debug_mode",
+                    "delay_ps",
+                    "is_moving",
+                    "move_to_mm",
+                    "position_mm",
+                    "t0_mm",
+                    "units",
+                    "velocity_mm_s"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            },
+            "qspleem_connect": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Hardware",
+                  "type": "string"
+                },
+                "name": {
+                  "const": "qspleem_connect",
+                  "type": "string"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "BOMBV": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "CL1": {
+                      "const": 580.9,
+                      "type": "number"
+                    },
+                    "CL1AX": {
+                      "const": 12.43287,
+                      "type": "number"
+                    },
+                    "CL1_prime": {
+                      "const": 580.9001,
+                      "type": "number"
+                    },
+                    "CL1_primeDX": {
+                      "const": 133.8603,
+                      "type": "number"
+                    },
+                    "CL1_primeDY": {
+                      "const": -88.78448,
+                      "type": "number"
+                    },
+                    "CL2": {
+                      "const": 1627.8,
+                      "type": "number"
+                    },
+                    "CL2DX": {
+                      "const": -97.17445,
+                      "type": "number"
+                    },
+                    "CL2DY": {
+                      "const": 127.5155,
+                      "type": "number"
+                    },
+                    "CL2_prime": {
+                      "const": 1627.8,
+                      "type": "number"
+                    },
+                    "CL2_primeDX": {
+                      "const": -12.13506,
+                      "type": "number"
+                    },
+                    "CL2_primeDY": {
+                      "const": 24.91422,
+                      "type": "number"
+                    },
+                    "CL3": {
+                      "const": 379.7,
+                      "type": "number"
+                    },
+                    "CL3DX": {
+                      "const": 32.09457,
+                      "type": "number"
+                    },
+                    "CL3DY": {
+                      "const": -97.62867,
+                      "type": "number"
+                    },
+                    "CL3_prime": {
+                      "const": 379.7,
+                      "type": "number"
+                    },
+                    "CL3_primeDX": {
+                      "const": -84.62563,
+                      "type": "number"
+                    },
+                    "CL3_primeDY": {
+                      "const": -10.01367,
+                      "type": "number"
+                    },
+                    "DSTIGA": {
+                      "const": 32.0,
+                      "type": "number"
+                    },
+                    "DSTIGB": {
+                      "const": 14.89999,
+                      "type": "number"
+                    },
+                    "EMGA": {
+                      "const": 0.04882816,
+                      "type": "number"
+                    },
+                    "EMI": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "ESAM": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "EXFOC1": {
+                      "const": 4587.0,
+                      "type": "number"
+                    },
+                    "EXSCR": {
+                      "const": 384.3999,
+                      "type": "number"
+                    },
+                    "FIL": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "FL": {
+                      "const": 1519.0,
+                      "type": "number"
+                    },
+                    "FLDX": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "FLDY": {
+                      "const": 6.515992,
+                      "type": "number"
+                    },
+                    "HEM11": {
+                      "const": 379.9,
+                      "type": "number"
+                    },
+                    "HEM21": {
+                      "const": 952.2,
+                      "type": "number"
+                    },
+                    "HZAP": {
+                      "const": 842.0,
+                      "type": "number"
+                    },
+                    "IL": {
+                      "const": 522.43,
+                      "type": "number"
+                    },
+                    "ILDX": {
+                      "const": -71.81644,
+                      "type": "number"
+                    },
+                    "ILDY": {
+                      "const": 37.16523,
+                      "type": "number"
+                    },
+                    "ILUDX": {
+                      "const": -266.6781,
+                      "type": "number"
+                    },
+                    "ILUDY": {
+                      "const": 669.5997,
+                      "type": "number"
+                    },
+                    "ISTIGA": {
+                      "const": 233.0,
+                      "type": "number"
+                    },
+                    "ISTIGB": {
+                      "const": 62.0,
+                      "type": "number"
+                    },
+                    "KSTEMP": {
+                      "const": 29.63564,
+                      "type": "number"
+                    },
+                    "LASER": {
+                      "const": 22.0,
+                      "type": "number"
+                    },
+                    "MOBJ": {
+                      "const": 1555.202,
+                      "type": "number"
+                    },
+                    "OBJDX": {
+                      "const": 89.8,
+                      "type": "number"
+                    },
+                    "OBJDY": {
+                      "const": -65.6,
+                      "type": "number"
+                    },
+                    "OSTIGA": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "OSTIGB": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "P1": {
+                      "const": 1045.35,
+                      "type": "number"
+                    },
+                    "P1DX": {
+                      "const": -0.792362,
+                      "type": "number"
+                    },
+                    "P1DY": {
+                      "const": 10.00225,
+                      "type": "number"
+                    },
+                    "P2": {
+                      "const": 2550.76,
+                      "type": "number"
+                    },
+                    "P2DX": {
+                      "const": 27.6,
+                      "type": "number"
+                    },
+                    "P2DY": {
+                      "const": 45.9,
+                      "type": "number"
+                    },
+                    "SELI": {
+                      "const": 231.1279,
+                      "type": "number"
+                    },
+                    "SELILX": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "SELILY": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "SELIMX": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "SELIMY": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "SELO": {
+                      "const": 481.917,
+                      "type": "number"
+                    },
+                    "SHD1": {
+                      "const": 953.2,
+                      "type": "number"
+                    },
+                    "SHD11": {
+                      "const": 106.4,
+                      "type": "number"
+                    },
+                    "STV": {
+                      "const": 20.0,
+                      "type": "number"
+                    },
+                    "TL": {
+                      "const": 552.2789,
+                      "type": "number"
+                    },
+                    "Temp_dot_Co": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "WEH": {
+                      "const": -375.0,
+                      "type": "number"
+                    },
+                    "camera_averaging": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "camera_bin": {
+                      "const": 2.0,
+                      "type": "number"
+                    },
+                    "connected": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "debug_mode": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "exposure_time": {
+                      "const": 10000.0,
+                      "type": "number"
+                    },
+                    "gaasdx": {
+                      "const": 150.7,
+                      "type": "number"
+                    },
+                    "gaasdy": {
+                      "const": 7.299838,
+                      "type": "number"
+                    },
+                    "pressure_column": {
+                      "const": 2.43e-10,
+                      "type": "number"
+                    },
+                    "pressure_gaas_prep": {
+                      "const": 1.22e-10,
+                      "type": "number"
+                    },
+                    "pressure_main_chamber": {
+                      "const": 2.67e-10,
+                      "type": "number"
+                    },
+                    "pressure_spin_gun": {
+                      "const": 2.7e-11,
+                      "type": "number"
+                    },
+                    "sector1": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "BOMBV": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "CL1": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL1AX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL1_prime": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL1_primeDX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL1_primeDY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL2": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL2DX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL2DY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL2_prime": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL2_primeDX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL2_primeDY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL3": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL3DX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL3DY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL3_prime": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL3_primeDX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "CL3_primeDY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "DSTIGA": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "DSTIGB": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "EMGA": {
+                          "const": "uA",
+                          "type": "string"
+                        },
+                        "EMI": {
+                          "const": "uA",
+                          "type": "string"
+                        },
+                        "ESAM": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "EXFOC1": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "EXSCR": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "FIL": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "FL": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "FLDX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "FLDY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "HEM11": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "HEM21": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "HZAP": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "IL": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "ILDX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "ILDY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "ILUDX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "ILUDY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "ISTIGA": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "ISTIGB": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "KSTEMP": {
+                          "const": "C",
+                          "type": "string"
+                        },
+                        "LASER": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "MOBJ": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "OBJDX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "OBJDY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "OSTIGA": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "OSTIGB": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "P1": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "P1DX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "P1DY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "P2": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "P2DX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "P2DY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "SELI": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "SELILX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "SELILY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "SELIMX": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "SELIMY": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "SELO": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "SHD1": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "SHD11": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "STV": {
+                          "const": "V",
+                          "type": "string"
+                        },
+                        "TL": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "Temp_dot_Co": {
+                          "const": "C",
+                          "type": "string"
+                        },
+                        "WEH": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "camera_bin": {
+                          "const": "px",
+                          "type": "string"
+                        },
+                        "exposure_time": {
+                          "const": "ms",
+                          "type": "string"
+                        },
+                        "gaasdx": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "gaasdy": {
+                          "const": "mA",
+                          "type": "string"
+                        },
+                        "pressure_column": {
+                          "const": "Torr",
+                          "type": "string"
+                        },
+                        "pressure_gaas_prep": {
+                          "const": "Torr",
+                          "type": "string"
+                        },
+                        "pressure_main_chamber": {
+                          "const": "Torr",
+                          "type": "string"
+                        },
+                        "pressure_spin_gun": {
+                          "const": "Torr",
+                          "type": "string"
+                        },
+                        "sector1": {
+                          "const": "mA",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "BOMBV",
+                        "CL1",
+                        "CL1AX",
+                        "CL1_prime",
+                        "CL1_primeDX",
+                        "CL1_primeDY",
+                        "CL2",
+                        "CL2DX",
+                        "CL2DY",
+                        "CL2_prime",
+                        "CL2_primeDX",
+                        "CL2_primeDY",
+                        "CL3",
+                        "CL3DX",
+                        "CL3DY",
+                        "CL3_prime",
+                        "CL3_primeDX",
+                        "CL3_primeDY",
+                        "DSTIGA",
+                        "DSTIGB",
+                        "EMGA",
+                        "EMI",
+                        "ESAM",
+                        "EXFOC1",
+                        "EXSCR",
+                        "FIL",
+                        "FL",
+                        "FLDX",
+                        "FLDY",
+                        "HEM11",
+                        "HEM21",
+                        "HZAP",
+                        "IL",
+                        "ILDX",
+                        "ILDY",
+                        "ILUDX",
+                        "ILUDY",
+                        "ISTIGA",
+                        "ISTIGB",
+                        "KSTEMP",
+                        "LASER",
+                        "MOBJ",
+                        "OBJDX",
+                        "OBJDY",
+                        "OSTIGA",
+                        "OSTIGB",
+                        "P1",
+                        "P1DX",
+                        "P1DY",
+                        "P2",
+                        "P2DX",
+                        "P2DY",
+                        "SELI",
+                        "SELILX",
+                        "SELILY",
+                        "SELIMX",
+                        "SELIMY",
+                        "SELO",
+                        "SHD1",
+                        "SHD11",
+                        "STV",
+                        "TL",
+                        "Temp_dot_Co",
+                        "WEH",
+                        "camera_bin",
+                        "exposure_time",
+                        "gaasdx",
+                        "gaasdy",
+                        "pressure_column",
+                        "pressure_gaas_prep",
+                        "pressure_main_chamber",
+                        "pressure_spin_gun",
+                        "sector1"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "BOMBV",
+                    "CL1",
+                    "CL1AX",
+                    "CL1_prime",
+                    "CL1_primeDX",
+                    "CL1_primeDY",
+                    "CL2",
+                    "CL2DX",
+                    "CL2DY",
+                    "CL2_prime",
+                    "CL2_primeDX",
+                    "CL2_primeDY",
+                    "CL3",
+                    "CL3DX",
+                    "CL3DY",
+                    "CL3_prime",
+                    "CL3_primeDX",
+                    "CL3_primeDY",
+                    "DSTIGA",
+                    "DSTIGB",
+                    "EMGA",
+                    "EMI",
+                    "ESAM",
+                    "EXFOC1",
+                    "EXSCR",
+                    "FIL",
+                    "FL",
+                    "FLDX",
+                    "FLDY",
+                    "HEM11",
+                    "HEM21",
+                    "HZAP",
+                    "IL",
+                    "ILDX",
+                    "ILDY",
+                    "ILUDX",
+                    "ILUDY",
+                    "ISTIGA",
+                    "ISTIGB",
+                    "KSTEMP",
+                    "LASER",
+                    "MOBJ",
+                    "OBJDX",
+                    "OBJDY",
+                    "OSTIGA",
+                    "OSTIGB",
+                    "P1",
+                    "P1DX",
+                    "P1DY",
+                    "P2",
+                    "P2DX",
+                    "P2DY",
+                    "SELI",
+                    "SELILX",
+                    "SELILY",
+                    "SELIMX",
+                    "SELIMY",
+                    "SELO",
+                    "SHD1",
+                    "SHD11",
+                    "STV",
+                    "TL",
+                    "Temp_dot_Co",
+                    "WEH",
+                    "camera_averaging",
+                    "camera_bin",
+                    "connected",
+                    "debug_mode",
+                    "exposure_time",
+                    "gaasdx",
+                    "gaasdy",
+                    "pressure_column",
+                    "pressure_gaas_prep",
+                    "pressure_main_chamber",
+                    "pressure_spin_gun",
+                    "sector1",
+                    "units"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "name",
+                "settings"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "ScopeFoundry_type",
+            "git_session_manager",
+            "keithley_sv",
+            "keysight_power_supply",
+            "mcp_server",
+            "mf_crucible",
+            "newport_dl225",
+            "qspleem_connect"
+          ],
+          "type": "object"
+        },
+        "measurement": {
+          "additionalProperties": true,
+          "properties": {
+            "deposition_monitor": {
+              "additionalProperties": true,
+              "properties": {
+                "ScopeFoundry_type": {
+                  "const": "Measurement",
+                  "type": "string"
+                },
+                "emission_current": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "image_times": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "images": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "name": {
+                  "const": "deposition_monitor",
+                  "type": "string"
+                },
+                "pressure_main_chamber": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "roi_intensity": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "roi_positions": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "roi_times": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "sample_temperature": {
+                  "additionalProperties": true,
+                  "properties": {},
+                  "required": [],
+                  "type": "object"
+                },
+                "settings": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "activation": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "exposure_time": {
+                      "const": 1.0,
+                      "type": "number"
+                    },
+                    "loop": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "progress": {
+                      "const": 50.0,
+                      "type": "number"
+                    },
+                    "roi2_enabled": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "roi3_enabled": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "roi4_enabled": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "run_state": {
+                      "const": "run_thread_run",
+                      "type": "string"
+                    },
+                    "save_images": {
+                      "const": true,
+                      "type": "boolean"
+                    },
+                    "save_interval": {
+                      "const": 10.0,
+                      "type": "number"
+                    },
+                    "spin_flip": {
+                      "const": false,
+                      "type": "boolean"
+                    },
+                    "units": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "exposure_time": {
+                          "const": "s",
+                          "type": "string"
+                        },
+                        "progress": {
+                          "const": "%",
+                          "type": "string"
+                        },
+                        "save_interval": {
+                          "const": "s",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "exposure_time",
+                        "progress",
+                        "save_interval"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "activation",
+                    "exposure_time",
+                    "loop",
+                    "profile",
+                    "progress",
+                    "roi2_enabled",
+                    "roi3_enabled",
+                    "roi4_enabled",
+                    "run_state",
+                    "save_images",
+                    "save_interval",
+                    "spin_flip",
+                    "units"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "ScopeFoundry_type",
+                "emission_current",
+                "image_times",
+                "images",
+                "name",
+                "pressure_main_chamber",
+                "roi_intensity",
+                "roi_positions",
+                "roi_times",
+                "sample_temperature",
+                "settings"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "deposition_monitor"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "app",
+        "git",
+        "hardware",
+        "measurement"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "ROI Intensity vs Time",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "First Frame with ROIs",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "Final Frame with ROIs",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "Instrument Parameters vs Time",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "0th9wd9k7nsh30000frfg5xcwm",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

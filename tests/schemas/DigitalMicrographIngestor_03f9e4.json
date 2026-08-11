@@ -1,0 +1,978 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "dm4",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "STEM IMAGING",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "STEM_imaging_pixelated.dm4",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": "STEM IMAGING",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 1666165,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-04-01T09:31:12",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "DigitalMicrographIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "STEM IMAGING"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "Acquisition Device Active Size (pixels)": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 4096.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "Acquisition Device CCD Pixel Size (um)": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 15.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "Acquisition Device Camera Number": {
+          "const": 2.0,
+          "type": "number"
+        },
+        "Acquisition Device Configuration Location": {
+          "const": "high_resolution",
+          "type": "string"
+        },
+        "Acquisition Device Configuration Transpose Diagonal Flip": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Device Configuration Transpose Horizontal Flip": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Device Configuration Transpose Vertical Flip": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Device Name": {
+          "const": "OneView",
+          "type": "string"
+        },
+        "Acquisition Device Source": {
+          "const": "OneView",
+          "type": "string"
+        },
+        "Acquisition Device Source ID": {
+          "const": "OneView-72759740012",
+          "type": "string"
+        },
+        "Acquisition Device Source Model": {
+          "const": "OneView",
+          "type": "string"
+        },
+        "Acquisition Device Temperature (C)": {
+          "const": -4.859375,
+          "type": "number"
+        },
+        "Acquisition Frame Area Transform Class Name": {
+          "const": "cm_acquisitiontransform_list",
+          "type": "string"
+        },
+        "Acquisition Frame Area Transform Transform List 1 Binning": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 8.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "Acquisition Frame Area Transform Transform List 1 Class Name": {
+          "const": "cm_acquisitiontransform",
+          "type": "string"
+        },
+        "Acquisition Frame Area Transform Transform List 1 Sub Area Adjust": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 0.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "type": "array"
+        },
+        "Acquisition Frame Area Transform Transform List 1 Transpose Diagonal Flip": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Frame Area Transform Transform List 1 Transpose Horizontal Flip": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Frame Area Transform Transform List 1 Transpose Vertical Flip": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Frame CCD Pixel Size (um)": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 120.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "Acquisition Frame Intensity Transform Class Name": {
+          "const": "cm_valuetransform_list",
+          "type": "string"
+        },
+        "Acquisition Frame Intensity Transform Transform List 1 Class Name": {
+          "const": "cm_valuetransform_affine",
+          "type": "string"
+        },
+        "Acquisition Frame Intensity Transform Transform List 1 Offset": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Frame Intensity Transform Transform List 1 Scale": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Frame Intensity Transform Transform List 2 ADC Max": {
+          "const": 65535.0,
+          "type": "number"
+        },
+        "Acquisition Frame Intensity Transform Transform List 2 ADC Min": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Frame Intensity Transform Transform List 2 Class Name": {
+          "const": "cm_valuetransform_adc",
+          "type": "string"
+        },
+        "Acquisition Frame Reference Images Dark Mean (counts)": {
+          "const": 511.953145542182,
+          "type": "number"
+        },
+        "Acquisition Frame Reference Images Dark Standard Deviation (counts)": {
+          "const": 7.01521526820796,
+          "type": "number"
+        },
+        "Acquisition Parameters Acquisition Write Flags": {
+          "const": 4294967295.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Base Detector Class Name": {
+          "const": "cm_namedcameradetectorparameterset",
+          "type": "string"
+        },
+        "Acquisition Parameters Base Detector Name": {
+          "const": "default",
+          "type": "string"
+        },
+        "Acquisition Parameters Detector continuous": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Detector exposure (s)": {
+          "const": 0.0033112582781456954,
+          "type": "number"
+        },
+        "Acquisition Parameters Detector hbin": {
+          "const": 8.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Detector height": {
+          "const": 4096.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Detector left": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Detector top": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Detector vbin": {
+          "const": 8.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Detector width": {
+          "const": 4096.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Environment Mode Name": {
+          "const": "Imaging",
+          "type": "string"
+        },
+        "Acquisition Parameters High Level Acquire Stack": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Acquisition Buffer Size": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Alignment Filter": {
+          "const": "",
+          "type": "string"
+        },
+        "Acquisition Parameters High Level Antiblooming": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Async Processing": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Async Readout": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Auto Save": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Binning": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 8.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "Acquisition Parameters High Level CCD Read Area": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 0.0
+              }
+            },
+            {
+              "contains": {
+                "const": 4096.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "type": "array"
+        },
+        "Acquisition Parameters High Level CCD Read Ports": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Capture Duration": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Choose Number Of Frame Shutters Automatically": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Class Name": {
+          "const": "cm_camera_highlevelparameters",
+          "type": "string"
+        },
+        "Acquisition Parameters High Level Complex Exposure Frame Count": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Complex Exposure Sub-Exposure Count": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Continuous Readout": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Corrections": {
+          "const": 801.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Corrections Mask": {
+          "const": 945.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Dark Ref Method": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Exposure (s)": {
+          "const": 0.0033112582781456954,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Exposure Live Time": {},
+        "Acquisition Parameters High Level Exposure Priority": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Frame Exposure": {
+          "const": 0.0033112582781456954,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level HardwareCorrections": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Lookback Duration": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Number Of Frame Shutters": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Processing": {
+          "const": "Gain Normalized",
+          "type": "string"
+        },
+        "Acquisition Parameters High Level Quality Level": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Read Frame Style": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Read Mode": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Secondary Shutter Post Exposure Compensation (s)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Secondary Shutter Pre Exposure Compensation (s)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Shutter Post Exposure Compensation (s)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Shutter Pre Exposure Compensation (s)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Shutter Primary Shutter States": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Shutter Primary Shutter States Mask": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Shutter Secondary Shutter States": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Shutter Secondary Shutter States Mask": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Shutter Shutter Exposure": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Shutter Shutter Index": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Stack Format": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Transform Diagonal Flip": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Transform Horizontal Flip": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Transform Vertical Flip": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters High Level Vertical Collapse": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Objects 1 Class Name": {
+          "const": "cm_imgproc_finalcombine",
+          "type": "string"
+        },
+        "Acquisition Parameters Objects 1 Frame Combine Style": {
+          "const": "Copy",
+          "type": "string"
+        },
+        "Acquisition Parameters Objects 1 Parameter 1": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Objects 2 Class Name": {
+          "const": "cm_stdviewerimagedisplayer",
+          "type": "string"
+        },
+        "Acquisition Parameters Objects 2 Do Auto Zoom": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Objects 2 Screen Relative Position": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 0.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "Acquisition Parameters Objects 2 Version": {
+          "const": 34078720.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Objects 2 View Name": {
+          "const": "View",
+          "type": "string"
+        },
+        "Acquisition Parameters Objects 2 Viewer Class": {
+          "const": "view",
+          "type": "string"
+        },
+        "Acquisition Parameters Objects 2 Window Relative Position": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 0.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "Acquisition Parameters Objects 2 Zoom": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Acquisition Parameters Parameter Set Name": {
+          "const": "Search",
+          "type": "string"
+        },
+        "Acquisition Parameters Parameter Set Tag Path": {
+          "const": "Imaging:View:Search",
+          "type": "string"
+        },
+        "Acquisition Parameters Version": {
+          "const": 34078720.0,
+          "type": "number"
+        },
+        "Calibrations Brightness Origin": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Calibrations Brightness Scale": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Calibrations Brightness Units": {
+          "const": "",
+          "type": "string"
+        },
+        "Calibrations Dimension 1 Origin": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Calibrations Dimension 1 Scale": {
+          "const": 0.038111463,
+          "type": "number"
+        },
+        "Calibrations Dimension 1 Units": {
+          "const": "1/\u00b5m",
+          "type": "string"
+        },
+        "Calibrations Dimension 2 Origin": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Calibrations Dimension 2 Scale": {
+          "const": 0.038111463,
+          "type": "number"
+        },
+        "Calibrations Dimension 2 Units": {
+          "const": "1/\u00b5m",
+          "type": "string"
+        },
+        "Calibrations DisplayCalibratedUnits": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "DataBar Acquisition Date": {
+          "const": "4/1/2026",
+          "type": "string"
+        },
+        "DataBar Acquisition Time": {
+          "const": "9:31:12 AM",
+          "type": "string"
+        },
+        "DataBar Acquisition Time (OS)": {
+          "const": 1.3419534672304538e+17,
+          "type": "number"
+        },
+        "DataBar Binning": {
+          "const": 8.0,
+          "type": "number"
+        },
+        "DataBar Device Name": {
+          "const": "OneView",
+          "type": "string"
+        },
+        "DataBar Exposure Number": {
+          "const": 9856.0,
+          "type": "number"
+        },
+        "DataBar Exposure Time (s)": {
+          "const": 0.0033112582781456954,
+          "type": "number"
+        },
+        "DataBar Signal Name": {
+          "const": "OneView",
+          "type": "string"
+        },
+        "Microscope Info Actual Magnification": {
+          "const": 1.5991898542037317,
+          "type": "number"
+        },
+        "Microscope Info Cs(mm)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info Emission Current (\u00b5A)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info Formatted Actual Mag": {
+          "const": "2x",
+          "type": "string"
+        },
+        "Microscope Info Formatted Indicated Mag": {
+          "const": "450kx",
+          "type": "string"
+        },
+        "Microscope Info Formatted Voltage": {
+          "const": "300kV",
+          "type": "string"
+        },
+        "Microscope Info Illumination Mode": {
+          "const": "STEM",
+          "type": "string"
+        },
+        "Microscope Info Illumination Sub-mode": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info Imaging Mode": {
+          "const": "IMAGING",
+          "type": "string"
+        },
+        "Microscope Info Indicated Magnification": {
+          "const": 450000.0,
+          "type": "number"
+        },
+        "Microscope Info Magnification Interpolated": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "Microscope Info Name": {
+          "const": "FEI Tecnai Remote TCPIP",
+          "type": "string"
+        },
+        "Microscope Info Operation Mode": {
+          "const": "SCANNING",
+          "type": "string"
+        },
+        "Microscope Info Operation Mode Type": {
+          "const": 7.0,
+          "type": "number"
+        },
+        "Microscope Info Probe Current (nA)": {
+          "const": 0.1,
+          "type": "number"
+        },
+        "Microscope Info Probe Size (nm)": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Microscope Info STEM Camera Length": {
+          "const": 170.0,
+          "type": "number"
+        },
+        "Microscope Info Stage Position Stage Alpha": {
+          "const": 0.002439998066344124,
+          "type": "number"
+        },
+        "Microscope Info Stage Position Stage X": {
+          "const": 23.0506,
+          "type": "number"
+        },
+        "Microscope Info Stage Position Stage Y": {
+          "const": -28.2499,
+          "type": "number"
+        },
+        "Microscope Info Stage Position Stage Z": {
+          "const": -260.231,
+          "type": "number"
+        },
+        "Microscope Info Voltage": {
+          "const": 300000.0,
+          "type": "number"
+        },
+        "Session Info Microscope": {
+          "const": "TEAM 0.5",
+          "type": "string"
+        },
+        "Session Info Operator": {
+          "const": "Peter Ercius",
+          "type": "string"
+        },
+        "Session Info Sample maker": {
+          "const": "",
+          "type": "string"
+        },
+        "Session Info Screen current": {
+          "const": "40",
+          "type": "string"
+        },
+        "Session Info Specimen": {
+          "const": "Au alignmnet sample",
+          "type": "string"
+        },
+        "Session Info TIA rotation": {
+          "const": "0",
+          "type": "string"
+        },
+        "Session Info convergence angle": {
+          "const": "25",
+          "type": "string"
+        },
+        "Session Info date updated": {
+          "const": "20260401",
+          "type": "string"
+        }
+      },
+      "required": [
+        "Acquisition Device Active Size (pixels)",
+        "Acquisition Device CCD Pixel Size (um)",
+        "Acquisition Device Camera Number",
+        "Acquisition Device Configuration Location",
+        "Acquisition Device Configuration Transpose Diagonal Flip",
+        "Acquisition Device Configuration Transpose Horizontal Flip",
+        "Acquisition Device Configuration Transpose Vertical Flip",
+        "Acquisition Device Name",
+        "Acquisition Device Source",
+        "Acquisition Device Source ID",
+        "Acquisition Device Source Model",
+        "Acquisition Device Temperature (C)",
+        "Acquisition Frame Area Transform Class Name",
+        "Acquisition Frame Area Transform Transform List 1 Binning",
+        "Acquisition Frame Area Transform Transform List 1 Class Name",
+        "Acquisition Frame Area Transform Transform List 1 Sub Area Adjust",
+        "Acquisition Frame Area Transform Transform List 1 Transpose Diagonal Flip",
+        "Acquisition Frame Area Transform Transform List 1 Transpose Horizontal Flip",
+        "Acquisition Frame Area Transform Transform List 1 Transpose Vertical Flip",
+        "Acquisition Frame CCD Pixel Size (um)",
+        "Acquisition Frame Intensity Transform Class Name",
+        "Acquisition Frame Intensity Transform Transform List 1 Class Name",
+        "Acquisition Frame Intensity Transform Transform List 1 Offset",
+        "Acquisition Frame Intensity Transform Transform List 1 Scale",
+        "Acquisition Frame Intensity Transform Transform List 2 ADC Max",
+        "Acquisition Frame Intensity Transform Transform List 2 ADC Min",
+        "Acquisition Frame Intensity Transform Transform List 2 Class Name",
+        "Acquisition Frame Reference Images Dark Mean (counts)",
+        "Acquisition Frame Reference Images Dark Standard Deviation (counts)",
+        "Acquisition Parameters Acquisition Write Flags",
+        "Acquisition Parameters Base Detector Class Name",
+        "Acquisition Parameters Base Detector Name",
+        "Acquisition Parameters Detector continuous",
+        "Acquisition Parameters Detector exposure (s)",
+        "Acquisition Parameters Detector hbin",
+        "Acquisition Parameters Detector height",
+        "Acquisition Parameters Detector left",
+        "Acquisition Parameters Detector top",
+        "Acquisition Parameters Detector vbin",
+        "Acquisition Parameters Detector width",
+        "Acquisition Parameters Environment Mode Name",
+        "Acquisition Parameters High Level Acquire Stack",
+        "Acquisition Parameters High Level Acquisition Buffer Size",
+        "Acquisition Parameters High Level Alignment Filter",
+        "Acquisition Parameters High Level Antiblooming",
+        "Acquisition Parameters High Level Async Processing",
+        "Acquisition Parameters High Level Async Readout",
+        "Acquisition Parameters High Level Auto Save",
+        "Acquisition Parameters High Level Binning",
+        "Acquisition Parameters High Level CCD Read Area",
+        "Acquisition Parameters High Level CCD Read Ports",
+        "Acquisition Parameters High Level Capture Duration",
+        "Acquisition Parameters High Level Choose Number Of Frame Shutters Automatically",
+        "Acquisition Parameters High Level Class Name",
+        "Acquisition Parameters High Level Complex Exposure Frame Count",
+        "Acquisition Parameters High Level Complex Exposure Sub-Exposure Count",
+        "Acquisition Parameters High Level Continuous Readout",
+        "Acquisition Parameters High Level Corrections",
+        "Acquisition Parameters High Level Corrections Mask",
+        "Acquisition Parameters High Level Dark Ref Method",
+        "Acquisition Parameters High Level Exposure (s)",
+        "Acquisition Parameters High Level Exposure Live Time",
+        "Acquisition Parameters High Level Exposure Priority",
+        "Acquisition Parameters High Level Frame Exposure",
+        "Acquisition Parameters High Level HardwareCorrections",
+        "Acquisition Parameters High Level Lookback Duration",
+        "Acquisition Parameters High Level Number Of Frame Shutters",
+        "Acquisition Parameters High Level Processing",
+        "Acquisition Parameters High Level Quality Level",
+        "Acquisition Parameters High Level Read Frame Style",
+        "Acquisition Parameters High Level Read Mode",
+        "Acquisition Parameters High Level Secondary Shutter Post Exposure Compensation (s)",
+        "Acquisition Parameters High Level Secondary Shutter Pre Exposure Compensation (s)",
+        "Acquisition Parameters High Level Shutter Post Exposure Compensation (s)",
+        "Acquisition Parameters High Level Shutter Pre Exposure Compensation (s)",
+        "Acquisition Parameters High Level Shutter Primary Shutter States",
+        "Acquisition Parameters High Level Shutter Primary Shutter States Mask",
+        "Acquisition Parameters High Level Shutter Secondary Shutter States",
+        "Acquisition Parameters High Level Shutter Secondary Shutter States Mask",
+        "Acquisition Parameters High Level Shutter Shutter Exposure",
+        "Acquisition Parameters High Level Shutter Shutter Index",
+        "Acquisition Parameters High Level Stack Format",
+        "Acquisition Parameters High Level Transform Diagonal Flip",
+        "Acquisition Parameters High Level Transform Horizontal Flip",
+        "Acquisition Parameters High Level Transform Vertical Flip",
+        "Acquisition Parameters High Level Vertical Collapse",
+        "Acquisition Parameters Objects 1 Class Name",
+        "Acquisition Parameters Objects 1 Frame Combine Style",
+        "Acquisition Parameters Objects 1 Parameter 1",
+        "Acquisition Parameters Objects 2 Class Name",
+        "Acquisition Parameters Objects 2 Do Auto Zoom",
+        "Acquisition Parameters Objects 2 Screen Relative Position",
+        "Acquisition Parameters Objects 2 Version",
+        "Acquisition Parameters Objects 2 View Name",
+        "Acquisition Parameters Objects 2 Viewer Class",
+        "Acquisition Parameters Objects 2 Window Relative Position",
+        "Acquisition Parameters Objects 2 Zoom",
+        "Acquisition Parameters Parameter Set Name",
+        "Acquisition Parameters Parameter Set Tag Path",
+        "Acquisition Parameters Version",
+        "Calibrations Brightness Origin",
+        "Calibrations Brightness Scale",
+        "Calibrations Brightness Units",
+        "Calibrations Dimension 1 Origin",
+        "Calibrations Dimension 1 Scale",
+        "Calibrations Dimension 1 Units",
+        "Calibrations Dimension 2 Origin",
+        "Calibrations Dimension 2 Scale",
+        "Calibrations Dimension 2 Units",
+        "Calibrations DisplayCalibratedUnits",
+        "DataBar Acquisition Date",
+        "DataBar Acquisition Time",
+        "DataBar Acquisition Time (OS)",
+        "DataBar Binning",
+        "DataBar Device Name",
+        "DataBar Exposure Number",
+        "DataBar Exposure Time (s)",
+        "DataBar Signal Name",
+        "Microscope Info Actual Magnification",
+        "Microscope Info Cs(mm)",
+        "Microscope Info Emission Current (\u00b5A)",
+        "Microscope Info Formatted Actual Mag",
+        "Microscope Info Formatted Indicated Mag",
+        "Microscope Info Formatted Voltage",
+        "Microscope Info Illumination Mode",
+        "Microscope Info Illumination Sub-mode",
+        "Microscope Info Imaging Mode",
+        "Microscope Info Indicated Magnification",
+        "Microscope Info Magnification Interpolated",
+        "Microscope Info Name",
+        "Microscope Info Operation Mode",
+        "Microscope Info Operation Mode Type",
+        "Microscope Info Probe Current (nA)",
+        "Microscope Info Probe Size (nm)",
+        "Microscope Info STEM Camera Length",
+        "Microscope Info Stage Position Stage Alpha",
+        "Microscope Info Stage Position Stage X",
+        "Microscope Info Stage Position Stage Y",
+        "Microscope Info Stage Position Stage Z",
+        "Microscope Info Voltage",
+        "Session Info Microscope",
+        "Session Info Operator",
+        "Session Info Sample maker",
+        "Session Info Screen current",
+        "Session Info Specimen",
+        "Session Info TIA rotation",
+        "Session Info convergence angle",
+        "Session Info date updated"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "DM_Thumbnail",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

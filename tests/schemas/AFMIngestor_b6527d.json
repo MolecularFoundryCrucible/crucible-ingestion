@@ -1,0 +1,480 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "ibw",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "MultiChannelAFM - AC Mode::HeightRetrace,AmplitudeRetrace,PhaseRetrace,ZSensorRetrace",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "Users-mkwall-Git-crucible-main-crucible-ingestion-tests-data-example_afm.ibw",
+          "type": "string"
+        },
+        "instrument_name": {
+          "const": "jupiterafm",
+          "type": "string"
+        },
+        "measurement": {
+          "const": "MultiChannelAFM - AC Mode::HeightRetrace,AmplitudeRetrace,PhaseRetrace,ZSensorRetrace",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 1144950,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2025-07-22T14:05:15",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "AFMIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "MultiChannelAFM - AC Mode::HeightRetrace,AmplitudeRetrace,PhaseRetrace,ZSensorRetrace"
+          }
+        },
+        {
+          "contains": {
+            "const": "data"
+          }
+        },
+        {
+          "contains": {
+            "const": "jupiterafm"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 4,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "channel_names": {
+          "allOf": [
+            {
+              "contains": {
+                "const": "AmplitudeRetrace"
+              }
+            },
+            {
+              "contains": {
+                "const": "HeightRetrace"
+              }
+            },
+            {
+              "contains": {
+                "const": "PhaseRetrace"
+              }
+            },
+            {
+              "contains": {
+                "const": "ZSensorRetrace"
+              }
+            }
+          ],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "type": "array"
+        },
+        "channel_stats": {
+          "additionalProperties": true,
+          "properties": {
+            "AmplitudeRetrace": {
+              "additionalProperties": true,
+              "properties": {
+                "fraction_finite": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "has_nan_or_inf": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "max": {
+                  "const": 229.06271362304688,
+                  "type": "number"
+                },
+                "min": {
+                  "const": 178.9914093017578,
+                  "type": "number"
+                },
+                "range": {
+                  "const": 50.07130432128906,
+                  "type": "number"
+                },
+                "std": {
+                  "const": 2.700129356866095,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "fraction_finite",
+                "has_nan_or_inf",
+                "max",
+                "min",
+                "range",
+                "std"
+              ],
+              "type": "object"
+            },
+            "HeightRetrace": {
+              "additionalProperties": true,
+              "properties": {
+                "fraction_finite": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "has_nan_or_inf": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "max": {
+                  "const": 9.312076443279693e-09,
+                  "type": "number"
+                },
+                "min": {
+                  "const": 3.631213996158067e-09,
+                  "type": "number"
+                },
+                "range": {
+                  "const": 5.680862447121626e-09,
+                  "type": "number"
+                },
+                "std": {
+                  "const": 3.64883013996201e-10,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "fraction_finite",
+                "has_nan_or_inf",
+                "max",
+                "min",
+                "range",
+                "std"
+              ],
+              "type": "object"
+            },
+            "PhaseRetrace": {
+              "additionalProperties": true,
+              "properties": {
+                "fraction_finite": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "has_nan_or_inf": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "max": {
+                  "const": 6.442940048145829e-08,
+                  "type": "number"
+                },
+                "min": {
+                  "const": -1.704995611362392e-08,
+                  "type": "number"
+                },
+                "range": {
+                  "const": 8.147935659508221e-08,
+                  "type": "number"
+                },
+                "std": {
+                  "const": 6.700718671694367e-09,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "fraction_finite",
+                "has_nan_or_inf",
+                "max",
+                "min",
+                "range",
+                "std"
+              ],
+              "type": "object"
+            },
+            "ZSensorRetrace": {
+              "additionalProperties": true,
+              "properties": {
+                "error": {
+                  "const": "index 4 is out of bounds for axis 2 with size 4",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "AmplitudeRetrace",
+            "HeightRetrace",
+            "PhaseRetrace",
+            "ZSensorRetrace"
+          ],
+          "type": "object"
+        },
+        "data_type": {
+          "const": "float32",
+          "type": "string"
+        },
+        "deflection_invols": {
+          "const": 3.3162e-08,
+          "type": "number"
+        },
+        "drive_amplitude_v": {
+          "const": 0.0021362,
+          "type": "number"
+        },
+        "drive_frequency_hz": {
+          "const": 270835.8038216829,
+          "type": "number"
+        },
+        "has_amplitude": {
+          "const": true,
+          "type": "boolean"
+        },
+        "has_height": {
+          "const": true,
+          "type": "boolean"
+        },
+        "has_phase": {
+          "const": true,
+          "type": "boolean"
+        },
+        "has_zsensor": {
+          "const": true,
+          "type": "boolean"
+        },
+        "height_fraction_finite": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "height_has_nan_or_inf": {
+          "const": false,
+          "type": "boolean"
+        },
+        "height_z_range_nm": {
+          "const": 5.680862447121626,
+          "type": "number"
+        },
+        "height_z_std_nm": {
+          "const": 0.364883013996201,
+          "type": "number"
+        },
+        "humidity": {},
+        "ibw_version": {
+          "const": 5,
+          "type": "number"
+        },
+        "image_size_px": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 256
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "imaging_mode": {
+          "const": "AC Mode",
+          "type": "string"
+        },
+        "is_square": {
+          "const": true,
+          "type": "boolean"
+        },
+        "n_channels": {
+          "const": 4,
+          "type": "number"
+        },
+        "pixel_size_m": {
+          "const": 3.007296705882353e-08,
+          "type": "number"
+        },
+        "scan_angle_deg": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "scan_rate_hz": {
+          "const": 1.0016,
+          "type": "number"
+        },
+        "scan_size_x_m": {
+          "const": 7.698679567058825e-06,
+          "type": "number"
+        },
+        "scan_size_y_m": {
+          "const": 7.698679567058825e-06,
+          "type": "number"
+        },
+        "setpoint": {
+          "const": 0.0008,
+          "type": "number"
+        },
+        "setpoint_units": {},
+        "spring_constant_n_m": {
+          "const": 18.252,
+          "type": "number"
+        },
+        "temperature": {},
+        "tip_serial": {
+          "const": "6",
+          "type": "string"
+        },
+        "x_offset_m": {
+          "const": 3.007296705882353e-08,
+          "type": "number"
+        },
+        "x_offset_um": {
+          "const": 8.433399999999999,
+          "type": "number"
+        },
+        "y_offset_um": {
+          "const": 3.4825,
+          "type": "number"
+        },
+        "z_range_m": {}
+      },
+      "required": [
+        "channel_names",
+        "channel_stats",
+        "data_type",
+        "deflection_invols",
+        "drive_amplitude_v",
+        "drive_frequency_hz",
+        "has_amplitude",
+        "has_height",
+        "has_phase",
+        "has_zsensor",
+        "height_fraction_finite",
+        "height_has_nan_or_inf",
+        "height_z_range_nm",
+        "height_z_std_nm",
+        "humidity",
+        "ibw_version",
+        "image_size_px",
+        "imaging_mode",
+        "is_square",
+        "n_channels",
+        "pixel_size_m",
+        "scan_angle_deg",
+        "scan_rate_hz",
+        "scan_size_x_m",
+        "scan_size_y_m",
+        "setpoint",
+        "setpoint_units",
+        "spring_constant_n_m",
+        "temperature",
+        "tip_serial",
+        "x_offset_m",
+        "x_offset_um",
+        "y_offset_um",
+        "z_range_m"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "AmplitudeRetrace",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

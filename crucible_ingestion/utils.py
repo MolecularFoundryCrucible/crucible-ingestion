@@ -3,6 +3,7 @@ import base64
 import math
 import json
 import numpy as np
+from numbers import Rational
 from io import BytesIO
 from PIL import Image
 from datetime import datetime
@@ -51,6 +52,12 @@ def sanitize_metadata(obj):
         return {k: sanitize_metadata(v) for k, v in obj.items()}
     if isinstance(obj, list):
         return [sanitize_metadata(v) for v in obj]
+    if isinstance(obj, tuple):
+        return [sanitize_metadata(v) for v in obj]
+    # PIL's IFDRational (TIFF resolution tags) and other Rationals are not JSON types
+    if isinstance(obj, Rational) and not isinstance(obj, int):
+        # TIFF allows a zero denominator, which float() cannot represent
+        return None if obj.denominator == 0 else float(obj)
     if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
         return None
     if isinstance(obj, bytes):

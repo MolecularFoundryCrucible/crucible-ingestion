@@ -9,7 +9,7 @@ import igor2 as igor
 import numpy as np
 from datetime import datetime, timedelta
 
-from .crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor, TMP_DIR
 from ..client import get_client
 
 logger = logging.getLogger(__name__)
@@ -229,7 +229,8 @@ class AFMIngestor(CrucibleDatasetIngestor):
 
 
     def make_retrace_plot(self, array, pname):
-        spec_map_filename = f"{os.path.basename(self.file_to_upload)}_{pname}.png"
+        os.makedirs(TMP_DIR, exist_ok=True)
+        spec_map_filename = os.path.join(TMP_DIR, f"{os.path.basename(self.file_to_upload)}_{pname}.png")
 
         fig, ax = plt.subplots()
         ax.imshow(array, cmap='Greys')

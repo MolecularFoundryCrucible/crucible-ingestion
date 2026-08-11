@@ -3,7 +3,7 @@ import shutil
 import re
 import logging
 from crucible.utils.io import run_shell
-from .crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor, TMP_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -39,15 +39,15 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
     def get_scientific_metadata(self):
         CrucibleDatasetIngestor.get_scientific_metadata(self)
         logger.info("running get scientific metadata")
-        tmp_dir = './tmp_files'
-        os.makedirs(tmp_dir, exist_ok = True)
-        self.tmp_folder = os.path.join(tmp_dir, os.path.basename(self.file_to_upload.replace(".zip", "")))
+        os.makedirs(TMP_DIR, exist_ok = True)
+        self.tmp_folder = os.path.join(TMP_DIR, os.path.basename(self.file_to_upload.replace(".zip", "")))
         logger.info(f"{self.tmp_folder=}")
 
-        # extract the files
+        # extract the files; -o so leftovers from a previous run never trigger
+        # unzip's interactive overwrite prompt, which would block on stdin
         if os.path.exists(self.tmp_folder):
             shutil.rmtree(self.tmp_folder)
-        unzip_out = run_shell(f"unzip -qq '{self.file_to_upload}' -d ./tmp_files/")
+        unzip_out = run_shell(f"unzip -qq -o '{self.file_to_upload}' -d '{TMP_DIR}/'")
         logger.info(unzip_out.stderr)
 
         # sample parsing

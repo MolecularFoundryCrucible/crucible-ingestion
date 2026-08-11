@@ -6,7 +6,8 @@ import zipfile
 import pandas as pd
 from pathlib import Path
 
-from .crucible_ingestor import CrucibleDatasetIngestor
+from .crucible_ingestor import CrucibleDatasetIngestor, TMP_DIR
+from ..client import get_client
 logger = logging.getLogger(__name__)
 
 # from Kas / Ed code base
@@ -60,11 +61,12 @@ class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
         populate the metadata_dictionary
         of the object.
         """
-        extract_path = os.path.basename(self.file_to_upload).replace('.zip', '')
+        os.makedirs(TMP_DIR, exist_ok=True)
+        extract_path = os.path.join(TMP_DIR, os.path.basename(self.file_to_upload).replace('.zip', ''))
         with zipfile.ZipFile(self.file_to_upload) as zf:
             zf.extractall(extract_path)
         logger.info(f'{extract_path=}')
-        logger.info(f'{os.listdir()=}')
+        logger.info(f'{os.listdir(TMP_DIR)=}')
         samples_in_project= get_client().samples.list(project_id = '10k_perovskites', sample_type = 'thin film', limit = 10000)
         samples_by_name = {sample["sample_name"]: sample for sample in samples_in_project}
        

@@ -1,0 +1,4214 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 8,
+      "minItems": 8,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "yaml",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Spin Run for TF006097 - 0tjn7m45qxzqk",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {},
+                "links": {},
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0000-0002-9131-638X",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "summer-school-2026-FB-697",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {},
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tjn7m45qxzqk000gp2c4m4mag",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7k6zy1rdx0016tvbmw6qn8"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "annealing_humidity": {
+                  "const": 14.8,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "creation_time": {
+                  "const": "2026-07-01T12:11:57.374189-07:00",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "A",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 82.731201171875,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 80.0,
+                  "type": "number"
+                },
+                "instrument_name": {
+                  "const": "SpinBot",
+                  "type": "string"
+                },
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "project_id": {
+                  "const": "",
+                  "type": "string"
+                },
+                "run_id": {
+                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
+                  "type": "string"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0016tvbmw6qn8",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006097",
+                  "type": "string"
+                },
+                "session_name": {},
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_humidity": {
+                  "const": 15.26,
+                  "type": "number"
+                },
+                "spin_recipe_yaml": {
+                  "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+                  "type": "string"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "substrate": {
+                  "const": "Sciprios-ITO",
+                  "type": "string"
+                },
+                "substrate_cleaning": {
+                  "const": "Acetone_IPA",
+                  "type": "string"
+                },
+                "substrate_cleaning_operator": {
+                  "const": "Madeline",
+                  "type": "string"
+                },
+                "substrate_cleaning_timestamp": {
+                  "const": "2026-05-15",
+                  "type": "string"
+                },
+                "substrate_preparation": {
+                  "const": "UV-Ozone",
+                  "type": "string"
+                },
+                "substrate_preparation_timestamp": {
+                  "const": "2026-06-30T18:35",
+                  "type": "string"
+                },
+                "substrate_scribed": {
+                  "const": "",
+                  "type": "string"
+                },
+                "tags": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "by"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "commas (optional)"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "list"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "separated"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "tags"
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "tray_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "user_orcid": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annealing_atmosphere",
+                "annealing_duration",
+                "annealing_humidity",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "creation_time",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "instrument_name",
+                "measurement",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "project_id",
+                "run_id",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "session_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_atmosphere",
+                "spin_duration",
+                "spin_humidity",
+                "spin_recipe_yaml",
+                "spin_speed",
+                "substrate",
+                "substrate_cleaning",
+                "substrate_cleaning_operator",
+                "substrate_cleaning_timestamp",
+                "substrate_preparation",
+                "substrate_preparation_timestamp",
+                "substrate_scribed",
+                "tags",
+                "tray_position",
+                "user_orcid"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "yaml",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Spin Run for TF006098 - 0tjn7m45qxzqk",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {},
+                "links": {},
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0000-0002-9131-638X",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "summer-school-2026-FB-697",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {},
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tjn7m45qxzqk000gp2c4m4mag",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7k6zy1rdx002tzaspgfv6c"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "annealing_humidity": {
+                  "const": 14.8,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "creation_time": {
+                  "const": "2026-07-01T12:11:57.374189-07:00",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "B",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 98.78485107421875,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 100.0,
+                  "type": "number"
+                },
+                "instrument_name": {
+                  "const": "SpinBot",
+                  "type": "string"
+                },
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "project_id": {
+                  "const": "",
+                  "type": "string"
+                },
+                "run_id": {
+                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
+                  "type": "string"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx002tzaspgfv6c",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006098",
+                  "type": "string"
+                },
+                "session_name": {},
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_humidity": {
+                  "const": 15.26,
+                  "type": "number"
+                },
+                "spin_recipe_yaml": {
+                  "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+                  "type": "string"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "substrate": {
+                  "const": "Sciprios-ITO",
+                  "type": "string"
+                },
+                "substrate_cleaning": {
+                  "const": "Acetone_IPA",
+                  "type": "string"
+                },
+                "substrate_cleaning_operator": {
+                  "const": "Madeline",
+                  "type": "string"
+                },
+                "substrate_cleaning_timestamp": {
+                  "const": "2026-05-15",
+                  "type": "string"
+                },
+                "substrate_preparation": {
+                  "const": "UV-Ozone",
+                  "type": "string"
+                },
+                "substrate_preparation_timestamp": {
+                  "const": "2026-06-30T18:35",
+                  "type": "string"
+                },
+                "substrate_scribed": {
+                  "const": "",
+                  "type": "string"
+                },
+                "tags": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "by"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "commas (optional)"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "list"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "separated"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "tags"
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "tray_position": {
+                  "const": 2,
+                  "type": "number"
+                },
+                "user_orcid": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annealing_atmosphere",
+                "annealing_duration",
+                "annealing_humidity",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "creation_time",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "instrument_name",
+                "measurement",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "project_id",
+                "run_id",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "session_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_atmosphere",
+                "spin_duration",
+                "spin_humidity",
+                "spin_recipe_yaml",
+                "spin_speed",
+                "substrate",
+                "substrate_cleaning",
+                "substrate_cleaning_operator",
+                "substrate_cleaning_timestamp",
+                "substrate_preparation",
+                "substrate_preparation_timestamp",
+                "substrate_scribed",
+                "tags",
+                "tray_position",
+                "user_orcid"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "yaml",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Spin Run for TF006099 - 0tjn7m45qxzqk",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {},
+                "links": {},
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0000-0002-9131-638X",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "summer-school-2026-FB-697",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {},
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tjn7m45qxzqk000gp2c4m4mag",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7k6zy1rdx0032ptzn5w874"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "annealing_humidity": {
+                  "const": 14.8,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "creation_time": {
+                  "const": "2026-07-01T12:11:57.374189-07:00",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "C",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 139.7387237548828,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 140.0,
+                  "type": "number"
+                },
+                "instrument_name": {
+                  "const": "SpinBot",
+                  "type": "string"
+                },
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "project_id": {
+                  "const": "",
+                  "type": "string"
+                },
+                "run_id": {
+                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
+                  "type": "string"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0032ptzn5w874",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006099",
+                  "type": "string"
+                },
+                "session_name": {},
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_humidity": {
+                  "const": 15.26,
+                  "type": "number"
+                },
+                "spin_recipe_yaml": {
+                  "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+                  "type": "string"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "substrate": {
+                  "const": "Sciprios-ITO",
+                  "type": "string"
+                },
+                "substrate_cleaning": {
+                  "const": "Acetone_IPA",
+                  "type": "string"
+                },
+                "substrate_cleaning_operator": {
+                  "const": "Madeline",
+                  "type": "string"
+                },
+                "substrate_cleaning_timestamp": {
+                  "const": "2026-05-15",
+                  "type": "string"
+                },
+                "substrate_preparation": {
+                  "const": "UV-Ozone",
+                  "type": "string"
+                },
+                "substrate_preparation_timestamp": {
+                  "const": "2026-06-30T18:35",
+                  "type": "string"
+                },
+                "substrate_scribed": {
+                  "const": "",
+                  "type": "string"
+                },
+                "tags": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "by"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "commas (optional)"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "list"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "separated"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "tags"
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "tray_position": {
+                  "const": 3,
+                  "type": "number"
+                },
+                "user_orcid": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annealing_atmosphere",
+                "annealing_duration",
+                "annealing_humidity",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "creation_time",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "instrument_name",
+                "measurement",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "project_id",
+                "run_id",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "session_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_atmosphere",
+                "spin_duration",
+                "spin_humidity",
+                "spin_recipe_yaml",
+                "spin_speed",
+                "substrate",
+                "substrate_cleaning",
+                "substrate_cleaning_operator",
+                "substrate_cleaning_timestamp",
+                "substrate_preparation",
+                "substrate_preparation_timestamp",
+                "substrate_scribed",
+                "tags",
+                "tray_position",
+                "user_orcid"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "yaml",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Spin Run for TF006100 - 0tjn7m45qxzqk",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {},
+                "links": {},
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0000-0002-9131-638X",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "summer-school-2026-FB-697",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {},
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tjn7m45qxzqk000gp2c4m4mag",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7k6zy1rdx0043g3b12n09c"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "annealing_humidity": {
+                  "const": 14.8,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "creation_time": {
+                  "const": "2026-07-01T12:11:57.374189-07:00",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "D",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 121.42891693115234,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 120.0,
+                  "type": "number"
+                },
+                "instrument_name": {
+                  "const": "SpinBot",
+                  "type": "string"
+                },
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "project_id": {
+                  "const": "",
+                  "type": "string"
+                },
+                "run_id": {
+                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
+                  "type": "string"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0043g3b12n09c",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006100",
+                  "type": "string"
+                },
+                "session_name": {},
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_humidity": {
+                  "const": 15.26,
+                  "type": "number"
+                },
+                "spin_recipe_yaml": {
+                  "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+                  "type": "string"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "substrate": {
+                  "const": "Sciprios-ITO",
+                  "type": "string"
+                },
+                "substrate_cleaning": {
+                  "const": "Acetone_IPA",
+                  "type": "string"
+                },
+                "substrate_cleaning_operator": {
+                  "const": "Madeline",
+                  "type": "string"
+                },
+                "substrate_cleaning_timestamp": {
+                  "const": "2026-05-15",
+                  "type": "string"
+                },
+                "substrate_preparation": {
+                  "const": "UV-Ozone",
+                  "type": "string"
+                },
+                "substrate_preparation_timestamp": {
+                  "const": "2026-06-30T18:35",
+                  "type": "string"
+                },
+                "substrate_scribed": {
+                  "const": "",
+                  "type": "string"
+                },
+                "tags": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "by"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "commas (optional)"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "list"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "separated"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "tags"
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "tray_position": {
+                  "const": 4,
+                  "type": "number"
+                },
+                "user_orcid": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annealing_atmosphere",
+                "annealing_duration",
+                "annealing_humidity",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "creation_time",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "instrument_name",
+                "measurement",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "project_id",
+                "run_id",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "session_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_atmosphere",
+                "spin_duration",
+                "spin_humidity",
+                "spin_recipe_yaml",
+                "spin_speed",
+                "substrate",
+                "substrate_cleaning",
+                "substrate_cleaning_operator",
+                "substrate_cleaning_timestamp",
+                "substrate_preparation",
+                "substrate_preparation_timestamp",
+                "substrate_scribed",
+                "tags",
+                "tray_position",
+                "user_orcid"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "yaml",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Spin Run for TF006101 - 0tjn7m45qxzqk",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {},
+                "links": {},
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0000-0002-9131-638X",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "summer-school-2026-FB-697",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {},
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tjn7m45qxzqk000gp2c4m4mag",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7k6zy1rdx0055xdnk566qm"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "annealing_humidity": {
+                  "const": 14.8,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "creation_time": {
+                  "const": "2026-07-01T12:11:57.374189-07:00",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "E",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 78.41502380371094,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 80.0,
+                  "type": "number"
+                },
+                "instrument_name": {
+                  "const": "SpinBot",
+                  "type": "string"
+                },
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "project_id": {
+                  "const": "",
+                  "type": "string"
+                },
+                "run_id": {
+                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
+                  "type": "string"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0055xdnk566qm",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006101",
+                  "type": "string"
+                },
+                "session_name": {},
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_humidity": {
+                  "const": 15.26,
+                  "type": "number"
+                },
+                "spin_recipe_yaml": {
+                  "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+                  "type": "string"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "substrate": {
+                  "const": "Sciprios-ITO",
+                  "type": "string"
+                },
+                "substrate_cleaning": {
+                  "const": "Acetone_IPA",
+                  "type": "string"
+                },
+                "substrate_cleaning_operator": {
+                  "const": "Madeline",
+                  "type": "string"
+                },
+                "substrate_cleaning_timestamp": {
+                  "const": "2026-05-15",
+                  "type": "string"
+                },
+                "substrate_preparation": {
+                  "const": "UV-Ozone",
+                  "type": "string"
+                },
+                "substrate_preparation_timestamp": {
+                  "const": "2026-06-30T18:35",
+                  "type": "string"
+                },
+                "substrate_scribed": {
+                  "const": "",
+                  "type": "string"
+                },
+                "tags": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "by"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "commas (optional)"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "list"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "separated"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "tags"
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "tray_position": {
+                  "const": 5,
+                  "type": "number"
+                },
+                "user_orcid": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annealing_atmosphere",
+                "annealing_duration",
+                "annealing_humidity",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "creation_time",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "instrument_name",
+                "measurement",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "project_id",
+                "run_id",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "session_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_atmosphere",
+                "spin_duration",
+                "spin_humidity",
+                "spin_recipe_yaml",
+                "spin_speed",
+                "substrate",
+                "substrate_cleaning",
+                "substrate_cleaning_operator",
+                "substrate_cleaning_timestamp",
+                "substrate_preparation",
+                "substrate_preparation_timestamp",
+                "substrate_scribed",
+                "tags",
+                "tray_position",
+                "user_orcid"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "yaml",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Spin Run for TF006102 - 0tjn7m45qxzqk",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {},
+                "links": {},
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0000-0002-9131-638X",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "summer-school-2026-FB-697",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {},
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tjn7m45qxzqk000gp2c4m4mag",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7k6zy1rdx006zn80akpebg"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "annealing_humidity": {
+                  "const": 14.8,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "creation_time": {
+                  "const": "2026-07-01T12:11:57.374189-07:00",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "F",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 99.64702606201172,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 100.0,
+                  "type": "number"
+                },
+                "instrument_name": {
+                  "const": "SpinBot",
+                  "type": "string"
+                },
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "project_id": {
+                  "const": "",
+                  "type": "string"
+                },
+                "run_id": {
+                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
+                  "type": "string"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx006zn80akpebg",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006102",
+                  "type": "string"
+                },
+                "session_name": {},
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_humidity": {
+                  "const": 15.26,
+                  "type": "number"
+                },
+                "spin_recipe_yaml": {
+                  "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+                  "type": "string"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "substrate": {
+                  "const": "Sciprios-ITO",
+                  "type": "string"
+                },
+                "substrate_cleaning": {
+                  "const": "Acetone_IPA",
+                  "type": "string"
+                },
+                "substrate_cleaning_operator": {
+                  "const": "Madeline",
+                  "type": "string"
+                },
+                "substrate_cleaning_timestamp": {
+                  "const": "2026-05-15",
+                  "type": "string"
+                },
+                "substrate_preparation": {
+                  "const": "UV-Ozone",
+                  "type": "string"
+                },
+                "substrate_preparation_timestamp": {
+                  "const": "2026-06-30T18:35",
+                  "type": "string"
+                },
+                "substrate_scribed": {
+                  "const": "",
+                  "type": "string"
+                },
+                "tags": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "by"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "commas (optional)"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "list"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "separated"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "tags"
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "tray_position": {
+                  "const": 6,
+                  "type": "number"
+                },
+                "user_orcid": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annealing_atmosphere",
+                "annealing_duration",
+                "annealing_humidity",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "creation_time",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "instrument_name",
+                "measurement",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "project_id",
+                "run_id",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "session_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_atmosphere",
+                "spin_duration",
+                "spin_humidity",
+                "spin_recipe_yaml",
+                "spin_speed",
+                "substrate",
+                "substrate_cleaning",
+                "substrate_cleaning_operator",
+                "substrate_cleaning_timestamp",
+                "substrate_preparation",
+                "substrate_preparation_timestamp",
+                "substrate_scribed",
+                "tags",
+                "tray_position",
+                "user_orcid"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "yaml",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Spin Run for TF006103 - 0tjn7m45qxzqk",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {},
+                "links": {},
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0000-0002-9131-638X",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "summer-school-2026-FB-697",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {},
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tjn7m45qxzqk000gp2c4m4mag",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7k6zy1rdx007kjgtrqsgvm"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "annealing_humidity": {
+                  "const": 14.8,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "creation_time": {
+                  "const": "2026-07-01T12:11:57.374189-07:00",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "G",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 139.6581573486328,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 140.0,
+                  "type": "number"
+                },
+                "instrument_name": {
+                  "const": "SpinBot",
+                  "type": "string"
+                },
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "project_id": {
+                  "const": "",
+                  "type": "string"
+                },
+                "run_id": {
+                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
+                  "type": "string"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx007kjgtrqsgvm",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006103",
+                  "type": "string"
+                },
+                "session_name": {},
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_humidity": {
+                  "const": 15.26,
+                  "type": "number"
+                },
+                "spin_recipe_yaml": {
+                  "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+                  "type": "string"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "substrate": {
+                  "const": "Sciprios-ITO",
+                  "type": "string"
+                },
+                "substrate_cleaning": {
+                  "const": "Acetone_IPA",
+                  "type": "string"
+                },
+                "substrate_cleaning_operator": {
+                  "const": "Madeline",
+                  "type": "string"
+                },
+                "substrate_cleaning_timestamp": {
+                  "const": "2026-05-15",
+                  "type": "string"
+                },
+                "substrate_preparation": {
+                  "const": "UV-Ozone",
+                  "type": "string"
+                },
+                "substrate_preparation_timestamp": {
+                  "const": "2026-06-30T18:35",
+                  "type": "string"
+                },
+                "substrate_scribed": {
+                  "const": "",
+                  "type": "string"
+                },
+                "tags": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "by"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "commas (optional)"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "list"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "separated"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "tags"
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "tray_position": {
+                  "const": 7,
+                  "type": "number"
+                },
+                "user_orcid": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annealing_atmosphere",
+                "annealing_duration",
+                "annealing_humidity",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "creation_time",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "instrument_name",
+                "measurement",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "project_id",
+                "run_id",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "session_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_atmosphere",
+                "spin_duration",
+                "spin_humidity",
+                "spin_recipe_yaml",
+                "spin_speed",
+                "substrate",
+                "substrate_cleaning",
+                "substrate_cleaning_operator",
+                "substrate_cleaning_timestamp",
+                "substrate_preparation",
+                "substrate_preparation_timestamp",
+                "substrate_scribed",
+                "tags",
+                "tray_position",
+                "user_orcid"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "dataset": {
+              "additionalProperties": true,
+              "properties": {
+                "creation_time": {},
+                "data_format": {
+                  "const": "yaml",
+                  "type": "string"
+                },
+                "data_type": {},
+                "dataset_name": {
+                  "const": "Spin Run for TF006104 - 0tjn7m45qxzqk",
+                  "type": "string"
+                },
+                "deletion_request": {},
+                "instrument_name": {},
+                "links": {},
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "modification_time": {},
+                "owner_orcid": {
+                  "const": "0000-0002-9131-638X",
+                  "type": "string"
+                },
+                "project_id": {
+                  "const": "summer-school-2026-FB-697",
+                  "type": "string"
+                },
+                "public": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "resource_type": {},
+                "scientific_metadata": {},
+                "session_name": {},
+                "size": {},
+                "timestamp": {},
+                "unique_id": {}
+              },
+              "required": [
+                "creation_time",
+                "data_format",
+                "data_type",
+                "dataset_name",
+                "deletion_request",
+                "instrument_name",
+                "links",
+                "measurement",
+                "modification_time",
+                "owner_orcid",
+                "project_id",
+                "public",
+                "resource_type",
+                "scientific_metadata",
+                "session_name",
+                "size",
+                "timestamp",
+                "unique_id"
+              ],
+              "type": "object"
+            },
+            "parent_id": {
+              "const": "0tjn7m45qxzqk000gp2c4m4mag",
+              "type": "string"
+            },
+            "sample_links": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7k6zy1rdx0082qgmfm11gm"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
+            "scientific_metadata": {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "annealing_humidity": {
+                  "const": 14.8,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "creation_time": {
+                  "const": "2026-07-01T12:11:57.374189-07:00",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "H",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 118.66020965576172,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 120.0,
+                  "type": "number"
+                },
+                "instrument_name": {
+                  "const": "SpinBot",
+                  "type": "string"
+                },
+                "measurement": {
+                  "const": "spin_run",
+                  "type": "string"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "project_id": {
+                  "const": "",
+                  "type": "string"
+                },
+                "run_id": {
+                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
+                  "type": "string"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0082qgmfm11gm",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006104",
+                  "type": "string"
+                },
+                "session_name": {},
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_atmosphere": {
+                  "const": "ambient",
+                  "type": "string"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_humidity": {
+                  "const": 15.26,
+                  "type": "number"
+                },
+                "spin_recipe_yaml": {
+                  "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+                  "type": "string"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "substrate": {
+                  "const": "Sciprios-ITO",
+                  "type": "string"
+                },
+                "substrate_cleaning": {
+                  "const": "Acetone_IPA",
+                  "type": "string"
+                },
+                "substrate_cleaning_operator": {
+                  "const": "Madeline",
+                  "type": "string"
+                },
+                "substrate_cleaning_timestamp": {
+                  "const": "2026-05-15",
+                  "type": "string"
+                },
+                "substrate_preparation": {
+                  "const": "UV-Ozone",
+                  "type": "string"
+                },
+                "substrate_preparation_timestamp": {
+                  "const": "2026-06-30T18:35",
+                  "type": "string"
+                },
+                "substrate_scribed": {
+                  "const": "",
+                  "type": "string"
+                },
+                "tags": {
+                  "allOf": [
+                    {
+                      "contains": {
+                        "const": "by"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "commas (optional)"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "list"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "separated"
+                      }
+                    },
+                    {
+                      "contains": {
+                        "const": "tags"
+                      }
+                    }
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "maxItems": 5,
+                  "minItems": 5,
+                  "type": "array"
+                },
+                "tray_position": {
+                  "const": 8,
+                  "type": "number"
+                },
+                "user_orcid": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "annealing_atmosphere",
+                "annealing_duration",
+                "annealing_humidity",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "creation_time",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "instrument_name",
+                "measurement",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "project_id",
+                "run_id",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "session_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_atmosphere",
+                "spin_duration",
+                "spin_humidity",
+                "spin_recipe_yaml",
+                "spin_speed",
+                "substrate",
+                "substrate_cleaning",
+                "substrate_cleaning_operator",
+                "substrate_cleaning_timestamp",
+                "substrate_preparation",
+                "substrate_preparation_timestamp",
+                "substrate_scribed",
+                "tags",
+                "tray_position",
+                "user_orcid"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "dataset",
+            "parent_id",
+            "sample_links",
+            "scientific_metadata"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "yaml",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "autobot_spin_run",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "Autobot Spin Run Batch 004",
+          "type": "string"
+        },
+        "instrument_name": {
+          "const": "spinbot",
+          "type": "string"
+        },
+        "measurement": {
+          "const": "thin_film_deposition",
+          "type": "string"
+        },
+        "owner_orcid": {
+          "const": "0000-0002-9131-638X",
+          "type": "string"
+        },
+        "project_id": {
+          "const": "summer-school-2026-FB-697",
+          "type": "string"
+        },
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 4746,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-07-28T18:20:24.805682+00:00",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "0tjn7m45qxzqk000gp2c4m4mag",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "SpinRunIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "SpinBot"
+          }
+        },
+        {
+          "contains": {
+            "const": "Thin Film Deposition Run"
+          }
+        },
+        {
+          "contains": {
+            "const": "spin_run"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 9,
+      "minItems": 9,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": false,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "maxItems": 0,
+              "minItems": 0,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TRAY0001",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "spinbot tray",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7jf4qdrfd000rn5jn6284c",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7jf4qdrfd000rn5jn6284c"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "0tk8ybdyd1y9k0001a5k4mnn6w"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006097",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "thin film",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7k6zy1rdx0016tvbmw6qn8",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7jf4qdrfd000rn5jn6284c"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "0tk8ybdyd1y9k0001a5k4mnn6w"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006098",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "thin film",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7k6zy1rdx002tzaspgfv6c",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7jf4qdrfd000rn5jn6284c"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "0tk8ybdyd1y9k0001a5k4mnn6w"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006099",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "thin film",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7k6zy1rdx0032ptzn5w874",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7jf4qdrfd000rn5jn6284c"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "0tk8ybdyd1y9k0001a5k4mnn6w"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006100",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "thin film",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7k6zy1rdx0043g3b12n09c",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7jf4qdrfd000rn5jn6284c"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "0tk8ybdyd1y9k0001a5k4mnn6w"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006101",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "thin film",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7k6zy1rdx0055xdnk566qm",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7jf4qdrfd000rn5jn6284c"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "0tk8ybdyd1y9k0001a5k4mnn6w"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006102",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "thin film",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7k6zy1rdx006zn80akpebg",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7jf4qdrfd000rn5jn6284c"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "0tk8ybdyd1y9k0001a5k4mnn6w"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006103",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "thin film",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7k6zy1rdx007kjgtrqsgvm",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": true,
+          "properties": {
+            "link_to_dataset": {
+              "const": true,
+              "type": "boolean"
+            },
+            "owner_orcid": {
+              "const": "0000-0002-9131-638X",
+              "type": "string"
+            },
+            "parent_ids": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "0tjn7jf4qdrfd000rn5jn6284c"
+                  }
+                },
+                {
+                  "contains": {
+                    "const": "0tk8ybdyd1y9k0001a5k4mnn6w"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "project_id": {
+              "const": "summer-school-2026-FB-697",
+              "type": "string"
+            },
+            "sample_name": {
+              "const": "TF006104",
+              "type": "string"
+            },
+            "sample_type": {
+              "const": "thin film",
+              "type": "string"
+            },
+            "unique_id": {
+              "const": "0tjn7k6zy1rdx0082qgmfm11gm",
+              "type": "string"
+            }
+          },
+          "required": [
+            "link_to_dataset",
+            "owner_orcid",
+            "parent_ids",
+            "project_id",
+            "sample_name",
+            "sample_type",
+            "unique_id"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "annealing_atmosphere": {
+          "const": "ambient",
+          "type": "string"
+        },
+        "annealing_duration": {
+          "const": 600,
+          "type": "number"
+        },
+        "annealing_humidity": {
+          "const": 14.8,
+          "type": "number"
+        },
+        "base_heater_temperature": {
+          "const": 120,
+          "type": "number"
+        },
+        "batch_id": {
+          "const": "0tjn7jf4qdrfd000rn5jn6284c",
+          "type": "string"
+        },
+        "batch_name": {
+          "const": "TRAY0001",
+          "type": "string"
+        },
+        "creation_time": {
+          "const": "2026-07-01T12:11:57.374189-07:00",
+          "type": "string"
+        },
+        "heater_position": {
+          "const": "H",
+          "type": "string"
+        },
+        "heater_pv_temp": {
+          "const": 118.66020965576172,
+          "type": "number"
+        },
+        "heater_sv_temp": {
+          "const": 120.0,
+          "type": "number"
+        },
+        "instrument_name": {
+          "const": "SpinBot",
+          "type": "string"
+        },
+        "measurement": {
+          "const": "spin_run",
+          "type": "string"
+        },
+        "precursor_solution_name": {
+          "const": "PS0001",
+          "type": "string"
+        },
+        "precursor_solution_position": {
+          "const": 1,
+          "type": "number"
+        },
+        "project_id": {
+          "const": "",
+          "type": "string"
+        },
+        "run_id": {
+          "const": "0tjn7m45qxzqk000gp2c4m4mag",
+          "type": "string"
+        },
+        "sample_id": {
+          "const": "0tjn7k6zy1rdx0082qgmfm11gm",
+          "type": "string"
+        },
+        "sample_name": {
+          "const": "TF006104",
+          "type": "string"
+        },
+        "samples": {
+          "maxItems": 8,
+          "minItems": 8,
+          "prefixItems": [
+            {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "A",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 82.731201171875,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 80.0,
+                  "type": "number"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0016tvbmw6qn8",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006097",
+                  "type": "string"
+                },
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "tray_position": {
+                  "const": 1,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annealing_duration",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_duration",
+                "spin_speed",
+                "tray_position"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "B",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 98.78485107421875,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 100.0,
+                  "type": "number"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx002tzaspgfv6c",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006098",
+                  "type": "string"
+                },
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "tray_position": {
+                  "const": 2,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annealing_duration",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_duration",
+                "spin_speed",
+                "tray_position"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "C",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 139.7387237548828,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 140.0,
+                  "type": "number"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0032ptzn5w874",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006099",
+                  "type": "string"
+                },
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "tray_position": {
+                  "const": 3,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annealing_duration",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_duration",
+                "spin_speed",
+                "tray_position"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "D",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 121.42891693115234,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 120.0,
+                  "type": "number"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0043g3b12n09c",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006100",
+                  "type": "string"
+                },
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "tray_position": {
+                  "const": 4,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annealing_duration",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_duration",
+                "spin_speed",
+                "tray_position"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "E",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 78.41502380371094,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 80.0,
+                  "type": "number"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0055xdnk566qm",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006101",
+                  "type": "string"
+                },
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "tray_position": {
+                  "const": 5,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annealing_duration",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_duration",
+                "spin_speed",
+                "tray_position"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "F",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 99.64702606201172,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 100.0,
+                  "type": "number"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx006zn80akpebg",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006102",
+                  "type": "string"
+                },
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "tray_position": {
+                  "const": 6,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annealing_duration",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_duration",
+                "spin_speed",
+                "tray_position"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "G",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 139.6581573486328,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 140.0,
+                  "type": "number"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx007kjgtrqsgvm",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006103",
+                  "type": "string"
+                },
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "tray_position": {
+                  "const": 7,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annealing_duration",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_duration",
+                "spin_speed",
+                "tray_position"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": true,
+              "properties": {
+                "annealing_duration": {
+                  "const": 600,
+                  "type": "number"
+                },
+                "base_heater_temperature": {
+                  "const": 120,
+                  "type": "number"
+                },
+                "batch_id": {
+                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
+                  "type": "string"
+                },
+                "batch_name": {
+                  "const": "TRAY0001",
+                  "type": "string"
+                },
+                "heater_position": {
+                  "const": "H",
+                  "type": "string"
+                },
+                "heater_pv_temp": {
+                  "const": 118.66020965576172,
+                  "type": "number"
+                },
+                "heater_sv_temp": {
+                  "const": 120.0,
+                  "type": "number"
+                },
+                "precursor_solution_name": {
+                  "const": "PS0001",
+                  "type": "string"
+                },
+                "precursor_solution_position": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "sample_description": {
+                  "const": "",
+                  "type": "string"
+                },
+                "sample_id": {
+                  "const": "0tjn7k6zy1rdx0082qgmfm11gm",
+                  "type": "string"
+                },
+                "sample_name": {
+                  "const": "TF006104",
+                  "type": "string"
+                },
+                "solution_number": {
+                  "const": 1,
+                  "type": "number"
+                },
+                "solution_volume": {
+                  "const": 40,
+                  "type": "number"
+                },
+                "spin_acceleration": {
+                  "const": 1000,
+                  "type": "number"
+                },
+                "spin_duration": {
+                  "const": 30,
+                  "type": "number"
+                },
+                "spin_speed": {
+                  "const": 5000,
+                  "type": "number"
+                },
+                "tray_position": {
+                  "const": 8,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "annealing_duration",
+                "base_heater_temperature",
+                "batch_id",
+                "batch_name",
+                "heater_position",
+                "heater_pv_temp",
+                "heater_sv_temp",
+                "precursor_solution_name",
+                "precursor_solution_position",
+                "sample_description",
+                "sample_id",
+                "sample_name",
+                "solution_number",
+                "solution_volume",
+                "spin_acceleration",
+                "spin_duration",
+                "spin_speed",
+                "tray_position"
+              ],
+              "type": "object"
+            }
+          ],
+          "type": "array"
+        },
+        "session_name": {},
+        "solution_number": {
+          "const": 1,
+          "type": "number"
+        },
+        "solution_volume": {
+          "const": 40,
+          "type": "number"
+        },
+        "spin_acceleration": {
+          "const": 1000,
+          "type": "number"
+        },
+        "spin_atmosphere": {
+          "const": "ambient",
+          "type": "string"
+        },
+        "spin_duration": {
+          "const": 30,
+          "type": "number"
+        },
+        "spin_humidity": {
+          "const": 15.26,
+          "type": "number"
+        },
+        "spin_recipe_yaml": {
+          "const": "C:/Users/lab/Desktop/Spinbot_troubleshoot 20250908/Config/10k/20260701_SCA52_1Carrier_wwopmma_1psOnly.yaml",
+          "type": "string"
+        },
+        "spin_speed": {
+          "const": 5000,
+          "type": "number"
+        },
+        "substrate": {
+          "const": "Sciprios-ITO",
+          "type": "string"
+        },
+        "substrate_cleaning": {
+          "const": "Acetone_IPA",
+          "type": "string"
+        },
+        "substrate_cleaning_operator": {
+          "const": "Madeline",
+          "type": "string"
+        },
+        "substrate_cleaning_timestamp": {
+          "const": "2026-05-15",
+          "type": "string"
+        },
+        "substrate_preparation": {
+          "const": "UV-Ozone",
+          "type": "string"
+        },
+        "substrate_preparation_timestamp": {
+          "const": "2026-06-30T18:35",
+          "type": "string"
+        },
+        "substrate_scribed": {
+          "const": "",
+          "type": "string"
+        },
+        "tags": {
+          "allOf": [
+            {
+              "contains": {
+                "const": "by"
+              }
+            },
+            {
+              "contains": {
+                "const": "commas (optional)"
+              }
+            },
+            {
+              "contains": {
+                "const": "list"
+              }
+            },
+            {
+              "contains": {
+                "const": "separated"
+              }
+            },
+            {
+              "contains": {
+                "const": "tags"
+              }
+            }
+          ],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "type": "array"
+        },
+        "tray_position": {
+          "const": 8,
+          "type": "number"
+        },
+        "user_orcid": {
+          "const": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "annealing_atmosphere",
+        "annealing_duration",
+        "annealing_humidity",
+        "base_heater_temperature",
+        "batch_id",
+        "batch_name",
+        "creation_time",
+        "heater_position",
+        "heater_pv_temp",
+        "heater_sv_temp",
+        "instrument_name",
+        "measurement",
+        "precursor_solution_name",
+        "precursor_solution_position",
+        "project_id",
+        "run_id",
+        "sample_id",
+        "sample_name",
+        "samples",
+        "session_name",
+        "solution_number",
+        "solution_volume",
+        "spin_acceleration",
+        "spin_atmosphere",
+        "spin_duration",
+        "spin_humidity",
+        "spin_recipe_yaml",
+        "spin_speed",
+        "substrate",
+        "substrate_cleaning",
+        "substrate_cleaning_operator",
+        "substrate_cleaning_timestamp",
+        "substrate_preparation",
+        "substrate_preparation_timestamp",
+        "substrate_scribed",
+        "tags",
+        "tray_position",
+        "user_orcid"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "0tjn7m45qxzqk000gp2c4m4mag",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

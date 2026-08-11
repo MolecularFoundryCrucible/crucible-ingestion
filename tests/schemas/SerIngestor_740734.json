@@ -1,0 +1,520 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "ser",
+          "type": "string"
+        },
+        "data_type": {
+          "const": " TEM uP SA Zoom Image",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "10.25.36 CCD Acquire_1.ser",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": " TEM uP SA Zoom Image",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 8390656,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2021-10-18T10:25:36",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "SerIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": " TEM uP SA Zoom Image"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "AcceleratingVoltage": {
+          "const": 300000,
+          "type": "number"
+        },
+        "AcquireDate": {
+          "const": "Mon Oct 18 10:25:36 2021",
+          "type": "string"
+        },
+        "AppliedImageCorrections": {
+          "const": 3,
+          "type": "number"
+        },
+        "Binning": {
+          "const": 2,
+          "type": "number"
+        },
+        "ByteOrder": {
+          "const": 18761.0,
+          "type": "number"
+        },
+        "C1 Aperture [um]": {
+          "const": 2000,
+          "type": "number"
+        },
+        "C2 Aperture [um]": {
+          "const": 150,
+          "type": "number"
+        },
+        "C2 lens [%]": {
+          "const": 49.023,
+          "type": "number"
+        },
+        "C3 lens [%]": {
+          "const": 34.82,
+          "type": "number"
+        },
+        "CameraNamePath": {
+          "const": "BM-Ceta",
+          "type": "string"
+        },
+        "CountsToElectrons": {
+          "const": 0.341702,
+          "type": "number"
+        },
+        "DataOffsetArray": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 512
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "DataTypeID": {
+          "const": 16674.0,
+          "type": "number"
+        },
+        "Defocus [um]": {
+          "const": -2.661,
+          "type": "number"
+        },
+        "DetectorPixelHeight": {
+          "const": "4096",
+          "type": "string"
+        },
+        "DetectorPixelWidth": {
+          "const": "4096",
+          "type": "string"
+        },
+        "DetectorRange_EndX": {
+          "const": 4096.0,
+          "type": "number"
+        },
+        "DetectorRange_EndY": {
+          "const": 4096.0,
+          "type": "number"
+        },
+        "DetectorRange_StartX": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "DetectorRange_StartY": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Diffraction lens [%]": {
+          "const": 37.441,
+          "type": "number"
+        },
+        "Dimensions": {
+          "maxItems": 1,
+          "minItems": 1,
+          "prefixItems": [
+            {
+              "additionalProperties": true,
+              "properties": {
+                "CalibrationDelta": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "CalibrationElement": {
+                  "const": 0.0,
+                  "type": "number"
+                },
+                "CalibrationOffset": {
+                  "const": 0.0,
+                  "type": "number"
+                },
+                "Description": {
+                  "const": "Number",
+                  "type": "string"
+                },
+                "DimensionSize": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "Units": {
+                  "const": "",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "CalibrationDelta",
+                "CalibrationElement",
+                "CalibrationOffset",
+                "Description",
+                "DimensionSize",
+                "Units"
+              ],
+              "type": "object"
+            }
+          ],
+          "type": "array"
+        },
+        "DwellTimePath": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "ElectronCounted": {
+          "const": 0,
+          "type": "number"
+        },
+        "Emission [uA]": {
+          "const": 303.2,
+          "type": "number"
+        },
+        "Extraction voltage [V]": {
+          "const": 4050,
+          "type": "number"
+        },
+        "Filter mode []": {
+          "const": "",
+          "type": "string"
+        },
+        "Gun lens []": {
+          "const": 3,
+          "type": "number"
+        },
+        "Gun type []": {
+          "const": "FEG",
+          "type": "string"
+        },
+        "High tension [kV]": {
+          "const": 300,
+          "type": "number"
+        },
+        "Illuminated Area Diameter [um]": {
+          "const": 24.744,
+          "type": "number"
+        },
+        "Image shift X [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Image shift Y [um]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Magnification": {
+          "const": "8100 X",
+          "type": "string"
+        },
+        "Magnification [x]": {
+          "const": 8100,
+          "type": "number"
+        },
+        "Manufacturer": {
+          "const": "FEI",
+          "type": "string"
+        },
+        "MaxPossiblePixelValue": {
+          "const": 9686,
+          "type": "number"
+        },
+        "Microscope []": {
+          "const": "Microscope Titan 300 kV D3580 AnalyticalSuperTwin",
+          "type": "string"
+        },
+        "Mode []": {
+          "const": " TEM uP SA Zoom Image",
+          "type": "string"
+        },
+        "NoIntensityMultiplication": {
+          "const": 0,
+          "type": "number"
+        },
+        "NumberDimensions": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "OBJ Aperture []": {
+          "const": "retracted",
+          "type": "string"
+        },
+        "Objective lens [%]": {
+          "const": 87.865,
+          "type": "number"
+        },
+        "OffsetArrayOffset": {
+          "const": 72.0,
+          "type": "number"
+        },
+        "PixelValueToCameraCounts": {
+          "const": 4,
+          "type": "number"
+        },
+        "SA Aperture []": {
+          "const": "retracted",
+          "type": "string"
+        },
+        "SaturationPoint": {
+          "const": 6204,
+          "type": "number"
+        },
+        "SeriesID": {
+          "const": 407.0,
+          "type": "number"
+        },
+        "SeriesVersion": {
+          "const": 544.0,
+          "type": "number"
+        },
+        "Spot size []": {
+          "const": 5,
+          "type": "number"
+        },
+        "Stage A [deg]": {
+          "const": 0.01,
+          "type": "number"
+        },
+        "Stage B [deg]": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "Stage X [um]": {
+          "const": -253.458,
+          "type": "number"
+        },
+        "Stage Y [um]": {
+          "const": -474.26,
+          "type": "number"
+        },
+        "Stage Z [um]": {
+          "const": -124.696,
+          "type": "number"
+        },
+        "Super-X selected detectors []": {
+          "const": "1; 2; 3; 4; ",
+          "type": "string"
+        },
+        "TagOffsetArray": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 8389632
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "TagTypeID": {
+          "const": 16722.0,
+          "type": "number"
+        },
+        "Tilt1": {
+          "const": 9.1e-05,
+          "type": "number"
+        },
+        "Tilt2": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "TotalNumberElements": {
+          "const": 1.0,
+          "type": "number"
+        },
+        "User []": {
+          "const": "SUPERVISOR",
+          "type": "string"
+        },
+        "Uuid": {
+          "const": "17534ce3-03f6-4092-b7db-387bf72d9268",
+          "type": "string"
+        },
+        "ValidNumberElements": {
+          "const": 1.0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "AcceleratingVoltage",
+        "AcquireDate",
+        "AppliedImageCorrections",
+        "Binning",
+        "ByteOrder",
+        "C1 Aperture [um]",
+        "C2 Aperture [um]",
+        "C2 lens [%]",
+        "C3 lens [%]",
+        "CameraNamePath",
+        "CountsToElectrons",
+        "DataOffsetArray",
+        "DataTypeID",
+        "Defocus [um]",
+        "DetectorPixelHeight",
+        "DetectorPixelWidth",
+        "DetectorRange_EndX",
+        "DetectorRange_EndY",
+        "DetectorRange_StartX",
+        "DetectorRange_StartY",
+        "Diffraction lens [%]",
+        "Dimensions",
+        "DwellTimePath",
+        "ElectronCounted",
+        "Emission [uA]",
+        "Extraction voltage [V]",
+        "Filter mode []",
+        "Gun lens []",
+        "Gun type []",
+        "High tension [kV]",
+        "Illuminated Area Diameter [um]",
+        "Image shift X [um]",
+        "Image shift Y [um]",
+        "Magnification",
+        "Magnification [x]",
+        "Manufacturer",
+        "MaxPossiblePixelValue",
+        "Microscope []",
+        "Mode []",
+        "NoIntensityMultiplication",
+        "NumberDimensions",
+        "OBJ Aperture []",
+        "Objective lens [%]",
+        "OffsetArrayOffset",
+        "PixelValueToCameraCounts",
+        "SA Aperture []",
+        "SaturationPoint",
+        "SeriesID",
+        "SeriesVersion",
+        "Spot size []",
+        "Stage A [deg]",
+        "Stage B [deg]",
+        "Stage X [um]",
+        "Stage Y [um]",
+        "Stage Z [um]",
+        "Super-X selected detectors []",
+        "TagOffsetArray",
+        "TagTypeID",
+        "Tilt1",
+        "Tilt2",
+        "TotalNumberElements",
+        "User []",
+        "Uuid",
+        "ValidNumberElements"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "TIA_Thumbnail",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

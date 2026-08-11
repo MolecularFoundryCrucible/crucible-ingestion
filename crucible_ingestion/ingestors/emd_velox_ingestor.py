@@ -195,6 +195,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         buf = io.BytesIO()
         fg.savefig(buf, bbox_inches='tight', pad_inches=0.05, dpi=100)
         im = Image.open(buf)
+        plt.close(fg)
         return im
 
     def generate_thumbnail(self):

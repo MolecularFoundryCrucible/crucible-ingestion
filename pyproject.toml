@@ -36,6 +36,10 @@ packages = ["crucible_ingestion"]
 [dependency-groups]
 dev = [
     "coverage>=7.13.5",
+    "jsonschema>=4.23.0",
     "pytest>=9.0.2",
     "pytest-cov>=4.1.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
