@@ -2,6 +2,7 @@ import os
 import re
 import functools
 import logging
+import requests
 from io import BytesIO
 from typing import ClassVar
 
@@ -948,9 +949,12 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
         dataset link and sample links are created by the uploader after create_dataset()
         returns (i.e., after this ingestor has already finished).
         """
-        ds = get_client().datasets.get(self.unique_id, include_metadata=True)
-        if not ds:
-            return None
+        try:
+            ds = get_client().datasets.get(self.unique_id, include_metadata=True)
+        except requests.exceptions.HTTPError as err:
+            if err.response is not None and err.response.status_code == 404:
+                return None
+            raise
 
         raw_scimd = ds.get('scientific_metadata', {})
         if isinstance(raw_scimd, dict) and 'scientific_metadata' in raw_scimd:
