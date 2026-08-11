@@ -1,4 +1,5 @@
 import logging
+import requests
 from io import BytesIO
 from pathlib import Path
 
@@ -34,7 +35,14 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
         self._xrd_sample_idx = 0
         self._xrd_is_parent = False
 
-        ds = get_client().datasets.get(self.unique_id, include_metadata=True)
+        try:
+            ds = get_client().datasets.get(self.unique_id, include_metadata=True)
+        except requests.exceptions.HTTPError as err:
+            if err.response is not None and err.response.status_code == 404:
+                ds = None
+            else:
+                raise
+
         if ds:
             raw_scimd = ds.get('scientific_metadata', {})
             if isinstance(raw_scimd, dict) and 'scientific_metadata' in raw_scimd:
