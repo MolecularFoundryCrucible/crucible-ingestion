@@ -19,15 +19,6 @@ uv sync
 Run `crucible config init` once to store your API url and key. Everything in this package
 builds its client through `get_client()`, which picks up that config.
 
-Services that already hold their own credentials can inject a client instead:
-
-```python
-from crucible import CrucibleClient
-from crucible_ingestion import set_client
-
-set_client(CrucibleClient(api_url=..., api_key=...))
-```
-
 ## Parse a file locally
 
 ```
@@ -37,7 +28,7 @@ uv run crucible-ingest --file {local_file_path} [--dsid {dsid}] [--ingestor {ing
 Only `--file` is required.
 
 - `--dsid` defaults to `xxx`.
-- `--ingestor` names an ingestor class explicitly. Without it, a supported ingestor is
+- `--ingestor` names an ingestion class explicitly. Without it, a supported ingestor is
   auto-detected by `find_supported_ingestor`.
 - `--output-dir` defaults to `./dry_run_output/{dsid}`.
 - `--push` sends the parsed packet to Crucible. Without it nothing is written.
@@ -76,9 +67,9 @@ A new class needs `is_file_supported()` and must be added to `ingestor_list` in
 returns the first class in the list that claims the file, so specific ingestors belong
 above general ones.
 
-Parsing must not call Crucible. Anything that needs to be created or linked belongs on
-`self.samples`, `self.children`, `self.keywords`, or `self.thumbnails`, and is written by
-`push_packet`.
+Parsing must not post to Crucible. All writes to Crucible should be part of the `push_packet` function. 
+Anything that needs to be created or linked can be added to the packet during parsing, for example: 
+`self.samples`, `self.children`, `self.keywords`, or `self.thumbnails`.
 
 ## Test data
 
