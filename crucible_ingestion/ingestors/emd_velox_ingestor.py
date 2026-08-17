@@ -6,9 +6,11 @@ import matplotlib.pyplot as plt
 import logging
 import json
 
+from mfid import mfid
+
 from .crucible_ingestor import CrucibleDatasetIngestor
 from crucible.models import Dataset
-from ..client import get_client
+from ..utils import build_b64_thumbnail
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -281,98 +283,50 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
         return all_metadata, overall_measurment_str
 
     def parse_children(self):
-        def upload_child(md, parent_dsid): 
-            """
-            Uploads child dataset using metadata MD. Links the created dataset record to PARENT_DSID.
-            Also, adds the thumbnail for the child, if applicable. 
-            Returns child_dsid. 
-            """
-            # remove thumbnail from metadata (before dataset creation) if applicable 
-            child_thumbnail = None
-            if "thumbnail" in md: # generated in _parse_measurement_metadata
-                child_thumbnail = md["thumbnail"]
-                del md["thumbnail"]
+        ### if there's only 1 measurement, don't need to create an additional child dataset.
+        if len(self.scientific_metadata) == 1:
+            self.scientific_metadata = list(self.scientific_metadata.values())[0] # decapsulate scientific metadata for parent
+            self.scientific_metadata.pop("thumbnail", None) # a PIL image cannot be serialized; get_thumbnails makes the parent's own
+            return
 
-            # Create dataset
-            child_ds_name = self.dataset_name + f" ({get_title_from_md(md)})"
+        ### handle multi-dataset files
+        self.children = []
+        spectrum_image_id = None
+
+        # build children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
+        for i, md in enumerate(list(self.scientific_metadata.values())[::-1]): # assume SpectrumImage is at the end of sci_metadata, so iterate backwards
+            # the SpectrumImage has to be built before the Processed Images that name it as their parent
+
+            # take the thumbnail off the metadata; a PIL image cannot be serialized with the parent's metadata
+            child_thumbnails = []
+            if "thumbnail" in md: # generated in _parse_measurement_metadata
+                child_thumbnails = [{'thumbnail': build_b64_thumbnail(md.pop("thumbnail")),
+                                     'caption': 'Velox_EMD_Thumbnail'}]
+
+            # determine if parent is file or SpectrumImage
+            parent_id = spectrum_image_id if (get_groupType_from_md(md) == PROCESSED_IMAGE_GROUP_NAME and spectrum_image_id != None) else self.unique_id
+
+            child_id = mfid()[0] # assigned here so a later child can point at this one as its parent
             child_ds = Dataset(
-                # unique_id      = self.mfid, # need a new id for each measurement ds?
-                measurement    = md['measurement'], # prev: get_groupType_from_md(md), 
+                unique_id      = child_id,
+                measurement    = md['measurement'], # prev: get_groupType_from_md(md),
                 project_id     = self.project_id,
                 owner_orcid    = None,  # API key handles user authentication
-                dataset_name   = child_ds_name,
+                dataset_name   = f"{self.dataset_name} ({get_title_from_md(md)})",
                 # session_name   = self.session_name,
                 # public         = self.public,
                 # instrument_name = self.instrument_name, # TODO: update instrument
                 data_format    = self.data_format,
-                # file_to_upload = self.files_to_upload[0] <- INCLUDE if upload_file
-            )
-        
-            resp = get_client().datasets.create(
-                child_ds,
-                scientific_metadata=md,
-                keywords=self.keywords,
-            )
-            child_dsid = resp['created_record']['unique_id']
+            ).model_dump()
 
-            # add thumbnail for child if applicable
-            if child_thumbnail is not None:
-                resp = get_client().datasets.add_thumbnail(child_dsid, child_thumbnail, 'Velox_EMD_Thumbnail')
-                logger.info(f'{child_dsid} -- thumbnail -- {resp}')
-            else: 
-                logger.info(f'{child_dsid} thumbnail was None')
-            # Link child with parent dataset 
-            get_client().datasets.link_parent_child(parent_dsid, child_dsid)
+            self.children.append({'dataset': child_ds,
+                                  'scientific_metadata': md,
+                                  'parent_id': parent_id,
+                                  'sample_links': [],
+                                  'thumbnails': child_thumbnails})
 
-            return child_dsid
-        
-        def find_dsid_for_ds_name(ds_name, records):
-            """ Helper function. 
-            Returns dsid corresponding to DS_NAME, or None if DS_NAME not in RECORDS.
-            """
-            for r in records:
-                if r['dataset_name'] == ds_name:
-                    return r['unique_id']
-            return None
-        
-        ### if there's only 1 measurement, don't need to create an additional child dataset. 
-        if len(self.scientific_metadata) == 1:
-            self.scientific_metadata = list(self.scientific_metadata.values())[0] # decapsulate scientific metadata for parent
-            return 
-        
-        ### handle multi-dataset files
-
-        # create parent_child_map for caching get_client().list_children() results 
-        parent_child_map = {self.unique_id: get_client().datasets.list_children(self.unique_id)} # self.unique_id = file_dsid
-        spectrum_image_dsid = None
-
-        # upload children, ensuring Processed Images are nested under SpectrumImage; otherwise, nested under File
-        for i, md in enumerate(list(self.scientific_metadata.values())[::-1]): # assume SpectrumImage is at the end of sci_metadata, so iterate backwards
-            # determine if parent is file or SpectrumImage
-            parent_dsid = spectrum_image_dsid if (get_groupType_from_md(md) == PROCESSED_IMAGE_GROUP_NAME and spectrum_image_dsid != None) else self.unique_id 
-            
-            # get parent's existing_children: 
-            existing_children = []
-            if parent_dsid in parent_child_map: 
-                existing_children = parent_child_map[parent_dsid]
-            else: 
-                existing_children = get_client().datasets.list_children(parent_dsid)
-                parent_child_map[parent_dsid] = existing_children # update parent_child_map
-
-            child_ds_name = f"{self.dataset_name} ({get_title_from_md(md)})"
-            found_dsid = find_dsid_for_ds_name(child_ds_name, existing_children)
-            if found_dsid is not None: # child already exists 
-                # don't upload this child -- but keep track of si_dsid if it's a spectrum image
-                if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
-                    spectrum_image_dsid = found_dsid # keep track of si_dsid 
-                logger.info(f"skip upload for {child_ds_name}")
-            else: 
-                # child doesn't exist yet; upload as normal
-                dsid = upload_child(md, parent_dsid)
-                
-                if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
-                    spectrum_image_dsid = dsid # keep track of si_dsid 
-                logger.info(f"uploaded {child_ds_name} with dsid {dsid}")
+            if i == 0 and get_groupType_from_md(md) == SPECTRUM_IMAGE_GROUP_NAME:
+                spectrum_image_id = child_id # keep track of si_id
 
 
     def get_illumination_mode(self, metadata_dictionary): 
