@@ -230,12 +230,12 @@ def push_packet(packet):
     logger.info(f"Keyword addition complete Added these keywords: {packet.keywords}")
 
     # scientific metadata
-    logger.info(f"Updating scientific metadata with {packet.scientific_metadata=}")
+    logger.info(f"Updating scientific metadata: {sorted(packet.scientific_metadata)}")
     res = get_client().datasets.update_scientific_metadata(packet.unique_id,
                                                            packet.scientific_metadata,
                                                            overwrite = False)
-    
-    logger.info(f"Scientific metadata update complete. Response: {res}")
+
+    logger.info("Scientific metadata update complete")
     return ds
 
 
