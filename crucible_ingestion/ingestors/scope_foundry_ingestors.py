@@ -933,6 +933,9 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                     src.copy(group, dst)
             meas = dst.require_group('measurement/pollux_oospec_multipos_line_scan')
             src.copy(wl_path, meas, name='wavelengths')
+            meas_src = src['measurement/pollux_oospec_multipos_line_scan']
+            if 'settings' in meas_src:
+                src.copy(f'measurement/pollux_oospec_multipos_line_scan/settings', meas, name='settings')
             pos_grp = meas.require_group('positions')
             src.copy(f'{pos_path}/{pos_key}', pos_grp, name=pos_key)
         return out_path
