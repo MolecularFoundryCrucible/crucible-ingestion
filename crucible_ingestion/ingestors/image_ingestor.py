@@ -46,5 +46,5 @@ class TifIngestor(ImageIngestor):
         with Image.open(self.file_to_upload) as im:
             raw_md = im.tag_v2
             for tag, value in raw_md.items():
-                tag_name = TAGS.get(tag, tag)
+                tag_name = TAGS.get(tag, str(tag))
                 self.scientific_metadata[tag_name] = value
