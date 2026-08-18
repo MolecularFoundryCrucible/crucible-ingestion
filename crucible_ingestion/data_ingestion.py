@@ -163,11 +163,16 @@ def push_packet(packet):
 
     # add children
     existing_children = {}
+    # a child may name an earlier child as its parent, using the unique_id the ingestor assigned.
+    # That id is only real once the child is created, and is discarded entirely when the child
+    # turns out to already exist, so every parent_id is read through this map.
+    resolved_ids = {}
     for child in packet.children:
         child_ds = child['dataset']
         child_md = child['scientific_metadata']
-        parent_id = child['parent_id']
+        parent_id = resolved_ids.get(child['parent_id'], child['parent_id'])
         sample_ids = child['sample_links']
+        declared_id = child_ds.get('unique_id')
 
         # re-pushing the same file must not create a second set of children
         if parent_id not in existing_children:
@@ -177,11 +182,15 @@ def push_packet(packet):
         found_dsid = existing_children[parent_id].get(child_ds['dataset_name'])
         if found_dsid:
             logger.info(f"child {child_ds['dataset_name']!r} already exists as {found_dsid}; skipping")
+            if declared_id:
+                resolved_ids[declared_id] = found_dsid
             continue
 
         resp = get_client().datasets.create(Dataset(**child_ds), child_md)
         child_dsid = resp['dsid']
         existing_children[parent_id][child_ds['dataset_name']] = child_dsid
+        if declared_id:
+            resolved_ids[declared_id] = child_dsid
 
         # link to run dataset
         get_client().datasets.link_parent_child(parent_dataset_id = parent_id,
@@ -191,6 +200,14 @@ def push_packet(packet):
         for sample_id in sample_ids:
             get_client().datasets.add_sample(dataset_id = child_dsid,
                                              sample_id = sample_id)
+
+        for thumbnail in child.get('thumbnails', []):
+            try:
+                get_client().datasets.add_thumbnail(child_dsid,
+                                                    thumbnail['thumbnail'],
+                                                    thumbnail['caption'])
+            except Exception as err:
+                logger.error(f"Failed to add child thumbnail with error {err}")
 
 
     # thumbnails
