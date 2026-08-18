@@ -22,21 +22,45 @@ builds its client through `get_client()`, which picks up that config.
 ## Parse a file locally
 
 ```
-uv run crucible-ingest --file {local_file_path} [--dsid {dsid}] [--ingestor {ingestion-class}] [--output-dir {output_dir}] [--push]
+uv run crucible-ingest --file {local_file_path} [--dsid {dsid}] [--ingestor {ingestion-class}] [--output-dir {output_dir}] [--push] [--test]
 ```
 
 Only `--file` is required.
 
-- `--dsid` defaults to `xxx`.
+- `--dsid` is the dataset the parsed information belongs to. If a dataset mfid is not provided, an mfid will be generated locally. If you are running --push and are not in test mode (--test) you should first create a dataset in Crucible using `crucible dataset create` or 
+```python 
+client.datasets.create(Dataset())
+``` 
+and provide the dataset ID for the dataset. 
+
 - `--ingestor` names an ingestion class explicitly. Without it, a supported ingestor is
   auto-detected by `find_supported_ingestor`.
 - `--output-dir` defaults to `./dry_run_output/{dsid}`.
 - `--push` sends the parsed packet to Crucible. Without it nothing is written.
+- `--test` runs`--push` in test mode: If a dataset ID is not provided, one will be generated and a temporary dataset will be created for you in the `crucible-test` project.
 
 The parsed packet is written to `{output_dir}/packet.json` and any thumbnails are decoded
 to `{output_dir}/thumbnails/` so they can be inspected.
 
-Parsing reads from Crucible if a dataset record with the given dsid already exists, so
+## Push to Crucible
+
+`--push` needs a dataset to push to, so pair it with a `--dsid`:
+
+```
+crucible dataset create
+uv run crucible-ingest --file {local_file_path} --dsid {new_dsid} --push
+```
+
+To test the push() function, use `--test` and the command will create a temporary dataset for
+you in the `crucible-test` project, logging the id it picked:
+
+```
+uv run crucible-ingest --file {local_file_path} --push --test
+```
+
+Running `--push` with neither a `--dsid` nor `--test` will result in an error.
+
+The parse() function reads from Crucible if a dataset record with the given dsid already exists, so
 that values a user set at dataset creation are not overwritten by parsed ones. If no such
 record exists, parsing starts from scratch.
 
