@@ -179,7 +179,9 @@ def push_packet(packet):
             logger.info(f"child {child_ds['dataset_name']!r} already exists as {found_dsid}; skipping")
             continue
 
-        resp = get_client().datasets.create(Dataset(**child_ds), child_md)
+        child_files = child.get('files_to_upload', [])
+        resp = get_client().datasets.create(Dataset(**child_ds), child_md,
+                                            files_to_upload=child_files)
         child_dsid = resp['dsid']
         existing_children[parent_id][child_ds['dataset_name']] = child_dsid
 
