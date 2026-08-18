@@ -12,6 +12,7 @@ from datetime import datetime
 from PIL import Image
 import matplotlib.pyplot as plt
 from .h5_ingestor import H5Ingestor
+from .crucible_ingestor import TMP_DIR
 from ..client import get_client
 from crucible.models import Dataset
 
@@ -933,6 +934,9 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                     src.copy(group, dst)
             meas = dst.require_group('measurement/pollux_oospec_multipos_line_scan')
             src.copy(wl_path, meas, name='wavelengths')
+            meas_src = src['measurement/pollux_oospec_multipos_line_scan']
+            if 'settings' in meas_src:
+                src.copy(f'measurement/pollux_oospec_multipos_line_scan/settings', meas, name='settings')
             pos_grp = meas.require_group('positions')
             src.copy(f'{pos_path}/{pos_key}', pos_grp, name=pos_key)
         return out_path
@@ -1038,6 +1042,285 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             self.add_thumbnail(Image.open(buf), f"Absorbance Spectrum ({self._child_position})")
         except Exception as err:
             logger.error(f"Failed to generate spectrum thumbnail for position {self._child_position}: {err}")
+
+
+class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
+
+    _MEAS_PATH = 'measurement/pollux_multipos_spec_run'
+
+    def is_file_supported(self):
+        return bool(re.match(r'.*pollux_multipos_spec_run.*\.h5', self.file_to_upload))
+
+    def get_dataset_metadata(self):
+        self.instrument_name = 'Nirvana Spectrometer'
+
+        H5Ingestor.get_dataset_metadata(self)
+
+        if 'unique_id' in self.h5file.attrs.keys():
+            self.unique_id = self.h5file.attrs['unique_id']
+
+        self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
+        self.data_format = "ScopeFoundryH5"
+
+        default_tags_value = "list,tags,separated,by,commas (optional)"
+        default_session_value = "(optional)"
+
+        try:
+            scope_foundry_tags = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['tags'].strip()
+            scope_foundry_session = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['session_name'].strip()
+        except Exception:
+            logger.warning("no mf-crucible settings found for tags or session_name")
+            scope_foundry_tags = default_tags_value
+            scope_foundry_session = default_session_value
+
+        if scope_foundry_tags != default_tags_value:
+            self.keywords += [x.strip() for x in scope_foundry_tags.split(",")]
+
+        if scope_foundry_session != default_session_value:
+            self.session_name = scope_foundry_session
+            self.keywords += [self.session_name]
+
+    def parse_measurement(self):
+        self.measurement = 'Nirvana_SpecRun'
+
+    def parse_orcid(self):
+        if self.owner_orcid:
+            return
+        self.owner_orcid = check_orcid_entry(
+            self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
+
+    def parse_project_id(self):
+        if self.project_id:
+            return
+        self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
+
+    def _measure_flags(self):
+        settings = self.h5file[f'{self._MEAS_PATH}/settings']
+        has_uvvis = bool(settings.attrs.get('measure_uvvis', True))
+        has_pl = bool(settings.attrs.get('measure_pl', False))
+        return has_uvvis, has_pl
+
+    def _primary_pos_path(self):
+        has_uvvis, _ = self._measure_flags()
+        if has_uvvis:
+            return f'{self._MEAS_PATH}/uvvis/positions'
+        return f'{self._MEAS_PATH}/pl/positions'
+
+    def parse_samples(self):
+        trays_seen = set()
+        pos_path = self._primary_pos_path()
+        for pos in self.h5file[pos_path]:
+            attrs = self.h5file[pos_path][pos].attrs
+            sample_id = str(attrs['sample_uuid'])
+            sample_name = str(attrs['sample_name'])
+            tray_id = str(attrs['tray_uuid'])
+            tray_name = str(attrs['tray_name'])
+
+            if tray_id not in trays_seen and _is_mfid(tray_id):
+                trays_seen.add(tray_id)
+                self.samples.append({
+                    "unique_id": tray_id,
+                    "sample_name": tray_name,
+                    "owner_orcid": self.owner_orcid,
+                    "project_id": self.project_id,
+                    "link_to_dataset": True,
+                })
+
+            if not _is_mfid(sample_id):
+                logger.info(f"skipping position {pos}: invalid MFID '{sample_id}'")
+                continue
+
+            sample = {
+                "unique_id": sample_id,
+                "sample_name": sample_name,
+                "owner_orcid": self.owner_orcid,
+                "project_id": self.project_id,
+                "link_to_dataset": False,
+            }
+            if _is_mfid(tray_id):
+                sample["parent_ids"] = [tray_id]
+            self.samples.append(sample)
+
+    def parse_children(self):
+        has_uvvis, has_pl = self._measure_flags()
+        pos_path = self._primary_pos_path()
+
+        for pos in self.h5file[pos_path]:
+            attrs = self.h5file[pos_path][pos].attrs
+            sample_id = str(attrs['sample_uuid'])
+            sample_name = str(attrs['sample_name'])
+
+            if not _is_mfid(sample_id):
+                continue
+
+            child_md = {}
+            if has_uvvis:
+                uvvis_attrs = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos}'].attrs
+                child_md.update({
+                    "uvvis_integration_time": float(uvvis_attrs['integration_time']),
+                    "x_center": float(uvvis_attrs['x_center']),
+                    "y_center": float(uvvis_attrs['y_center']),
+                    "x_positions": uvvis_attrs['x_positions'].tolist(),
+                    "y_positions": uvvis_attrs['y_positions'].tolist(),
+                })
+            if has_pl:
+                pl_attrs = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos}'].attrs
+                child_md.update({
+                    "pl_integration_time": float(pl_attrs['integration_time']),
+                    "pl_x_center": float(pl_attrs['x_center']),
+                    "pl_y_center": float(pl_attrs['y_center']),
+                })
+
+            child_ds = Dataset(
+                measurement=self.measurement,
+                project_id=self.project_id,
+                owner_orcid=self.owner_orcid,
+                dataset_name=f"Child Nirvana SpecRun for {sample_name}",
+                data_format=self.data_format,
+                instrument_name=self.instrument_name,
+                timestamp=self.timestamp,
+            ).model_dump()
+
+            split_path = self._create_split_h5(pos)
+            self.children.append({
+                "dataset": child_ds,
+                "scientific_metadata": child_md,
+                "parent_id": self.unique_id,
+                "sample_links": [sample_id],
+                "files_to_upload": [split_path],
+            })
+
+    def _create_split_h5(self, pos_key):
+        from pathlib import Path
+        os.makedirs(TMP_DIR, exist_ok=True)
+        stem = Path(self.file_to_upload).stem
+        out_path = os.path.join(TMP_DIR, f"{stem}_{pos_key}.h5")
+        has_uvvis, has_pl = self._measure_flags()
+        with h5py.File(self.file_to_upload, 'r') as src, h5py.File(out_path, 'w') as dst:
+            for group in ('app', 'hardware'):
+                if group in src:
+                    src.copy(group, dst)
+            meas = dst.require_group(self._MEAS_PATH)
+            meas_src = src[self._MEAS_PATH]
+            if 'settings' in meas_src:
+                src.copy(f'{self._MEAS_PATH}/settings', meas, name='settings')
+            if has_uvvis:
+                uvvis_grp = meas.require_group('uvvis')
+                src.copy(f'{self._MEAS_PATH}/uvvis/wavelengths', uvvis_grp, name='wavelengths')
+                pos_grp = uvvis_grp.require_group('positions')
+                src.copy(f'{self._MEAS_PATH}/uvvis/positions/{pos_key}', pos_grp, name=pos_key)
+            if has_pl:
+                pl_grp = meas.require_group('pl')
+                src.copy(f'{self._MEAS_PATH}/pl/wavelengths', pl_grp, name='wavelengths')
+                src.copy(f'{self._MEAS_PATH}/pl/dark_intensities', pl_grp, name='dark_intensities')
+                src.copy(f'{self._MEAS_PATH}/pl/reference_intensities', pl_grp, name='reference_intensities')
+                pos_grp = pl_grp.require_group('positions')
+                src.copy(f'{self._MEAS_PATH}/pl/positions/{pos_key}', pos_grp, name=pos_key)
+        return out_path
+
+    def setup_data(self):
+        self._child_position = self._detect_child_position()
+        if self._child_position is not None:
+            self._setup_as_from_holders_child()
+        else:
+            super().setup_data()
+
+    def _detect_child_position(self):
+        try:
+            ds = get_client().datasets.get(self.unique_id, include_metadata=True)
+        except requests.exceptions.HTTPError as err:
+            if err.response is not None and err.response.status_code == 404:
+                return None
+            raise
+        raw_scimd = ds.get('scientific_metadata', {})
+        if isinstance(raw_scimd, dict) and 'scientific_metadata' in raw_scimd:
+            actual_scimd = raw_scimd['scientific_metadata']
+        else:
+            actual_scimd = raw_scimd or {}
+        return actual_scimd.get('position')
+
+    def _setup_as_from_holders_child(self):
+        self.get_scientific_metadata()
+        self.get_dataset_metadata()
+        self.get_acl_information()
+        self._apply_child_scientific_metadata()
+        self.thumbnails = []
+        self._add_child_thumbnails()
+
+    def _position_key(self, position):
+        pos_path = self._primary_pos_path()
+        idx = int(position[1:]) - 1
+        return list(self.h5file[pos_path].keys())[idx]
+
+    def _apply_child_scientific_metadata(self):
+        has_uvvis, has_pl = self._measure_flags()
+        pos_key = self._position_key(self._child_position)
+        child_md = {}
+        if has_uvvis:
+            uvvis_attrs = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}'].attrs
+            child_md.update({
+                "uvvis_integration_time": float(uvvis_attrs['integration_time']),
+                "x_center": float(uvvis_attrs['x_center']),
+                "y_center": float(uvvis_attrs['y_center']),
+                "x_positions": uvvis_attrs['x_positions'].tolist(),
+                "y_positions": uvvis_attrs['y_positions'].tolist(),
+            })
+        if has_pl:
+            pl_attrs = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}'].attrs
+            child_md.update({
+                "pl_integration_time": float(pl_attrs['integration_time']),
+                "pl_x_center": float(pl_attrs['x_center']),
+                "pl_y_center": float(pl_attrs['y_center']),
+            })
+        self.scientific_metadata = child_md
+
+    def _add_child_thumbnails(self):
+        has_uvvis, has_pl = self._measure_flags()
+        pos_key = self._position_key(self._child_position)
+
+        if has_uvvis:
+            try:
+                wls = np.array(self.h5file[f'{self._MEAS_PATH}/uvvis/wavelengths'])
+                pos = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}']
+                raw = np.array(pos['raw_intensities'])
+                dark = np.array(pos['dark_intensities'])
+                blank = np.array(pos['blank_intensities'])
+                denom = blank - dark
+                denom = np.where(np.abs(denom) < 1, 1.0, denom)
+                T = (raw.mean(axis=0) - dark) / denom
+                absorbance = -np.log10(T.clip(1e-9))
+                fig, ax = plt.subplots()
+                ax.plot(wls, absorbance)
+                ax.set_xlabel("Wavelength (nm)")
+                ax.set_ylabel("Absorbance")
+                ax.set_title(f"Position {self._child_position}")
+                buf = BytesIO()
+                plt.savefig(buf, format='png', dpi=150)
+                plt.close(fig)
+                buf.seek(0)
+                self.add_thumbnail(Image.open(buf), f"UVVis Absorbance ({self._child_position})")
+            except Exception as err:
+                logger.error(f"Failed to generate UVVis thumbnail for position {self._child_position}: {err}")
+
+        if has_pl:
+            try:
+                wls = np.array(self.h5file[f'{self._MEAS_PATH}/pl/wavelengths'])
+                dark_shared = np.array(self.h5file[f'{self._MEAS_PATH}/pl/dark_intensities'])
+                pos = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}']
+                raw = np.array(pos['raw_intensities'])
+                intensity = raw.mean(axis=0) - dark_shared
+                fig, ax = plt.subplots()
+                ax.plot(wls, intensity)
+                ax.set_xlabel("Wavelength (nm)")
+                ax.set_ylabel("PL Intensity (counts)")
+                ax.set_title(f"Position {self._child_position}")
+                buf = BytesIO()
+                plt.savefig(buf, format='png', dpi=150)
+                plt.close(fig)
+                buf.seek(0)
+                self.add_thumbnail(Image.open(buf), f"PL Intensity ({self._child_position})")
+            except Exception as err:
+                logger.error(f"Failed to generate PL thumbnail for position {self._child_position}: {err}")
 
 
 class QSpleemSVRampSpinIngestor(QSpleemIngestor):
