@@ -910,13 +910,32 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                 "x_positions": attrs['x_positions'].tolist(),
                 "y_positions": attrs['y_positions'].tolist(),
             }
+            split_path = self._create_split_h5(pos)
             self.children.append({
                 "dataset": child_ds,
                 "scientific_metadata": child_md,
                 "parent_id": self.unique_id,
                 "sample_links": [sample_id],
+                "files_to_upload": [split_path],
             })
         return
+
+    def _create_split_h5(self, pos_key):
+        from pathlib import Path
+        os.makedirs(TMP_DIR, exist_ok=True)
+        stem = Path(self.file_to_upload).stem
+        out_path = os.path.join(TMP_DIR, f"{stem}_{pos_key}.h5")
+        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        wl_path  = 'measurement/pollux_oospec_multipos_line_scan/wavelengths'
+        with h5py.File(self.file_to_upload, 'r') as src, h5py.File(out_path, 'w') as dst:
+            for group in ('app', 'hardware'):
+                if group in src:
+                    src.copy(group, dst)
+            meas = dst.require_group('measurement/pollux_oospec_multipos_line_scan')
+            src.copy(wl_path, meas, name='wavelengths')
+            pos_grp = meas.require_group('positions')
+            src.copy(f'{pos_path}/{pos_key}', pos_grp, name=pos_key)
+        return out_path
 
     def parse_orcid(self):
         if self.owner_orcid:

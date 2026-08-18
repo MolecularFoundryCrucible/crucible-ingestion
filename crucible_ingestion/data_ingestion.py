@@ -186,7 +186,9 @@ def push_packet(packet):
                 resolved_ids[declared_id] = found_dsid
             continue
 
-        resp = get_client().datasets.create(Dataset(**child_ds), child_md)
+        child_files = child.get('files_to_upload', [])
+        resp = get_client().datasets.create(Dataset(**child_ds), child_md,
+                                            files_to_upload=child_files)
         child_dsid = resp['dsid']
         existing_children[parent_id][child_ds['dataset_name']] = child_dsid
         if declared_id:
