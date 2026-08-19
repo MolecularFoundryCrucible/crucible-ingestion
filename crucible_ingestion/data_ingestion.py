@@ -87,8 +87,9 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
     # parse the file + add any additional metadata
     try:
         ig.setup_data()
-    finally:
+    except Exception:
         ig.cleanup()
+        raise
 
     # if found; overwrite parsed data with what already existed in SQL
     # to overwrite use "update" endpoint; not "ingestion-request"
@@ -113,21 +114,21 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
     md = orjson.loads(orjson.dumps(sanitize_metadata(ig.scientific_metadata),
                                    option=orjson.OPT_SERIALIZE_NUMPY))
 
-    skip_fields = {'keywords', 'ingestion_class', 'thumbnails', 
+    skip_fields = {'keywords', 'ingestion_class', 'thumbnails',
                    'scientific_metadata', 'acl', 'ingestion_githash'}
-    
+
     D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
 
     return IngestionPacket(
             unique_id=ig.unique_id,
             ingestion_class=ig.ingestion_class,
-            dataset_fields=D, 
+            dataset_fields=D,
             scientific_metadata=md,
             keywords=[kw for kw in ig.keywords if isinstance(kw, str) and kw != ""],
             samples=ig.samples,
             children=ig.children,
             thumbnails=ig.thumbnails,
-        )
+        ), ig
 
 
 def push_packet(packet):
@@ -242,12 +243,16 @@ def push_packet(packet):
 
 
 def data_ingestion(dataset_to_process, dsid, ingestion_class=None):
-    
-    packet = parse(dataset_to_process, dsid, ingestion_class)
 
-    if packet is None:
+    result = parse(dataset_to_process, dsid, ingestion_class)
+
+    if result is None:
         return (None, None)
-    return push_packet(packet), packet.ingestion_class
+    packet, ig = result
+    try:
+        return push_packet(packet), packet.ingestion_class
+    finally:
+        ig.cleanup()
 
 
 
