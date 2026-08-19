@@ -67,7 +67,7 @@ def populate_existing_ds_info(ig, populate_fields):
     return ig, found_ds
         
 
-def parse(dataset_to_process, dsid, ingestion_class=None):    
+def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
     logger.info("running build packet...")
 
     ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class)
@@ -75,20 +75,20 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
         logger.warning("Tried all ingestors with no matches found")
         return None
 
-
     # check if the dataset already exists; reinstantiate ig with info
     populate_fields = ['dataset_name', 'public', 'owner_orcid',
                        'project_id', 'measurement', 'session_name',
                        'instrument_name', 'data_type', 'timestamp',
                        'data_format', 'size']
-    
+
     ig, found_ds = populate_existing_ds_info(ig, populate_fields)
-        
+
     # parse the file + add any additional metadata
     try:
         ig.setup_data()
-    finally:
+    except Exception:
         ig.cleanup()
+        raise
 
     # if found; overwrite parsed data with what already existed in SQL
     # to overwrite use "update" endpoint; not "ingestion-request"
@@ -113,21 +113,30 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
     md = orjson.loads(orjson.dumps(sanitize_metadata(ig.scientific_metadata),
                                    option=orjson.OPT_SERIALIZE_NUMPY))
 
-    skip_fields = {'keywords', 'ingestion_class', 'thumbnails', 
+    skip_fields = {'keywords', 'ingestion_class', 'thumbnails',
                    'scientific_metadata', 'acl', 'ingestion_githash'}
-    
+
     D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
 
     return IngestionPacket(
             unique_id=ig.unique_id,
             ingestion_class=ig.ingestion_class,
-            dataset_fields=D, 
+            dataset_fields=D,
             scientific_metadata=md,
             keywords=[kw for kw in ig.keywords if isinstance(kw, str) and kw != ""],
             samples=ig.samples,
             children=ig.children,
             thumbnails=ig.thumbnails,
-        )
+        ), ig
+
+
+def parse(dataset_to_process, dsid, ingestion_class=None):
+    result = _parse_with_ig(dataset_to_process, dsid, ingestion_class)
+    if result is None:
+        return None
+    packet, ig = result
+    ig.cleanup()
+    return packet
 
 
 def push_packet(packet):
@@ -242,12 +251,16 @@ def push_packet(packet):
 
 
 def data_ingestion(dataset_to_process, dsid, ingestion_class=None):
-    
-    packet = parse(dataset_to_process, dsid, ingestion_class)
 
-    if packet is None:
+    result = _parse_with_ig(dataset_to_process, dsid, ingestion_class)
+
+    if result is None:
         return (None, None)
-    return push_packet(packet), packet.ingestion_class
+    packet, ig = result
+    try:
+        return push_packet(packet), packet.ingestion_class
+    finally:
+        ig.cleanup()
 
 
 
