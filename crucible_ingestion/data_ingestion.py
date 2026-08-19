@@ -67,7 +67,7 @@ def populate_existing_ds_info(ig, populate_fields):
     return ig, found_ds
         
 
-def parse(dataset_to_process, dsid, ingestion_class=None):    
+def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
     logger.info("running build packet...")
 
     ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class)
@@ -75,15 +75,14 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
         logger.warning("Tried all ingestors with no matches found")
         return None
 
-
     # check if the dataset already exists; reinstantiate ig with info
     populate_fields = ['dataset_name', 'public', 'owner_orcid',
                        'project_id', 'measurement', 'session_name',
                        'instrument_name', 'data_type', 'timestamp',
                        'data_format', 'size']
-    
+
     ig, found_ds = populate_existing_ds_info(ig, populate_fields)
-        
+
     # parse the file + add any additional metadata
     try:
         ig.setup_data()
@@ -129,6 +128,15 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
             children=ig.children,
             thumbnails=ig.thumbnails,
         ), ig
+
+
+def parse(dataset_to_process, dsid, ingestion_class=None):
+    result = _parse_with_ig(dataset_to_process, dsid, ingestion_class)
+    if result is None:
+        return None
+    packet, ig = result
+    ig.cleanup()
+    return packet
 
 
 def push_packet(packet):
@@ -244,7 +252,7 @@ def push_packet(packet):
 
 def data_ingestion(dataset_to_process, dsid, ingestion_class=None):
 
-    result = parse(dataset_to_process, dsid, ingestion_class)
+    result = _parse_with_ig(dataset_to_process, dsid, ingestion_class)
 
     if result is None:
         return (None, None)
