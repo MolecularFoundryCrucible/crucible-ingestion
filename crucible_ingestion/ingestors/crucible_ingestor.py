@@ -16,7 +16,7 @@ from ..client import get_client
 
 logger = logging.getLogger(__name__)
 
-TMP_DIR = './tmp_files'
+TMP_DIR = '/tmp/crucible_tmp_files'
 
 
 class CrucibleDatasetIngestor(Dataset):
