@@ -1153,7 +1153,7 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
             if not _is_mfid(sample_id):
                 continue
 
-            child_md = {}
+            child_md = {"position": pos}
             if has_uvvis:
                 uvvis_attrs = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos}'].attrs
                 child_md.update({
@@ -1196,7 +1196,11 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
         stem = Path(self.file_to_upload).stem
         out_path = os.path.join(TMP_DIR, f"{stem}_{pos_key}.h5")
         has_uvvis, has_pl = self._measure_flags()
+        _SKIP_ROOT_ATTRS = {'unique_id', 'uuid'}
         with h5py.File(self.file_to_upload, 'r') as src, h5py.File(out_path, 'w') as dst:
+            for key, val in src.attrs.items():
+                if key not in _SKIP_ROOT_ATTRS:
+                    dst.attrs[key] = val
             for group in ('app', 'hardware'):
                 if group in src:
                     src.copy(group, dst)
@@ -1249,8 +1253,11 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
 
     def _position_key(self, position):
         pos_path = self._primary_pos_path()
+        pos_keys = list(self.h5file[pos_path].keys())
+        if position in pos_keys:
+            return position
         idx = int(position[1:]) - 1
-        return list(self.h5file[pos_path].keys())[idx]
+        return pos_keys[idx]
 
     def _apply_child_scientific_metadata(self):
         has_uvvis, has_pl = self._measure_flags()
