@@ -1059,7 +1059,8 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
         if 'unique_id' in self.h5file.attrs.keys():
             self.unique_id = self.h5file.attrs['unique_id']
 
-        self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
+        if 'time_id' in self.h5file.attrs:
+            self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
         self.data_format = "ScopeFoundryH5"
 
         default_tags_value = "list,tags,separated,by,commas (optional)"
@@ -1196,30 +1197,31 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
         stem = Path(self.file_to_upload).stem
         out_path = os.path.join(TMP_DIR, f"{stem}_{pos_key}.h5")
         has_uvvis, has_pl = self._measure_flags()
-        _SKIP_ROOT_ATTRS = {'unique_id', 'uuid'}
         with h5py.File(self.file_to_upload, 'r') as src, h5py.File(out_path, 'w') as dst:
-            for key, val in src.attrs.items():
-                if key not in _SKIP_ROOT_ATTRS:
-                    dst.attrs[key] = val
-            for group in ('app', 'hardware'):
-                if group in src:
-                    src.copy(group, dst)
             meas = dst.require_group(self._MEAS_PATH)
             meas_src = src[self._MEAS_PATH]
             if 'settings' in meas_src:
                 src.copy(f'{self._MEAS_PATH}/settings', meas, name='settings')
             if has_uvvis:
-                uvvis_grp = meas.require_group('uvvis')
-                src.copy(f'{self._MEAS_PATH}/uvvis/wavelengths', uvvis_grp, name='wavelengths')
-                pos_grp = uvvis_grp.require_group('positions')
-                src.copy(f'{self._MEAS_PATH}/uvvis/positions/{pos_key}', pos_grp, name=pos_key)
+                uvvis_grp = meas.require_group(f'uvvis_{pos_key}')
+                src_uvvis = src[f'{self._MEAS_PATH}/uvvis']
+                src_uvvis_pos = src_uvvis[f'positions/{pos_key}']
+                for k, v in src_uvvis_pos.attrs.items():
+                    uvvis_grp.attrs[k] = v
+                src.copy(src_uvvis['wavelengths'], uvvis_grp, name='wavelengths')
+                for name, item in src_uvvis_pos.items():
+                    src.copy(item, uvvis_grp, name=name)
             if has_pl:
-                pl_grp = meas.require_group('pl')
-                src.copy(f'{self._MEAS_PATH}/pl/wavelengths', pl_grp, name='wavelengths')
-                src.copy(f'{self._MEAS_PATH}/pl/dark_intensities', pl_grp, name='dark_intensities')
-                src.copy(f'{self._MEAS_PATH}/pl/reference_intensities', pl_grp, name='reference_intensities')
-                pos_grp = pl_grp.require_group('positions')
-                src.copy(f'{self._MEAS_PATH}/pl/positions/{pos_key}', pos_grp, name=pos_key)
+                pl_grp = meas.require_group(f'pl_{pos_key}')
+                src_pl = src[f'{self._MEAS_PATH}/pl']
+                src_pl_pos = src_pl[f'positions/{pos_key}']
+                for k, v in src_pl_pos.attrs.items():
+                    pl_grp.attrs[k] = v
+                for name in ('wavelengths', 'dark_intensities', 'reference_intensities'):
+                    if name in src_pl:
+                        src.copy(src_pl[name], pl_grp, name=name)
+                for name, item in src_pl_pos.items():
+                    src.copy(item, pl_grp, name=name)
         return out_path
 
     def setup_data(self):
@@ -1262,9 +1264,16 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
     def _apply_child_scientific_metadata(self):
         has_uvvis, has_pl = self._measure_flags()
         pos_key = self._position_key(self._child_position)
+        is_split = (f'{self._MEAS_PATH}/uvvis_{self._child_position}' in self.h5file
+                    or f'{self._MEAS_PATH}/pl_{self._child_position}' in self.h5file)
         child_md = {}
         if has_uvvis:
-            uvvis_attrs = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}'].attrs
+            if is_split:
+                uvvis_grp = self.h5file[f'{self._MEAS_PATH}/uvvis_{self._child_position}']
+            else:
+                pos_key = self._position_key(self._child_position)
+                uvvis_grp = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}']
+            uvvis_attrs = uvvis_grp.attrs
             child_md.update({
                 "uvvis_integration_time": float(uvvis_attrs['integration_time']),
                 "x_center": float(uvvis_attrs['x_center']),
@@ -1273,7 +1282,12 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
                 "y_positions": uvvis_attrs['y_positions'].tolist(),
             })
         if has_pl:
-            pl_attrs = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}'].attrs
+            if is_split:
+                pl_grp = self.h5file[f'{self._MEAS_PATH}/pl_{self._child_position}']
+            else:
+                pos_key = self._position_key(self._child_position)
+                pl_grp = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}']
+            pl_attrs = pl_grp.attrs
             child_md.update({
                 "pl_integration_time": float(pl_attrs['integration_time']),
                 "pl_x_center": float(pl_attrs['x_center']),
@@ -1283,15 +1297,21 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
 
     def _add_child_thumbnails(self):
         has_uvvis, has_pl = self._measure_flags()
-        pos_key = self._position_key(self._child_position)
+        is_split = (f'{self._MEAS_PATH}/uvvis_{self._child_position}' in self.h5file
+                    or f'{self._MEAS_PATH}/pl_{self._child_position}' in self.h5file)
 
         if has_uvvis:
             try:
-                wls = np.array(self.h5file[f'{self._MEAS_PATH}/uvvis/wavelengths'])
-                pos = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}']
-                raw = np.array(pos['raw_intensities'])
-                dark = np.array(pos['dark_intensities'])
-                blank = np.array(pos['blank_intensities'])
+                if is_split:
+                    grp = self.h5file[f'{self._MEAS_PATH}/uvvis_{self._child_position}']
+                    wls = np.array(grp['wavelengths'])
+                else:
+                    pos_key = self._position_key(self._child_position)
+                    wls = np.array(self.h5file[f'{self._MEAS_PATH}/uvvis/wavelengths'])
+                    grp = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}']
+                raw = np.array(grp['raw_intensities'])
+                dark = np.array(grp['dark_intensities'])
+                blank = np.array(grp['blank_intensities'])
                 denom = blank - dark
                 denom = np.where(np.abs(denom) < 1, 1.0, denom)
                 T = (raw.mean(axis=0) - dark) / denom
@@ -1311,10 +1331,16 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
 
         if has_pl:
             try:
-                wls = np.array(self.h5file[f'{self._MEAS_PATH}/pl/wavelengths'])
-                dark_shared = np.array(self.h5file[f'{self._MEAS_PATH}/pl/dark_intensities'])
-                pos = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}']
-                raw = np.array(pos['raw_intensities'])
+                if is_split:
+                    grp = self.h5file[f'{self._MEAS_PATH}/pl_{self._child_position}']
+                    wls = np.array(grp['wavelengths'])
+                    dark_shared = np.array(grp['dark_intensities'])
+                else:
+                    pos_key = self._position_key(self._child_position)
+                    wls = np.array(self.h5file[f'{self._MEAS_PATH}/pl/wavelengths'])
+                    dark_shared = np.array(self.h5file[f'{self._MEAS_PATH}/pl/dark_intensities'])
+                    grp = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}']
+                raw = np.array(grp['raw_intensities'])
                 intensity = raw.mean(axis=0) - dark_shared
                 fig, ax = plt.subplots()
                 ax.plot(wls, intensity)
