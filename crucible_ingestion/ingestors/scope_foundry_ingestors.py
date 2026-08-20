@@ -1252,6 +1252,7 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
         self._apply_child_scientific_metadata()
         self.thumbnails = []
         self._add_child_thumbnails()
+        self.measurement = 'Nirvana_Child_SpecRun'
 
     def _position_key(self, position):
         pos_path = self._primary_pos_path()
