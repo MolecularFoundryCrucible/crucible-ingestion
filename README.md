@@ -19,50 +19,58 @@ uv sync
 Run `crucible config init` once to store your API url and key. Everything in this package
 builds its client through `get_client()`, which picks up that config.
 
-## Parse a file locally
+## Running
 
-```
-uv run crucible-ingest --file {local_file_path} [--dsid {dsid}] [--ingestor {ingestion-class}] [--output-dir {output_dir}] [--push] [--test]
-```
+A real run needs a `--dsid`. Create the dataset in Crucible first. You may want to include
+fields that you do not expect to be parsable, such as instrument name or project ID:
 
-Only `--file` is required.
-
-- `--dsid` is the dataset the parsed information belongs to. If a dataset mfid is not provided, an mfid will be generated locally. If you are running --push and are not in test mode (--test) you should first create a dataset in Crucible using `crucible dataset create` or 
-```python 
+```python
 client.datasets.create(Dataset())
-``` 
-and provide the dataset ID for the dataset. 
+```
 
+Then pass the id it returns:
+
+```
+uv run crucible-ingest --file {local_file_path} --dsid {dsid} [--ingestor {ingestion-class}] [--output-dir {output_dir}] [--push]
+```
+
+- `--dsid` is the dataset the parsed information belongs to.
 - `--ingestor` names an ingestion class explicitly. Without it, a supported ingestor is
   auto-detected by `find_supported_ingestor`.
 - `--output-dir` defaults to `./dry_run_output/{dsid}`.
-- `--push` sends the parsed packet to Crucible. Without it nothing is written.
-- `--test` runs`--push` in test mode: If a dataset ID is not provided, one will be generated and a temporary dataset will be created for you in the `crucible-test` project.
+- `--push` sends the parsed packet to Crucible. Without it nothing is written to Crucible
+  and the run is a dry run.
+
+Running `--push` with neither a `--dsid` nor `--test` is an error.
 
 The parsed packet is written to `{output_dir}/packet.json` and any thumbnails are decoded
 to `{output_dir}/thumbnails/` so they can be inspected.
 
-## Push to Crucible
+`parse()` reads from Crucible when a dataset record with the given dsid already exists, so
+that values a user set at dataset creation are not overwritten by parsed ones. If no such
+record exists, parsing starts from scratch.
 
-`--push` needs a dataset to push to, so pair it with a `--dsid`:
+## Testing
 
-```
-crucible dataset create
-uv run crucible-ingest --file {local_file_path} --dsid {new_dsid} --push
-```
-
-To test the push() function, use `--test` and the command will create a temporary dataset for
-you in the `crucible-test` project, logging the id it picked:
+Testing does not need a dsid. Without one an mfid is generated locally, and `--test`
+creates a throwaway dataset under that id in the `crucible-test` project for `--push` to
+write to, logging the id it picked:
 
 ```
 uv run crucible-ingest --file {local_file_path} --push --test
 ```
 
-Running `--push` with neither a `--dsid` nor `--test` will result in an error.
+Drop `--push` to parse only. The packet is written to `{output_dir}/packet.json` under the
+generated id and nothing touches Crucible:
 
-The parse() function reads from Crucible if a dataset record with the given dsid already exists, so
-that values a user set at dataset creation are not overwritten by parsed ones. If no such
-record exists, parsing starts from scratch.
+```
+uv run crucible-ingest --file {local_file_path}
+```
+
+Passing a `--dsid` is optional and useful when you want the run to go against a dataset
+that already exists — to check that `parse()` reads the user provided fields back
+correctly, for instance. With a `--dsid`, `--test` creates nothing and the push goes to
+that dataset.
 
 ## Using it from Python
 
@@ -94,6 +102,20 @@ above general ones.
 Parsing must not post to Crucible. All writes to Crucible should be part of the `push_packet` function. 
 Anything that needs to be created or linked can be added to the packet during parsing, for example: 
 `self.samples`, `self.children`, `self.keywords`, or `self.thumbnails`.
+
+Once you are content with your new parser, add an example file to `tests/data` and generate
+its schema from the tests folder:
+
+```
+uv run python tests/make_schemas.py --file tests/data/{new_file}
+```
+
+This runs `parse()` and records the packet's key paths, types, and values as a JSON Schema
+in `tests/schemas/`, paired with the data file's hash in `tests/schema_registry.json`. The
+test suite checks later parses against it, so a field that stops being parsed shows up as a
+failure. Files already in the registry are skipped, so running it with no arguments picks
+up only what is new. Review the generated schema before committing — it records what the
+code does today, bugs included.
 
 ## Test data
 
