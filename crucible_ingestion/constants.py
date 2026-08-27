@@ -10,12 +10,12 @@ sql_import_attr = [ 'dataset_name',
                     'data_format',
                     'session_name',
                     'ingestion_class',
-                    'ingestion_githash']
+                    'ingestion_githash',
+                    'timestamp']
 
-# Note: if a user manually edited timestamp in the DB and then re-ingests with
-# one of those subclasses, the file-parsed value will win over their edit.
+# size stays export-only: it is measured from the file, so a stored value should never
+# win over what the parse finds.
 sql_export_attr = sql_import_attr + ['size',
-                                     'timestamp',
                                      'thumbnails',
                                      'keywords',
                                      'acl']
