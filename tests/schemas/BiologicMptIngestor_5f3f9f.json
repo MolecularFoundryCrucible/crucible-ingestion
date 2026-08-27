@@ -1,0 +1,379 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "mpt",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "Electrochemistry Time Series",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "EC \u2014 GC_EC_example",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": "Chronoamperometry / Chronocoulometry",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 689228,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-06-05T18:23:09.970000",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "BiologicMptIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "Chronoamperometry / Chronocoulometry"
+          }
+        },
+        {
+          "contains": {
+            "const": "Electrochemistry Time Series"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "acquisition_started_on": {
+          "const": "2026-06-05T18:23:09.970000",
+          "type": "string"
+        },
+        "acquisition_started_on_raw": {
+          "const": "06/05/2026 18:23:09.970",
+          "type": "string"
+        },
+        "cell_temperature_C": {},
+        "channel": {
+          "const": "2 (SN 0520)",
+          "type": "string"
+        },
+        "comments": {},
+        "device": {
+          "const": "SP-300 (SN 0154)",
+          "type": "string"
+        },
+        "duration_s": {
+          "const": 2335.048741011706,
+          "type": "number"
+        },
+        "electrode_connection": {
+          "const": "standard",
+          "type": "string"
+        },
+        "electrode_material": {},
+        "electrode_surface_area_cm2": {
+          "const": 4.0,
+          "type": "number"
+        },
+        "electrolyte": {},
+        "electrolyte_pH": {},
+        "ewe_control_range": {
+          "const": "min = -5.00 V, max = 5.00 V",
+          "type": "string"
+        },
+        "host": {
+          "const": "128.3.17.202",
+          "type": "string"
+        },
+        "initial_state": {},
+        "ir_compensation_ohm": {},
+        "point_count": {
+          "const": 2337,
+          "type": "number"
+        },
+        "potential_control": {
+          "const": "Ewe",
+          "type": "string"
+        },
+        "reference_electrode": {},
+        "reference_electrode_potential_V_vs_SHE": {},
+        "sampling_interval_s": {
+          "const": 0.9999999747378752,
+          "type": "number"
+        },
+        "saved_directory": {
+          "const": "C:\\Users\\MEG_biologic\\Desktop\\Vapor_PEC_Raw_data\\EC-Lab\\",
+          "type": "string"
+        },
+        "saved_file": {
+          "const": "20260605_03_2x2_20+10Gasket_15inoz_LiquidMiddleChamber_1MKHCO3_3mlmin_0,5sccmAr_3V_CA.mpr",
+          "type": "string"
+        },
+        "software": {
+          "const": "EC-Lab for windows v11.43 (software)",
+          "type": "string"
+        },
+        "technique": {
+          "const": "Chronoamperometry / Chronocoulometry",
+          "type": "string"
+        },
+        "technique_settings": {
+          "additionalProperties": true,
+          "properties": {
+            "Bandwidth": {
+              "const": "8",
+              "type": "string"
+            },
+            "E range max (V)": {
+              "const": "5.000",
+              "type": "string"
+            },
+            "E range min (V)": {
+              "const": "-5.000",
+              "type": "string"
+            },
+            "Ei (V)": {
+              "const": "3.000",
+              "type": "string"
+            },
+            "I Range": {
+              "const": "Auto",
+              "type": "string"
+            },
+            "I Range init": {
+              "const": "Unset",
+              "type": "string"
+            },
+            "I Range max": {
+              "const": "Unset",
+              "type": "string"
+            },
+            "I Range min": {
+              "const": "Unset",
+              "type": "string"
+            },
+            "Imax": {
+              "const": "pass",
+              "type": "string"
+            },
+            "Imin": {
+              "const": "pass",
+              "type": "string"
+            },
+            "dI": {
+              "const": "0.000",
+              "type": "string"
+            },
+            "dQ": {
+              "const": "0.000",
+              "type": "string"
+            },
+            "dQM": {
+              "const": "0.000",
+              "type": "string"
+            },
+            "dt (s)": {
+              "const": "1.0000",
+              "type": "string"
+            },
+            "dta (s)": {
+              "const": "0.1000",
+              "type": "string"
+            },
+            "goto Ns'": {
+              "const": "0",
+              "type": "string"
+            },
+            "nc cycles": {
+              "const": "0",
+              "type": "string"
+            },
+            "record": {
+              "const": "I",
+              "type": "string"
+            },
+            "ti (h:m:s)": {
+              "const": "2:00:0.0000",
+              "type": "string"
+            },
+            "unit Imax": {
+              "const": "mA",
+              "type": "string"
+            },
+            "unit Imin": {
+              "const": "mA",
+              "type": "string"
+            },
+            "unit dI": {
+              "const": "A",
+              "type": "string"
+            },
+            "unit dQ": {
+              "const": "mA.h",
+              "type": "string"
+            },
+            "unit dQM": {
+              "const": "mA.h",
+              "type": "string"
+            },
+            "vs.": {
+              "const": "Ref",
+              "type": "string"
+            }
+          },
+          "required": [
+            "Bandwidth",
+            "E range max (V)",
+            "E range min (V)",
+            "Ei (V)",
+            "I Range",
+            "I Range init",
+            "I Range max",
+            "I Range min",
+            "Imax",
+            "Imin",
+            "dI",
+            "dQ",
+            "dQM",
+            "dt (s)",
+            "dta (s)",
+            "goto Ns'",
+            "nc cycles",
+            "record",
+            "ti (h:m:s)",
+            "unit Imax",
+            "unit Imin",
+            "unit dI",
+            "unit dQ",
+            "unit dQM",
+            "vs."
+          ],
+          "type": "object"
+        },
+        "technique_started_on": {
+          "const": "2026-06-05T18:23:09.970000",
+          "type": "string"
+        }
+      },
+      "required": [
+        "acquisition_started_on",
+        "acquisition_started_on_raw",
+        "cell_temperature_C",
+        "channel",
+        "comments",
+        "device",
+        "duration_s",
+        "electrode_connection",
+        "electrode_material",
+        "electrode_surface_area_cm2",
+        "electrolyte",
+        "electrolyte_pH",
+        "ewe_control_range",
+        "host",
+        "initial_state",
+        "ir_compensation_ohm",
+        "point_count",
+        "potential_control",
+        "reference_electrode",
+        "reference_electrode_potential_V_vs_SHE",
+        "sampling_interval_s",
+        "saved_directory",
+        "saved_file",
+        "software",
+        "technique",
+        "technique_settings",
+        "technique_started_on"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "Current and potential vs time",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}
