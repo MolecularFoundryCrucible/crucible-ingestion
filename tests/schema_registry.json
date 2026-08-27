@@ -131,11 +131,23 @@
     "ingestor": "EmiIngestor",
     "schema": "EmiIngestor_5c73f7.json"
   },
+  "5dc4750612bfd7ec0b8918be39d0fc9a3637afbbd6b066dd8a6e71255f43a051": {
+    "dsid": "xxx",
+    "file": "GC_FID_example.LOG",
+    "ingestor": "GCLogIngestor",
+    "schema": "GCLogIngestor_5dc475.json"
+  },
   "5ef5b23e3dce4c76bb1ccf91c706b4afae3601329db58231c3c1a82afbf7f358": {
     "dsid": "xxx",
     "file": "10k_RGA_batch_run_example.zip",
     "ingestor": "RgaTeyBatchIngestor",
     "schema": "RgaTeyBatchIngestor_5ef5b2.json"
+  },
+  "5f3f9feced3dee7f45173c1bfc87b245bc68e555f5ec1b4e66434a034b420bbb": {
+    "dsid": "xxx",
+    "file": "GC_EC_example.mpt",
+    "ingestor": "BiologicMptIngestor",
+    "schema": "BiologicMptIngestor_5f3f9f.json"
   },
   "5f545b834dc832d78cc8c7c734ca586b1501611e6ba50ed0bc289e5bc1778ef7": {
     "dsid": "xxx",

@@ -1,0 +1,180 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "LOG",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "GC Peak Table",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "GC FID \u2014 GC_FID_example",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": "Gas Chromatography",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 147847,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-07-17T17:10:27",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "xxx",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "ingestion_class": {
+      "const": "GCLogIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "FID"
+          }
+        },
+        {
+          "contains": {
+            "const": "GC Peak Table"
+          }
+        },
+        {
+          "contains": {
+            "const": "Gas Chromatography"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "carrier_gas": {},
+        "detector": {
+          "const": "FID",
+          "type": "string"
+        },
+        "detectors_present": {
+          "allOf": [
+            {
+              "contains": {
+                "const": "FID"
+              }
+            }
+          ],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "type": "array"
+        },
+        "first_injection_timestamp": {
+          "const": "2026-07-17T17:10:27",
+          "type": "string"
+        },
+        "injection_count": {
+          "const": 383,
+          "type": "number"
+        },
+        "injection_volume_uL": {},
+        "last_injection_timestamp": {
+          "const": "2026-07-22T19:52:03",
+          "type": "string"
+        },
+        "log_file": {
+          "const": "GC_FID_example.LOG",
+          "type": "string"
+        },
+        "product_gas_flow_rate_sccm": {},
+        "technique": {
+          "const": "gas chromatography",
+          "type": "string"
+        }
+      },
+      "required": [
+        "carrier_gas",
+        "detector",
+        "detectors_present",
+        "first_injection_timestamp",
+        "injection_count",
+        "injection_volume_uL",
+        "last_injection_timestamp",
+        "log_file",
+        "product_gas_flow_rate_sccm",
+        "technique"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "xxx",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}
