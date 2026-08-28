@@ -161,7 +161,7 @@ class BiologicMptIngestor(CrucibleDatasetIngestor):
     def parse_dataset_name(self):
         if self.dataset_name:
             return
-        self.dataset_name = f'EC — {Path(self.file_to_upload).stem}'
+        self.dataset_name = f'{Path(self.file_to_upload).stem}'
 
     def parse_file_timestamp(self):
         if self.timestamp:
