@@ -98,9 +98,7 @@ class GCLogIngestor(CrucibleDatasetIngestor):
     def parse_dataset_name(self):
         if self.dataset_name:
             return
-        detector = self.scientific_metadata.get('detector')
-        label = f'GC {detector}' if detector else 'GC'
-        self.dataset_name = f'{label} — {Path(self.file_to_upload).stem}'
+        self.dataset_name = f'{Path(self.file_to_upload).stem}'
 
     def parse_file_timestamp(self):
         if self.timestamp:
