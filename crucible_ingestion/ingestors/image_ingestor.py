@@ -43,8 +43,13 @@ class TifIngestor(ImageIngestor):
 
     def get_scientific_metadata(self):
         CrucibleDatasetIngestor.get_scientific_metadata(self)
+        skip_tags = ['StripOffsets', 'StripByteCounts', '34682']
         with Image.open(self.file_to_upload) as im:
             raw_md = im.tag_v2
             for tag, value in raw_md.items():
                 tag_name = TAGS.get(tag, str(tag))
+                if tag_name in skip_tags:
+                    print(tag_name)
+                    continue
+                
                 self.scientific_metadata[tag_name] = value
