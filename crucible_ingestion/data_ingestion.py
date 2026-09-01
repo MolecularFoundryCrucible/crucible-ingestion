@@ -27,7 +27,7 @@ def find_existing_sample(sample):
             raise
 
     found = get_client().samples.list(sample_name=sample['sample_name'],
-                                project_id=sample.get('project_id'))
+                                      project_id=sample.get('project_id'))
     if len(found) > 1:
         raise ValueError(
             f"unique_id not provided and sample name {sample['sample_name']!r} is ambiguous "
@@ -114,7 +114,8 @@ def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
                                    option=orjson.OPT_SERIALIZE_NUMPY))
 
     skip_fields = {'keywords', 'ingestion_class', 'thumbnails',
-                   'scientific_metadata', 'acl', 'ingestion_githash'}
+                   'scientific_metadata', 'acl', 'ingestion_githash',
+                   'owner_orcid', 'project_id'}
 
     D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
 
@@ -141,6 +142,9 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
 
 def push_packet(packet):
     # send the data
+    # update does not carry owner_orcid or project_id. To set the project from the parsed
+    # packet, call: get_client().datasets.reassign_project(packet.unique_id, "MFP12345",
+    # confirm=True) -- likely only when the project_id is None.
     ds = get_client().datasets.update(packet.unique_id, **packet.dataset_fields)
 
     # link to any parsed samples
