@@ -146,7 +146,7 @@ def push_packet(packet):
     # get_client().datasets.reassign_project(packet.unique_id, "MFP12345", confirm=True)
     # -- likely only when the project_id is None.
     update_fields = {k: v for k, v in packet.dataset_fields.items()
-                     if k not in ('unique_id', 'owner_orcid', 'project_id')}
+                     if k not in ('unique_id', 'owner_orcid', 'project_id', 'size')}
     ds = get_client().datasets.update(packet.unique_id, **update_fields)
 
     # link to any parsed samples
