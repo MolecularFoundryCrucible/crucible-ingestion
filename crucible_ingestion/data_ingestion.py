@@ -114,8 +114,7 @@ def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
                                    option=orjson.OPT_SERIALIZE_NUMPY))
 
     skip_fields = {'keywords', 'ingestion_class', 'thumbnails',
-                   'scientific_metadata', 'acl', 'ingestion_githash',
-                   'owner_orcid', 'project_id'}
+                   'scientific_metadata', 'acl', 'ingestion_githash'}
 
     D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
 
@@ -142,10 +141,13 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
 
 def push_packet(packet):
     # send the data
-    # update does not carry owner_orcid or project_id. To set the project from the parsed
-    # packet, call: get_client().datasets.reassign_project(packet.unique_id, "MFP12345",
-    # confirm=True) -- likely only when the project_id is None.
-    ds = get_client().datasets.update(packet.unique_id, **packet.dataset_fields)
+    # unique_id goes in the path, not the body, and the patch route rejects owner_orcid
+    # and project_id. To set the project from the parsed packet, call:
+    # get_client().datasets.reassign_project(packet.unique_id, "MFP12345", confirm=True)
+    # -- likely only when the project_id is None.
+    update_fields = {k: v for k, v in packet.dataset_fields.items()
+                     if k not in ('unique_id', 'owner_orcid', 'project_id')}
+    ds = get_client().datasets.update(packet.unique_id, **update_fields)
 
     # link to any parsed samples
     for sample in packet.samples:
