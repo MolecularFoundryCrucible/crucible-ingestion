@@ -13,7 +13,7 @@ dependencies = [
     "igor2>=0.5.13",
     "matplotlib>=3.10.8",
     "mfid>=1.0.0",
-    "nano-crucible>=3.1.0",
+    "nano-crucible>=3.2.0",
     "ncempy>=1.15",
     "numpy",
     "orjson>=3.9",
