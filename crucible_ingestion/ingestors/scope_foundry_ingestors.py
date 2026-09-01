@@ -815,7 +815,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
        # return(any([self.file_to_upload.endswith(f'_{x}.h5') for x in supported_measurements]))
     
     def get_dataset_metadata(self):
-        self.instrument_name = 'Nirvana Spectrometer'
+        self.instrument_name = 'Inorganic Nirvana'
 
         H5Ingestor.get_dataset_metadata(self)
 
@@ -1052,7 +1052,7 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
         return bool(re.match(r'.*pollux_multipos_spec_run.*\.h5', self.file_to_upload))
 
     def get_dataset_metadata(self):
-        self.instrument_name = 'Nirvana Spectrometer'
+        self.instrument_name = 'Inorganic Nirvana'
 
         H5Ingestor.get_dataset_metadata(self)
 
