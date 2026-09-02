@@ -7,6 +7,7 @@ from numbers import Rational
 from io import BytesIO
 from PIL import Image
 from datetime import datetime
+from importlib.metadata import distribution
 
 
 def build_b64_thumbnail(image: Image, max_size = (200,200)):
@@ -79,4 +80,18 @@ def deep_merge_skip_empty(target, source):
     return target
 
 
+def get_ingestion_githash():
+    try:
+        direct_url = distribution("crucible-ingestion").read_text("direct_url.json")
+        dist_info = json.loads(direct_url)
+        if dist_info.get('vcs_info') is not None:
+            return ["vcs_info"]["commit_id"]
+        elif dist_info.get('dir_info') is not None:
+            # git -C <path> rev-parse HEAD with a -dirty suffix when status --porcelain is non-empty
+            pass # replace with above comment
+        else:
+            return None
+        
+    except Exception as err:
+        return None
 

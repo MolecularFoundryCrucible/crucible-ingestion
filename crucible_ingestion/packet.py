@@ -7,6 +7,7 @@ from .utils import EnhancedJSONEncoder
 @dataclass
 class IngestionPacket:
     unique_id: str
+    file_to_upload: str
     ingestion_class: str
     dataset_fields: dict = field(default_factory=dict)
     scientific_metadata: dict = field(default_factory=dict)

@@ -4,7 +4,7 @@ import requests
 from .constants import sql_import_attr, sql_export_attr
 import orjson
 from crucible.models import Dataset
-from .utils import sanitize_metadata
+from .utils import sanitize_metadata, get_ingestion_githash
 from .ingestors.registry import find_supported_ingestor
 from .packet import IngestionPacket
 from .client import get_client
@@ -69,7 +69,6 @@ def populate_existing_ds_info(ig, populate_fields):
 
 def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
     logger.info("running build packet...")
-
     ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class)
     if ig is None:
         logger.warning("Tried all ingestors with no matches found")
@@ -120,6 +119,7 @@ def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
 
     return IngestionPacket(
             unique_id=ig.unique_id,
+            file_to_upload = ig.file_to_upload,
             ingestion_class=ig.ingestion_class,
             dataset_fields=D,
             scientific_metadata=md,
@@ -139,7 +139,7 @@ def parse(dataset_to_process, dsid, ingestion_class=None):
     return packet
 
 
-def push_packet(packet):
+def push_packet(packet, include_file = False):
     # send the data
     # unique_id goes in the path, not the body, and the patch route rejects owner_orcid
     # and project_id. To set the project from the parsed packet, call:
@@ -253,10 +253,29 @@ def push_packet(packet):
                                                            overwrite = False)
 
     logger.info("Scientific metadata update complete")
+
+    # add file
+    if include_file:
+        # uploads the file to GCS and adds a 'not_requested' record to the ingestion_request table
+        add_file_response = get_client().datasets.add_file(dataset_mfid = packet.unique_id,
+                                                    file_path = packet.file_to_upload,
+                                                    skip_ingestion = True)
+
+        # update ingestion provenance with local parsing details
+        req_id = add_file_response['ingestion_request']['req_id']
+        githash = get_ingestion_githash()
+        get_client().ingestions.update(reqid = '',
+                                       ingestion_class = packet.ingestion_class,
+                                       ingestion_githash = githash)
+        pass
+        
     return ds
 
 
-def data_ingestion(dataset_to_process, dsid, ingestion_class=None):
+    
+
+
+def data_ingestion(dataset_to_process, dsid, ingestion_class=None, include_file = False):
 
     result = _parse_with_ig(dataset_to_process, dsid, ingestion_class)
 
@@ -264,7 +283,7 @@ def data_ingestion(dataset_to_process, dsid, ingestion_class=None):
         return (None, None)
     packet, ig = result
     try:
-        return push_packet(packet), packet.ingestion_class
+        return push_packet(packet, include_file), packet.ingestion_class
     finally:
         ig.cleanup()
 
