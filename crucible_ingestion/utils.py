@@ -1,13 +1,19 @@
 
 import base64
+import logging
 import math
 import json
+import subprocess
 import numpy as np
 from numbers import Rational
 from io import BytesIO
 from PIL import Image
 from datetime import datetime
 from importlib.metadata import distribution
+from urllib.parse import urlparse
+from urllib.request import url2pathname
+
+logger = logging.getLogger(__name__)
 
 
 def build_b64_thumbnail(image: Image, max_size = (200,200)):
@@ -85,13 +91,24 @@ def get_ingestion_githash():
         direct_url = distribution("crucible-ingestion").read_text("direct_url.json")
         dist_info = json.loads(direct_url)
         if dist_info.get('vcs_info') is not None:
-            return ["vcs_info"]["commit_id"]
+            return dist_info["vcs_info"]["commit_id"]
         elif dist_info.get('dir_info') is not None:
-            # git -C <path> rev-parse HEAD with a -dirty suffix when status --porcelain is non-empty
-            pass # replace with above comment
+            return _git_describe_checkout(url2pathname(urlparse(dist_info["url"]).path))
         else:
+            logger.warning("crucible-ingestion has no vcs_info or dir_info; cannot resolve githash")
             return None
-        
+
     except Exception as err:
+        logger.warning(f"Could not resolve crucible-ingestion githash: {err}")
         return None
+
+
+def _git_describe_checkout(path):
+    """Resolve HEAD of the git checkout at path, suffixed '-dirty' if it has uncommitted changes."""
+    def git(*args):
+        return subprocess.run(('git', '-C', path) + args, capture_output=True,
+                              text=True, check=True).stdout.strip()
+
+    commit = git('rev-parse', 'HEAD')
+    return f'{commit}-dirty' if git('status', '--porcelain') else commit
 

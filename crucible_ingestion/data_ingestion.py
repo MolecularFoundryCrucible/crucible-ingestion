@@ -6,6 +6,7 @@ import orjson
 from crucible.models import Dataset
 from .utils import sanitize_metadata, get_ingestion_githash
 from .ingestors.registry import find_supported_ingestor
+from .ingestors.crucible_ingestor import cleanup_tmp_files
 from .packet import IngestionPacket
 from .client import get_client
 logger = logging.getLogger(__name__)
@@ -67,7 +68,13 @@ def populate_existing_ds_info(ig, populate_fields):
     return ig, found_ds
         
 
-def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
+def parse(dataset_to_process, dsid, ingestion_class=None, cleanup=True):
+    """Parse a file into an IngestionPacket, or None if no ingestor supports it.
+
+    Args:
+        cleanup: Remove TMP_DIR before returning. Pass False when the caller still
+            needs the child files the ingestor extracted there.
+    """
     logger.info("running build packet...")
     ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class)
     if ig is None:
@@ -117,7 +124,7 @@ def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
 
     D = {k: getattr(ig, k) for k in sql_export_attr if k not in skip_fields}
 
-    return IngestionPacket(
+    packet = IngestionPacket(
             unique_id=ig.unique_id,
             file_to_upload = ig.file_to_upload,
             ingestion_class=ig.ingestion_class,
@@ -127,15 +134,11 @@ def _parse_with_ig(dataset_to_process, dsid, ingestion_class=None):
             samples=ig.samples,
             children=ig.children,
             thumbnails=ig.thumbnails,
-        ), ig
+        )
 
+    if cleanup:
+        ig.cleanup()
 
-def parse(dataset_to_process, dsid, ingestion_class=None):
-    result = _parse_with_ig(dataset_to_process, dsid, ingestion_class)
-    if result is None:
-        return None
-    packet, ig = result
-    ig.cleanup()
     return packet
 
 
@@ -255,20 +258,27 @@ def push_packet(packet, include_file = False):
     logger.info("Scientific metadata update complete")
 
     # add file
-    if include_file:
+    if include_file and packet.file_to_upload is None:
+        logger.warning(f"include_file requested for {packet.unique_id} but the packet "
+                       "carries no file_to_upload; skipping upload")
+    elif include_file:
         # uploads the file to GCS and adds a 'not_requested' record to the ingestion_request table
         add_file_response = get_client().datasets.add_file(dataset_mfid = packet.unique_id,
                                                     file_path = packet.file_to_upload,
                                                     skip_ingestion = True)
 
         # update ingestion provenance with local parsing details
-        req_id = add_file_response['ingestion_request']['req_id']
-        githash = get_ingestion_githash()
-        get_client().ingestions.update(reqid = '',
-                                       ingestion_class = packet.ingestion_class,
-                                       ingestion_githash = githash)
-        pass
-        
+        ingestion_request = add_file_response['ingestion_request']
+        if ingestion_request is None:
+            # the file was already in the dataset, so add_file deduped and created no request
+            logger.info(f"{packet.file_to_upload} already present in {packet.unique_id}; "
+                        "no ingestion request to record provenance on")
+        else:
+            get_client().ingestions.update(ingestion_request['id'],
+                                           status = 'not_requested',
+                                           ingestion_class = packet.ingestion_class,
+                                           ingestion_githash = get_ingestion_githash())
+
     return ds
 
 
@@ -276,16 +286,29 @@ def push_packet(packet, include_file = False):
 
 
 def data_ingestion(dataset_to_process, dsid, ingestion_class=None, include_file = False):
+    """Parse and push a file.
 
-    result = _parse_with_ig(dataset_to_process, dsid, ingestion_class)
+    Returns:
+        tuple: (dataset, ingestion_class, supported). `supported` is False when no
+            ingestor claimed the file; with include_file=True the file is still
+            uploaded, so `dataset` may be non-None even then.
+    """
+    packet = parse(dataset_to_process, dsid, ingestion_class, cleanup=False)
 
-    if result is None:
-        return (None, None)
-    packet, ig = result
+    if packet is None:
+        if not include_file:
+            return (None, None, False)
+        # no ingestor claimed the file, so nothing was parsed and no temp files exist,
+        # but the file itself should still land in the dataset
+        packet = IngestionPacket(unique_id=dsid,
+                                 ingestion_class='',
+                                 file_to_upload=dataset_to_process)
+        return push_packet(packet, True), '', False
+
     try:
-        return push_packet(packet, include_file), packet.ingestion_class
+        return push_packet(packet, include_file), packet.ingestion_class, True
     finally:
-        ig.cleanup()
+        cleanup_tmp_files()
 
 
 
