@@ -19,6 +19,10 @@ logger = logging.getLogger(__name__)
 TMP_DIR = '/tmp/crucible_tmp_files'
 
 
+def cleanup_tmp_files():
+    shutil.rmtree(TMP_DIR, ignore_errors=True)
+
+
 class CrucibleDatasetIngestor(Dataset):
     ingestion_githash: str = os.environ.get("GITHASH")
     scientific_metadata: dict = {} 
@@ -57,7 +61,7 @@ class CrucibleDatasetIngestor(Dataset):
 
 
     def cleanup(self):
-        shutil.rmtree(TMP_DIR, ignore_errors=True)
+        cleanup_tmp_files()
 
 
     def get_scientific_metadata(self):

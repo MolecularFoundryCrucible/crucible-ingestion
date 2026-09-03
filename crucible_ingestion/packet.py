@@ -1,5 +1,6 @@
 import json
 from dataclasses import dataclass, field, asdict
+from typing import Optional
 
 from .utils import EnhancedJSONEncoder
 
@@ -8,6 +9,7 @@ from .utils import EnhancedJSONEncoder
 class IngestionPacket:
     unique_id: str
     ingestion_class: str
+    file_to_upload: Optional[str] = None
     dataset_fields: dict = field(default_factory=dict)
     scientific_metadata: dict = field(default_factory=dict)
     keywords: list = field(default_factory=list)
