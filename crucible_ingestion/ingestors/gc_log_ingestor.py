@@ -1,6 +1,7 @@
 import logging
 import re
 import statistics
+from collections import defaultdict
 from datetime import datetime as dt
 from io import BytesIO
 from pathlib import Path
@@ -69,25 +70,28 @@ class GCLogIngestor(CrucibleDatasetIngestor):
 
 
     def get_scientific_metadata(self):
-        rows = self._read_rows()
-        timestamps = [row['timestamp'] for row in rows]
-        intervals = [(b - a).total_seconds() for a, b in zip(timestamps, timestamps[1:])]
-        detectors = sorted({row['detector'] for row in rows})
+        # One block per detector: the FID and TCD logs of a run are pushed to the
+        # same dataset, and unprefixed keys would overwrite each other.
+        by_detector = defaultdict(list)
+        for row in self._read_rows():
+            by_detector[row['detector']].append(row['timestamp'])
 
-        self.scientific_metadata = {
-            'technique': 'gas chromatography',
-            'detector': detectors[0] if len(detectors) == 1 else None,
-            'detectors_present': detectors,
-            'log_file': Path(self.file_to_upload).name,
-            'injection_count': len(rows),
-            'first_injection_timestamp': timestamps[0].isoformat(),
-            'last_injection_timestamp': timestamps[-1].isoformat(),
+        self.scientific_metadata = {'technique': 'gas chromatography'}
+        for detector, timestamps in sorted(by_detector.items()):
+            self.scientific_metadata[detector] = {
+                'log_file': Path(self.file_to_upload).name,
+                'injection_count': len(timestamps),
+                'first_injection_timestamp': timestamps[0].isoformat(),
+                'last_injection_timestamp': timestamps[-1].isoformat(),
 
-            # Present in the ISAAC CO2RR record but absent from this file.
-            'injection_volume_uL': None,
-            'carrier_gas': None,
-            'product_gas_flow_rate_sccm': None,
-        }
+                # Present in the ISAAC CO2RR record but absent from this file.
+                'injection_volume_uL': None,
+                'carrier_gas': None,
+                'product_gas_flow_rate_sccm': None,
+            }
+
+    def _detectors(self):
+        return [key for key in self.scientific_metadata if key != 'technique']
 
     def parse_measurement(self):
         self.measurement = 'Gas Chromatography'
@@ -103,10 +107,11 @@ class GCLogIngestor(CrucibleDatasetIngestor):
     def parse_file_timestamp(self):
         if self.timestamp:
             return
-        self.timestamp = self.scientific_metadata['first_injection_timestamp']
+        self.timestamp = min(self.scientific_metadata[detector]['first_injection_timestamp']
+                             for detector in self._detectors())
 
     def parse_keywords(self):
-        self.keywords += self.scientific_metadata['detectors_present']
+        self.keywords += self._detectors()
         super().parse_keywords()
 
     # def get_thumbnails(self):
