@@ -1,0 +1,20 @@
+name: Notify ingestion-cloud-consumer
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send repository_dispatch to ingestion-cloud-consumer
+        env:
+          GH_TOKEN: ${{ secrets.CONSUMER_REPO_TOKEN }}
+        run: |
+          gh api repos/MolecularFoundryCrucible/ingestion-cloud-consumer/dispatches \
+            --method POST \
+            --field event_type=crucible-ingestion-updated \
+            --field client_payload[sha]="${{ github.sha }}" \
+            --field client_payload[ref]="${{ github.ref_name }}"
