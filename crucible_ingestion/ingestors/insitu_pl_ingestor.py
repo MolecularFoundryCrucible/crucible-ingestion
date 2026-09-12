@@ -40,15 +40,23 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
         CrucibleDatasetIngestor.get_scientific_metadata(self)
         logger.info("running get scientific metadata")
         os.makedirs(TMP_DIR, exist_ok = True)
-        self.tmp_folder = os.path.join(TMP_DIR, os.path.basename(self.file_to_upload.replace(".zip", "")))
-        logger.info(f"{self.tmp_folder=}")
+        staging_folder = os.path.join(TMP_DIR, os.path.basename(self.file_to_upload.replace(".zip", "")))
 
         # extract the files; -o so leftovers from a previous run never trigger
         # unzip's interactive overwrite prompt, which would block on stdin
-        if os.path.exists(self.tmp_folder):
-            shutil.rmtree(self.tmp_folder)
-        unzip_out = run_shell(f"unzip -qq -o '{self.file_to_upload}' -d '{TMP_DIR}/'")
+        if os.path.exists(staging_folder):
+            shutil.rmtree(staging_folder)
+        unzip_out = run_shell(f"unzip -qq -o '{self.file_to_upload}' -d '{staging_folder}/'")
         logger.info(unzip_out.stderr)
+
+        # Some zips wrap everything in a single top-level folder, others don't; walk
+        # from whichever level actually holds the sample folders/files.
+        entries = [e for e in os.listdir(staging_folder) if not e.startswith('.')]
+        if len(entries) == 1 and os.path.isdir(os.path.join(staging_folder, entries[0])):
+            self.tmp_folder = os.path.join(staging_folder, entries[0])
+        else:
+            self.tmp_folder = staging_folder
+        logger.info(f"{self.tmp_folder=}")
 
         # sample parsing
         self.instrument_name = ""
