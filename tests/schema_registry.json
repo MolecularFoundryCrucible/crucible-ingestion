@@ -167,6 +167,12 @@
     "ingestor": "SerIngestor",
     "schema": "SerIngestor_626e95.json"
   },
+  "64386c61bd357cd972c38113d506ed192b34ea52654d0cd321e127329b089e6a": {
+    "dsid": "0tn86c92qxwpf000j1z60z3v4c",
+    "file": "Te_etched_gridD3_tomo1.mrc",
+    "ingestor": "MrcIngestor",
+    "schema": "MrcIngestor_64386c.json"
+  },
   "6f5d30e16af8f41a4fef2fbf117dfefcb7171e73be53a506fa89b67951d7bfda": {
     "dsid": "xxx",
     "file": "team05/10.26.48 CCD Acquire_1.ser",

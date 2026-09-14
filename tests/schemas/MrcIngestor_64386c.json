@@ -1,0 +1,971 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "mrc",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "tomography",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "Te_etched_gridD3_tomo1.mrc",
+          "type": "string"
+        },
+        "instrument_name": {},
+        "measurement": {
+          "const": "tomography",
+          "type": "string"
+        },
+        "owner_orcid": {},
+        "project_id": {},
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {},
+        "size": {
+          "const": 190972928,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-09-14T10:39:52.281236",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "0tn86c92qxwpf000j1z60z3v4c",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "file_to_upload": {
+      "const": "tests/data/Te_etched_gridD3_tomo1.mrc",
+      "type": "string"
+    },
+    "ingestion_class": {
+      "const": "MrcIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "tomography"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "a_tilt": {
+          "const": -65.012825,
+          "type": "number"
+        },
+        "axisOrientations": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 1.0
+              }
+            },
+            {
+              "contains": {
+                "const": 2.0
+              }
+            },
+            {
+              "contains": {
+                "const": 3.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "b_tilt": {
+          "const": 0.0,
+          "type": "number"
+        },
+        "cellAngles": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 90.0
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "defocus": {
+          "const": -6.826911e-07,
+          "type": "number"
+        },
+        "exposure_time": {
+          "const": 15.0,
+          "type": "number"
+        },
+        "fei_parameters": {
+          "additionalProperties": true,
+          "properties": {
+            "Date/Time": {
+              "const": "09/10/26 10:58:32",
+              "type": "string"
+            },
+            "Tracking before exposures uses": {
+              "additionalProperties": true,
+              "properties": {
+                "Check Focus": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "Applied Defocus [\u00b5m]": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "Periodicity (high tilt range)": {
+                      "const": 1.0,
+                      "type": "number"
+                    },
+                    "Periodicity (low tilt range)": {
+                      "const": 1.0,
+                      "type": "number"
+                    },
+                    "Periodicity switch angle": {
+                      "const": 80.0,
+                      "type": "number"
+                    },
+                    "value": {
+                      "const": true,
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "Applied Defocus [\u00b5m]",
+                    "Periodicity (high tilt range)",
+                    "Periodicity (low tilt range)",
+                    "Periodicity switch angle",
+                    "value"
+                  ],
+                  "type": "object"
+                },
+                "Periodicity (high tilt range)": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "Periodicity (low tilt range)": {
+                  "const": 1.0,
+                  "type": "number"
+                },
+                "Periodicity switch angle": {
+                  "const": 80.0,
+                  "type": "number"
+                },
+                "STEM Dynamic focus": {
+                  "const": true,
+                  "type": "boolean"
+                },
+                "Tilt Axis Angle [\u00b0]": {
+                  "const": 90.0,
+                  "type": "number"
+                },
+                "microscope STEM Magnification": {
+                  "const": 20000.0,
+                  "type": "number"
+                }
+              },
+              "required": [
+                "Check Focus",
+                "Periodicity (high tilt range)",
+                "Periodicity (low tilt range)",
+                "Periodicity switch angle",
+                "STEM Dynamic focus",
+                "Tilt Axis Angle [\u00b0]",
+                "microscope STEM Magnification"
+              ],
+              "type": "object"
+            },
+            "Used parameters": {
+              "additionalProperties": true,
+              "properties": {
+                "Apply Corrections": {
+                  "const": "XY_FOCUS",
+                  "type": "string"
+                },
+                "Holder name": {
+                  "const": "Hummingbird Heavy",
+                  "type": "string"
+                },
+                "Linear tilt scheme applied": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "High tilt step [\u00b0]": {
+                      "const": 1.5,
+                      "type": "number"
+                    },
+                    "High tilt switch [\u00b0]": {
+                      "const": 80.0,
+                      "type": "number"
+                    },
+                    "Low tilt step [\u00b0]": {
+                      "const": 1.5,
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "High tilt step [\u00b0]",
+                    "High tilt switch [\u00b0]",
+                    "Low tilt step [\u00b0]"
+                  ],
+                  "type": "object"
+                },
+                "Max negative tilt [\u00b0]": {
+                  "const": -65.0,
+                  "type": "number"
+                },
+                "Max positive tilt [\u00b0]": {
+                  "const": 70.0,
+                  "type": "number"
+                },
+                "Optimized Position [\u00b5m]": {
+                  "const": -1.55,
+                  "type": "number"
+                },
+                "Relaxation Time [s]": {
+                  "const": 2.0,
+                  "type": "number"
+                },
+                "STEM imaging mode": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "Binning": {
+                      "const": 4.0,
+                      "type": "number"
+                    },
+                    "Exposure Time [s]": {
+                      "const": 15.0,
+                      "type": "number"
+                    },
+                    "Image area": {
+                      "const": "(0, 0),(1024,1024)",
+                      "type": "string"
+                    },
+                    "Image pixel size [nm]": {
+                      "const": 3.65,
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "Binning",
+                    "Exposure Time [s]",
+                    "Image area",
+                    "Image pixel size [nm]"
+                  ],
+                  "type": "object"
+                },
+                "Sample Geometry": {
+                  "const": "slab",
+                  "type": "string"
+                },
+                "Start tilt (skipping angles) [\u00b0]": {
+                  "const": -65.0,
+                  "type": "number"
+                },
+                "Tiltscheme starts at high angle (continuous).": {
+                  "const": true,
+                  "type": "boolean"
+                },
+                "Tracking after (on) exposures": {
+                  "const": false,
+                  "type": "boolean"
+                },
+                "Tracking before exposures": {
+                  "const": true,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "Apply Corrections",
+                "Holder name",
+                "Linear tilt scheme applied",
+                "Max negative tilt [\u00b0]",
+                "Max positive tilt [\u00b0]",
+                "Optimized Position [\u00b5m]",
+                "Relaxation Time [s]",
+                "STEM imaging mode",
+                "Sample Geometry",
+                "Start tilt (skipping angles) [\u00b0]",
+                "Tiltscheme starts at high angle (continuous).",
+                "Tracking after (on) exposures",
+                "Tracking before exposures"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "Date/Time",
+            "Tracking before exposures uses",
+            "Used parameters"
+          ],
+          "type": "object"
+        },
+        "magnification": {
+          "const": 20000.0,
+          "type": "number"
+        },
+        "mean": {
+          "const": 16261.111,
+          "type": "number"
+        },
+        "pixelSize": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 1.0
+              }
+            },
+            {
+              "contains": {
+                "const": 36.456600189208984
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "pixel_size": {
+          "const": 3.64566e-09,
+          "type": "number"
+        },
+        "tilt angles": {
+          "allOf": [
+            {
+              "contains": {
+                "const": -0.5
+              }
+            },
+            {
+              "contains": {
+                "const": -11.01
+              }
+            },
+            {
+              "contains": {
+                "const": -12.5
+              }
+            },
+            {
+              "contains": {
+                "const": -14.0
+              }
+            },
+            {
+              "contains": {
+                "const": -15.5
+              }
+            },
+            {
+              "contains": {
+                "const": -17.01
+              }
+            },
+            {
+              "contains": {
+                "const": -18.5
+              }
+            },
+            {
+              "contains": {
+                "const": -2.0
+              }
+            },
+            {
+              "contains": {
+                "const": -20.0
+              }
+            },
+            {
+              "contains": {
+                "const": -21.5
+              }
+            },
+            {
+              "contains": {
+                "const": -23.0
+              }
+            },
+            {
+              "contains": {
+                "const": -24.5
+              }
+            },
+            {
+              "contains": {
+                "const": -25.99
+              }
+            },
+            {
+              "contains": {
+                "const": -27.49
+              }
+            },
+            {
+              "contains": {
+                "const": -29.0
+              }
+            },
+            {
+              "contains": {
+                "const": -3.5
+              }
+            },
+            {
+              "contains": {
+                "const": -30.5
+              }
+            },
+            {
+              "contains": {
+                "const": -32.0
+              }
+            },
+            {
+              "contains": {
+                "const": -33.51
+              }
+            },
+            {
+              "contains": {
+                "const": -35.01
+              }
+            },
+            {
+              "contains": {
+                "const": -36.5
+              }
+            },
+            {
+              "contains": {
+                "const": -38.0
+              }
+            },
+            {
+              "contains": {
+                "const": -39.5
+              }
+            },
+            {
+              "contains": {
+                "const": -41.0
+              }
+            },
+            {
+              "contains": {
+                "const": -42.51
+              }
+            },
+            {
+              "contains": {
+                "const": -44.02
+              }
+            },
+            {
+              "contains": {
+                "const": -45.5
+              }
+            },
+            {
+              "contains": {
+                "const": -47.0
+              }
+            },
+            {
+              "contains": {
+                "const": -48.5
+              }
+            },
+            {
+              "contains": {
+                "const": -5.0
+              }
+            },
+            {
+              "contains": {
+                "const": -50.01
+              }
+            },
+            {
+              "contains": {
+                "const": -51.5
+              }
+            },
+            {
+              "contains": {
+                "const": -53.0
+              }
+            },
+            {
+              "contains": {
+                "const": -54.51
+              }
+            },
+            {
+              "contains": {
+                "const": -56.0
+              }
+            },
+            {
+              "contains": {
+                "const": -57.51
+              }
+            },
+            {
+              "contains": {
+                "const": -59.0
+              }
+            },
+            {
+              "contains": {
+                "const": -6.51
+              }
+            },
+            {
+              "contains": {
+                "const": -60.5
+              }
+            },
+            {
+              "contains": {
+                "const": -62.01
+              }
+            },
+            {
+              "contains": {
+                "const": -63.5
+              }
+            },
+            {
+              "contains": {
+                "const": -65.01
+              }
+            },
+            {
+              "contains": {
+                "const": -8.0
+              }
+            },
+            {
+              "contains": {
+                "const": -9.5
+              }
+            },
+            {
+              "contains": {
+                "const": 1.0
+              }
+            },
+            {
+              "contains": {
+                "const": 10.01
+              }
+            },
+            {
+              "contains": {
+                "const": 11.5
+              }
+            },
+            {
+              "contains": {
+                "const": 13.0
+              }
+            },
+            {
+              "contains": {
+                "const": 14.5
+              }
+            },
+            {
+              "contains": {
+                "const": 15.99
+              }
+            },
+            {
+              "contains": {
+                "const": 17.5
+              }
+            },
+            {
+              "contains": {
+                "const": 19.0
+              }
+            },
+            {
+              "contains": {
+                "const": 2.49
+              }
+            },
+            {
+              "contains": {
+                "const": 20.49
+              }
+            },
+            {
+              "contains": {
+                "const": 21.99
+              }
+            },
+            {
+              "contains": {
+                "const": 23.5
+              }
+            },
+            {
+              "contains": {
+                "const": 24.99
+              }
+            },
+            {
+              "contains": {
+                "const": 26.5
+              }
+            },
+            {
+              "contains": {
+                "const": 28.01
+              }
+            },
+            {
+              "contains": {
+                "const": 29.51
+              }
+            },
+            {
+              "contains": {
+                "const": 31.0
+              }
+            },
+            {
+              "contains": {
+                "const": 32.5
+              }
+            },
+            {
+              "contains": {
+                "const": 34.0
+              }
+            },
+            {
+              "contains": {
+                "const": 35.5
+              }
+            },
+            {
+              "contains": {
+                "const": 37.0
+              }
+            },
+            {
+              "contains": {
+                "const": 38.5
+              }
+            },
+            {
+              "contains": {
+                "const": 4.0
+              }
+            },
+            {
+              "contains": {
+                "const": 40.0
+              }
+            },
+            {
+              "contains": {
+                "const": 41.5
+              }
+            },
+            {
+              "contains": {
+                "const": 42.98
+              }
+            },
+            {
+              "contains": {
+                "const": 44.5
+              }
+            },
+            {
+              "contains": {
+                "const": 45.99
+              }
+            },
+            {
+              "contains": {
+                "const": 47.5
+              }
+            },
+            {
+              "contains": {
+                "const": 48.98
+              }
+            },
+            {
+              "contains": {
+                "const": 5.49
+              }
+            },
+            {
+              "contains": {
+                "const": 50.5
+              }
+            },
+            {
+              "contains": {
+                "const": 52.0
+              }
+            },
+            {
+              "contains": {
+                "const": 53.5
+              }
+            },
+            {
+              "contains": {
+                "const": 55.0
+              }
+            },
+            {
+              "contains": {
+                "const": 56.49
+              }
+            },
+            {
+              "contains": {
+                "const": 58.0
+              }
+            },
+            {
+              "contains": {
+                "const": 59.51
+              }
+            },
+            {
+              "contains": {
+                "const": 6.99
+              }
+            },
+            {
+              "contains": {
+                "const": 60.99
+              }
+            },
+            {
+              "contains": {
+                "const": 62.5
+              }
+            },
+            {
+              "contains": {
+                "const": 64.0
+              }
+            },
+            {
+              "contains": {
+                "const": 65.5
+              }
+            },
+            {
+              "contains": {
+                "const": 67.0
+              }
+            },
+            {
+              "contains": {
+                "const": 68.5
+              }
+            },
+            {
+              "contains": {
+                "const": 70.01
+              }
+            },
+            {
+              "contains": {
+                "const": 8.5
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 91,
+          "minItems": 91,
+          "type": "array"
+        },
+        "tilt_axis": {
+          "const": 90.0,
+          "type": "number"
+        },
+        "unknown": {
+          "const": 4.0,
+          "type": "number"
+        },
+        "voltage": {
+          "const": 300000.0,
+          "type": "number"
+        },
+        "voxelSize": {
+          "allOf": [
+            {
+              "contains": {
+                "const": 1.0
+              }
+            },
+            {
+              "contains": {
+                "const": 36.456600189208984
+              }
+            }
+          ],
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "type": "array"
+        },
+        "x_shift": {
+          "const": 1.8014513e-06,
+          "type": "number"
+        },
+        "x_stage": {
+          "const": -0.0003302052,
+          "type": "number"
+        },
+        "y_shift": {
+          "const": 3.1878065e-07,
+          "type": "number"
+        },
+        "y_stage": {
+          "const": -0.000111665446,
+          "type": "number"
+        },
+        "z_stage": {
+          "const": 2.505216e-05,
+          "type": "number"
+        }
+      },
+      "required": [
+        "a_tilt",
+        "axisOrientations",
+        "b_tilt",
+        "cellAngles",
+        "defocus",
+        "exposure_time",
+        "fei_parameters",
+        "magnification",
+        "mean",
+        "pixelSize",
+        "pixel_size",
+        "tilt angles",
+        "tilt_axis",
+        "unknown",
+        "voltage",
+        "voxelSize",
+        "x_shift",
+        "x_stage",
+        "y_shift",
+        "y_stage",
+        "z_stage"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 1,
+      "minItems": 1,
+      "prefixItems": [
+        {
+          "additionalProperties": true,
+          "properties": {
+            "caption": {
+              "const": "MRC_Thumbnail",
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "caption",
+            "thumbnail"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "0tn86c92qxwpf000j1z60z3v4c",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "file_to_upload",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}
