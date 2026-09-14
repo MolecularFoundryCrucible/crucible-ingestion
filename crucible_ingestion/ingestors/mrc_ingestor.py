@@ -1,4 +1,5 @@
 import io
+import re
 
 from pathlib import Path
 from PIL import Image
@@ -11,6 +12,92 @@ from .crucible_ingestor import CrucibleDatasetIngestor
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+# Every line is prefixed with a fixed-width "MM/DD/YY HH:MM:SS " timestamp; what follows
+# it is indented to show which section a parameter belongs to.
+_TIMESTAMP_RE = re.compile(r'^\d{2}/\d{2}/\d{2} \d{2}:\d{2}:\d{2} ')
+
+
+def _parse_fei_value(raw):
+    raw = raw.strip()
+    if raw == '':
+        return None
+    if raw in ('Yes', 'ON'):
+        return True
+    if raw in ('No', 'OFF'):
+        return False
+    try:
+        return float(raw)
+    except ValueError:
+        return raw
+
+
+_VALUE_KEY = '_value'
+
+
+def _parse_fei_parameters(lines):
+    """Parse the vendor tomography-parameter log into a nested dict.
+
+    Section headers (e.g. "STEM imaging mode", "Check Focus") repeat parameter names
+    like "Periodicity (high tilt range)" under different settings, so a flat dict would
+    have later sections silently overwrite earlier ones. Indentation depth tells sections
+    apart from their children, so it is used to nest rather than flatten them.
+
+    A line can be a leaf, a header with no value of its own ("STEM imaging mode"), or
+    both at once ("Check Focus: Yes" has its own value and also has Periodicity settings
+    indented beneath it) -- every line is therefore pushed as a potential parent, and
+    _collapse resolves what it actually turned out to be once all its children are known.
+    """
+    root = {}
+    stack = [(-1, root)]
+    for raw_line in lines:
+        line = _TIMESTAMP_RE.sub('', raw_line)
+        stripped = line.strip()
+        if not stripped:
+            continue
+
+        # The stack must unwind to this line's depth before deciding whether to skip it,
+        # or a skipped section header (e.g. a "-----" rule right after a depth-1 line)
+        # would leave a stale frame on the stack and misparent everything that follows.
+        depth = len(line) - len(line.lstrip(' '))
+        while stack[-1][0] >= depth:
+            stack.pop()
+
+        if set(stripped) == {'-'}:
+            continue  # decorative rule; never has children of its own
+        parent = stack[-1][1]
+
+        if ':' in stripped:
+            key, _, value = stripped.partition(':')
+            key, value = key.strip(), _parse_fei_value(value)
+        else:
+            key, value = stripped, None
+
+        node = {_VALUE_KEY: value}
+        parent[key] = node
+        stack.append((depth, node))
+
+    _collapse(root)
+    return root
+
+
+def _collapse(node):
+    """Resolve each {_value, ...children} node into its final shape.
+
+    No children and no value -> True (a bare flag like "STEM imaging mode" turned out
+    to introduce no sub-parameters). No children, a value -> that value. Children and no
+    value -> a dict of just the children. Both -> a dict of the children plus 'value'.
+    """
+    for key, child in node.items():
+        value = child.pop(_VALUE_KEY)
+        _collapse(child)
+        if not child:
+            node[key] = value if value is not None else True
+        elif value is not None:
+            child['value'] = value
+            node[key] = child
+        else:
+            node[key] = child
 
 
 class MrcIngestor(CrucibleDatasetIngestor):
@@ -53,14 +140,7 @@ class MrcIngestor(CrucibleDatasetIngestor):
             except UnicodeDecodeError:
                 with open(FEIparameters, 'r', encoding='cp1252') as f2:
                     lines = f2.readlines()
-            pp1 = list([ii[18:].strip().split(':')] for ii in lines[3:-1])
-            pp2 = {}
-            for ll in pp1:
-                try:
-                    pp2[ll[0]] = float(ll[1])
-                except:
-                    pass  # skip lines with no data
-            self.scientific_metadata.update(pp2)
+            self.scientific_metadata['fei_parameters'] = _parse_fei_parameters(lines)
 
     def parse_measurement(self):
         # Test for metadata that is indicative of a tilt series from FEI tomo software.
