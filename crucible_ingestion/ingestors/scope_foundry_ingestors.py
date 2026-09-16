@@ -57,11 +57,8 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
                                                     'ald_run_measure'
                                                     ]
     
-    # ScopeFoundry apps append modifiers to the measurement name ('_laseroff'
-    # backgrounds, rerun counters) without changing the data layout. Variants are
-    # resolved to their canonical measurement explicitly: prefix matching would
-    # also swallow names like 'hyperspec_picam_mcl_sweep', which is a different
-    # data layout with its own ingestor.
+    # Explicit aliases rather than prefix matching, which would also swallow
+    # variants like 'hyperspec_picam_mcl_sweep' that have their own ingestor.
     measurement_aliases: ClassVar[dict[str, str]] = {
         'hyperspec_picam_mcl_laseroff': 'hyperspec_picam_mcl',
     }
