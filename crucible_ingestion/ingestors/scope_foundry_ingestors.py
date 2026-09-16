@@ -57,14 +57,32 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
                                                     'ald_run_measure'
                                                     ]
     
+    # Explicit aliases rather than prefix matching, which would also swallow
+    # variants like 'hyperspec_picam_mcl_sweep' that have their own ingestor.
+    measurement_aliases: ClassVar[dict[str, str]] = {
+        'hyperspec_picam_mcl_laseroff': 'hyperspec_picam_mcl',
+    }
+
+    @functools.cached_property
+    def h5_measurement_name(self):
+        """The measurement group name written inside the file, or None if the
+        file carries no measurement group or cannot be read."""
+        try:
+            with h5py.File(self.file_to_upload, 'r') as h5file:
+                return h5file.visit(self._find_measurement)
+        except Exception:
+            return None
+
     def is_file_supported(self):
-        if self.file_to_upload.endswith('h5'):
-            return np.any([self.file_to_upload.endswith(f"{meas_name}.h5")
-                           for meas_name in self.supported_measurements])
-        return False
-    
+        if not self.file_to_upload.endswith('.h5'):
+            return False
+        meas = self.h5_measurement_name
+        if meas is None:
+            return False
+        return self.measurement_aliases.get(meas, meas) in self.supported_measurements
+
     def parse_measurement(self):
-        self.measurement = self.h5file.visit(self._find_measurement)
+        self.measurement = self.h5_measurement_name
 
 
     def get_dataset_metadata(self):
