@@ -1,5 +1,6 @@
 test-data/*
 tests/data/
+dry_run_output/
 .DS_Store
 
 # Byte-compiled / optimized / DLL files
