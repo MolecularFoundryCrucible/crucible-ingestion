@@ -36,6 +36,8 @@ from .bcf_ingestor import BcfIngestor
 from .emd_ingestor import BerkeleyEmdIngestor
 from .emd_velox_ingestor import VeloxEmdIngestor
 from .mrc_ingestor import MrcIngestor
+from .mrc_txt_ingestor import MrcTxtIngestor
+from .rawtlt_ingestor import RawtltIngestor
 from .jupiter_afm_ingestor import AFMIngestor
 from .czi_ingestor import CziIngestor
 from .ptychography_h5_ingestor import PtychographyH5Ingestor
@@ -81,6 +83,8 @@ ingestor_list = [AFMIngestor,
                 BerkeleyEmdIngestor,
                 VeloxEmdIngestor,
                 MrcIngestor,
+                MrcTxtIngestor,
+                RawtltIngestor,
                 SpinbotSpecRunIngestor,
                 ImageIngestor,
                 TifIngestor,
