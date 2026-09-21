@@ -36,7 +36,6 @@
           "type": "string"
         },
         "unique_id": {
-          "const": "xxx",
           "type": "string"
         }
       },
@@ -55,6 +54,10 @@
         "unique_id"
       ],
       "type": "object"
+    },
+    "file_to_upload": {
+      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/10k_RGA_batch_run_example.zip",
+      "type": "string"
     },
     "ingestion_class": {
       "const": "RgaTeyBatchIngestor",
@@ -96,7 +99,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykvcnvkz002m4yxjmr5ng",
                   "type": "string"
                 },
                 "sample_name": {
@@ -139,7 +141,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykvcnvkz003yznnpfwgsw",
                   "type": "string"
                 },
                 "sample_name": {
@@ -182,7 +183,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykvcnvkz004rs76r52tg0",
                   "type": "string"
                 },
                 "sample_name": {
@@ -225,7 +225,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykvcnvkz005scktttdrwg",
                   "type": "string"
                 },
                 "sample_name": {
@@ -268,7 +267,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykvcnvkz006r7rpp1rxgc",
                   "type": "string"
                 },
                 "sample_name": {
@@ -311,7 +309,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykvcnvkz0076rv3q09e50",
                   "type": "string"
                 },
                 "sample_name": {
@@ -354,7 +351,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykvcnvkz008rdawnhgagr",
                   "type": "string"
                 },
                 "sample_name": {
@@ -397,7 +393,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykwqdwcx001k44edpppb0",
                   "type": "string"
                 },
                 "sample_name": {
@@ -440,7 +435,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykwqdwcx002hstqnbwjhm",
                   "type": "string"
                 },
                 "sample_name": {
@@ -483,7 +477,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykwqdwcx0035m3wg8sbmw",
                   "type": "string"
                 },
                 "sample_name": {
@@ -526,7 +519,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykwqdwcx004hp0f6afybc",
                   "type": "string"
                 },
                 "sample_name": {
@@ -569,7 +561,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykwqdwcx00562dqtmqq1r",
                   "type": "string"
                 },
                 "sample_name": {
@@ -612,7 +603,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykwqdwcx006xf9sf5sp0r",
                   "type": "string"
                 },
                 "sample_name": {
@@ -655,7 +645,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykwqdwcx007g593dh1ya8",
                   "type": "string"
                 },
                 "sample_name": {
@@ -698,7 +687,6 @@
                   "type": "number"
                 },
                 "sample_id": {
-                  "const": "0thhwykwqdwcx0084aaswvn7k0",
                   "type": "string"
                 },
                 "sample_name": {
@@ -753,13 +741,13 @@
       "type": "array"
     },
     "unique_id": {
-      "const": "xxx",
       "type": "string"
     }
   },
   "required": [
     "children",
     "dataset_fields",
+    "file_to_upload",
     "ingestion_class",
     "keywords",
     "samples",

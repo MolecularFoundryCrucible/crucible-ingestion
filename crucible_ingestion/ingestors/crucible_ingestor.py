@@ -25,7 +25,10 @@ def cleanup_tmp_files():
 
 class CrucibleDatasetIngestor(Dataset):
     ingestion_githash: str = os.environ.get("GITHASH")
-    scientific_metadata: dict = {} 
+    scientific_metadata: dict = {}
+    # Name of the JSON file in crucible_ingestion/schemas/ describing this
+    # class's scientific metadata fields, or '' if there is no schema.
+    scientific_metadata_schema: str = ''
     keywords: list = []
     acl: list = []
     associated_files: dict = {} 
@@ -43,6 +46,7 @@ class CrucibleDatasetIngestor(Dataset):
 
     def setup_data(self):
         self.get_scientific_metadata()
+        self.reconcile_scientific_metadata_with_schema()
         logger.info("getting scientific metadata complete")
         self.get_dataset_metadata()
         logger.info("getting dataset metadata complete")
@@ -72,6 +76,34 @@ class CrucibleDatasetIngestor(Dataset):
         of the object.
         """
         self.scientific_metadata = {}
+
+    def reconcile_scientific_metadata_with_schema(self):
+        """
+        If the subclass names a schema file, fill in any schema
+        fields the subclass left out of scientific_metadata with None.
+        Values the subclass produced but the schema doesn't list are kept.
+        """
+        if not self.scientific_metadata_schema:
+            return
+        schema_path = Path(__file__).parent.parent / 'schemas' / self.scientific_metadata_schema
+        with open(schema_path, encoding='utf-8') as f:
+            schema = json.load(f)
+
+        # 'detector_block' describes the inner blocks the subclass builds, not a
+        # field of its own, so it never lands in scientific_metadata.
+        for field in schema:
+            if field != 'detector_block' and field not in self.scientific_metadata:
+                self.scientific_metadata[field] = None
+
+        # One block per detector: apply the inner-block fields to each
+        # block the subclass built under its own key.
+        detector_fields = schema.get('detector_block')
+        if not detector_fields:
+            return
+        for key, value in self.scientific_metadata.items():
+            if isinstance(value, dict):
+                for field in detector_fields:
+                    value.setdefault(field, None)
     
     
     def parse_dataset_name(self):

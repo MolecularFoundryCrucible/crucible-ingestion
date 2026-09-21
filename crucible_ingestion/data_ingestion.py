@@ -171,13 +171,13 @@ def push_packet(packet, include_file = False):
 
         # link to dataset
         if link_to_dataset is True:
-            get_client().datasets.add_sample(dataset_id = ds['unique_id'], 
-                                             sample_id = sql_sample['unique_id'])
+            get_client().datasets.add_sample(dataset_mfid = ds['unique_id'],
+                                             sample_mfid = sql_sample['unique_id'])
 
         # link to parents if listed
         for parent in sample_parents:
-            get_client().samples.link(parent_id = parent,
-                                      child_id = sql_sample['unique_id'])
+            get_client().samples.link(parent_mfid = parent,
+                                      child_mfid = sql_sample['unique_id'])
 
     # add children
     existing_children = {}
@@ -213,13 +213,13 @@ def push_packet(packet, include_file = False):
             resolved_ids[declared_id] = child_dsid
 
         # link to run dataset
-        get_client().datasets.link_parent_child(parent_dataset_id = parent_id,
-                                                child_dataset_id = child_dsid)
+        get_client().datasets.link_parent_child(parent_mfid = parent_id,
+                                                child_mfid = child_dsid)
 
         # link to thin film
         for sample_id in sample_ids:
-            get_client().datasets.add_sample(dataset_id = child_dsid,
-                                             sample_id = sample_id)
+            get_client().datasets.add_sample(dataset_mfid = child_dsid,
+                                             sample_mfid = sample_id)
 
         for thumbnail in child.get('thumbnails', []):
             try:

@@ -11,6 +11,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "yaml",
@@ -22,6 +23,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {},
                 "links": {},
                 "measurement": {
@@ -29,6 +31,7 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
                   "const": "0000-0002-9131-638X",
                   "type": "string"
@@ -49,15 +52,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -71,7 +77,6 @@
               "type": "object"
             },
             "parent_id": {
-              "const": "0tjn7m45qxzqk000gp2c4m4mag",
               "type": "string"
             },
             "sample_links": {
@@ -109,7 +114,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -153,7 +157,6 @@
                   "type": "string"
                 },
                 "run_id": {
-                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
                   "type": "string"
                 },
                 "sample_description": {
@@ -161,7 +164,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0016tvbmw6qn8",
                   "type": "string"
                 },
                 "sample_name": {
@@ -330,6 +332,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "yaml",
@@ -341,6 +344,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {},
                 "links": {},
                 "measurement": {
@@ -348,6 +352,7 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
                   "const": "0000-0002-9131-638X",
                   "type": "string"
@@ -368,15 +373,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -390,7 +398,6 @@
               "type": "object"
             },
             "parent_id": {
-              "const": "0tjn7m45qxzqk000gp2c4m4mag",
               "type": "string"
             },
             "sample_links": {
@@ -428,7 +435,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -472,7 +478,6 @@
                   "type": "string"
                 },
                 "run_id": {
-                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
                   "type": "string"
                 },
                 "sample_description": {
@@ -480,7 +485,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx002tzaspgfv6c",
                   "type": "string"
                 },
                 "sample_name": {
@@ -649,6 +653,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "yaml",
@@ -660,6 +665,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {},
                 "links": {},
                 "measurement": {
@@ -667,6 +673,7 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
                   "const": "0000-0002-9131-638X",
                   "type": "string"
@@ -687,15 +694,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -709,7 +719,6 @@
               "type": "object"
             },
             "parent_id": {
-              "const": "0tjn7m45qxzqk000gp2c4m4mag",
               "type": "string"
             },
             "sample_links": {
@@ -747,7 +756,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -791,7 +799,6 @@
                   "type": "string"
                 },
                 "run_id": {
-                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
                   "type": "string"
                 },
                 "sample_description": {
@@ -799,7 +806,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0032ptzn5w874",
                   "type": "string"
                 },
                 "sample_name": {
@@ -968,6 +974,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "yaml",
@@ -979,6 +986,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {},
                 "links": {},
                 "measurement": {
@@ -986,6 +994,7 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
                   "const": "0000-0002-9131-638X",
                   "type": "string"
@@ -1006,15 +1015,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1028,7 +1040,6 @@
               "type": "object"
             },
             "parent_id": {
-              "const": "0tjn7m45qxzqk000gp2c4m4mag",
               "type": "string"
             },
             "sample_links": {
@@ -1066,7 +1077,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -1110,7 +1120,6 @@
                   "type": "string"
                 },
                 "run_id": {
-                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
                   "type": "string"
                 },
                 "sample_description": {
@@ -1118,7 +1127,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0043g3b12n09c",
                   "type": "string"
                 },
                 "sample_name": {
@@ -1287,6 +1295,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "yaml",
@@ -1298,6 +1307,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {},
                 "links": {},
                 "measurement": {
@@ -1305,6 +1315,7 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
                   "const": "0000-0002-9131-638X",
                   "type": "string"
@@ -1325,15 +1336,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1347,7 +1361,6 @@
               "type": "object"
             },
             "parent_id": {
-              "const": "0tjn7m45qxzqk000gp2c4m4mag",
               "type": "string"
             },
             "sample_links": {
@@ -1385,7 +1398,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -1429,7 +1441,6 @@
                   "type": "string"
                 },
                 "run_id": {
-                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
                   "type": "string"
                 },
                 "sample_description": {
@@ -1437,7 +1448,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0055xdnk566qm",
                   "type": "string"
                 },
                 "sample_name": {
@@ -1606,6 +1616,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "yaml",
@@ -1617,6 +1628,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {},
                 "links": {},
                 "measurement": {
@@ -1624,6 +1636,7 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
                   "const": "0000-0002-9131-638X",
                   "type": "string"
@@ -1644,15 +1657,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1666,7 +1682,6 @@
               "type": "object"
             },
             "parent_id": {
-              "const": "0tjn7m45qxzqk000gp2c4m4mag",
               "type": "string"
             },
             "sample_links": {
@@ -1704,7 +1719,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -1748,7 +1762,6 @@
                   "type": "string"
                 },
                 "run_id": {
-                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
                   "type": "string"
                 },
                 "sample_description": {
@@ -1756,7 +1769,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx006zn80akpebg",
                   "type": "string"
                 },
                 "sample_name": {
@@ -1925,6 +1937,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "yaml",
@@ -1936,6 +1949,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {},
                 "links": {},
                 "measurement": {
@@ -1943,6 +1957,7 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
                   "const": "0000-0002-9131-638X",
                   "type": "string"
@@ -1963,15 +1978,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1985,7 +2003,6 @@
               "type": "object"
             },
             "parent_id": {
-              "const": "0tjn7m45qxzqk000gp2c4m4mag",
               "type": "string"
             },
             "sample_links": {
@@ -2023,7 +2040,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -2067,7 +2083,6 @@
                   "type": "string"
                 },
                 "run_id": {
-                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
                   "type": "string"
                 },
                 "sample_description": {
@@ -2075,7 +2090,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx007kjgtrqsgvm",
                   "type": "string"
                 },
                 "sample_name": {
@@ -2244,6 +2258,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "yaml",
@@ -2255,6 +2270,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {},
                 "links": {},
                 "measurement": {
@@ -2262,6 +2278,7 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
                   "const": "0000-0002-9131-638X",
                   "type": "string"
@@ -2282,15 +2299,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -2304,7 +2324,6 @@
               "type": "object"
             },
             "parent_id": {
-              "const": "0tjn7m45qxzqk000gp2c4m4mag",
               "type": "string"
             },
             "sample_links": {
@@ -2342,7 +2361,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -2386,7 +2404,6 @@
                   "type": "string"
                 },
                 "run_id": {
-                  "const": "0tjn7m45qxzqk000gp2c4m4mag",
                   "type": "string"
                 },
                 "sample_description": {
@@ -2394,7 +2411,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0082qgmfm11gm",
                   "type": "string"
                 },
                 "sample_name": {
@@ -2605,7 +2621,6 @@
           "type": "string"
         },
         "unique_id": {
-          "const": "0tjn7m45qxzqk000gp2c4m4mag",
           "type": "string"
         }
       },
@@ -2624,6 +2639,10 @@
         "unique_id"
       ],
       "type": "object"
+    },
+    "file_to_upload": {
+      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/autobot_spinrun_output_example.yaml",
+      "type": "string"
     },
     "ingestion_class": {
       "const": "SpinRunIngestor_10kLegacy",
@@ -2687,7 +2706,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7jf4qdrfd000rn5jn6284c",
               "type": "string"
             }
           },
@@ -2746,7 +2764,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7k6zy1rdx0016tvbmw6qn8",
               "type": "string"
             }
           },
@@ -2805,7 +2822,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7k6zy1rdx002tzaspgfv6c",
               "type": "string"
             }
           },
@@ -2864,7 +2880,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7k6zy1rdx0032ptzn5w874",
               "type": "string"
             }
           },
@@ -2923,7 +2938,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7k6zy1rdx0043g3b12n09c",
               "type": "string"
             }
           },
@@ -2982,7 +2996,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7k6zy1rdx0055xdnk566qm",
               "type": "string"
             }
           },
@@ -3041,7 +3054,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7k6zy1rdx006zn80akpebg",
               "type": "string"
             }
           },
@@ -3100,7 +3112,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7k6zy1rdx007kjgtrqsgvm",
               "type": "string"
             }
           },
@@ -3159,7 +3170,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tjn7k6zy1rdx0082qgmfm11gm",
               "type": "string"
             }
           },
@@ -3197,7 +3207,6 @@
           "type": "number"
         },
         "batch_id": {
-          "const": "0tjn7jf4qdrfd000rn5jn6284c",
           "type": "string"
         },
         "batch_name": {
@@ -3241,11 +3250,9 @@
           "type": "string"
         },
         "run_id": {
-          "const": "0tjn7m45qxzqk000gp2c4m4mag",
           "type": "string"
         },
         "sample_id": {
-          "const": "0tjn7k6zy1rdx0082qgmfm11gm",
           "type": "string"
         },
         "sample_name": {
@@ -3268,7 +3275,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -3300,7 +3306,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0016tvbmw6qn8",
                   "type": "string"
                 },
                 "sample_name": {
@@ -3366,7 +3371,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -3398,7 +3402,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx002tzaspgfv6c",
                   "type": "string"
                 },
                 "sample_name": {
@@ -3464,7 +3467,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -3496,7 +3498,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0032ptzn5w874",
                   "type": "string"
                 },
                 "sample_name": {
@@ -3562,7 +3563,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -3594,7 +3594,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0043g3b12n09c",
                   "type": "string"
                 },
                 "sample_name": {
@@ -3660,7 +3659,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -3692,7 +3690,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0055xdnk566qm",
                   "type": "string"
                 },
                 "sample_name": {
@@ -3758,7 +3755,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -3790,7 +3786,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx006zn80akpebg",
                   "type": "string"
                 },
                 "sample_name": {
@@ -3856,7 +3851,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -3888,7 +3882,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx007kjgtrqsgvm",
                   "type": "string"
                 },
                 "sample_name": {
@@ -3954,7 +3947,6 @@
                   "type": "number"
                 },
                 "batch_id": {
-                  "const": "0tjn7jf4qdrfd000rn5jn6284c",
                   "type": "string"
                 },
                 "batch_name": {
@@ -3986,7 +3978,6 @@
                   "type": "string"
                 },
                 "sample_id": {
-                  "const": "0tjn7k6zy1rdx0082qgmfm11gm",
                   "type": "string"
                 },
                 "sample_name": {
@@ -4196,13 +4187,13 @@
       "type": "array"
     },
     "unique_id": {
-      "const": "0tjn7m45qxzqk000gp2c4m4mag",
       "type": "string"
     }
   },
   "required": [
     "children",
     "dataset_fields",
+    "file_to_upload",
     "ingestion_class",
     "keywords",
     "samples",

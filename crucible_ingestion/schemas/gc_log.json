@@ -1,0 +1,12 @@
+{
+    "technique": "string",
+    "detector_block": {
+        "log_file": "string",
+        "injection_count": "integer",
+        "first_injection_timestamp": "string",
+        "last_injection_timestamp": "string",
+        "injection_volume_uL": "number",
+        "carrier_gas": "string",
+        "product_gas_flow_rate_sccm": "number"
+    }
+}

@@ -38,15 +38,15 @@ CALL_SITES = [
     (DatasetOperations, "update", 1, ()),
     (DatasetOperations, "create", 2, ()),
     (DatasetOperations, "list_children", 1, ()),
-    (DatasetOperations, "add_sample", 0, ("dataset_id", "sample_id")),
-    (DatasetOperations, "link_parent_child", 0, ("parent_dataset_id", "child_dataset_id")),
+    (DatasetOperations, "add_sample", 0, ("dataset_mfid", "sample_mfid")),
+    (DatasetOperations, "link_parent_child", 0, ("parent_mfid", "child_mfid")),
     (DatasetOperations, "add_thumbnail", 3, ()),
     (DatasetOperations, "add_keyword", 2, ()),
     (DatasetOperations, "update_scientific_metadata", 2, ("overwrite",)),
     (SampleOperations, "get", 1, ()),
     (SampleOperations, "list", 0, ("sample_name", "project_id")),
     (SampleOperations, "create", 0, ()),
-    (SampleOperations, "link", 0, ("parent_id", "child_id")),
+    (SampleOperations, "link", 0, ("parent_mfid", "child_mfid")),
 ]
 
 

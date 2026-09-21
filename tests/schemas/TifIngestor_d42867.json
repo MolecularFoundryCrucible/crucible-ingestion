@@ -42,7 +42,6 @@
           "type": "string"
         },
         "unique_id": {
-          "const": "xxx",
           "type": "string"
         }
       },
@@ -61,6 +60,10 @@
         "unique_id"
       ],
       "type": "object"
+    },
+    "file_to_upload": {
+      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/tif_example.tif",
+      "type": "string"
     },
     "ingestion_class": {
       "const": "TifIngestor",
@@ -140,36 +143,6 @@
           "const": "tifffile.py",
           "type": "string"
         },
-        "StripByteCounts": {
-          "allOf": [
-            {
-              "contains": {
-                "const": 11694368
-              }
-            }
-          ],
-          "items": {
-            "type": "number"
-          },
-          "maxItems": 1,
-          "minItems": 1,
-          "type": "array"
-        },
-        "StripOffsets": {
-          "allOf": [
-            {
-              "contains": {
-                "const": 256
-              }
-            }
-          ],
-          "items": {
-            "type": "number"
-          },
-          "maxItems": 1,
-          "minItems": 1,
-          "type": "array"
-        },
         "XResolution": {
           "const": 1.0,
           "type": "number"
@@ -190,8 +163,6 @@
         "RowsPerStrip",
         "SamplesPerPixel",
         "Software",
-        "StripByteCounts",
-        "StripOffsets",
         "XResolution",
         "YResolution"
       ],
@@ -222,13 +193,13 @@
       "type": "array"
     },
     "unique_id": {
-      "const": "xxx",
       "type": "string"
     }
   },
   "required": [
     "children",
     "dataset_fields",
+    "file_to_upload",
     "ingestion_class",
     "keywords",
     "samples",

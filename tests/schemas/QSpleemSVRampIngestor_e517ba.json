@@ -48,7 +48,6 @@
           "type": "string"
         },
         "unique_id": {
-          "const": "0tda7ayf69zf90005jp70pgbb4",
           "type": "string"
         }
       },
@@ -67,6 +66,10 @@
         "unique_id"
       ],
       "type": "object"
+    },
+    "file_to_upload": {
+      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/example_sv_ramp.h5",
+      "type": "string"
     },
     "ingestion_class": {
       "const": "QSpleemSVRampIngestor",
@@ -1777,13 +1780,13 @@
       "type": "array"
     },
     "unique_id": {
-      "const": "0tda7ayf69zf90005jp70pgbb4",
       "type": "string"
     }
   },
   "required": [
     "children",
     "dataset_fields",
+    "file_to_upload",
     "ingestion_class",
     "keywords",
     "samples",

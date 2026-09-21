@@ -10,20 +10,20 @@
       "additionalProperties": true,
       "properties": {
         "data_format": {
-          "const": "png",
+          "const": "LOG",
           "type": "string"
         },
         "data_type": {
-          "const": "Image",
+          "const": "GC Peak Table",
           "type": "string"
         },
         "dataset_name": {
-          "const": "png_example.png",
+          "const": "GC_TCD_example",
           "type": "string"
         },
         "instrument_name": {},
         "measurement": {
-          "const": "Image",
+          "const": "Gas Chromatography",
           "type": "string"
         },
         "owner_orcid": {},
@@ -34,11 +34,11 @@
         },
         "session_name": {},
         "size": {
-          "const": 806461,
+          "const": 118260,
           "type": "number"
         },
         "timestamp": {
-          "const": "2026-08-07T12:22:47.015218",
+          "const": "2026-07-17T17:10:27",
           "type": "string"
         },
         "unique_id": {
@@ -62,26 +62,36 @@
       "type": "object"
     },
     "file_to_upload": {
-      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/png_example.png",
+      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/GC_TCD_example.LOG",
       "type": "string"
     },
     "ingestion_class": {
-      "const": "ImageIngestor",
+      "const": "GCLogIngestor",
       "type": "string"
     },
     "keywords": {
       "allOf": [
         {
           "contains": {
-            "const": "Image"
+            "const": "GC Peak Table"
+          }
+        },
+        {
+          "contains": {
+            "const": "Gas Chromatography"
+          }
+        },
+        {
+          "contains": {
+            "const": "TCD"
           }
         }
       ],
       "items": {
         "type": "string"
       },
-      "maxItems": 1,
-      "minItems": 1,
+      "maxItems": 3,
+      "minItems": 3,
       "type": "array"
     },
     "samples": {
@@ -91,32 +101,55 @@
     },
     "scientific_metadata": {
       "additionalProperties": true,
-      "properties": {},
-      "required": [],
+      "properties": {
+        "TCD": {
+          "additionalProperties": true,
+          "properties": {
+            "carrier_gas": {},
+            "first_injection_timestamp": {
+              "const": "2026-07-17T17:10:27",
+              "type": "string"
+            },
+            "injection_count": {
+              "const": 382,
+              "type": "number"
+            },
+            "injection_volume_uL": {},
+            "last_injection_timestamp": {
+              "const": "2026-07-22T19:52:03",
+              "type": "string"
+            },
+            "log_file": {
+              "const": "GC_TCD_example.LOG",
+              "type": "string"
+            },
+            "product_gas_flow_rate_sccm": {}
+          },
+          "required": [
+            "carrier_gas",
+            "first_injection_timestamp",
+            "injection_count",
+            "injection_volume_uL",
+            "last_injection_timestamp",
+            "log_file",
+            "product_gas_flow_rate_sccm"
+          ],
+          "type": "object"
+        },
+        "technique": {
+          "const": "gas chromatography",
+          "type": "string"
+        }
+      },
+      "required": [
+        "TCD",
+        "technique"
+      ],
       "type": "object"
     },
     "thumbnails": {
-      "maxItems": 1,
-      "minItems": 1,
-      "prefixItems": [
-        {
-          "additionalProperties": true,
-          "properties": {
-            "caption": {
-              "const": "png_example.png",
-              "type": "string"
-            },
-            "thumbnail": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "caption",
-            "thumbnail"
-          ],
-          "type": "object"
-        }
-      ],
+      "maxItems": 0,
+      "minItems": 0,
       "type": "array"
     },
     "unique_id": {

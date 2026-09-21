@@ -45,7 +45,6 @@
           "type": "string"
         },
         "unique_id": {
-          "const": "xxx",
           "type": "string"
         }
       },
@@ -64,6 +63,10 @@
         "unique_id"
       ],
       "type": "object"
+    },
+    "file_to_upload": {
+      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/example_afm.ibw",
+      "type": "string"
     },
     "ingestion_class": {
       "const": "AFMIngestor",
@@ -462,13 +465,13 @@
       "type": "array"
     },
     "unique_id": {
-      "const": "xxx",
       "type": "string"
     }
   },
   "required": [
     "children",
     "dataset_fields",
+    "file_to_upload",
     "ingestion_class",
     "keywords",
     "samples",

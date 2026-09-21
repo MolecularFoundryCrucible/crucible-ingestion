@@ -11,6 +11,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -22,8 +23,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -32,8 +34,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -55,15 +58,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -76,8 +82,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_000_TF006093.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -198,6 +218,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -210,6 +231,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -221,8 +243,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -231,8 +254,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -254,15 +278,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -275,8 +302,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_001_TF006094.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -397,6 +438,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -409,6 +451,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -420,8 +463,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -430,8 +474,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -453,15 +498,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -474,8 +522,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_002_TF006095.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -596,6 +658,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -608,6 +671,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -619,8 +683,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -629,8 +694,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -652,15 +718,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -673,8 +742,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_003_TF006096.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -795,6 +878,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -807,6 +891,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -818,8 +903,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -828,8 +914,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -851,15 +938,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -872,8 +962,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_008_TF006097.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -994,6 +1098,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -1006,6 +1111,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -1017,8 +1123,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -1027,8 +1134,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -1050,15 +1158,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1071,8 +1182,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_009_TF006098.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -1193,6 +1318,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -1205,6 +1331,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -1216,8 +1343,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -1226,8 +1354,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -1249,15 +1378,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1270,8 +1402,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_010_TF006099.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -1392,6 +1538,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -1404,6 +1551,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -1415,8 +1563,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -1425,8 +1574,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -1448,15 +1598,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1469,8 +1622,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_011_TF006100.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -1591,6 +1758,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -1603,6 +1771,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -1614,8 +1783,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -1624,8 +1794,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -1647,15 +1818,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1668,8 +1842,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_012_TF006101.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -1790,6 +1978,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -1802,6 +1991,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -1813,8 +2003,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -1823,8 +2014,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -1846,15 +2038,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -1867,8 +2062,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_013_TF006102.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -1989,6 +2198,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -2001,6 +2211,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -2012,8 +2223,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -2022,8 +2234,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -2045,15 +2258,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -2066,8 +2282,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_014_TF006103.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -2188,6 +2418,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -2200,6 +2431,7 @@
             "dataset": {
               "additionalProperties": true,
               "properties": {
+                "capabilities": {},
                 "creation_time": {},
                 "data_format": {
                   "const": "ScopeFoundryH5",
@@ -2211,8 +2443,9 @@
                   "type": "string"
                 },
                 "deletion_request": {},
+                "instrument_id": {},
                 "instrument_name": {
-                  "const": "Nirvana Spectrometer",
+                  "const": "Inorganic Nirvana",
                   "type": "string"
                 },
                 "links": {},
@@ -2221,8 +2454,9 @@
                   "type": "string"
                 },
                 "modification_time": {},
+                "owner": {},
                 "owner_orcid": {
-                  "const": "0tf1adtg65vf9000fw8t5ddy0g",
+                  "const": "0000-0002-8792-9669",
                   "type": "string"
                 },
                 "project_id": {
@@ -2244,15 +2478,18 @@
                 "unique_id": {}
               },
               "required": [
+                "capabilities",
                 "creation_time",
                 "data_format",
                 "data_type",
                 "dataset_name",
                 "deletion_request",
+                "instrument_id",
                 "instrument_name",
                 "links",
                 "measurement",
                 "modification_time",
+                "owner",
                 "owner_orcid",
                 "project_id",
                 "public",
@@ -2265,8 +2502,22 @@
               ],
               "type": "object"
             },
+            "files_to_upload": {
+              "allOf": [
+                {
+                  "contains": {
+                    "const": "/tmp/crucible_tmp_files/example_pollux_oospec_multipos_line_scan_pos_015_TF006104.h5"
+                  }
+                }
+              ],
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 1,
+              "minItems": 1,
+              "type": "array"
+            },
             "parent_id": {
-              "const": "0tj5ftr59szcd0000g7f5yd9xr",
               "type": "string"
             },
             "sample_links": {
@@ -2387,6 +2638,7 @@
           },
           "required": [
             "dataset",
+            "files_to_upload",
             "parent_id",
             "sample_links",
             "scientific_metadata"
@@ -2408,11 +2660,11 @@
           "type": "string"
         },
         "dataset_name": {
-          "const": "260701_135512_pollux_oospec_multipos_line_scan.h5",
+          "const": "example_pollux_oospec_multipos_line_scan.h5",
           "type": "string"
         },
         "instrument_name": {
-          "const": "nirvana spectrometer",
+          "const": "Inorganic Nirvana",
           "type": "string"
         },
         "measurement": {
@@ -2420,7 +2672,7 @@
           "type": "string"
         },
         "owner_orcid": {
-          "const": "0tf1adtg65vf9000fw8t5ddy0g",
+          "const": "0000-0002-8792-9669",
           "type": "string"
         },
         "project_id": {
@@ -2444,7 +2696,6 @@
           "type": "string"
         },
         "unique_id": {
-          "const": "0tj5ftr59szcd0000g7f5yd9xr",
           "type": "string"
         }
       },
@@ -2464,6 +2715,10 @@
       ],
       "type": "object"
     },
+    "file_to_upload": {
+      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/example_pollux_oospec_multipos_line_scan.h5",
+      "type": "string"
+    },
     "ingestion_class": {
       "const": "NirvanaMultiPosLineScanIngestor",
       "type": "string"
@@ -2472,7 +2727,7 @@
       "allOf": [
         {
           "contains": {
-            "const": "Nirvana Spectrometer"
+            "const": "Inorganic Nirvana"
           }
         },
         {
@@ -2509,8 +2764,8 @@
       "items": {
         "type": "string"
       },
-      "maxItems": 8,
-      "minItems": 8,
+      "maxItems": 7,
+      "minItems": 7,
       "type": "array"
     },
     "samples": {
@@ -2525,7 +2780,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "project_id": {
@@ -2537,7 +2792,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj4e3vff9xnh00052mj4sgvtc",
               "type": "string"
             }
           },
@@ -2558,7 +2812,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -2585,7 +2839,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj4e3vff9xnh001pk5n09zdec",
               "type": "string"
             }
           },
@@ -2607,7 +2860,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -2634,7 +2887,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj4e3vff9xnh002rr1br1r9br",
               "type": "string"
             }
           },
@@ -2656,7 +2908,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -2683,7 +2935,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj4e3vff9xnh003f69794krkm",
               "type": "string"
             }
           },
@@ -2705,7 +2956,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -2732,7 +2983,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj4e3vff9xnh004w5hemxyq5c",
               "type": "string"
             }
           },
@@ -2754,7 +3004,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "project_id": {
@@ -2766,7 +3016,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h000bf9bpj59n0",
               "type": "string"
             }
           },
@@ -2787,7 +3036,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -2814,7 +3063,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h0016tvbmw6qn8",
               "type": "string"
             }
           },
@@ -2836,7 +3084,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -2863,7 +3111,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h002tzaspgfv6c",
               "type": "string"
             }
           },
@@ -2885,7 +3132,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -2912,7 +3159,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h0032ptzn5w874",
               "type": "string"
             }
           },
@@ -2934,7 +3180,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -2961,7 +3207,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h0043g3b12n09c",
               "type": "string"
             }
           },
@@ -2983,7 +3228,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -3010,7 +3255,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h0055xdnk566qm",
               "type": "string"
             }
           },
@@ -3032,7 +3276,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -3059,7 +3303,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h006zn80akpebg",
               "type": "string"
             }
           },
@@ -3081,7 +3324,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -3108,7 +3351,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h007kjgtrqsgvm",
               "type": "string"
             }
           },
@@ -3130,7 +3372,7 @@
               "type": "boolean"
             },
             "owner_orcid": {
-              "const": "0tf1adtg65vf9000fw8t5ddy0g",
+              "const": "0000-0002-8792-9669",
               "type": "string"
             },
             "parent_ids": {
@@ -3157,7 +3399,6 @@
               "type": "string"
             },
             "unique_id": {
-              "const": "0tj5csymm1v8h0082qgmfm11gm",
               "type": "string"
             }
           },
@@ -3192,7 +3433,7 @@
               "additionalProperties": true,
               "properties": {
                 "dark_mode": {
-                  "const": 0,
+                  "const": 0.0,
                   "type": "number"
                 },
                 "data_fname_format": {
@@ -3303,7 +3544,6 @@
                       "type": "string"
                     },
                     "tray1_sample1_uuid": {
-                      "const": "0tj4e3vff9xnh001pk5n09zdec",
                       "type": "string"
                     },
                     "tray1_sample2_name": {
@@ -3311,7 +3551,6 @@
                       "type": "string"
                     },
                     "tray1_sample2_uuid": {
-                      "const": "0tj4e3vff9xnh002rr1br1r9br",
                       "type": "string"
                     },
                     "tray1_sample3_name": {
@@ -3319,7 +3558,6 @@
                       "type": "string"
                     },
                     "tray1_sample3_uuid": {
-                      "const": "0tj4e3vff9xnh003f69794krkm",
                       "type": "string"
                     },
                     "tray1_sample4_name": {
@@ -3327,7 +3565,6 @@
                       "type": "string"
                     },
                     "tray1_sample4_uuid": {
-                      "const": "0tj4e3vff9xnh004w5hemxyq5c",
                       "type": "string"
                     },
                     "tray1_sample5_name": {
@@ -3363,7 +3600,6 @@
                       "type": "string"
                     },
                     "tray1_uuid": {
-                      "const": "0tj4e3vff9xnh00052mj4sgvtc",
                       "type": "string"
                     },
                     "tray2_name": {
@@ -3375,7 +3611,6 @@
                       "type": "string"
                     },
                     "tray2_sample1_uuid": {
-                      "const": "0tj5csymm1v8h0016tvbmw6qn8",
                       "type": "string"
                     },
                     "tray2_sample2_name": {
@@ -3383,7 +3618,6 @@
                       "type": "string"
                     },
                     "tray2_sample2_uuid": {
-                      "const": "0tj5csymm1v8h002tzaspgfv6c",
                       "type": "string"
                     },
                     "tray2_sample3_name": {
@@ -3391,7 +3625,6 @@
                       "type": "string"
                     },
                     "tray2_sample3_uuid": {
-                      "const": "0tj5csymm1v8h0032ptzn5w874",
                       "type": "string"
                     },
                     "tray2_sample4_name": {
@@ -3399,7 +3632,6 @@
                       "type": "string"
                     },
                     "tray2_sample4_uuid": {
-                      "const": "0tj5csymm1v8h0043g3b12n09c",
                       "type": "string"
                     },
                     "tray2_sample5_name": {
@@ -3407,7 +3639,6 @@
                       "type": "string"
                     },
                     "tray2_sample5_uuid": {
-                      "const": "0tj5csymm1v8h0055xdnk566qm",
                       "type": "string"
                     },
                     "tray2_sample6_name": {
@@ -3415,7 +3646,6 @@
                       "type": "string"
                     },
                     "tray2_sample6_uuid": {
-                      "const": "0tj5csymm1v8h006zn80akpebg",
                       "type": "string"
                     },
                     "tray2_sample7_name": {
@@ -3423,7 +3653,6 @@
                       "type": "string"
                     },
                     "tray2_sample7_uuid": {
-                      "const": "0tj5csymm1v8h007kjgtrqsgvm",
                       "type": "string"
                     },
                     "tray2_sample8_name": {
@@ -3431,11 +3660,9 @@
                       "type": "string"
                     },
                     "tray2_sample8_uuid": {
-                      "const": "0tj5csymm1v8h0082qgmfm11gm",
                       "type": "string"
                     },
                     "tray2_uuid": {
-                      "const": "0tj5csymm1v8h000bf9bpj59n0",
                       "type": "string"
                     },
                     "units": {
@@ -3530,7 +3757,7 @@
                       "type": "number"
                     },
                     "baudrate": {
-                      "const": 19200,
+                      "const": 19200.0,
                       "type": "number"
                     },
                     "connected": {
@@ -3790,7 +4017,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj4e3vff9xnh001pk5n09zdec",
                           "type": "string"
                         },
                         "tray_name": {
@@ -3798,7 +4024,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj4e3vff9xnh00052mj4sgvtc",
                           "type": "string"
                         },
                         "x_center": {
@@ -3931,7 +4156,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj4e3vff9xnh002rr1br1r9br",
                           "type": "string"
                         },
                         "tray_name": {
@@ -3939,7 +4163,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj4e3vff9xnh00052mj4sgvtc",
                           "type": "string"
                         },
                         "x_center": {
@@ -4072,7 +4295,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj4e3vff9xnh003f69794krkm",
                           "type": "string"
                         },
                         "tray_name": {
@@ -4080,7 +4302,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj4e3vff9xnh00052mj4sgvtc",
                           "type": "string"
                         },
                         "x_center": {
@@ -4213,7 +4434,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj4e3vff9xnh004w5hemxyq5c",
                           "type": "string"
                         },
                         "tray_name": {
@@ -4221,7 +4441,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj4e3vff9xnh00052mj4sgvtc",
                           "type": "string"
                         },
                         "x_center": {
@@ -4354,7 +4573,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj5csymm1v8h0016tvbmw6qn8",
                           "type": "string"
                         },
                         "tray_name": {
@@ -4362,7 +4580,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj5csymm1v8h000bf9bpj59n0",
                           "type": "string"
                         },
                         "x_center": {
@@ -4495,7 +4712,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj5csymm1v8h002tzaspgfv6c",
                           "type": "string"
                         },
                         "tray_name": {
@@ -4503,7 +4719,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj5csymm1v8h000bf9bpj59n0",
                           "type": "string"
                         },
                         "x_center": {
@@ -4636,7 +4851,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj5csymm1v8h0032ptzn5w874",
                           "type": "string"
                         },
                         "tray_name": {
@@ -4644,7 +4858,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj5csymm1v8h000bf9bpj59n0",
                           "type": "string"
                         },
                         "x_center": {
@@ -4777,7 +4990,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj5csymm1v8h0043g3b12n09c",
                           "type": "string"
                         },
                         "tray_name": {
@@ -4785,7 +4997,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj5csymm1v8h000bf9bpj59n0",
                           "type": "string"
                         },
                         "x_center": {
@@ -4918,7 +5129,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj5csymm1v8h0055xdnk566qm",
                           "type": "string"
                         },
                         "tray_name": {
@@ -4926,7 +5136,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj5csymm1v8h000bf9bpj59n0",
                           "type": "string"
                         },
                         "x_center": {
@@ -5059,7 +5268,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj5csymm1v8h006zn80akpebg",
                           "type": "string"
                         },
                         "tray_name": {
@@ -5067,7 +5275,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj5csymm1v8h000bf9bpj59n0",
                           "type": "string"
                         },
                         "x_center": {
@@ -5200,7 +5407,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj5csymm1v8h007kjgtrqsgvm",
                           "type": "string"
                         },
                         "tray_name": {
@@ -5208,7 +5414,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj5csymm1v8h000bf9bpj59n0",
                           "type": "string"
                         },
                         "x_center": {
@@ -5341,7 +5546,6 @@
                           "type": "string"
                         },
                         "sample_uuid": {
-                          "const": "0tj5csymm1v8h0082qgmfm11gm",
                           "type": "string"
                         },
                         "tray_name": {
@@ -5349,7 +5553,6 @@
                           "type": "string"
                         },
                         "tray_uuid": {
-                          "const": "0tj5csymm1v8h000bf9bpj59n0",
                           "type": "string"
                         },
                         "x_center": {
@@ -5489,11 +5692,11 @@
                       "type": "string"
                     },
                     "num_points": {
-                      "const": 10,
+                      "const": 10.0,
                       "type": "number"
                     },
                     "num_positions": {
-                      "const": 18,
+                      "const": 18.0,
                       "type": "number"
                     },
                     "profile": {
@@ -5529,7 +5732,7 @@
                       "type": "number"
                     },
                     "spectra_per_pixel": {
-                      "const": 20,
+                      "const": 20.0,
                       "type": "number"
                     },
                     "units": {
@@ -5637,13 +5840,13 @@
       "type": "array"
     },
     "unique_id": {
-      "const": "0tj5ftr59szcd0000g7f5yd9xr",
       "type": "string"
     }
   },
   "required": [
     "children",
     "dataset_fields",
+    "file_to_upload",
     "ingestion_class",
     "keywords",
     "samples",

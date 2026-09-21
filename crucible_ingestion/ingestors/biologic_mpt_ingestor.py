@@ -46,8 +46,10 @@ class BiologicMptIngestor(CrucibleDatasetIngestor):
     """Bio-Logic EC-Lab ASCII export.
 
     The header is three different shapes at once: 'key : value' lines, a
-    fixed-width technique settings table, and bare statement lines. 
+    fixed-width technique settings table, and bare statement lines.
     """
+
+    scientific_metadata_schema: str = 'biologic_mpt.json'
 
     def is_file_supported(self):
         if not self.file_to_upload.lower().endswith('.mpt'):

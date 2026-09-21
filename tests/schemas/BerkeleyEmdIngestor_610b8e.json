@@ -36,7 +36,6 @@
           "type": "string"
         },
         "unique_id": {
-          "const": "xxx",
           "type": "string"
         }
       },
@@ -55,6 +54,10 @@
         "unique_id"
       ],
       "type": "object"
+    },
+    "file_to_upload": {
+      "const": "/Users/mkwall/Git/crucible-main/crucible-ingestion/tests/data/berkeley_emd_team05.emd",
+      "type": "string"
     },
     "ingestion_class": {
       "const": "BerkeleyEmdIngestor",
@@ -163,13 +166,13 @@
       "type": "array"
     },
     "unique_id": {
-      "const": "xxx",
       "type": "string"
     }
   },
   "required": [
     "children",
     "dataset_fields",
+    "file_to_upload",
     "ingestion_class",
     "keywords",
     "samples",

@@ -45,6 +45,9 @@ import logging
 import traceback
 from pathlib import Path
 
+from mfid import mfid
+
+from crucible.utils.identifiers import is_mfid
 from crucible_ingestion.data_ingestion import parse
 
 TESTS_DIR = Path(__file__).resolve().parent
@@ -162,6 +165,11 @@ def schema_for(value):
     if isinstance(value, str):
         if len(value) > MAX_PINNED_STRING:
             return {"type": "string"}
+        if is_mfid(value):
+            # A dataset MFID is harness input and the other MFIDs in a packet are
+            # per-file values, so pinning any of them makes the baseline unmatched
+            # every run. The key still has to be present and string-typed.
+            return {"type": "string"}
         return {"type": "string", "const": value}
 
     raise TypeError(f"no schema rule for {type(value).__name__}")
@@ -262,12 +270,17 @@ def main():
                         help="path to a data file; repeatable (default: everything in the data dir)")
     source.add_argument("--data-dir", dest="data_dir", default=None,
                         help="subfolder of tests/data to run over instead of tests/data itself")
-    parser.add_argument("--dsid", default="xxx", help="dataset unique id to parse against")
+    parser.add_argument("--dsid", default=None,
+                        help="dataset unique id to parse against (default: a freshly generated MFID)")
     parser.add_argument("--ingestor", default=None,
                         help="ingestor class name (default: auto-detect)")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="show the ingestion logs and tracebacks")
     args = parser.parse_args()
+    # Fresh MFID rather than a placeholder: parse() validates the dsid against the
+    # client, and a placeholder makes every lookup fail.
+    if args.dsid is None:
+        args.dsid = mfid()[0]
 
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING)
 

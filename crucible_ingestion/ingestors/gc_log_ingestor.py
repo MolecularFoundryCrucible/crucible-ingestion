@@ -22,6 +22,8 @@ class GCLogIngestor(CrucibleDatasetIngestor):
     peak table only lists components the software matched in that injection.
     """
 
+    scientific_metadata_schema: str = 'gc_log.json'
+
     def is_file_supported(self):
         if not self.file_to_upload.lower().endswith('.log'):
             return False
