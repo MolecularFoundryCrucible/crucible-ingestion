@@ -282,9 +282,6 @@ def push_packet(packet, include_file = False):
     return ds
 
 
-    
-
-
 def data_ingestion(dataset_to_process, dsid, ingestion_class=None, include_file = False):
     """Parse and push a file.
 
