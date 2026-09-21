@@ -142,14 +142,45 @@ def parse(dataset_to_process, dsid, ingestion_class=None, cleanup=True):
     return packet
 
 
+def push_file(dsid, path, ingestion_class = None):
+    """Upload a file without requesting ingestion, and record on its ingestion request
+    the class and code version that parsed it locally.
+
+    Use this when the packet was parsed client-side: the bytes still need to reach
+    storage, and the ingestion_request row is where a file's provenance lives, but there
+    is nothing left for the server to extract.
+    """
+    # uploads the file to GCS and adds a 'not_requested' record to the ingestion_request table
+    add_file_response = get_client().datasets.add_file(dataset_mfid = dsid,
+                                                       file_path = path,
+                                                       skip_ingestion = True)
+
+    ingestion_request = add_file_response['ingestion_request']
+    if ingestion_request is None:
+        # the file was already in the dataset, so add_file deduped and created no request
+        logger.info(f"{path} already present in {dsid}; "
+                    "no ingestion request to record provenance on")
+        return add_file_response
+
+    get_client().ingestions.update(ingestion_request['id'],
+                                   status = 'not_requested',
+                                   ingestion_class = ingestion_class,
+                                   ingestion_githash = get_ingestion_githash())
+    return add_file_response
+
+
 def push_packet(packet, include_file = False):
     # send the data
     # unique_id goes in the path, not the body, and the patch route rejects owner_orcid
     # and project_id. To set the project from the parsed packet, call:
     # get_client().datasets.reassign_project(packet.unique_id, "MFP12345", confirm=True)
     # -- likely only when the project_id is None.
+    #
+    # An empty value is dropped rather than sent: the patch route assigns whatever it is
+    # given, so a field the parse did not fill would blank the stored one.
     update_fields = {k: v for k, v in packet.dataset_fields.items()
-                     if k not in ('unique_id', 'owner_orcid', 'project_id', 'size')}
+                     if k not in ('unique_id', 'owner_orcid', 'project_id', 'size')
+                     and v not in (None, '')}
     ds = get_client().datasets.update(packet.unique_id, **update_fields)
 
     # link to any parsed samples
@@ -262,22 +293,7 @@ def push_packet(packet, include_file = False):
         logger.warning(f"include_file requested for {packet.unique_id} but the packet "
                        "carries no file_to_upload; skipping upload")
     elif include_file:
-        # uploads the file to GCS and adds a 'not_requested' record to the ingestion_request table
-        add_file_response = get_client().datasets.add_file(dataset_mfid = packet.unique_id,
-                                                    file_path = packet.file_to_upload,
-                                                    skip_ingestion = True)
-
-        # update ingestion provenance with local parsing details
-        ingestion_request = add_file_response['ingestion_request']
-        if ingestion_request is None:
-            # the file was already in the dataset, so add_file deduped and created no request
-            logger.info(f"{packet.file_to_upload} already present in {packet.unique_id}; "
-                        "no ingestion request to record provenance on")
-        else:
-            get_client().ingestions.update(ingestion_request['id'],
-                                           status = 'not_requested',
-                                           ingestion_class = packet.ingestion_class,
-                                           ingestion_githash = get_ingestion_githash())
+        push_file(packet.unique_id, packet.file_to_upload, packet.ingestion_class)
 
     return ds
 
