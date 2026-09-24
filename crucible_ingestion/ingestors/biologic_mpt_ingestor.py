@@ -133,7 +133,8 @@ class BiologicMptIngestor(CrucibleDatasetIngestor):
 
             'potential_control': fields.get('Potential control'),
             'electrode_connection': fields.get('Electrode connection'),
-            'electrode_material': fields.get('Electrode material'),
+            'anode_material': fields.get('Anode material'),
+            'cathode_material': fields.get('Cathode material'),
             'electrolyte': fields.get('Electrolyte'),
             'initial_state': fields.get('Initial state'),
             'comments': fields.get('Comments'),
@@ -149,7 +150,7 @@ class BiologicMptIngestor(CrucibleDatasetIngestor):
             # needs all three of the electrode fields below.
             'reference_electrode': None,
             'reference_electrode_potential_V_vs_SHE': None,
-            'electrolyte_pH': None,
+            #'electrolyte_pH': None,
             'ir_compensation_ohm': None,
             'cell_temperature_C': None,
         }
