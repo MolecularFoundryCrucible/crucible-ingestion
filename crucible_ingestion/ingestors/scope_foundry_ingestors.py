@@ -1210,6 +1210,34 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             logger.error(f"Failed to generate spectrum thumbnail for position {self._child_position}: {err}")
 
 
+class NirvanaMultiPosLineScanIngestor_10kLegacy(NirvanaMultiPosLineScanIngestor):
+    """Pre-b7f3a94 behavior: no child datasets, all samples linked to the main dataset.
+
+    Kept separate from NirvanaMultiPosLineScanIngestor (which splits thin films into
+    per-position child datasets) because other users depend on that class's current
+    behavior.
+    """
+
+    def parse_samples(self):
+        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        for pos in self.h5file[pos_path]:
+            sample_id = self.h5file[pos_path][pos].attrs['sample_uuid']
+            sample_name = self.h5file[pos_path][pos].attrs['sample_name']
+            sample_description = pos
+            if len(sample_id) > 0:
+                sample = {"unique_id": sample_id,
+                          "sample_name": sample_name,
+                          "owner_orcid": self.owner_orcid,
+                          "project_id": self.project_id}
+
+                # get the rest of the metadata
+                self.samples.append(sample)
+        return
+
+    def parse_children(self):
+        return
+
+
 class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
 
     _MEAS_PATH = 'measurement/pollux_multipos_spec_run'
