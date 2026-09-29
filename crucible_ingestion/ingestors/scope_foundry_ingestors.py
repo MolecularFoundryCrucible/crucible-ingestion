@@ -980,6 +980,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
     
     def get_dataset_metadata(self):
         self.instrument_name = 'Inorganic Nirvana'
+        self.instrument_id = 'nirvana-spectrometer'
 
         H5Ingestor.get_dataset_metadata(self)
 
@@ -1066,6 +1067,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                 dataset_name=f"Child Nirvana scan for {sample_name}",
                 data_format=self.data_format,
                 instrument_name=self.instrument_name,
+                instrument_id=self.instrument_id,
                 timestamp=self.timestamp,
             ).model_dump()
             child_md = {
@@ -1217,6 +1219,7 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
 
     def get_dataset_metadata(self):
         self.instrument_name = 'Inorganic Nirvana'
+        self.instrument_id = 'nirvana-spectrometer'
 
         H5Ingestor.get_dataset_metadata(self)
 
@@ -1340,6 +1343,7 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
                 dataset_name=f"Nirvana SpecRun for {sample_name}",
                 data_format=self.data_format,
                 instrument_name=self.instrument_name,
+                instrument_id=self.instrument_id,
                 timestamp=self.timestamp,
             ).model_dump()
 
