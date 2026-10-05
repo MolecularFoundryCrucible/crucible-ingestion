@@ -222,7 +222,14 @@ class CrucibleDatasetIngestor(Dataset):
                         existing_metadata = dataset_obj[attr]
                     deep_merge_skip_empty(self.scientific_metadata, existing_metadata)
                     continue
-                    
+
+                if attr == "timestamp" and self.timestamp:
+                    # The API defaults a dataset's SQL timestamp to "now" at creation,
+                    # before this file is ever parsed. If the ingestor already derived a
+                    # real timestamp from the file itself (e.g. ScopeFoundry's time_id),
+                    # that's more trustworthy than the SQL placeholder - don't clobber it.
+                    continue
+
                 logger.info(f"setting {attr} to {dataset_obj[attr]} as set in sql")
                 setattr(self, attr, dataset_obj[attr]) 
                 
