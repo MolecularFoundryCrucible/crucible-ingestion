@@ -54,7 +54,8 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
                                                     'andor_asi_hyperspec_scan', 
                                                     'ald_run_upd',
                                                     'ald_run',
-                                                    'ald_run_measure'
+                                                    'ald_run_measure',
+                                                    'micos_hydra_venus_readout'
                                                     ]
     
     # Explicit aliases rather than prefix matching, which would also swallow
