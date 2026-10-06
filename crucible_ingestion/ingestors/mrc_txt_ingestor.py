@@ -119,15 +119,19 @@ class MrcTxtIngestor(CrucibleDatasetIngestor):
     def is_file_supported(self):
         has_ending = np.any([self.file_to_upload.endswith(ftype)
                        for ftype in self.supported_filetypes])
+        if not has_ending:
+            return False
 
-        lines = _read_fei_lines(self.file_to_upload)
-        first_line, second_line = lines[:2]
+        try:
+            lines = _read_fei_lines(self.file_to_upload)
+            first_line, second_line = lines[:2]
+        except Exception:
+            return False
 
         has_header = 'Date/Time:' in first_line
         has_slashes = '---------------' in second_line
 
-        if has_ending and has_header and has_slashes:
-            return True
+        return has_header and has_slashes
 
     def get_scientific_metadata(self):
         """Extract scientific metadata from the ser file using ncempy."""
