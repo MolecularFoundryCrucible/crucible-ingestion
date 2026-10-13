@@ -14,8 +14,7 @@ class RawtltIngestor(CrucibleDatasetIngestor):
 
     def is_file_supported(self) -> bool:
         """Return whether the input has a supported file extension."""
-        file_to_upload = getattr(self, "file_to_upload")
-        return Path(file_to_upload).suffix.lower() in self.supported_filetypes
+        return Path(self.match_name).suffix.lower() in self.supported_filetypes
 
     def get_scientific_metadata(self):
         """Extract tomography tilt angles, ignoring blank lines."""
@@ -43,4 +42,4 @@ class RawtltIngestor(CrucibleDatasetIngestor):
         session_name, timestamp, data_format
         '''
         super().get_dataset_metadata()
-        self.dataset_name = Path(getattr(self, "file_to_upload")).name
+        self.dataset_name = Path(self.match_name).name

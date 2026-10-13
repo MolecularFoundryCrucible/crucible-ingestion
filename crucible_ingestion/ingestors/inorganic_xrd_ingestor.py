@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class InorganicXRDIngestor(CrucibleDatasetIngestor):
 
     def is_file_supported(self):
-        if not self.file_to_upload.endswith('.txt'):
+        if not self.match_name.endswith('.txt'):
             return False
         try:
             with open(self.file_to_upload, 'r') as f:
@@ -106,7 +106,7 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
     def parse_dataset_name(self):
         if self.dataset_name:
             return
-        self.dataset_name = f'XRD — {Path(self.file_to_upload).stem}'
+        self.dataset_name = f'XRD — {Path(self.match_name).stem}'
 
     def parse_samples(self):
         pass

@@ -165,9 +165,9 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
     '''subclass for ingesting Velox EMD files'''
 
     def is_file_supported(self):
-        if not self.file_to_upload.endswith('.emd'):
+        if not self.match_name.endswith('.emd'):
             return False
-        
+
         with fileEMDVeloxWithSpectra(self.file_to_upload) as emd1:
             return len(emd1.list_data) > 0
             # this only ensures that there's at least a Image, Spectrum Image, or Spectrum group? 
@@ -191,7 +191,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             return
         else:
             # no_ext_fname = os.path.splitext(self.file_to_upload)[0]
-            self.dataset_name = os.path.basename(self.file_to_upload) # keep the file extension
+            self.dataset_name = os.path.basename(self.match_name) # keep the file extension
             logger.info(f"{self.dataset_name=}")
             return
 

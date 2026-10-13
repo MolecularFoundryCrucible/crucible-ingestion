@@ -104,7 +104,7 @@ class MrcIngestor(CrucibleDatasetIngestor):
     '''subclass for ingesting MRC files'''
 
     def is_file_supported(self):
-        if not Path(self.file_to_upload).suffix == '.mrc':
+        if not Path(self.match_name).suffix == '.mrc':
             return False
         try:
             with nio.mrc.fileMRC(self.file_to_upload) as mrc1:
@@ -153,7 +153,7 @@ class MrcIngestor(CrucibleDatasetIngestor):
     def get_dataset_metadata(self):
          # Use parent class method to set data_format and size
         CrucibleDatasetIngestor.get_dataset_metadata(self)
-        self.dataset_name = Path(self.file_to_upload).name
+        self.dataset_name = Path(self.match_name).name
 
 
     def generate_thumbnail(self, target_size=(200, 200), dpi=100):

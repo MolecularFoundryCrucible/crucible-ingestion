@@ -50,7 +50,7 @@ def build_sample_table(directory, samples_by_name):
 class RgaTeyBatchIngestor(CrucibleDatasetIngestor):
 
     def is_file_supported(self):
-        conditions = [self.file_to_upload.endswith('zip'), '10k_RGA' in self.file_to_upload]
+        conditions = [self.match_name.endswith('zip'), '10k_RGA' in self.match_name]
         return all(conditions)
         
 
