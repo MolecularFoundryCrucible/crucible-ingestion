@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class InorganicXRDIngestor(CrucibleDatasetIngestor):
 
     def is_file_supported(self):
-        if not self.file_to_upload.endswith('.txt'):
+        if not self.match_name.endswith('.txt'):
             return False
         try:
             with open(self.file_to_upload, 'r') as f:

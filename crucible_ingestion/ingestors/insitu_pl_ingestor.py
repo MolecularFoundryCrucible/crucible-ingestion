@@ -30,7 +30,7 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
         - at least one file in the zip folder follows the expected naming convention for insitu pl data
         '''
         
-        if all([self.file_to_upload.endswith('zip')]):
+        if all([self.match_name.endswith('zip')]):
             zipcontents = [x.split(" ")[-1] for x in run_shell(f"unzip -l '{self.file_to_upload}'").stdout.split("\n") if re.match(".*/.*[.]txt", x)]
             return len(zipcontents) > 0
         else:

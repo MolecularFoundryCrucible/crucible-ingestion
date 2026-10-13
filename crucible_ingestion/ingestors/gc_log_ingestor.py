@@ -23,7 +23,7 @@ class GCLogIngestor(CrucibleDatasetIngestor):
     """
 
     def is_file_supported(self):
-        if not self.file_to_upload.lower().endswith('.log'):
+        if not self.match_name.lower().endswith('.log'):
             return False
         try:
             with open(self.file_to_upload, encoding='utf-8', errors='replace') as f:

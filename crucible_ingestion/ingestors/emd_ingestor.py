@@ -16,7 +16,7 @@ class BerkeleyEmdIngestor(CrucibleDatasetIngestor):
     '''subclass for ingesting Berkeley EMD files'''
 
     def is_file_supported(self):
-        if not self.file_to_upload.endswith('.emd'):
+        if not self.match_name.endswith('.emd'):
             return False
         try:
             with nio.emd.fileEMD(self.file_to_upload, readonly=True) as emd1:
