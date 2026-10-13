@@ -176,7 +176,7 @@ class AFMIngestor(CrucibleDatasetIngestor):
 
     
     def parse_dataset_name(self):
-        informative_path = self.file_to_upload.split("Asylum Research Data")[-1]
+        informative_path = self.match_name.split("Asylum Research Data")[-1]
         self.dataset_name = informative_path.strip("/").replace("/", "-") 
 
     
@@ -220,7 +220,7 @@ class AFMIngestor(CrucibleDatasetIngestor):
 
             
     def parse_keywords(self):
-        parent_folder = os.path.dirname(self.file_to_upload).split('/')[-1]
+        parent_folder = os.path.dirname(self.match_name).split('/')[-1]
         self.keywords = [self.instrument_name,
                          self.measurement,
                          self.data_type,

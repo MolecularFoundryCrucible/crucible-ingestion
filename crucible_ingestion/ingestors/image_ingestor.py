@@ -27,7 +27,7 @@ class ImageIngestor(CrucibleDatasetIngestor):
 
     def get_thumbnails(self):
         single_image = Image.open(self.file_to_upload)
-        self.add_thumbnail(single_image, os.path.basename(self.file_to_upload))
+        self.add_thumbnail(single_image, os.path.basename(self.match_name))
 
 
 class TifIngestor(ImageIngestor):

@@ -42,4 +42,4 @@ class RawtltIngestor(CrucibleDatasetIngestor):
         session_name, timestamp, data_format
         '''
         super().get_dataset_metadata()
-        self.dataset_name = Path(getattr(self, "file_to_upload")).name
+        self.dataset_name = Path(self.match_name).name

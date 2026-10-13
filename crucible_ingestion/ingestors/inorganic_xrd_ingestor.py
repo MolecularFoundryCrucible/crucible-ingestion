@@ -106,7 +106,7 @@ class InorganicXRDIngestor(CrucibleDatasetIngestor):
     def parse_dataset_name(self):
         if self.dataset_name:
             return
-        self.dataset_name = f'XRD — {Path(self.file_to_upload).stem}'
+        self.dataset_name = f'XRD — {Path(self.match_name).stem}'
 
     def parse_samples(self):
         pass

@@ -79,7 +79,7 @@ class GCLogIngestor(CrucibleDatasetIngestor):
         self.scientific_metadata = {'technique': 'gas chromatography'}
         for detector, timestamps in sorted(by_detector.items()):
             self.scientific_metadata[detector] = {
-                'log_file': Path(self.file_to_upload).name,
+                'log_file': Path(self.match_name).name,
                 'injection_count': len(timestamps),
                 'first_injection_timestamp': timestamps[0].isoformat(),
                 'last_injection_timestamp': timestamps[-1].isoformat(),
@@ -102,7 +102,7 @@ class GCLogIngestor(CrucibleDatasetIngestor):
     def parse_dataset_name(self):
         if self.dataset_name:
             return
-        self.dataset_name = f'{Path(self.file_to_upload).stem}'
+        self.dataset_name = f'{Path(self.match_name).stem}'
 
     def parse_file_timestamp(self):
         if self.timestamp:

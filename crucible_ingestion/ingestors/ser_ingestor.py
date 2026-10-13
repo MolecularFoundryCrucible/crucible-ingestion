@@ -51,7 +51,7 @@ class SerIngestor(CrucibleDatasetIngestor):
             tia_date_format = "%a %b %d %H:%M:%S %Y"
             self.timestamp = dt.strptime(acquired_date, tia_date_format).isoformat()
 
-        self.dataset_name = Path(self.file_to_upload).name
+        self.dataset_name = Path(self.match_name).name
 
     def generate_thumbnail(self, target_size=(200, 200), dpi=100):
         

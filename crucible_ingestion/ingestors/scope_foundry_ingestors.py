@@ -388,8 +388,8 @@ class SpinBotIngestor(ScopeFoundryH5Ingestor):
             self.session_name = scope_foundry_session
             self.keywords += [self.session_name]
 
-        self.keywords += [x for x in self.file_to_upload.split('/') if 'campaign' in x.lower()]
-        self.keywords += [x for x in self.file_to_upload.split('/') if 'batch' in x.lower()]
+        self.keywords += [x for x in self.match_name.split('/') if 'campaign' in x.lower()]
+        self.keywords += [x for x in self.match_name.split('/') if 'batch' in x.lower()]
 
     
     def parse_orcid(self):

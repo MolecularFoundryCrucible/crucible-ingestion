@@ -121,3 +121,21 @@ def test_registry_claims_laseroff_file_with_hyperspec_ingestor(tmp_path):
     path = scopefoundry_file(tmp_path, 'hyperspec_picam_mcl_laseroff')
     ig, cls = find_supported_ingestor(path, 'xxx')
     assert cls == 'HyperspecScopeFoundryH5Ingestor'
+
+
+def test_spinbot_campaign_batch_keywords_use_match_name(tmp_path):
+    """Review finding: SpinBotIngestor.get_dataset_metadata mines 'campaign'/'batch'
+    keywords from the path. For an opaque upload those live in file_name, which may
+    contain relative folders (e.g. 'campaign_12/batch_3/run.h5')."""
+    from crucible_ingestion.ingestors.scope_foundry_ingestors import SpinbotSpecLineIngestor
+
+    path = scopefoundry_file(tmp_path, 'spec_line_scan')
+    opaque = tmp_path / "f3a9c1e0"
+    opaque.write_bytes(open(path, 'rb').read())
+    ig = SpinbotSpecLineIngestor(
+        file_to_upload=str(opaque), file_name="campaign_12/batch_3/run.h5", unique_id="x"
+    )
+    ig.get_scientific_metadata()
+    ig.get_dataset_metadata()
+    assert "campaign_12" in ig.keywords
+    assert "batch_3" in ig.keywords

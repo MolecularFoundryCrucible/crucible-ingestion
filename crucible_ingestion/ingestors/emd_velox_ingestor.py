@@ -191,7 +191,7 @@ class VeloxEmdIngestor(CrucibleDatasetIngestor):
             return
         else:
             # no_ext_fname = os.path.splitext(self.file_to_upload)[0]
-            self.dataset_name = os.path.basename(self.file_to_upload) # keep the file extension
+            self.dataset_name = os.path.basename(self.match_name) # keep the file extension
             logger.info(f"{self.dataset_name=}")
             return
 

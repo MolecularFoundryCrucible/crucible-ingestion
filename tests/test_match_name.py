@@ -65,3 +65,16 @@ def test_find_supported_ingestor_threads_file_name_to_constructed_instance(tmp_p
     )
     assert cls_name == "CrucibleDatasetIngestor"
     assert ig.match_name == "run.txt"
+
+
+def test_registry_auto_detects_opaque_path_via_file_name_with_a_real_ingestor(tmp_path):
+    """Restores the plan's original Task 1 Step 9 test, now that Task 2 has
+    switched MrcTxtIngestor.is_file_supported() to match_name."""
+    from crucible_ingestion.ingestors.registry import find_supported_ingestor
+    from crucible_ingestion.ingestors.mrc_txt_ingestor import MrcTxtIngestor
+
+    opaque = tmp_path / "f3a9c1e0"
+    opaque.write_text("Date/Time: 01/01/26 00:00:00\n---------------\n")
+    ig, cls_name = find_supported_ingestor(str(opaque), "dsid", file_name="run.txt")
+    assert cls_name == "MrcTxtIngestor"
+    assert isinstance(ig, MrcTxtIngestor)

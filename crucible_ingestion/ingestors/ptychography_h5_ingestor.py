@@ -88,7 +88,7 @@ class PtychographyH5Ingestor(H5Ingestor):
         should update unique_id, timestamp,
         size, dataset_name, data_format
         """
-        self.data_format = self.file_to_upload.split('.')[-1]
+        self.data_format = self.match_name.split('.')[-1]
         # self.sha256_hash_file_to_upload = checkhash(self.file_to_upload)
 
         self.parse_measurement()
