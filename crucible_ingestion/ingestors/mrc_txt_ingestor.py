@@ -117,7 +117,7 @@ class MrcTxtIngestor(CrucibleDatasetIngestor):
     supported_filetypes: ClassVar[list[str]] = ['txt']
 
     def is_file_supported(self):
-        has_ending = np.any([self.file_to_upload.endswith(ftype)
+        has_ending = np.any([self.match_name.endswith(ftype)
                        for ftype in self.supported_filetypes])
         if not has_ending:
             return False

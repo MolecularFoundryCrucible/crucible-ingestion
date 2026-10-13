@@ -13,7 +13,7 @@ class EmiIngestor(CrucibleDatasetIngestor):
     supported_filetypes: ClassVar[list[str]] = [".emi"]
     
     def is_file_supported(self):
-        return Path(self.file_to_upload).suffix.lower() in self.supported_filetypes
+        return Path(self.match_name).suffix.lower() in self.supported_filetypes
 
 
     def get_scientific_metadata(self):

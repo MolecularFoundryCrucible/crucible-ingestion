@@ -13,7 +13,7 @@ class SpinRunIngestor_10kLegacy(CrucibleDatasetIngestor):
 
     def is_file_supported(self):
         # currently expects yaml file
-        if not self.file_to_upload.endswith('yaml'):
+        if not self.match_name.endswith('yaml'):
             return False
         
         # open the file

@@ -14,7 +14,7 @@ class PtychographyH5Ingestor(H5Ingestor):
 
     def is_file_supported(self):
         """Check if the file is a Dectris NXmx master file for ptychography."""
-        if not self.file_to_upload.endswith('_master.h5'):
+        if not self.match_name.endswith('_master.h5'):
             return False
         try:
             with h5py.File(self.file_to_upload, 'r') as f:

@@ -23,7 +23,7 @@ class SerIngestor(CrucibleDatasetIngestor):
     
     def is_file_supported(self):
         """Check if the file to upload is a supported ser file based on its extension and content."""
-        file_extension = Path(self.file_to_upload).suffix.lower()
+        file_extension = Path(self.match_name).suffix.lower()
         return file_extension in self.supported_filetypes
 
 

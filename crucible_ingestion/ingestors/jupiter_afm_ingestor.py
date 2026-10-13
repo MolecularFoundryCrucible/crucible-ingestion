@@ -92,7 +92,7 @@ class AFMIngestor(CrucibleDatasetIngestor):
     supported_filetypes: ClassVar[list[str]] = ['ibw']
 
     def is_file_supported(self):
-        return np.any([self.file_to_upload.endswith(ftype) for ftype in self.supported_filetypes])
+        return np.any([self.match_name.endswith(ftype) for ftype in self.supported_filetypes])
 
         
     def get_scientific_metadata(self):
