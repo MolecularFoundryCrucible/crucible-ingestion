@@ -3,7 +3,15 @@ file_to_upload so every legacy (no file_name) call path is unaffected.
 """
 from pathlib import Path
 
+from crucible_ingestion.constants import sql_export_attr
 from crucible_ingestion.ingestors.crucible_ingestor import CrucibleDatasetIngestor
+
+
+def test_file_name_never_reaches_the_pushed_dataset_fields():
+    """crucible-api's PATCH /datasets/{id} is extra="forbid" and would 422 on
+    an unknown field -- file_name is a local classification hint only, it must
+    never be part of the dict parse() builds from sql_export_attr."""
+    assert "file_name" not in sql_export_attr
 
 
 def test_match_name_falls_back_to_file_to_upload():
