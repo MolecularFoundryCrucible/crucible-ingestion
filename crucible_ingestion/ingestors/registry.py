@@ -102,15 +102,16 @@ SELECTABLE = {cls.__name__: cls for cls in ingestor_list}
 def find_supported_ingestor(dataset_to_process,
                             dsid,
                             specified_ingestor = None,
-                            ingestor_list = ingestor_list):
-    
+                            ingestor_list = ingestor_list,
+                            file_name = None):
+
     if specified_ingestor is not None:
         cls = SELECTABLE.get(specified_ingestor)
         if cls is None:
             logger.warning(f"Specified ingestor '{specified_ingestor}' not found, falling back to list scan")
         else:
             logger.info(cls)
-            ig = cls(file_to_upload = dataset_to_process, unique_id = dsid)
+            ig = cls(file_to_upload = dataset_to_process, unique_id = dsid, file_name = file_name)
             if ig.is_file_supported():
                 logger.info(f"{dataset_to_process} is supported by {specified_ingestor}")
                 return ig, specified_ingestor
@@ -119,7 +120,7 @@ def find_supported_ingestor(dataset_to_process,
 
     # if that ingestor class was not supported, check the others
     for ingestor_class in ingestor_list:
-        ig = ingestor_class(file_to_upload = dataset_to_process, unique_id = dsid)
+        ig = ingestor_class(file_to_upload = dataset_to_process, unique_id = dsid, file_name = file_name)
 
         if ig.is_file_supported():
             logger.info(f"{dataset_to_process} is supported by {ingestor_class.__name__}")

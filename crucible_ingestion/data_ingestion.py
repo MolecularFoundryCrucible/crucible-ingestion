@@ -68,15 +68,19 @@ def populate_existing_ds_info(ig, populate_fields):
     return ig, found_ds
         
 
-def parse(dataset_to_process, dsid, ingestion_class=None, cleanup=True):
+def parse(dataset_to_process, dsid, ingestion_class=None, cleanup=True, file_name=None):
     """Parse a file into an IngestionPacket, or None if no ingestor supports it.
 
     Args:
         cleanup: Remove TMP_DIR before returning. Pass False when the caller still
             needs the child files the ingestor extracted there.
+        file_name: The original file name (with extension), when the real read
+            path (dataset_to_process) is an opaque storage key that carries no
+            name of its own. Optional; omit for legacy callers.
     """
     logger.info("running build packet...")
-    ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class)
+    ig, ingestion_class = find_supported_ingestor(dataset_to_process, dsid, ingestion_class,
+                                                   file_name=file_name)
     if ig is None:
         logger.warning("Tried all ingestors with no matches found")
         return None
@@ -301,7 +305,7 @@ def push_packet(packet, include_file = False):
     
 
 
-def data_ingestion(dataset_to_process, dsid, ingestion_class=None, include_file = False):
+def data_ingestion(dataset_to_process, dsid, ingestion_class=None, include_file = False, file_name=None):
     """Parse and push a file.
 
     Returns:
@@ -309,7 +313,7 @@ def data_ingestion(dataset_to_process, dsid, ingestion_class=None, include_file 
             ingestor claimed the file; with include_file=True the file is still
             uploaded, so `dataset` may be non-None even then.
     """
-    packet = parse(dataset_to_process, dsid, ingestion_class, cleanup=False)
+    packet = parse(dataset_to_process, dsid, ingestion_class, cleanup=False, file_name=file_name)
 
     if packet is None:
         if not include_file:

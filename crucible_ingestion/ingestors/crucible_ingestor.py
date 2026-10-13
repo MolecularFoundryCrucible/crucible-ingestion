@@ -6,6 +6,7 @@ from mfid import mfid
 import logging
 import json
 from pathlib import Path
+from typing import Optional
 from crucible.models import Dataset
 
 from ..utils import (build_b64_thumbnail,
@@ -32,7 +33,18 @@ class CrucibleDatasetIngestor(Dataset):
     thumbnails: list = []
     samples: list = []
     children: list = []
-    
+    file_name: Optional[str] = None
+
+    @property
+    def match_name(self):
+        """The name to classify/label this file by.
+
+        file_to_upload is where the bytes actually live (opaque for new-style
+        signed uploads); file_name, when given, is the original name with
+        extension. Never use this for I/O.
+        """
+        return self.file_name or self.file_to_upload
+
     @property
     def ingestion_class(self):
         return type(self).__name__
@@ -78,7 +90,7 @@ class CrucibleDatasetIngestor(Dataset):
         if self.dataset_name:
             return
         else:
-            self.dataset_name = Path(self.file_to_upload).name
+            self.dataset_name = Path(self.match_name).name
             logger.info(f"{self.dataset_name=}")
             return
     
@@ -133,7 +145,7 @@ class CrucibleDatasetIngestor(Dataset):
 
         self.size += os.path.getsize(self.file_to_upload)
         if not self.data_format:
-            self.data_format = self.file_to_upload.split('.')[-1]
+            self.data_format = self.match_name.split('.')[-1]
 
         self.parse_dataset_name()
         self.parse_file_timestamp()
