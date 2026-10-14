@@ -33,6 +33,7 @@ from .insitu_pl_ingestor import InSituPlIngestor
 from .dm_ingestor import DigitalMicrographIngestor
 from .emi_ingestor import EmiIngestor
 from .ser_ingestor import SerIngestor
+from .sur_ingestor import SurIngestor
 from .bcf_ingestor import BcfIngestor
 from .emd_ingestor import BerkeleyEmdIngestor
 from .emd_velox_ingestor import VeloxEmdIngestor
@@ -80,6 +81,7 @@ ingestor_list = [AFMIngestor,
                 DigitalMicrographIngestor,
                 EmiIngestor,
                 SerIngestor,
+                SurIngestor,
                 BcfIngestor,
                 BerkeleyEmdIngestor,
                 VeloxEmdIngestor,
@@ -95,7 +97,7 @@ ingestor_list = [AFMIngestor,
                 NirvanaMultiPosLineScanIngestor,
                 NirvanaMultiPosLineScanIngestor_10kLegacy,
                 ScopeFoundryH5Ingestor,
-                H5Ingestor] 
+                H5Ingestor,] 
 
 SELECTABLE = {cls.__name__: cls for cls in ingestor_list} 
 
@@ -103,7 +105,8 @@ def find_supported_ingestor(dataset_to_process,
                             dsid,
                             specified_ingestor = None,
                             ingestor_list = ingestor_list):
-    
+    logger.info(specified_ingestor)
+
     if specified_ingestor is not None:
         cls = SELECTABLE.get(specified_ingestor)
         if cls is None:
