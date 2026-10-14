@@ -50,6 +50,39 @@ def test_sweep_variant_is_not_stolen_by_prefix(tmp_path):
     assert ingestor_of(HyperspecSweepScopeFoundryH5Ingestor, path).is_file_supported()
 
 
+from crucible_ingestion.ingestors.scope_foundry_ingestors import (
+    QSpleemSVRampIngestor,
+    QSpleemARRESEKIngestor,
+    BioGlowIngestor,
+)
+
+
+def test_qspleem_sv_ramp_claims_opaque_path_via_file_name(tmp_path):
+    path = scopefoundry_file(tmp_path, 'sv_ramp')
+    opaque = tmp_path / "f3a9c1e0"
+    opaque.write_bytes(open(path, 'rb').read())
+    ig = QSpleemSVRampIngestor(file_to_upload=str(opaque), file_name="run_sv_ramp.h5", unique_id="x")
+    assert ig.is_file_supported() is True
+
+
+def test_qspleem_arres_ek_regex_matches_against_file_name_not_opaque_path(tmp_path):
+    path = scopefoundry_file(tmp_path, 'ARRES_EK')
+    opaque = tmp_path / "f3a9c1e0"
+    opaque.write_bytes(open(path, 'rb').read())
+    ig = QSpleemARRESEKIngestor(file_to_upload=str(opaque), file_name="run_ARRES_EK_images_0000.h5", unique_id="x")
+    assert ig.is_file_supported() is True
+    ig_no_name = QSpleemARRESEKIngestor(file_to_upload=str(opaque), unique_id="x")
+    assert ig_no_name.is_file_supported() is False
+
+
+def test_bioglow_still_claims_legacy_path_without_file_name(tmp_path):
+    path = scopefoundry_file(tmp_path, 'bioglow_spec')
+    legacy = tmp_path / "run_bioglow_spec.h5"
+    legacy.write_bytes(open(path, 'rb').read())
+    ig = BioGlowIngestor(file_to_upload=str(legacy), unique_id="x")
+    assert ig.is_file_supported() is True
+
+
 def test_unrelated_measurement_not_claimed(tmp_path):
     path = scopefoundry_file(tmp_path, 'toupcam_live')
     assert not ingestor_of(HyperspecScopeFoundryH5Ingestor, path).is_file_supported()
@@ -88,3 +121,21 @@ def test_registry_claims_laseroff_file_with_hyperspec_ingestor(tmp_path):
     path = scopefoundry_file(tmp_path, 'hyperspec_picam_mcl_laseroff')
     ig, cls = find_supported_ingestor(path, 'xxx')
     assert cls == 'HyperspecScopeFoundryH5Ingestor'
+
+
+def test_spinbot_campaign_batch_keywords_use_match_name(tmp_path):
+    """Review finding: SpinBotIngestor.get_dataset_metadata mines 'campaign'/'batch'
+    keywords from the path. For an opaque upload those live in file_name, which may
+    contain relative folders (e.g. 'campaign_12/batch_3/run.h5')."""
+    from crucible_ingestion.ingestors.scope_foundry_ingestors import SpinbotSpecLineIngestor
+
+    path = scopefoundry_file(tmp_path, 'spec_line_scan')
+    opaque = tmp_path / "f3a9c1e0"
+    opaque.write_bytes(open(path, 'rb').read())
+    ig = SpinbotSpecLineIngestor(
+        file_to_upload=str(opaque), file_name="campaign_12/batch_3/run.h5", unique_id="x"
+    )
+    ig.get_scientific_metadata()
+    ig.get_dataset_metadata()
+    assert "campaign_12" in ig.keywords
+    assert "batch_3" in ig.keywords

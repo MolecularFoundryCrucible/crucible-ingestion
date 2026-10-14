@@ -16,7 +16,7 @@ class ImageIngestor(CrucibleDatasetIngestor):
     def is_file_supported(self):
         supported_image_formats = ['png', 'jpeg', 'jpg']
         logger.info(f"Supported image formats: {supported_image_formats}")
-        res= np.any([self.file_to_upload.lower().endswith(imformat) for imformat in supported_image_formats])
+        res= np.any([self.match_name.lower().endswith(imformat) for imformat in supported_image_formats])
         logger.info(f"File {self.file_to_upload} is supported: {res}")
         return res
 
@@ -27,14 +27,14 @@ class ImageIngestor(CrucibleDatasetIngestor):
 
     def get_thumbnails(self):
         single_image = Image.open(self.file_to_upload)
-        self.add_thumbnail(single_image, os.path.basename(self.file_to_upload))
+        self.add_thumbnail(single_image, os.path.basename(self.match_name))
 
 
 class TifIngestor(ImageIngestor):
 
     def is_file_supported(self):
         supported_image_formats = ['tif', 'tiff']
-        return np.any([self.file_to_upload.lower().endswith(imformat) for imformat in supported_image_formats])
+        return np.any([self.match_name.lower().endswith(imformat) for imformat in supported_image_formats])
 
 
     def parse_measurement(self):

@@ -5,7 +5,7 @@ from .crucible_ingestor import CrucibleDatasetIngestor
 class H5Ingestor(CrucibleDatasetIngestor):
     
     def is_file_supported(self):
-        return self.file_to_upload.endswith('h5')
+        return self.match_name.endswith('h5')
            
  
     def get_scientific_metadata(self):

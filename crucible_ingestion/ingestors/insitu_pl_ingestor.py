@@ -30,7 +30,7 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
         - at least one file in the zip folder follows the expected naming convention for insitu pl data
         '''
         
-        if all([self.file_to_upload.endswith('zip')]):
+        if all([self.match_name.endswith('zip')]):
             zipcontents = [x.split(" ")[-1] for x in run_shell(f"unzip -l '{self.file_to_upload}'").stdout.split("\n") if re.match(".*/.*[.]txt", x)]
             return len(zipcontents) > 0
         else:
@@ -40,7 +40,7 @@ class InSituPlIngestor(CrucibleDatasetIngestor):
         CrucibleDatasetIngestor.get_scientific_metadata(self)
         logger.info("running get scientific metadata")
         os.makedirs(TMP_DIR, exist_ok = True)
-        self.tmp_folder = os.path.join(TMP_DIR, os.path.basename(self.file_to_upload.replace(".zip", "")))
+        self.tmp_folder = os.path.join(TMP_DIR, os.path.basename(self.match_name.replace(".zip", "")))
         logger.info(f"{self.tmp_folder=}")
 
         # extract the files; -o so leftovers from a previous run never trigger

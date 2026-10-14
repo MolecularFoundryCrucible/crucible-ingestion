@@ -54,7 +54,8 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
                                                     'andor_asi_hyperspec_scan', 
                                                     'ald_run_upd',
                                                     'ald_run',
-                                                    'ald_run_measure'
+                                                    'ald_run_measure',
+                                                    'micos_hydra_venus_readout'
                                                     ]
     
     # Explicit aliases rather than prefix matching, which would also swallow
@@ -74,7 +75,7 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
             return None
 
     def is_file_supported(self):
-        if not self.file_to_upload.endswith('.h5'):
+        if not self.match_name.endswith('.h5'):
             return False
         meas = self.h5_measurement_name
         if meas is None:
@@ -387,8 +388,8 @@ class SpinBotIngestor(ScopeFoundryH5Ingestor):
             self.session_name = scope_foundry_session
             self.keywords += [self.session_name]
 
-        self.keywords += [x for x in self.file_to_upload.split('/') if 'campaign' in x.lower()]
-        self.keywords += [x for x in self.file_to_upload.split('/') if 'batch' in x.lower()]
+        self.keywords += [x for x in self.match_name.split('/') if 'campaign' in x.lower()]
+        self.keywords += [x for x in self.match_name.split('/') if 'batch' in x.lower()]
 
     
     def parse_orcid(self):
@@ -671,7 +672,7 @@ class SpinbotSpinRunIngestor(ScopeFoundryH5Ingestor):
 class BioGlowIngestor(ScopeFoundryH5Ingestor):
 
     def is_file_supported(self):
-        return self.file_to_upload.endswith('_bioglow_spec.h5')  
+        return self.match_name.endswith('_bioglow_spec.h5')
 
 
 class QSpleemIngestor(ScopeFoundryH5Ingestor):
@@ -728,7 +729,7 @@ class QSpleemImageIngestor(QSpleemIngestor):
     _GROUP = 'image_save'
 
     def is_file_supported(self):
-        return(self.file_to_upload.endswith('_image_save.h5'))
+        return(self.match_name.endswith('_image_save.h5'))
 
     @functools.cached_property
     def imaging_mode(self):
@@ -760,7 +761,7 @@ class QSpleemSVRampIngestor(QSpleemIngestor):
     _GROUP = 'sv_ramp'
 
     def is_file_supported(self):
-        return self.file_to_upload.endswith('_sv_ramp.h5')
+        return self.match_name.endswith('_sv_ramp.h5')
 
     @functools.cached_property
     def imaging_mode(self):
@@ -844,7 +845,7 @@ class QSpleemARRESEKIngestor(QSpleemIngestor):
 
     def is_file_supported(self):
         # base + image companions: _ARRES_EK.h5, _ARRES_EK_images.h5, _ARRES_EK_images_0000.h5
-        return bool(re.search(r'_ARRES_EK(_images(_\d+)?)?\.h5$', self.file_to_upload))
+        return bool(re.search(r'_ARRES_EK(_images(_\d+)?)?\.h5$', self.match_name))
 
     def parse_measurement(self):
         self.measurement = 'ARRES E(k)'
@@ -911,7 +912,7 @@ class QSpleemARRESMMIngestor(QSpleemIngestor):
 
     def is_file_supported(self):
         # base + image companions: _ARRES_MM.h5, _ARRES_MM_images.h5, _ARRES_MM_images_0000.h5
-        return bool(re.search(r'_ARRES_MM(_images(_\d+)?)?\.h5$', self.file_to_upload))
+        return bool(re.search(r'_ARRES_MM(_images(_\d+)?)?\.h5$', self.match_name))
 
     def parse_measurement(self):
         self.measurement = 'ARRES Constant Energy Surface'
@@ -972,7 +973,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
 
     def is_file_supported(self):
         file_regex = r'.*pollux_oospec_multipos_line_scan.*\.h5'
-        if re.match(file_regex, self.file_to_upload):
+        if re.match(file_regex, self.match_name):
             return True
         else:
             return False
@@ -1243,7 +1244,7 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
     _MEAS_PATH = 'measurement/pollux_multipos_spec_run'
 
     def is_file_supported(self):
-        return bool(re.match(r'.*pollux_multipos_spec_run.*\.h5', self.file_to_upload))
+        return bool(re.match(r'.*pollux_multipos_spec_run.*\.h5', self.match_name))
 
     def get_dataset_metadata(self):
         self.instrument_name = 'Inorganic Nirvana'
@@ -1555,7 +1556,7 @@ class QSpleemSVRampSpinIngestor(QSpleemIngestor):
     _GROUP = 'sv_ramp_spin'
 
     def is_file_supported(self):
-        return self.file_to_upload.endswith('_sv_ramp_spin.h5')
+        return self.match_name.endswith('_sv_ramp_spin.h5')
 
     @functools.cached_property
     def imaging_mode(self):
@@ -1644,7 +1645,7 @@ class QSpleemSPLEEMImageIngestor(QSpleemIngestor):
     _GROUP = 'SPLEEM_image'
 
     def is_file_supported(self):
-        return self.file_to_upload.endswith('_SPLEEM_image.h5')
+        return self.match_name.endswith('_SPLEEM_image.h5')
 
     def parse_measurement(self):
         self.measurement = 'SPLEEM Image'
@@ -1690,7 +1691,7 @@ class QSpleemDepositionMonitorIngestor(QSpleemIngestor):
     _GROUP = 'deposition_monitor'
 
     def is_file_supported(self):
-        return self.file_to_upload.endswith('_deposition_monitor.h5')
+        return self.match_name.endswith('_deposition_monitor.h5')
 
     def parse_measurement(self):
         self.measurement = 'Deposition Monitor'

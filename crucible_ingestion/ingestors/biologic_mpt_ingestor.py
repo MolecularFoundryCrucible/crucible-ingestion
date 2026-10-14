@@ -50,7 +50,7 @@ class BiologicMptIngestor(CrucibleDatasetIngestor):
     """
 
     def is_file_supported(self):
-        if not self.file_to_upload.lower().endswith('.mpt'):
+        if not self.match_name.lower().endswith('.mpt'):
             return False
         try:
             with open(self.file_to_upload, encoding=ENCODING) as f:
@@ -162,7 +162,7 @@ class BiologicMptIngestor(CrucibleDatasetIngestor):
     def parse_dataset_name(self):
         if self.dataset_name:
             return
-        self.dataset_name = f'{Path(self.file_to_upload).stem}'
+        self.dataset_name = f'{Path(self.match_name).stem}'
 
     def parse_file_timestamp(self):
         if self.timestamp:

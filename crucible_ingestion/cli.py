@@ -24,6 +24,9 @@ def main():
                         help="ingestor class name (default: auto-detect)")
     parser.add_argument("--output-dir", dest="output_dir", default=None,
                         help="directory for the parsed packet and thumbnails")
+    parser.add_argument("--file-name", dest="file_name", default=None,
+                        help="original file name, when --file is an opaque storage "
+                             "key with no name/extension of its own")
     parser.add_argument("--push", action="store_true",
                         help="push the parsed packet to Crucible instead of only writing it locally")
     parser.add_argument("--test", action="store_true",
@@ -53,7 +56,7 @@ def main():
                     f"in project {TEST_PROJECT_ID}")
 
     # parse
-    packet = parse(args.file, dsid, args.ingestor)
+    packet = parse(args.file, dsid, args.ingestor, file_name=args.file_name)
     if packet is None: 
         logger.error(f"no ingestor supports {args.file}")
         return 1
