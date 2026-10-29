@@ -1,7 +1,12 @@
-from rsciio import digitalsurf
+from rsciio.digitalsurf import file_reader
 from pathlib import Path
 from typing import ClassVar
 import re
+
+import numpy as np
+import matplotlib.pyplot as plt
+import io
+from PIL import Image
 
 import logging
 
@@ -21,7 +26,7 @@ class SurIngestor(CrucibleDatasetIngestor):
         return file_extension in self.supported_filetypes
 
     def get_scientific_metadata(self):
-        sur = digitalsurf.file_reader(self.file_to_upload, lazy=False)
+        sur = file_reader(self.file_to_upload, lazy=False)
 
         logger.info("# datasets: "+ str(len(sur)))
 
@@ -36,6 +41,47 @@ class SurIngestor(CrucibleDatasetIngestor):
     def get_dataset_metadata(self):
         # Use parent class method to set data_format and size
         CrucibleDatasetIngestor.get_dataset_metadata(self)
+
+    def generate_thumbnail(self, target_size=(200, 200), dpi=100):
+        fig_size = (target_size[0] / dpi, target_size[1] / dpi)
+
+        sur = file_reader(self.file_to_upload, lazy=False)
+
+        logger.info("# datasets: "+ str(len(sur)))
+
+        files = []
+
+        for i in range(len(sur)):
+            logger.info("Dataset " + str(i))
+            logger.info("# Axes: " + str(len(sur[i]["axes"])))
+
+            if (len(sur[i]["axes"]) == 3):
+                im = np.sum(np.array(sur[i]["data"]), axis=2)
+            elif (len(sur[i]["axes"]) == 2):
+                im = np.array(sur[i]["data"])
+            else:
+                raise ValueError("Data array has unsupported number of dimensions for thumbnail generation.")
+
+            fg, ax = plt.subplots(1, 1, figsize=fig_size, dpi=dpi)
+            ax.imshow(im, cmap='gray')
+            ax.axis('off')
+            buf = io.BytesIO()
+            fg.savefig(buf, bbox_inches='tight', pad_inches=0.05, dpi=dpi)
+            im = Image.open(buf)
+            plt.close(fg)
+            files.append(im)
+        return files
+
+    def get_thumbnails(self):
+        try:
+            thumbnails = self.generate_thumbnail()
+            if (len(thumbnails) == 1):
+                self.add_thumbnail(thumbnails[0], "SUR_Thumbnail")
+            elif (len(thumbnails) > 1):
+                for i in range(len(thumbnails)):
+                    self.add_thumbnail(thumbnails[i], "SUR_Thumbnail_" + str(i))
+        except Exception as e:
+            logger.info(f"failed to extract thumbnail: {e}")
 
     @staticmethod
     def clean_unicode(seq):
