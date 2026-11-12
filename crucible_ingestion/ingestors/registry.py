@@ -46,6 +46,7 @@ from .ptychography_h5_ingestor import PtychographyH5Ingestor
 from .h5_ingestor import H5Ingestor
 from .autobot_spinrun_yaml_ingestor import SpinRunIngestor_10kLegacy
 from .inorganic_xrd_ingestor import InorganicXRDIngestor
+from .attolight_cl_ingestor import AttolightCLIngestor
 
 
 logger = logging.getLogger(__name__)
@@ -97,7 +98,8 @@ ingestor_list = [AFMIngestor,
                 NirvanaMultiPosLineScanIngestor,
                 NirvanaMultiPosLineScanIngestor_10kLegacy,
                 ScopeFoundryH5Ingestor,
-                H5Ingestor,] 
+                H5Ingestor,
+                AttolightCLIngestor,] 
 
 SELECTABLE = {cls.__name__: cls for cls in ingestor_list} 
 
