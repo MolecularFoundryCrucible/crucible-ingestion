@@ -36,7 +36,7 @@ Run the workflow by hand from the Actions tab (Release to PyPI -> Run workflow) 
 
 ## Cutting a release
 
-1. Decide the version `X.Y.Z` (first release is `0.2.0`; semver from there, independent of the `ingestion-cloud-consumer` harness version).
+1. Decide the version `X.Y.Z` (semver, independent of the `ingestion-cloud-consumer` harness version).
 2. Set `version = "X.Y.Z"` in `pyproject.toml`, on a branch, and merge it the normal way.
 3. From the merged commit on `main`, create and push the tag:
 
