@@ -30,6 +30,10 @@ The owner, repository, workflow filename, and environment name must match the Gi
 
 After the first publish succeeds the project exists; the same binding keeps working, and it can be managed from the project's own Settings -> Publishing page instead of the pending-publisher list.
 
+## Dry run
+
+Run the workflow by hand from the Actions tab (Release to PyPI -> Run workflow) on any branch to check that the package builds. A manual run never publishes: the publish job runs only for a tag.
+
 ## Cutting a release
 
 1. Decide the version `X.Y.Z` (first release is `0.2.0`; semver from there, independent of the `ingestion-cloud-consumer` harness version).
