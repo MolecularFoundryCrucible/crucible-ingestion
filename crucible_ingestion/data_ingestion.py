@@ -173,6 +173,18 @@ def push_file(dsid, path, ingestion_class = None):
     return add_file_response
 
 
+PATCHABLE_DATASET_FIELDS = ('dataset_name', 'measurement', 'data_format', 'data_type',
+                            'session_name', 'timestamp')
+
+
+def _owner_from_orcid(fields):
+    fields = dict(fields)
+    orcid = fields.pop('owner_orcid', None)
+    if orcid and not fields.get('owner'):
+        fields['owner'] = orcid
+    return fields
+
+
 def push_packet(packet, include_file = False):
     # send the data
     # unique_id goes in the path, not the body, and the patch route rejects owner_orcid
@@ -183,8 +195,7 @@ def push_packet(packet, include_file = False):
     # An empty value is dropped rather than sent: the patch route assigns whatever it is
     # given, so a field the parse did not fill would blank the stored one.
     update_fields = {k: v for k, v in packet.dataset_fields.items()
-                     if k not in ('unique_id', 'owner_orcid', 'project_id', 'size')
-                     and v not in (None, '')}
+                     if k in PATCHABLE_DATASET_FIELDS and v not in (None, '')}
     ds = get_client().datasets.update(packet.unique_id, **update_fields)
 
     # link to any parsed samples
@@ -201,18 +212,16 @@ def push_packet(packet, include_file = False):
         if sql_sample:
             logger.info(f'found existing sample {sql_sample}')
         else:
-            sql_sample = get_client().samples.create(**sample_fields)
+            sql_sample = get_client().samples.create(**_owner_from_orcid(sample_fields))
             logger.info(f'created new sample {sql_sample}')
 
         # link to dataset
         if link_to_dataset is True:
-            get_client().datasets.add_sample(dataset_id = ds['unique_id'], 
-                                             sample_id = sql_sample['unique_id'])
+            get_client().datasets.link_sample(ds['unique_id'], sql_sample['unique_id'])
 
         # link to parents if listed
         for parent in sample_parents:
-            get_client().samples.link(parent_id = parent,
-                                      child_id = sql_sample['unique_id'])
+            get_client().samples.link(parent, sql_sample['unique_id'])
 
     # add children
     existing_children = {}
@@ -240,21 +249,19 @@ def push_packet(packet, include_file = False):
             continue
 
         child_files = child.get('files_to_upload', [])
-        resp = get_client().datasets.create(Dataset(**child_ds), child_md,
-                                            files_to_upload=child_files)
+        resp = get_client().datasets.create(Dataset(**_owner_from_orcid(child_ds)), child_md,
+                                            files=child_files)
         child_dsid = resp['dsid']
         existing_children[parent_id][child_ds['dataset_name']] = child_dsid
         if declared_id:
             resolved_ids[declared_id] = child_dsid
 
         # link to run dataset
-        get_client().datasets.link_parent_child(parent_dataset_id = parent_id,
-                                                child_dataset_id = child_dsid)
+        get_client().datasets.link(parent_id, child_dsid)
 
         # link to thin film
         for sample_id in sample_ids:
-            get_client().datasets.add_sample(dataset_id = child_dsid,
-                                             sample_id = sample_id)
+            get_client().datasets.link_sample(child_dsid, sample_id)
 
         for thumbnail in child.get('thumbnails', []):
             try:
