@@ -656,7 +656,7 @@ class SpinbotSpinRunIngestor(ScopeFoundryH5Ingestor):
                 owner_orcid=self.owner_orcid,
                 dataset_name=f"Spin Run for {sample_name} - {self.unique_id[:13]}",
                 data_format=self.data_format,
-                instrument_name=self.instrument_name,
+                instrument_id='spinbot',
                 timestamp=self.timestamp,
             ).model_dump()
             child_md = {k: self._to_native(v) for k, v in attrs.items()}
