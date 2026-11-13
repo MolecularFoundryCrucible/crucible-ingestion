@@ -36,6 +36,7 @@ from .emi_ingestor import EmiIngestor
 from .ser_ingestor import SerIngestor
 from .bcf_ingestor import BcfIngestor
 from .bruker_edx_ingestor import BrukerEdxIngestor
+from .gds_chipmap_ingestor import GdsChipMapIngestor
 from .emd_ingestor import BerkeleyEmdIngestor
 from .emd_velox_ingestor import VeloxEmdIngestor
 from .mrc_ingestor import MrcIngestor
@@ -84,6 +85,7 @@ ingestor_list = [AFMIngestor,
                 SerIngestor,
                 BcfIngestor,
                 BrukerEdxIngestor,
+                GdsChipMapIngestor,
                 BerkeleyEmdIngestor,
                 VeloxEmdIngestor,
                 MrcIngestor,
