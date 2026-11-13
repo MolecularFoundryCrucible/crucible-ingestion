@@ -8,6 +8,7 @@ requires-python = ">=3.11"
 # Parsing only. Nothing here reaches RabbitMQ or Google Cloud.
 dependencies = [
     "aicspylibczi>=3.3.1",
+    "gdstk>=1.0.2",
     "h5py>=3.16.0",
     "hyperspy>=2.4.0",
     "igor2>=0.5.13",
