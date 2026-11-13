@@ -1,4 +1,6 @@
 from .crucible_ingestor import CrucibleDatasetIngestor
+from crucible import CrucibleClient
+from crucible.models import Dataset
 
 from pathlib import Path
 from typing import ClassVar
@@ -17,7 +19,7 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
     supported_filetypes: ClassVar[list[str]] = ['.xml']
     child_sur: list[str] = []
     child_txt: str = ""
-    acquisition_type: str = ""
+    measurement_info: dict = {}
 
     def is_file_supported(self):
         """Check if the file to upload is a supported xml file based on its extension and content."""
@@ -33,7 +35,7 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
 
             files = root.find('Files')
         except Exception as e:
-            logger.error(f"Failed to parse file: {e}")
+            raise Exception(f"Failed to parse file: {e}")
 
         for child in files:
             if child.text.split('.')[1] == 'txt':
@@ -62,8 +64,11 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
                     curr_category = line[1:].strip()
                     metadata[curr_category] = {}
                 elif ":" in line:
-                    key, value = line.split(":", 1)
-                    metadata[curr_category][key.strip()] = value.strip()
+                    key, value = [text.strip() for text in line.split(":", 1)]
+                    metadata[curr_category][key] = value
+
+                    if key == 'operating_mode' or key == 'projection_mode' or key == 'acquisition_type':
+                        self.measurement_info[key] = value
                 else:
                     logger.info(f"Alternate Line Found: {line}. Skipping...")
         if not metadata["Uncategorized"]:
@@ -77,17 +82,74 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
     #   super().get_dataset_metadata()
 
     def parse_measurement(self):
-        acquisition = self.acquisition_type
-        logger.info(f"Acquisiton: {acquisition}")
+        illumination = self.measurement_info.get("operating_mode", "")
+        projection = self.measurement_info.get("projection_mode", "")
+        acquisition = self.measurement_info.get("acquisition_type", "")
+
+        if projection != "":
+            projection = projection[0] + projection[1:].lower()
 
         if acquisition == "HAADF" or acquisition == "ROI":
-            self.measurement = "Non-Pixelated"
+            detector = "Non-Pixelated"
         elif acquisition == "HYP" or acquisition == "CL":
-            self.measurement = "Cathodoluminescence"
+            detector = "Cathodoluminescence"
         else:
-            self.measurement = "Unknown"
+            detector = ""
+
+        measurements = [illumination, projection, detector]
+        self.measurement = " ".join(filter(None, measurements))
 
     def parse_children(self):
         # This function triggers ingestions on all children .sur files included in the ingestion folder 
         # and associates them with a new dataset linked to the currently generating dataset
-        pass
+
+        from ..data_ingestion import data_ingestion # Fixes circular import errors
+
+        client = CrucibleClient()
+
+        i = 1 # Track unknown acquisition types, if necessary
+        for file in self.child_sur:
+            child_ds = client.datasets.create(
+                dataset=Dataset(
+                    project_id=self.project_id,
+                    instrument_id=self.instrument_id,
+                    session_name=self.session_name,
+                    # timestamp=self.timestamp, # Uncomment for child datasets to share parent timestamps
+                ),
+            )
+
+            child_dsid = child_ds["dataset_mfid"]
+
+            # ONLY KEEP WHILE sur_ingestor.py IS ONLY AVAILABLE LOCALLY
+            # ELSE SWITCH TO THE FILES/INGESTOR STYLE
+            data_ingestion(
+                dataset_to_process=str(Path(self.file_to_upload).with_name(file)), 
+                dsid=child_dsid, 
+                ingestion_class="SurIngestor", 
+                include_file=True
+            )
+
+            child_metadata = client.datasets.get_scientific_metadata(child_dsid)['scientific_metadata']
+
+            try:
+                acquisition = child_metadata["Object_0_Channel_0"]["Parsed"]["GENERAL"].get(
+                    "acquisition_type", "Unknown"
+                )
+            except Exception as e:
+                logger.error(f"Error accessing child metadata: {e}")
+                acquisition = "Unknown"
+
+            if acquisition == "Unknown":
+                acquisition += str(i)
+                i += 1
+
+            client.datasets.update(
+                child_dsid,
+                dataset_name=f"{self.dataset_name}_{acquisition}"
+            )
+
+            client.datasets.link_parent_child(
+                parent_dataset_id=self.unique_id,
+                child_dataset_id=child_ds["dataset_mfid"],
+            )
+        

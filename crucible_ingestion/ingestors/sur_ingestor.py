@@ -33,7 +33,7 @@ class SurIngestor(CrucibleDatasetIngestor):
         try:
             dataset = file_reader(self.file_to_upload, lazy=False)
         except Exception as e:
-            logger.error(f"Failed to parse file {e}")
+            raise Exception(f"Failed to parse file {e}")
 
         logger.info("# datasets: "+ str(len(dataset)))
         logger.info("NOTE: This number should be 1.")
