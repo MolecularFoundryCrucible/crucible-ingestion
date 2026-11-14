@@ -1,4 +1,4 @@
-import os
+from io import BytesIO
 from typing import ClassVar
 from PIL import Image
 import numpy as np
@@ -21,16 +21,16 @@ class BcfIngestor(CrucibleDatasetIngestor):
 
 
     def get_thumbnails(self):
-        out_image_file_name = f"{os.path.basename(self.file_to_upload)}.png"
-        # Load the BCF file
         data = hs.load(self.file_to_upload)
-        
-        # Access the data
         data[0].plot(cmap = "turbo")
-        plt.savefig(out_image_file_name)
-        
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format="png")
+        plt.close("all")
+        buffer.seek(0)
+
         try:
-            single_image = Image.open(out_image_file_name)
+            single_image = Image.open(buffer)
             self.add_thumbnail(single_image, "EDS Thumbnail", size = (200,200))
         except Exception:
             logger.warning("failed to extract thumbnail")
