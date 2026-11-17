@@ -22,10 +22,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -221,10 +218,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -420,10 +414,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -619,10 +610,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -818,10 +806,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -1017,10 +1002,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -1216,10 +1198,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -1415,10 +1394,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -1614,10 +1590,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -1813,10 +1786,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -2012,10 +1982,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
@@ -2211,10 +2178,7 @@
                   "type": "string"
                 },
                 "deletion_request": {},
-                "instrument_name": {
-                  "const": "Nirvana Spectrometer",
-                  "type": "string"
-                },
+                "instrument_name": {},
                 "links": {},
                 "measurement": {
                   "const": "pollux_oospec_multipos_line_scan",
