@@ -86,7 +86,7 @@ def test_rejects_multidimensional_data():
 def test_real_spectrum(tmp_path, offline_client):
     path = opaque(tmp_path, SPECTRUM.read_bytes())
     assert find_supported_ingestor(path, "x", file_name="spec.ngs")[1] == "HoribaNgsIngestor"
-    packet = parse(path, "dsid1", "HoribaNgsIngestor", file_name="spec.ngs")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "HoribaNgsIngestor", file_name="spec.ngs")
     md = packet.scientific_metadata
 
     assert md["laser_wavelength_nm"] == 532.06
@@ -120,7 +120,7 @@ def test_real_spectrum(tmp_path, offline_client):
 @requires_raman
 def test_spectrum_with_single_history_entry(tmp_path, offline_client):
     path = opaque(tmp_path, UNCORRECTED.read_bytes())
-    packet = parse(path, "dsid1", "HoribaNgsIngestor", file_name="spec.ngs")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "HoribaNgsIngestor", file_name="spec.ngs")
     assert packet.scientific_metadata["raman_spectra"]["spec.ngs"]["history"] == \
         [{"time": "2021-11-03T23:12:19Z", "operation": "Acquired"}]
     assert packet.dataset_fields["timestamp"] == "2021-11-03T16:12:19"
@@ -143,7 +143,7 @@ def test_second_spectrum_joins_existing_dataset(tmp_path):
     }))))
     try:
         path = opaque(tmp_path, SPECTRUM.read_bytes())
-        packet = parse(path, "dsid1", "HoribaNgsIngestor", file_name="second.ngs")
+        packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "HoribaNgsIngestor", file_name="second.ngs")
     finally:
         set_client(None)
     md = packet.scientific_metadata

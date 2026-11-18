@@ -36,6 +36,7 @@ from crucible_ingestion.packet import IngestionPacket
 
 XPS_DATA = Path(__file__).parent / "data" / "B30_XPS"
 REAL_S37 = XPS_DATA / "s37.kal"
+TEST_DSID = "0tj5ftr59szcd0000g7f5yd9xr"
 requires_xps = pytest.mark.skipif(not REAL_S37.exists(), reason="B30_XPS fixtures not synced")
 
 
@@ -154,10 +155,10 @@ def test_rejects_malformed_kal_text(tmp_path):
 @requires_xps
 def test_real_spectrum(tmp_path, offline_client):
     path = opaque_copy(REAL_S37, tmp_path)
-    ig, ingestor_name = find_supported_ingestor(path, "dsid1", file_name="s37.kal")
+    ig, ingestor_name = find_supported_ingestor(path, TEST_DSID, file_name="s37.kal")
     assert ingestor_name == "KratosXpsIngestor"
 
-    packet = parse(path, "dsid1", "KratosXpsIngestor", file_name="s37.kal")
+    packet = parse(path, TEST_DSID, "KratosXpsIngestor", file_name="s37.kal")
     df = packet.dataset_fields
     assert df["measurement"] == "XPS"
     assert df["data_type"] == "XPS Spectrum"
@@ -345,7 +346,7 @@ def test_existing_sql_dataset_reconciliation(tmp_path):
         "timestamp": "2020-01-01T00:00:00",
         "data_format": None,
         "size": None,
-        "unique_id": "dsid_recon",
+        "unique_id": TEST_DSID,
         "ingestion_class": None,
         "ingestion_githash": None,
         "scientific_metadata": {"custom_user_key": "user_value"},
@@ -366,7 +367,7 @@ def test_existing_sql_dataset_reconciliation(tmp_path):
             "  3080 Xray Reference Energy = F_REFER_TO_XRAY_MONO_AL\n"
         )
         path = opaque_text(tmp_path, text)
-        packet = parse(path, "dsid_recon", file_name="recon.kal")
+        packet = parse(path, TEST_DSID, file_name="recon.kal")
         assert packet.dataset_fields["measurement"] == "User Custom XPS"
         assert packet.scientific_metadata["custom_user_key"] == "user_value"
         assert packet.dataset_fields["timestamp"] == "2026-07-22T23:38:57"
@@ -396,15 +397,15 @@ def test_push_packet_instrument_mfid_assignment():
         def update_scientific_metadata(self, *args, **kwargs):
             return {}
 
-    # 1. Dataset without instrument_mfid assigned -> calls assign_instrument
-    client1 = SimpleNamespace(datasets=FakeDatasetsClient({"unique_id": "dsid1", "instrument_mfid": None}))
+    # 1. Dataset without instrument assigned -> calls assign_instrument
+    client1 = SimpleNamespace(datasets=FakeDatasetsClient({"unique_id": TEST_DSID, "instrument": None}))
     set_client(client1)
     try:
         packet1 = IngestionPacket(
-            unique_id="dsid1",
+            unique_id=TEST_DSID,
             file_to_upload="/tmp/test.kal",
             ingestion_class="KratosXpsIngestor",
-            dataset_fields={"instrument_mfid": "0tqx1eq8b5t8h000y3zm23mwmw"},
+            dataset_fields={"instrument_mfid": B30_XPS_INSTRUMENT_MFID},
             scientific_metadata={},
             keywords=[],
             samples=[],
@@ -412,19 +413,26 @@ def test_push_packet_instrument_mfid_assignment():
             thumbnails=[],
         )
         push_packet(packet1)
-        assert client1.datasets.assigned == [("dsid1", "0tqx1eq8b5t8h000y3zm23mwmw")]
+        assert client1.datasets.assigned == [(TEST_DSID, B30_XPS_INSTRUMENT_MFID)]
     finally:
         set_client(None)
 
-    # 2. Dataset with instrument_mfid already assigned -> does NOT call assign_instrument
-    client2 = SimpleNamespace(datasets=FakeDatasetsClient({"unique_id": "dsid1", "instrument_mfid": "existing_mfid"}))
+    # 2. Dataset with nested API 4.0 instrument already assigned -> does NOT call assign_instrument
+    client2 = SimpleNamespace(
+        datasets=FakeDatasetsClient(
+            {
+                "unique_id": TEST_DSID,
+                "instrument": {"unique_id": "0tqx9999999999999999999999", "instrument_name": "Other"},
+            }
+        )
+    )
     set_client(client2)
     try:
         packet2 = IngestionPacket(
-            unique_id="dsid1",
+            unique_id=TEST_DSID,
             file_to_upload="/tmp/test.kal",
             ingestion_class="KratosXpsIngestor",
-            dataset_fields={"instrument_mfid": "0tqx1eq8b5t8h000y3zm23mwmw"},
+            dataset_fields={"instrument_mfid": B30_XPS_INSTRUMENT_MFID},
             scientific_metadata={},
             keywords=[],
             samples=[],
@@ -439,10 +447,12 @@ def test_push_packet_instrument_mfid_assignment():
 
 def test_reconciliation_existing_registered_instrument(tmp_path):
     record = {
-        "unique_id": "dsid_recon_registered",
-        "instrument_mfid": "0tqx_other",
-        "instrument_name": "Other XPS",
-        "instrument_id": None,
+        "unique_id": TEST_DSID,
+        "instrument": {
+            "unique_id": "0tqx9999999999999999999999",
+            "instrument_name": "Other XPS",
+            "instrument_id": None,
+        },
     }
     set_client(SimpleNamespace(datasets=FakeDatasets(record)))
     try:
@@ -453,9 +463,9 @@ def test_reconciliation_existing_registered_instrument(tmp_path):
             "  12 Ordinate values = {100, 200}\n"
         )
         path = opaque_text(tmp_path, text)
-        packet = parse(path, "dsid_recon_registered", file_name="recon.kal")
+        packet = parse(path, TEST_DSID, file_name="recon.kal")
         df = packet.dataset_fields
-        assert df["instrument_mfid"] == "0tqx_other"
+        assert df["instrument_mfid"] == "0tqx9999999999999999999999"
         assert df["instrument_name"] == "Other XPS"
         assert df.get("instrument_id") is None
     finally:
@@ -464,7 +474,7 @@ def test_reconciliation_existing_registered_instrument(tmp_path):
 
 def test_reconciliation_legacy_freetext_instrument(tmp_path):
     record = {
-        "unique_id": "dsid_recon_legacy",
+        "unique_id": TEST_DSID,
         "instrument_name": "Custom XPS",
         "instrument_mfid": None,
         "instrument_id": None,
@@ -478,7 +488,7 @@ def test_reconciliation_legacy_freetext_instrument(tmp_path):
             "  12 Ordinate values = {100, 200}\n"
         )
         path = opaque_text(tmp_path, text)
-        packet = parse(path, "dsid_recon_legacy", file_name="recon.kal")
+        packet = parse(path, TEST_DSID, file_name="recon.kal")
         df = packet.dataset_fields
         assert df["instrument_name"] == "Custom XPS"
         assert df.get("instrument_mfid") is None
@@ -489,7 +499,7 @@ def test_reconciliation_legacy_freetext_instrument(tmp_path):
 
 def test_reconciliation_unknown_instrument_placeholder(tmp_path):
     record = {
-        "unique_id": "dsid_recon_unknown",
+        "unique_id": TEST_DSID,
         "instrument_name": "unknown",
         "instrument_mfid": None,
         "instrument_id": None,
@@ -503,7 +513,7 @@ def test_reconciliation_unknown_instrument_placeholder(tmp_path):
             "  12 Ordinate values = {100, 200}\n"
         )
         path = opaque_text(tmp_path, text)
-        packet = parse(path, "dsid_recon_unknown", file_name="recon.kal")
+        packet = parse(path, TEST_DSID, file_name="recon.kal")
         df = packet.dataset_fields
         assert df["instrument_name"] == B30_XPS_INSTRUMENT_NAME
         assert df["instrument_id"] == B30_XPS_INSTRUMENT_ID

@@ -1,6 +1,6 @@
 [project]
 name = "crucible-ingestion"
-version = "0.2.0"
+version = "0.3.1"
 description = "Metadata parsing from data files into the Crucible Data Platform"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -14,7 +14,7 @@ dependencies = [
     "igor2>=0.5.13",
     "matplotlib>=3.10.8",
     "mfid>=1.0.0",
-    "nano-crucible>=3.3.0,<4",
+    "nano-crucible>=4.0.0,<5",
     "ncempy>=1.15",
     "numpy",
     "orjson>=3.9",
