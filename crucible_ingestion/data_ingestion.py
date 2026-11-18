@@ -3,7 +3,8 @@ import logging
 import requests
 from .constants import sql_import_attr, sql_export_attr
 import orjson
-from crucible.models import Dataset
+from crucible.models import Dataset, Sample
+from crucible.utils.identifiers import is_mfid
 from .utils import sanitize_metadata, get_ingestion_githash
 from .ingestors.registry import find_supported_ingestor
 from .ingestors.crucible_ingestor import cleanup_tmp_files
@@ -37,9 +38,34 @@ def find_existing_sample(sample):
     return found[0] if found else None
 
 
+def flatten_dataset_record(record):
+    """Fill the flat owner, project and instrument fields from the nested objects
+    API 4.0 returns, keeping any flat value the server still sends."""
+    if record is None:
+        return None
+    record = dict(record)
+    owner = record.get('owner') or {}
+    project = record.get('project') or {}
+    instrument = record.get('instrument') or {}
+    nested = {
+        'owner_orcid': owner.get('orcid') or owner.get('unique_id'),
+        'project_id': project.get('project_id'),
+        'instrument_id': instrument.get('instrument_id'),
+        'instrument_name': instrument.get('instrument_name'),
+    }
+    for key, value in nested.items():
+        if record.get(key) in (None, '') and value not in (None, ''):
+            record[key] = value
+    return record
+
+
 def populate_existing_ds_info(ig, populate_fields):
+    if not is_mfid(ig.unique_id):
+        logger.info(f'{ig.unique_id!r} is not an MFID, so no dataset record can exist for it')
+        return ig, None
     try:
-        found_ds = get_client().datasets.get(ig.unique_id, include_metadata=True)
+        found_ds = flatten_dataset_record(
+            get_client().datasets.get(ig.unique_id, include_metadata=True))
         assoc_files = get_client().datasets.list_files(ig.unique_id)
         logger.info(f'{found_ds=}')
 
@@ -54,11 +80,7 @@ def populate_existing_ds_info(ig, populate_fields):
     
     # populate required info in IG
     for k in populate_fields:
-        if found_ds[k] is None:
-            continue
-        elif found_ds[k] == "":
-            continue
-        else:
+        if found_ds.get(k) not in (None, ""):
             setattr(ig, k, found_ds[k])
 
     # populate associated files
@@ -157,6 +179,7 @@ def push_file(dsid, path, ingestion_class = None):
     # uploads the file to GCS and adds a 'not_requested' record to the ingestion_request table
     add_file_response = get_client().datasets.add_file(dataset_mfid = dsid,
                                                        file_path = path,
+                                                       ingestion_class = ingestion_class,
                                                        skip_ingestion = True)
 
     ingestion_request = add_file_response['ingestion_request']
@@ -168,7 +191,6 @@ def push_file(dsid, path, ingestion_class = None):
 
     get_client().ingestions.update(ingestion_request['id'],
                                    status = 'not_requested',
-                                   ingestion_class = ingestion_class,
                                    ingestion_githash = get_ingestion_githash())
     return add_file_response
 
@@ -177,11 +199,14 @@ PATCHABLE_DATASET_FIELDS = ('dataset_name', 'measurement', 'data_format', 'data_
                             'session_name', 'timestamp')
 
 
-def _owner_from_orcid(fields):
+def _owner_ref_from_orcid(fields):
     fields = dict(fields)
     orcid = fields.pop('owner_orcid', None)
-    if orcid and not fields.get('owner'):
-        fields['owner'] = orcid
+    owner = fields.pop('owner', None)
+    if not fields.get('owner_ref'):
+        ref = owner or orcid
+        if ref:
+            fields['owner_ref'] = ref
     return fields
 
 
@@ -212,7 +237,7 @@ def push_packet(packet, include_file = False):
         if sql_sample:
             logger.info(f'found existing sample {sql_sample}')
         else:
-            sql_sample = get_client().samples.create(**_owner_from_orcid(sample_fields))
+            sql_sample = get_client().samples.create(Sample(**_owner_ref_from_orcid(sample_fields)))
             logger.info(f'created new sample {sql_sample}')
 
         # link to dataset
@@ -249,7 +274,7 @@ def push_packet(packet, include_file = False):
             continue
 
         child_files = child.get('files_to_upload', [])
-        resp = get_client().datasets.create(Dataset(**_owner_from_orcid(child_ds)), child_md,
+        resp = get_client().datasets.create(Dataset(**_owner_ref_from_orcid(child_ds)), child_md,
                                             files=child_files)
         child_dsid = resp['dsid']
         existing_children[parent_id][child_ds['dataset_name']] = child_dsid

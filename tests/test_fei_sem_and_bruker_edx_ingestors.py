@@ -150,7 +150,7 @@ def test_fei_summary_key_omitted_when_source_missing(tmp_path):
 def test_new_dataset_gets_acquisition_timestamp_and_thumbnail(tmp_path, fake_client):
     fake_client(existing=None)
     path = write_tif(tmp_path / "f3a9c1e0")
-    packet = parse(path, "dsid1", "FeiSemTifIngestor", file_name="a.tif")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "FeiSemTifIngestor", file_name="a.tif")
     assert packet.ingestion_class == "FeiSemTifIngestor"
     assert packet.dataset_fields["timestamp"] == "2023-05-23T14:15:31"
     assert packet.dataset_fields["measurement"] == "Scanning electron microscope"
@@ -164,21 +164,21 @@ def test_new_dataset_gets_acquisition_timestamp_and_thumbnail(tmp_path, fake_cli
 def test_acquisition_time_overwrites_existing_timestamp(tmp_path, fake_client, existing):
     fake_client(existing_dataset(timestamp=existing))
     path = write_tif(tmp_path / "f3a9c1e0")
-    packet = parse(path, "dsid1", "FeiSemTifIngestor", file_name="a.tif")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "FeiSemTifIngestor", file_name="a.tif")
     assert packet.dataset_fields["timestamp"] == "2023-05-23T14:15:31"
 
 
 def test_24_hour_fei_time_is_parsed(tmp_path, fake_client):
     fake_client(existing=None)
     path = write_tif(tmp_path / "f3a9c1e0", fei_text="[User]\r\nDate=01/15/2024\r\nTime=19:00:00\r\n")
-    packet = parse(path, "dsid1", "FeiSemTifIngestor", file_name="a.tif")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "FeiSemTifIngestor", file_name="a.tif")
     assert packet.dataset_fields["timestamp"] == "2024-01-15T19:00:00"
 
 
 def test_unparseable_acquisition_keeps_existing_timestamp(tmp_path, fake_client):
     fake_client(existing_dataset(timestamp="2026-11-11T13:05:00-08:00"))
     path = write_tif(tmp_path / "f3a9c1e0", fei_text="[User]\r\nDate=garbage\r\nTime=10:00:00\r\n")
-    packet = parse(path, "dsid1", "FeiSemTifIngestor", file_name="a.tif")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "FeiSemTifIngestor", file_name="a.tif")
     assert packet.dataset_fields["timestamp"] == "2026-11-11T13:05:00-08:00"
 
 
@@ -189,7 +189,7 @@ def test_user_values_and_other_files_survive_merge(tmp_path, fake_client):
         scientific_metadata={"vacuum_level": "ESEM",
                              "tiff_metadata": {"earlier.tif": {"User": {"Date": "x"}}}}))
     path = write_tif(tmp_path / "f3a9c1e0")
-    packet = parse(path, "dsid1", "FeiSemTifIngestor", file_name="a.tif")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "FeiSemTifIngestor", file_name="a.tif")
     md = packet.scientific_metadata
     assert md["vacuum_level"] == "ESEM"
     assert md["spot_size"] == "3.0"
@@ -211,7 +211,7 @@ def test_real_fei_tif(tmp_path, fake_client):
     fake_client(existing=None)
     path = opaque_copy(REAL_FEI_TIF, tmp_path)
     assert find_supported_ingestor(path, "x", file_name="sem.tif")[1] == "TifIngestor"
-    packet = parse(path, "dsid1", "FeiSemTifIngestor", file_name="sem.tif")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "FeiSemTifIngestor", file_name="sem.tif")
     md = packet.scientific_metadata
     assert {k: md[k] for k in ("vacuum_level", "spot_size", "high_voltage_V")} == \
         {"vacuum_level": "High", "spot_size": "3", "high_voltage_V": "10000"}
@@ -247,7 +247,7 @@ def test_real_spx(tmp_path, fake_client):
     fake_client(existing=None)
     path = opaque_copy(REAL_SPX, tmp_path)
     assert find_supported_ingestor(path, "x", file_name="window3.spx")[1] == "BrukerEdxIngestor"
-    packet = parse(path, "dsid1", "BrukerEdxIngestor", file_name="window3.spx")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "BrukerEdxIngestor", file_name="window3.spx")
     md = packet.scientific_metadata
     assert md["primary_energy_keV"] == "10.0"
     spectrum = md["edx_spectra"]["SiN-TiA-CFO_window3.txt"]
@@ -264,7 +264,7 @@ def test_real_spx(tmp_path, fake_client):
 def test_real_rtx_project_with_several_spectra(tmp_path, fake_client):
     fake_client(existing_dataset(timestamp="2026-11-12T09:00:00-08:00"))
     path = opaque_copy(REAL_RTX_SPECTRA, tmp_path)
-    packet = parse(path, "dsid1", "BrukerEdxIngestor", file_name="evaluation.rtx")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "BrukerEdxIngestor", file_name="evaluation.rtx")
     spectra = packet.scientific_metadata["edx_spectra"]
     assert list(spectra) == ["Center_Spectrum 1", "Center_Spectrum 2", "Grey_Spectrum 1",
                              "Grey_Spectrum 2", "ring_Spectrum 1", "ring_Spectrum 1 (2)",
@@ -278,7 +278,7 @@ def test_real_rtx_project_with_several_spectra(tmp_path, fake_client):
 def test_real_rtx_project_with_maps(tmp_path, fake_client):
     fake_client(existing=None)
     path = opaque_copy(REAL_RTX_MAPS, tmp_path)
-    packet = parse(path, "dsid1", "BrukerEdxIngestor", file_name="maps.rtx")
+    packet = parse(path, "0tj5ftr59szcd0000g7f5yd9xr", "BrukerEdxIngestor", file_name="maps.rtx")
     spectra = packet.scientific_metadata["edx_spectra"]
     assert list(spectra) == ["Map"]
     assert spectra["Map"]["elements"] == ["Au", "Cu", "Ti", "Si", "C"]

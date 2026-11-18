@@ -1,7 +1,7 @@
 """Check that a parsed packet is shaped the way the crucible client expects.
 
 push_packet hands the packet straight to the client: dataset_fields become the body of
-datasets.update, each sample becomes samples.create(**fields), each child becomes
+datasets.update, each sample becomes samples.create(Sample(**fields)), each child becomes
 Dataset(**child_ds). Each test below takes one of those hand-offs and validates the
 packet against what the client accepts -- the pydantic model where there is one, the
 method signature where there is not.
@@ -23,6 +23,7 @@ import json
 import pytest
 from crucible.models import Dataset, Sample
 from crucible.resources.datasets import DatasetOperations
+from crucible.resources.ingestion import IngestionOperations
 from crucible.resources.samples import SampleOperations
 from crucible.utils import is_base64
 
@@ -45,8 +46,10 @@ CALL_SITES = [
     (DatasetOperations, "update_scientific_metadata", 2, ("overwrite",)),
     (SampleOperations, "get", 1, ()),
     (SampleOperations, "list", 0, ("sample_name", "project_id")),
-    (SampleOperations, "create", 0, ()),
+    (SampleOperations, "create", 1, ()),
     (SampleOperations, "link", 2, ()),
+    (DatasetOperations, "add_file", 0, ("dataset_mfid", "file_path", "ingestion_class", "skip_ingestion")),
+    (IngestionOperations, "update", 1, ("status", "ingestion_githash")),
 ]
 
 
@@ -57,6 +60,8 @@ def test_call_sites_match_client_signatures(owner, method, positional, keywords)
     binds to it."""
     call = getattr(owner, method, None)
     assert call is not None, f"push_packet calls {owner.__name__}.{method}, which no longer exists"
+    assert not hasattr(call, "__removed__"), \
+        f"push_packet calls {owner.__name__}.{method}, which was removed: {call.__removed__}"
 
     # None stands in for self, since the attribute is read off the class.
     inspect.signature(call).bind(None, *range(positional),
