@@ -276,7 +276,7 @@ def push_packet(packet, include_file = False):
         child_files = child.get('files_to_upload', [])
         resp = get_client().datasets.create(Dataset(**_owner_ref_from_orcid(child_ds)), child_md,
                                             files=child_files)
-        child_dsid = resp['dsid']
+        child_dsid = resp['dataset_mfid']
         existing_children[parent_id][child_ds['dataset_name']] = child_dsid
         if declared_id:
             resolved_ids[declared_id] = child_dsid
