@@ -14,11 +14,12 @@ def test_nested_owner_project_instrument_fill_the_flat_fields():
         "unique_id": "ds1",
         "owner": {"unique_id": "u1", "orcid": "0000-0001-2345-6789"},
         "project": {"project_id": "MFP00001"},
-        "instrument": {"instrument_id": "spinbot", "instrument_name": "SpinBot"},
+        "instrument": {"unique_id": "0tqx1eq8b5t8h000y3zm23mwmw", "instrument_id": "spinbot", "instrument_name": "SpinBot"},
     }
     flat = flatten_dataset_record(record)
     assert flat["owner_orcid"] == "0000-0001-2345-6789"
     assert flat["project_id"] == "MFP00001"
+    assert flat["instrument_mfid"] == "0tqx1eq8b5t8h000y3zm23mwmw"
     assert flat["instrument_id"] == "spinbot"
     assert flat["instrument_name"] == "SpinBot"
     assert "owner_orcid" not in record

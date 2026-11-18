@@ -50,6 +50,7 @@ def flatten_dataset_record(record):
     nested = {
         'owner_orcid': owner.get('orcid') or owner.get('unique_id'),
         'project_id': project.get('project_id'),
+        'instrument_mfid': instrument.get('unique_id'),
         'instrument_id': instrument.get('instrument_id'),
         'instrument_name': instrument.get('instrument_name'),
     }
@@ -80,7 +81,7 @@ def populate_existing_ds_info(ig, populate_fields):
     
     # populate required info in IG
     for k in populate_fields:
-        if found_ds.get(k) not in (None, ""):
+        if found_ds.get(k) not in (None, "", "unknown"):
             setattr(ig, k, found_ds[k])
 
     # populate associated files
@@ -110,8 +111,8 @@ def parse(dataset_to_process, dsid, ingestion_class=None, cleanup=True, file_nam
     # check if the dataset already exists; reinstantiate ig with info
     populate_fields = ['dataset_name', 'public', 'owner_orcid',
                        'project_id', 'measurement', 'session_name',
-                       'instrument_name', 'data_type', 'timestamp',
-                       'data_format', 'size']
+                       'instrument_name', 'instrument_id', 'instrument_mfid',
+                       'data_type', 'timestamp', 'data_format', 'size']
 
     ig, found_ds = populate_existing_ds_info(ig, populate_fields)
 
@@ -222,6 +223,18 @@ def push_packet(packet, include_file = False):
     update_fields = {k: v for k, v in packet.dataset_fields.items()
                      if k in PATCHABLE_DATASET_FIELDS and v not in (None, '')}
     ds = get_client().datasets.update(packet.unique_id, **update_fields)
+
+    instrument_mfid = packet.dataset_fields.get('instrument_mfid')
+    existing_instrument_mfid = ds.get('instrument_mfid') or (ds.get('instrument') or {}).get('unique_id')
+    if instrument_mfid and not existing_instrument_mfid:
+        assignment = get_client().datasets.assign_instrument(
+            packet.unique_id, instrument_mfid=instrument_mfid
+        )
+        inst = getattr(assignment, 'instrument', None)
+        if inst is not None:
+            ds['instrument_mfid'] = inst.unique_id
+            ds['instrument_id'] = inst.instrument_id
+            ds['instrument_name'] = inst.instrument_name
 
     # link to any parsed samples
     for sample in packet.samples:
