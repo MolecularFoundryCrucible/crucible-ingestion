@@ -66,7 +66,8 @@ class _Call:
         if self.name in ("samples.list", "datasets.list_children"):
             return []
         if self.name == "datasets.create":
-            return {"dsid": "child1"}
+            return {"created_record": {"unique_id": "child1"}, "dataset_mfid": "child1",
+                    "scientific_metadata_record": None, "files": []}
         return {"unique_id": "rec1"}
 
 
@@ -112,3 +113,4 @@ def test_push_packet_creates_samples_and_children_with_owner_ref():
         assert body["owner_ref"] == "0000-0001-2345-6789"
         assert "owner" not in body and "owner_orcid" not in body
     assert packet.samples[0]["owner_orcid"] == "0000-0001-2345-6789"
+    assert ("datasets.link", ("ds1", "child1"), {}) in client.calls
