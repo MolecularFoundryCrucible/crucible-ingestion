@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from .h5_ingestor import H5Ingestor
 from .crucible_ingestor import TMP_DIR
 from ..client import get_client
+from ..utils import build_b64_thumbnail
 from crucible.models import Dataset
 
 logger = logging.getLogger(__name__)
@@ -96,7 +97,8 @@ class ScopeFoundryH5Ingestor(H5Ingestor):
             self.unique_id = self.h5file.attrs['unique_id']
 
         # overwrite creation time and data format
-        self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
+        if 'time_id' in self.h5file.attrs:
+            self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
         self.data_format = "ScopeFoundryH5"
 
         # parse session_name and tags
@@ -969,7 +971,160 @@ class QSpleemARRESMMIngestor(QSpleemIngestor):
             self.add_thumbnail(self.plotMM(spec_series[i, :, :], kx, ky, e), f"QSpleem Momentum Map {i+1}")
 
 
-class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
+class _NirvanaMultiPosMixin:
+    """Shared logic for multi-position Nirvana ingestors (LineScan and SpecRun)."""
+
+    def _fetch_existing_scimd(self):
+        if not _is_mfid(str(getattr(self, 'unique_id', None) or '')):
+            return {}
+        try:
+            ds = get_client().datasets.get(self.unique_id, include_metadata=True)
+        except Exception as err:
+            status = getattr(err, "status", None) or getattr(err, "status_code", None) or getattr(getattr(err, "response", None), "status_code", None)
+            if status == 404:
+                return {}
+            raise
+
+        raw_scimd = (ds or {}).get('scientific_metadata') or {}
+        if isinstance(raw_scimd, dict) and 'scientific_metadata' in raw_scimd and isinstance(raw_scimd['scientific_metadata'], dict):
+            return dict(raw_scimd['scientific_metadata'])
+        return dict(raw_scimd) if isinstance(raw_scimd, dict) else {}
+
+    def _detect_child_position(self):
+        """Return the position string (e.g. 'S03') if this dataset is a from-holders
+        child, or None otherwise.
+
+        'position' is written into the dataset record by the uploader at create time,
+        before ingestion runs -- making it the only timing-safe discriminator. Hierarchy
+        checks (list_parents, include_links) cannot be used here because the parent-child
+        dataset link and sample links are created by the uploader after create_dataset()
+        returns (i.e., after this ingestor has already finished).
+        """
+        if hasattr(self, '_existing_scimd'):
+            return self._existing_scimd.get('position')
+        return self._fetch_existing_scimd().get('position')
+
+    def setup_data(self):
+        self._existing_scimd = self._fetch_existing_scimd()
+        self._child_position = self._existing_scimd.get('position')
+        if self._child_position is not None:
+            self._setup_as_from_holders_child()
+        else:
+            super().setup_data()
+
+    def _iter_resolved_positions(self, pos_path):
+        existing_scimd = getattr(self, "_existing_scimd", None) or {}
+        sample_positions = existing_scimd.get("sample_positions")
+        skipped_positions = set(existing_scimd.get("skipped_positions") or [])
+        skipped_samples = set(existing_scimd.get("skipped thin films") or [])
+        from_holders = isinstance(sample_positions, dict)
+
+        for idx, pos in enumerate(self.h5file[pos_path]):
+            slot_label = f"S{idx + 1:02d}"
+            attrs = self.h5file[pos_path][pos].attrs
+
+            if pos in skipped_positions or slot_label in skipped_positions:
+                continue
+
+            if from_holders:
+                entry = sample_positions.get(pos) if pos in sample_positions else sample_positions.get(slot_label)
+                if entry is None:
+                    continue
+                if isinstance(entry, str):
+                    sample_id = str(entry).strip()
+                    sample_name = str(attrs.get("sample_name") or entry).strip()
+                    slot_tray_id = ""
+                elif isinstance(entry, dict):
+                    sample_id = str(entry.get("sample_uuid") or entry.get("unique_id") or "").strip()
+                    sample_name = str(entry.get("sample_name") or attrs.get("sample_name") or sample_id).strip()
+                    slot_tray_id = str(entry.get("tray_uuid") or "").strip()
+                else:
+                    continue
+            else:
+                sample_id = str(attrs.get("sample_uuid", "")).strip()
+                sample_name = str(attrs.get("sample_name", "")).strip()
+                slot_tray_id = str(attrs.get("tray_uuid", "")).strip()
+
+            if not _is_mfid(sample_id):
+                if not from_holders:
+                    logger.info(f"skipping position {pos}: invalid MFID '{sample_id}'")
+                continue
+
+            if sample_id in skipped_samples:
+                continue
+
+            yield pos, idx, slot_label, sample_id, sample_name, slot_tray_id, attrs
+
+    def _parse_samples_multipos(self, pos_path):
+        existing_scimd = getattr(self, "_existing_scimd", None) or {}
+        sample_positions = existing_scimd.get("sample_positions")
+        from_holders = isinstance(sample_positions, dict)
+        skipped_positions = set(existing_scimd.get("skipped_positions") or [])
+
+        trays_seen = set()
+
+        if from_holders:
+            tray_names = {}
+            for item in (existing_scimd.get("trays") or []):
+                if isinstance(item, dict):
+                    tid = str(item.get("unique_id") or item.get("tray_uuid") or "").strip()
+                    tname = str(item.get("sample_name") or item.get("tray_name") or "").strip()
+                    if _is_mfid(tid):
+                        tray_names[tid] = tname or tray_names.get(tid) or tid
+            for tid in (existing_scimd.get("tray_uuids") or []):
+                tid_str = str(tid).strip()
+                if _is_mfid(tid_str) and tid_str not in tray_names:
+                    tray_names[tid_str] = tid_str
+            for val in sample_positions.values():
+                if isinstance(val, dict):
+                    tid = str(val.get("tray_uuid") or "").strip()
+                    tname = str(val.get("tray_name") or "").strip()
+                    if _is_mfid(tid):
+                        if tid not in tray_names or (tname and tray_names[tid] == tid):
+                            tray_names[tid] = tname or tray_names.get(tid) or tid
+            for tray_id, tray_name in tray_names.items():
+                trays_seen.add(tray_id)
+                self.samples.append({
+                    "unique_id": tray_id,
+                    "sample_name": tray_name or tray_id,
+                    "owner_orcid": self.owner_orcid,
+                    "project_id": self.project_id,
+                    "link_to_dataset": True,
+                })
+        else:
+            for idx, pos in enumerate(self.h5file[pos_path]):
+                slot_label = f"S{idx + 1:02d}"
+                if pos in skipped_positions or slot_label in skipped_positions:
+                    continue
+                attrs = self.h5file[pos_path][pos].attrs
+                tray_id = str(attrs.get('tray_uuid', '')).strip()
+                tray_name = str(attrs.get('tray_name', '')).strip()
+                if tray_id not in trays_seen and _is_mfid(tray_id):
+                    trays_seen.add(tray_id)
+                    self.samples.append({
+                        "unique_id": tray_id,
+                        "sample_name": tray_name or tray_id,
+                        "owner_orcid": self.owner_orcid,
+                        "project_id": self.project_id,
+                        "link_to_dataset": True,
+                    })
+
+        for pos, idx, slot_label, sample_id, sample_name, slot_tray_id, attrs in self._iter_resolved_positions(pos_path):
+            sample = {
+                "unique_id": sample_id,
+                "sample_name": sample_name,
+                "owner_orcid": self.owner_orcid,
+                "project_id": self.project_id,
+                "link_to_dataset": False,
+            }
+            if _is_mfid(slot_tray_id):
+                sample["parent_ids"] = [slot_tray_id]
+            self.samples.append(sample)
+
+
+class NirvanaMultiPosLineScanIngestor(_NirvanaMultiPosMixin, ScopeFoundryH5Ingestor):
+
+    _POS_PATH = 'measurement/pollux_oospec_multipos_line_scan/positions'
 
     def is_file_supported(self):
         file_regex = r'.*pollux_oospec_multipos_line_scan.*\.h5'
@@ -977,8 +1132,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             return True
         else:
             return False
-       # return(any([self.file_to_upload.endswith(f'_{x}.h5') for x in supported_measurements]))
-    
+
     def get_dataset_metadata(self):
         self.instrument_name = 'Inorganic Nirvana'
         self.instrument_id = 'nirvana-spectrometer'
@@ -990,17 +1144,17 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             self.unique_id = self.h5file.attrs['unique_id']
 
         # overwrite creation time and data format
-        self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
+        if 'time_id' in self.h5file.attrs:
+            self.timestamp = datetime.fromtimestamp(self.h5file.attrs['time_id']).isoformat()
         self.data_format = "ScopeFoundryH5"
 
         # parse session_name and tags
         default_tags_value = "list,tags,separated,by,commas (optional)"
         default_session_value = "(optional)"
 
-        try: 
+        try:
             scope_foundry_tags = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['tags'].strip()
             scope_foundry_session = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['session_name'].strip()
-
         except Exception:
             logger.warning("no mf-crucible settings found for tags or session_name")
             scope_foundry_tags = default_tags_value
@@ -1014,53 +1168,11 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             self.keywords += [self.session_name]
 
     def parse_samples(self):
-        trays_seen = set()
-        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
-        for pos in self.h5file[pos_path]:
-            attrs = self.h5file[pos_path][pos].attrs
-            sample_id = str(attrs['sample_uuid'])
-            sample_name = str(attrs['sample_name'])
-            tray_id = str(attrs['tray_uuid'])
-            tray_name = str(attrs['tray_name'])
-
-            # Add tray once per unique valid MFID — linked to parent dataset
-            if tray_id not in trays_seen and _is_mfid(tray_id):
-                trays_seen.add(tray_id)
-                self.samples.append({
-                    "unique_id": tray_id,
-                    "sample_name": tray_name,
-                    "owner_orcid": self.owner_orcid,
-                    "project_id": self.project_id,
-                    "link_to_dataset": True,
-                })
-
-            # Thin film — not linked to parent dataset (linked at child dataset level)
-            if not _is_mfid(sample_id):
-                logger.info(f"skipping position {pos}: invalid MFID '{sample_id}'")
-                continue
-
-            sample = {
-                "unique_id": sample_id,
-                "sample_name": sample_name,
-                "owner_orcid": self.owner_orcid,
-                "project_id": self.project_id,
-                "link_to_dataset": False,
-            }
-            if _is_mfid(tray_id):
-                sample["parent_ids"] = [tray_id]
-            self.samples.append(sample)
-        return
+        self._parse_samples_multipos(self._POS_PATH)
 
     def parse_children(self):
-        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
-        for pos in self.h5file[pos_path]:
-            attrs = self.h5file[pos_path][pos].attrs
-            sample_id = str(attrs['sample_uuid'])
-            sample_name = str(attrs['sample_name'])
-
-            if not _is_mfid(sample_id):
-                continue
-
+        pos_path = self._POS_PATH
+        for pos, idx, slot_label, sample_id, sample_name, slot_tray_id, attrs in self._iter_resolved_positions(pos_path):
             child_ds = Dataset(
                 measurement=self.measurement,
                 project_id=self.project_id,
@@ -1071,6 +1183,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                 timestamp=self.timestamp,
             ).model_dump()
             child_md = {
+                "position": pos,
                 "integration_time": float(attrs['integration_time']),
                 "x_center": float(attrs['x_center']),
                 "y_center": float(attrs['y_center']),
@@ -1078,13 +1191,17 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
                 "y_positions": attrs['y_positions'].tolist(),
             }
             split_path = self._create_split_h5(pos)
-            self.children.append({
+            child_thumbs = self._build_spectrum_thumbnails(pos)
+            child_entry = {
                 "dataset": child_ds,
                 "scientific_metadata": child_md,
                 "parent_id": self.unique_id,
                 "sample_links": [sample_id],
                 "files_to_upload": [split_path],
-            })
+            }
+            if child_thumbs:
+                child_entry["thumbnails"] = child_thumbs
+            self.children.append(child_entry)
         return
 
     def _create_split_h5(self, pos_key):
@@ -1092,9 +1209,11 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
         os.makedirs(TMP_DIR, exist_ok=True)
         stem = Path(self.file_to_upload).stem
         out_path = os.path.join(TMP_DIR, f"{stem}_{pos_key}.h5")
-        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        pos_path = self._POS_PATH
         wl_path  = 'measurement/pollux_oospec_multipos_line_scan/wavelengths'
         with h5py.File(self.file_to_upload, 'r') as src, h5py.File(out_path, 'w') as dst:
+            for k, v in src.attrs.items():
+                dst.attrs[k] = v
             for group in ('app', 'hardware'):
                 if group in src:
                     src.copy(group, dst)
@@ -1102,7 +1221,7 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             src.copy(wl_path, meas, name='wavelengths')
             meas_src = src['measurement/pollux_oospec_multipos_line_scan']
             if 'settings' in meas_src:
-                src.copy(f'measurement/pollux_oospec_multipos_line_scan/settings', meas, name='settings')
+                src.copy('measurement/pollux_oospec_multipos_line_scan/settings', meas, name='settings')
             pos_grp = meas.require_group('positions')
             src.copy(f'{pos_path}/{pos_key}', pos_grp, name=pos_key)
         return out_path
@@ -1110,51 +1229,25 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
     def parse_orcid(self):
         if self.owner_orcid:
             return
-        self.owner_orcid = check_orcid_entry(self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
+        try:
+            self.owner_orcid = check_orcid_entry(self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
+        except Exception:
+            pass
         return
 
     def parse_project_id(self):
         if self.project_id:
             return
-        else:
-             self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
-        return
-
-    def setup_data(self):
-        self._child_position = self._detect_child_position()
-        if self._child_position is not None:
-            self._setup_as_from_holders_child()
-        else:
-            super().setup_data()
-
-    def _detect_child_position(self):
-        """
-        Return the position string (e.g. 'S03') if this dataset is a from-holders
-        child, or None otherwise.
-
-        'position' is written into the dataset record by the uploader at create time,
-        before ingestion runs — making it the only timing-safe discriminator. Hierarchy
-        checks (list_parents, include_links) cannot be used here because the parent-child
-        dataset link and sample links are created by the uploader after create_dataset()
-        returns (i.e., after this ingestor has already finished).
-        """
         try:
-            ds = get_client().datasets.get(self.unique_id, include_metadata=True)
-        except requests.exceptions.HTTPError as err:
-            if err.response is not None and err.response.status_code == 404:
-                return None
-            raise
-
-        raw_scimd = ds.get('scientific_metadata', {})
-        if isinstance(raw_scimd, dict) and 'scientific_metadata' in raw_scimd:
-            actual_scimd = raw_scimd['scientific_metadata']
-        else:
-            actual_scimd = raw_scimd or {}
-
-        return actual_scimd.get('position')
+            self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
+        except Exception:
+            pass
+        return
 
     def _setup_as_from_holders_child(self):
         """Run ingestion for a from-holders child dataset."""
+        self.samples = []
+        self.children = []
         self.get_scientific_metadata()
         self.get_dataset_metadata()
         self.get_acl_information()
@@ -1164,15 +1257,21 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
 
     def _position_key(self, position):
         """Convert position string (e.g. 'S03') to the h5 group key at that index."""
-        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        pos_path = self._POS_PATH
+        pos_keys = list(self.h5file[pos_path].keys())
+        if position in pos_keys:
+            return position
+        if len(pos_keys) == 1:
+            return pos_keys[0]
         idx = int(position[1:]) - 1
-        return list(self.h5file[pos_path].keys())[idx]
+        return pos_keys[idx]
 
     def _apply_child_scientific_metadata(self):
-        pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
+        pos_path = self._POS_PATH
         pos_key = self._position_key(self._child_position)
         attrs = self.h5file[pos_path][pos_key].attrs
         self.scientific_metadata = {
+            "position": self._child_position,
             "integration_time": float(attrs['integration_time']),
             "x_center": float(attrs['x_center']),
             "y_center": float(attrs['y_center']),
@@ -1180,11 +1279,11 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             "y_positions": attrs['y_positions'].tolist(),
         }
 
-    def _add_spectrum_thumbnail(self):
+    def _build_spectrum_thumbnails(self, pos_key):
         try:
-            pos_path = 'measurement/pollux_oospec_multipos_line_scan/positions'
-            pos_key = self._position_key(self._child_position)
-            pos = self.h5file[pos_path][pos_key]
+            pos_path = self._POS_PATH
+            resolved_key = self._position_key(pos_key)
+            pos = self.h5file[pos_path][resolved_key]
 
             wls = np.array(self.h5file['measurement/pollux_oospec_multipos_line_scan/wavelengths'])
             raw = np.array(pos['raw_intensities'])     # (N_scans, N_wl)
@@ -1200,14 +1299,19 @@ class NirvanaMultiPosLineScanIngestor(ScopeFoundryH5Ingestor):
             ax.plot(wls, absorbance)
             ax.set_xlabel("Wavelength (nm)")
             ax.set_ylabel("Absorbance")
-            ax.set_title(f"Position {self._child_position}")
+            ax.set_title(f"Position {pos_key}")
             buf = BytesIO()
             plt.savefig(buf, format='png', dpi=150)
             plt.close(fig)
             buf.seek(0)
-            self.add_thumbnail(Image.open(buf), f"Absorbance Spectrum ({self._child_position})")
+            b64 = build_b64_thumbnail(Image.open(buf), (200, 200))
+            return [{"thumbnail": b64, "caption": f"Absorbance Spectrum ({pos_key})"}]
         except Exception as err:
-            logger.error(f"Failed to generate spectrum thumbnail for position {self._child_position}: {err}")
+            logger.error(f"Failed to generate spectrum thumbnail for position {pos_key}: {err}")
+            return []
+
+    def _add_spectrum_thumbnail(self):
+        self.thumbnails.extend(self._build_spectrum_thumbnails(self._child_position))
 
 
 class NirvanaMultiPosLineScanIngestor_10kLegacy(NirvanaMultiPosLineScanIngestor):
@@ -1238,7 +1342,7 @@ class NirvanaMultiPosLineScanIngestor_10kLegacy(NirvanaMultiPosLineScanIngestor)
         return
 
 
-class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
+class NirvanaMultiPosSpecRunIngestor(_NirvanaMultiPosMixin, ScopeFoundryH5Ingestor):
 
     _MEAS_PATH = 'measurement/pollux_multipos_spec_run'
 
@@ -1279,13 +1383,19 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
     def parse_orcid(self):
         if self.owner_orcid:
             return
-        self.owner_orcid = check_orcid_entry(
-            self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
+        try:
+            self.owner_orcid = check_orcid_entry(
+                self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['orcid'])
+        except Exception:
+            pass
 
     def parse_project_id(self):
         if self.project_id:
             return
-        self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
+        try:
+            self.project_id = self.scientific_metadata['hardware']['mf_crucible_nirvana']['settings']['project'].split(" ")[0]
+        except Exception:
+            pass
 
     def _measure_flags(self):
         settings = self.h5file[f'{self._MEAS_PATH}/settings']
@@ -1300,52 +1410,14 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
         return f'{self._MEAS_PATH}/pl/positions'
 
     def parse_samples(self):
-        trays_seen = set()
         pos_path = self._primary_pos_path()
-        for pos in self.h5file[pos_path]:
-            attrs = self.h5file[pos_path][pos].attrs
-            sample_id = str(attrs['sample_uuid'])
-            sample_name = str(attrs['sample_name'])
-            tray_id = str(attrs['tray_uuid'])
-            tray_name = str(attrs['tray_name'])
-
-            if tray_id not in trays_seen and _is_mfid(tray_id):
-                trays_seen.add(tray_id)
-                self.samples.append({
-                    "unique_id": tray_id,
-                    "sample_name": tray_name,
-                    "owner_orcid": self.owner_orcid,
-                    "project_id": self.project_id,
-                    "link_to_dataset": True,
-                })
-
-            if not _is_mfid(sample_id):
-                logger.info(f"skipping position {pos}: invalid MFID '{sample_id}'")
-                continue
-
-            sample = {
-                "unique_id": sample_id,
-                "sample_name": sample_name,
-                "owner_orcid": self.owner_orcid,
-                "project_id": self.project_id,
-                "link_to_dataset": False,
-            }
-            if _is_mfid(tray_id):
-                sample["parent_ids"] = [tray_id]
-            self.samples.append(sample)
+        self._parse_samples_multipos(pos_path)
 
     def parse_children(self):
         has_uvvis, has_pl = self._measure_flags()
         pos_path = self._primary_pos_path()
 
-        for pos in self.h5file[pos_path]:
-            attrs = self.h5file[pos_path][pos].attrs
-            sample_id = str(attrs['sample_uuid'])
-            sample_name = str(attrs['sample_name'])
-
-            if not _is_mfid(sample_id):
-                continue
-
+        for pos, idx, slot_label, sample_id, sample_name, slot_tray_id, attrs in self._iter_resolved_positions(pos_path):
             child_md = {"position": pos}
             if has_uvvis:
                 uvvis_attrs = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos}'].attrs
@@ -1360,8 +1432,8 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
                 pl_attrs = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos}'].attrs
                 child_md.update({
                     "pl_integration_time": float(pl_attrs['integration_time']),
-                    "pl_x_center": float(pl_attrs['x_center']),
-                    "pl_y_center": float(pl_attrs['y_center']),
+                    "pl_x_center": float(pl_attrs.get('pl_x_center', pl_attrs.get('x_center'))),
+                    "pl_y_center": float(pl_attrs.get('pl_y_center', pl_attrs.get('y_center'))),
                 })
 
             child_ds = Dataset(
@@ -1375,13 +1447,18 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
             ).model_dump()
 
             split_path = self._create_split_h5(pos)
-            self.children.append({
+            child_thumbs = self._build_child_thumbnails_for_pos(pos)
+            child_entry = {
                 "dataset": child_ds,
                 "scientific_metadata": child_md,
                 "parent_id": self.unique_id,
                 "sample_links": [sample_id],
                 "files_to_upload": [split_path],
-            })
+            }
+            if child_thumbs:
+                child_entry["thumbnails"] = child_thumbs
+            self.children.append(child_entry)
+        return
 
     def _create_split_h5(self, pos_key):
         from pathlib import Path
@@ -1390,6 +1467,11 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
         out_path = os.path.join(TMP_DIR, f"{stem}_{pos_key}.h5")
         has_uvvis, has_pl = self._measure_flags()
         with h5py.File(self.file_to_upload, 'r') as src, h5py.File(out_path, 'w') as dst:
+            for k, v in src.attrs.items():
+                dst.attrs[k] = v
+            for group in ('app', 'hardware'):
+                if group in src:
+                    src.copy(group, dst)
             meas = dst.require_group(self._MEAS_PATH)
             meas_src = src[self._MEAS_PATH]
             if 'settings' in meas_src:
@@ -1416,28 +1498,9 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
                     src.copy(item, pl_grp, name=name)
         return out_path
 
-    def setup_data(self):
-        self._child_position = self._detect_child_position()
-        if self._child_position is not None:
-            self._setup_as_from_holders_child()
-        else:
-            super().setup_data()
-
-    def _detect_child_position(self):
-        try:
-            ds = get_client().datasets.get(self.unique_id, include_metadata=True)
-        except requests.exceptions.HTTPError as err:
-            if err.response is not None and err.response.status_code == 404:
-                return None
-            raise
-        raw_scimd = ds.get('scientific_metadata', {})
-        if isinstance(raw_scimd, dict) and 'scientific_metadata' in raw_scimd:
-            actual_scimd = raw_scimd['scientific_metadata']
-        else:
-            actual_scimd = raw_scimd or {}
-        return actual_scimd.get('position')
-
     def _setup_as_from_holders_child(self):
+        self.samples = []
+        self.children = []
         self.get_scientific_metadata()
         self.get_dataset_metadata()
         self.get_acl_information()
@@ -1451,18 +1514,24 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
         pos_keys = list(self.h5file[pos_path].keys())
         if position in pos_keys:
             return position
+        if len(pos_keys) == 1:
+            return pos_keys[0]
         idx = int(position[1:]) - 1
         return pos_keys[idx]
 
     def _apply_child_scientific_metadata(self):
         has_uvvis, has_pl = self._measure_flags()
-        pos_key = self._position_key(self._child_position)
-        is_split = (f'{self._MEAS_PATH}/uvvis_{self._child_position}' in self.h5file
-                    or f'{self._MEAS_PATH}/pl_{self._child_position}' in self.h5file)
-        child_md = {}
+        meas = self.h5file.get(self._MEAS_PATH)
+        split_uvvis_groups = [k for k in meas.keys() if k.startswith('uvvis_')] if meas else []
+        split_pl_groups = [k for k in meas.keys() if k.startswith('pl_')] if meas else []
+        is_split = bool(split_uvvis_groups or split_pl_groups)
+
+        child_md = {"position": self._child_position}
         if has_uvvis:
             if is_split:
-                uvvis_grp = self.h5file[f'{self._MEAS_PATH}/uvvis_{self._child_position}']
+                uvvis_grp = (meas[f'uvvis_{self._child_position}']
+                             if f'uvvis_{self._child_position}' in meas
+                             else meas[split_uvvis_groups[0]])
             else:
                 pos_key = self._position_key(self._child_position)
                 uvvis_grp = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}']
@@ -1476,32 +1545,90 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
             })
         if has_pl:
             if is_split:
-                pl_grp = self.h5file[f'{self._MEAS_PATH}/pl_{self._child_position}']
+                pl_grp = (meas[f'pl_{self._child_position}']
+                          if f'pl_{self._child_position}' in meas
+                          else meas[split_pl_groups[0]])
             else:
                 pos_key = self._position_key(self._child_position)
                 pl_grp = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}']
             pl_attrs = pl_grp.attrs
             child_md.update({
                 "pl_integration_time": float(pl_attrs['integration_time']),
-                "pl_x_center": float(pl_attrs['x_center']),
-                "pl_y_center": float(pl_attrs['y_center']),
+                "pl_x_center": float(pl_attrs.get('pl_x_center', pl_attrs.get('x_center'))),
+                "pl_y_center": float(pl_attrs.get('pl_y_center', pl_attrs.get('y_center'))),
             })
         self.scientific_metadata = child_md
 
-    def _add_child_thumbnails(self):
+    def _build_child_thumbnails_for_pos(self, pos):
+        thumbs = []
         has_uvvis, has_pl = self._measure_flags()
-        is_split = (f'{self._MEAS_PATH}/uvvis_{self._child_position}' in self.h5file
-                    or f'{self._MEAS_PATH}/pl_{self._child_position}' in self.h5file)
+        pos_key = self._position_key(pos)
 
         if has_uvvis:
             try:
-                if is_split:
-                    grp = self.h5file[f'{self._MEAS_PATH}/uvvis_{self._child_position}']
-                    wls = np.array(grp['wavelengths'])
-                else:
-                    pos_key = self._position_key(self._child_position)
-                    wls = np.array(self.h5file[f'{self._MEAS_PATH}/uvvis/wavelengths'])
-                    grp = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}']
+                wls = np.array(self.h5file[f'{self._MEAS_PATH}/uvvis/wavelengths'])
+                grp = self.h5file[f'{self._MEAS_PATH}/uvvis/positions/{pos_key}']
+                raw = np.array(grp['raw_intensities'])
+                dark = np.array(grp['dark_intensities'])
+                blank = np.array(grp['blank_intensities'])
+                denom = blank - dark
+                denom = np.where(np.abs(denom) < 1, 1.0, denom)
+                T = (raw.mean(axis=0) - dark) / denom
+                absorbance = -np.log10(T.clip(1e-9))
+                fig, ax = plt.subplots()
+                ax.plot(wls, absorbance)
+                ax.set_xlabel("Wavelength (nm)")
+                ax.set_ylabel("Absorbance")
+                ax.set_title(f"Position {pos}")
+                buf = BytesIO()
+                plt.savefig(buf, format='png', dpi=150)
+                plt.close(fig)
+                buf.seek(0)
+                b64 = build_b64_thumbnail(Image.open(buf), (200, 200))
+                thumbs.append({"thumbnail": b64, "caption": f"UVVis Absorbance ({pos})"})
+            except Exception as err:
+                logger.error(f"Failed to generate UVVis thumbnail for position {pos}: {err}")
+
+        if has_pl:
+            try:
+                wls = np.array(self.h5file[f'{self._MEAS_PATH}/pl/wavelengths'])
+                dark_shared = np.array(self.h5file[f'{self._MEAS_PATH}/pl/dark_intensities'])
+                grp = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}']
+                raw = np.array(grp['raw_intensities'])
+                intensity = raw.mean(axis=0) - dark_shared
+                fig, ax = plt.subplots()
+                ax.plot(wls, intensity)
+                ax.set_xlabel("Wavelength (nm)")
+                ax.set_ylabel("PL Intensity (counts)")
+                ax.set_title(f"Position {pos}")
+                buf = BytesIO()
+                plt.savefig(buf, format='png', dpi=150)
+                plt.close(fig)
+                buf.seek(0)
+                b64 = build_b64_thumbnail(Image.open(buf), (200, 200))
+                thumbs.append({"thumbnail": b64, "caption": f"PL Intensity ({pos})"})
+            except Exception as err:
+                logger.error(f"Failed to generate PL thumbnail for position {pos}: {err}")
+
+        return thumbs
+
+    def _add_child_thumbnails(self):
+        meas = self.h5file.get(self._MEAS_PATH)
+        split_uvvis_groups = [k for k in meas.keys() if k.startswith('uvvis_')] if meas else []
+        split_pl_groups = [k for k in meas.keys() if k.startswith('pl_')] if meas else []
+        is_split = bool(split_uvvis_groups or split_pl_groups)
+
+        if not is_split:
+            self.thumbnails.extend(self._build_child_thumbnails_for_pos(self._child_position))
+            return
+
+        has_uvvis, has_pl = self._measure_flags()
+        if has_uvvis and split_uvvis_groups:
+            try:
+                grp = (meas[f'uvvis_{self._child_position}']
+                       if f'uvvis_{self._child_position}' in meas
+                       else meas[split_uvvis_groups[0]])
+                wls = np.array(grp['wavelengths'])
                 raw = np.array(grp['raw_intensities'])
                 dark = np.array(grp['dark_intensities'])
                 blank = np.array(grp['blank_intensities'])
@@ -1522,17 +1649,13 @@ class NirvanaMultiPosSpecRunIngestor(ScopeFoundryH5Ingestor):
             except Exception as err:
                 logger.error(f"Failed to generate UVVis thumbnail for position {self._child_position}: {err}")
 
-        if has_pl:
+        if has_pl and split_pl_groups:
             try:
-                if is_split:
-                    grp = self.h5file[f'{self._MEAS_PATH}/pl_{self._child_position}']
-                    wls = np.array(grp['wavelengths'])
-                    dark_shared = np.array(grp['dark_intensities'])
-                else:
-                    pos_key = self._position_key(self._child_position)
-                    wls = np.array(self.h5file[f'{self._MEAS_PATH}/pl/wavelengths'])
-                    dark_shared = np.array(self.h5file[f'{self._MEAS_PATH}/pl/dark_intensities'])
-                    grp = self.h5file[f'{self._MEAS_PATH}/pl/positions/{pos_key}']
+                grp = (meas[f'pl_{self._child_position}']
+                       if f'pl_{self._child_position}' in meas
+                       else meas[split_pl_groups[0]])
+                wls = np.array(grp['wavelengths'])
+                dark_shared = np.array(grp['dark_intensities'])
                 raw = np.array(grp['raw_intensities'])
                 intensity = raw.mean(axis=0) - dark_shared
                 fig, ax = plt.subplots()

@@ -162,3 +162,61 @@ def undeclared(model, fields):
 def assert_id(value, label):
     assert isinstance(value, str) and value.strip(), \
         f"{label} is {value!r}; it goes into a request path"
+
+
+def test_push_packet_child_thumbnails():
+    from unittest.mock import MagicMock
+    from crucible_ingestion.client import set_client, reset_client
+    from crucible_ingestion.data_ingestion import push_packet
+    from crucible_ingestion.packet import IngestionPacket
+
+    expected_child_id = "0t000000000000000000000001"
+    mock_client = MagicMock()
+    mock_client.datasets.update.return_value = {"unique_id": "0t000000000000000000000000"}
+    mock_client.datasets.list_children.return_value = []
+    mock_client.datasets.create.return_value = {
+        "dataset_mfid": expected_child_id,
+        "created_record": {"unique_id": expected_child_id},
+    }
+
+    packet = IngestionPacket(
+        unique_id="0t000000000000000000000000",
+        ingestion_class="NirvanaMultiPosLineScanIngestor",
+        dataset_fields={
+            "unique_id": "0t000000000000000000000000",
+            "dataset_name": "Parent Dataset",
+        },
+        samples=[],
+        children=[{
+            "dataset": {
+                "dataset_name": "Child Dataset 1",
+                "project_id": "MFP00001",
+                "owner_orcid": "0000-0000-0000-0001",
+                "measurement": "nirvana",
+                "data_format": "ScopeFoundryH5",
+                "instrument_id": "nirvana-spectrometer",
+            },
+            "scientific_metadata": {"position": "000"},
+            "parent_id": "0t000000000000000000000000",
+            "sample_links": ["0t000000000000000000000003"],
+            "files_to_upload": ["/tmp/fake.h5"],
+            "thumbnails": [{"thumbnail": "dGVzdA==", "caption": "Absorbance Spectrum (000)"}],
+        }],
+        thumbnails=[],
+        keywords=[],
+        scientific_metadata={},
+    )
+
+    try:
+        set_client(mock_client)
+        push_packet(packet)
+
+        mock_client.datasets.create.assert_called_once()
+        mock_client.datasets.link.assert_called_once_with("0t000000000000000000000000", expected_child_id)
+        mock_client.datasets.link_sample.assert_called_once_with(expected_child_id, "0t000000000000000000000003")
+        mock_client.datasets.add_thumbnail.assert_called_once_with(
+            expected_child_id, "dGVzdA==", "Absorbance Spectrum (000)"
+        )
+    finally:
+        reset_client()
+
