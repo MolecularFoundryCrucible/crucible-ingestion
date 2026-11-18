@@ -54,12 +54,10 @@ def populate_existing_ds_info(ig, populate_fields):
     
     # populate required info in IG
     for k in populate_fields:
-        if found_ds[k] is None:
+        val = found_ds.get(k)
+        if val is None or val == "" or val == "unknown":
             continue
-        elif found_ds[k] == "":
-            continue
-        else:
-            setattr(ig, k, found_ds[k])
+        setattr(ig, k, val)
 
     # populate associated files
     for af in assoc_files:
@@ -88,8 +86,8 @@ def parse(dataset_to_process, dsid, ingestion_class=None, cleanup=True, file_nam
     # check if the dataset already exists; reinstantiate ig with info
     populate_fields = ['dataset_name', 'public', 'owner_orcid',
                        'project_id', 'measurement', 'session_name',
-                       'instrument_name', 'data_type', 'timestamp',
-                       'data_format', 'size']
+                       'instrument_name', 'instrument_id', 'instrument_mfid',
+                       'data_type', 'timestamp', 'data_format', 'size']
 
     ig, found_ds = populate_existing_ds_info(ig, populate_fields)
 
@@ -197,6 +195,15 @@ def push_packet(packet, include_file = False):
     update_fields = {k: v for k, v in packet.dataset_fields.items()
                      if k in PATCHABLE_DATASET_FIELDS and v not in (None, '')}
     ds = get_client().datasets.update(packet.unique_id, **update_fields)
+
+    instrument_mfid = packet.dataset_fields.get('instrument_mfid')
+    if instrument_mfid and not ds.get('instrument_mfid'):
+        assignment = get_client().datasets.assign_instrument(
+            packet.unique_id, instrument_mfid=instrument_mfid
+        )
+        ds['instrument_mfid'] = assignment.instrument.unique_id
+        ds['instrument_id'] = assignment.instrument.instrument_id
+        ds['instrument_name'] = assignment.instrument.instrument_name
 
     # link to any parsed samples
     for sample in packet.samples:

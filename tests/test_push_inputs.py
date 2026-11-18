@@ -43,6 +43,7 @@ CALL_SITES = [
     (DatasetOperations, "add_thumbnail", 3, ()),
     (DatasetOperations, "add_keyword", 2, ()),
     (DatasetOperations, "update_scientific_metadata", 2, ("overwrite",)),
+    (DatasetOperations, "assign_instrument", 1, ("instrument_mfid",)),
     (SampleOperations, "get", 1, ()),
     (SampleOperations, "list", 0, ("sample_name", "project_id")),
     (SampleOperations, "create", 0, ()),
@@ -95,6 +96,8 @@ def test_ids_are_strings(entry):
     """Every id push_packet interpolates into a request path is a non-empty string."""
     packet = packet_for(entry)
     assert_id(packet.unique_id, "unique_id")
+    if packet.dataset_fields.get("instrument_mfid") is not None:
+        assert_id(packet.dataset_fields["instrument_mfid"], "dataset_fields['instrument_mfid']")
 
     for i, sample in enumerate(packet.samples):
         if sample.get("unique_id") is not None:
