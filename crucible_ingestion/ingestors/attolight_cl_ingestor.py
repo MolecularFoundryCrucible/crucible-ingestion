@@ -1,6 +1,6 @@
 from .crucible_ingestor import CrucibleDatasetIngestor
-from crucible import CrucibleClient
 from crucible.models import Dataset
+from mfid import mfid
 
 from pathlib import Path
 from typing import ClassVar
@@ -35,7 +35,7 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
 
             files = root.find('Files')
         except Exception as e:
-            raise Exception(f"Failed to parse file: {e}")
+            raise ValueError(f"Failed to parse file: {e}")
 
         for child in files:
             if child.text.split('.')[1] == 'txt':
@@ -52,7 +52,7 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
     def get_scientific_metadata(self):
         # This function natively ingests a .txt file included in the ingestion folder
         if self.child_txt == "":
-            raise Exception("missing .txt file")
+            raise ValueError("missing .txt file")
         txt_file = Path(self.file_to_upload).with_name(self.child_txt)
 
         metadata = {}
@@ -103,33 +103,30 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
         # This function triggers ingestions on all children .sur files included in the ingestion folder 
         # and associates them with a new dataset linked to the currently generating dataset
 
-        from ..data_ingestion import data_ingestion # Fixes circular import errors
-
-        client = CrucibleClient()
+        from ..data_ingestion import parse # Fixes circular import errors
 
         i = 1 # Track unknown acquisition types, if necessary
         for file in self.child_sur:
-            child_ds = client.datasets.create(
-                dataset=Dataset(
-                    project_id=self.project_id,
-                    instrument_id=self.instrument_id,
-                    session_name=self.session_name,
-                    # timestamp=self.timestamp, # Uncomment for child datasets to share parent timestamps
-                ),
+            child = Dataset(
+                unique_id=mfid()[0], # Manually generate mfid for pre-server parsing behavior
+                project_id=self.project_id,
+                instrument_id=self.instrument_id,
+                session_name=self.session_name,
+                # timestamp=self.timestamp, # Uncomment for child datasets to share parent timestamps
             )
-
-            child_dsid = child_ds["dataset_mfid"]
 
             # ONLY KEEP WHILE sur_ingestor.py IS ONLY AVAILABLE LOCALLY
             # ELSE SWITCH TO THE FILES/INGESTOR STYLE
-            data_ingestion(
+            child_packet = parse(
                 dataset_to_process=str(Path(self.file_to_upload).with_name(file)), 
-                dsid=child_dsid, 
-                ingestion_class="SurIngestor", 
-                include_file=True
+                dsid=child.unique_id, 
+                ingestion_class="SurIngestor",
             )
 
-            child_metadata = client.datasets.get_scientific_metadata(child_dsid)['scientific_metadata']
+            if child_packet == None:
+                raise ValueError(f"File {file} not supported by current ingestors")
+
+            child_metadata = child_packet.scientific_metadata
 
             try:
                 acquisition = child_metadata["Object_0_Channel_0"]["Parsed"]["GENERAL"].get(
@@ -143,13 +140,45 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
                 acquisition += str(i)
                 i += 1
 
-            client.datasets.update(
-                child_dsid,
-                dataset_name=f"{self.dataset_name}_{acquisition}"
-            )
+            child_packet.dataset_fields.update({
+                "dataset_name": f"{self.dataset_name}_{acquisition}",
+                "project_id": child.project_id,
+                "instrument_id": child.instrument_id,
+                "session_name": child.session_name,
+            })
 
-            client.datasets.link_parent_child(
-                parent_dataset_id=self.unique_id,
-                child_dataset_id=child_ds["dataset_mfid"],
-            )
+            self.children.append({
+                "dataset": child_packet.dataset_fields,
+                "scientific_metadata": child_packet.scientific_metadata,
+                "parent_id": self.unique_id,
+                "sample_links": [],
+                "thumbnails": child_packet.thumbnails,
+            })
+
+    def get_thumbnails(self):
+        # This function selects one suitable thumbnail from within the child datasets ingested previously
+
+        for child in self.children:
+            try:
+                acquisition = child["scientific_metadata"]["Object_0_Channel_0"]["Parsed"]["GENERAL"].get(
+                    "acquisition_type", "Unknown"
+                )
+            except Exception as e:
+                logger.error(f"Error accessing child metadata: {e}")
+                acquisition = "Unknown"
+
+            thumbnails = child.get("thumbnails", [])
+
+            if acquisition == "HYP" and thumbnails:
+                self.thumbnails.append(thumbnails[0])
+                logger.info("Hyperspectral thumbnail found. Selecting hyperspectral thumbnail as parent dataset thumbnail...")
+                return
         
+        if self.children:
+            thumbnails = self.children[0].get("thumbnails", [])
+            if thumbnails:
+                self.thumbnails.append(thumbnails[0])
+                logger.info("Hyperspectral thumbnail not found, but other thumbnails exist. Selecting first available thumbnail as parent dataset thumbnail...")
+                return
+        
+        logger.error("Suitable thumbnail not found. Continuing without thumbnails...")

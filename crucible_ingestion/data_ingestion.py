@@ -183,7 +183,7 @@ def push_packet(packet, include_file = False):
     # An empty value is dropped rather than sent: the patch route assigns whatever it is
     # given, so a field the parse did not fill would blank the stored one.
     update_fields = {k: v for k, v in packet.dataset_fields.items()
-                     if k not in ('unique_id', 'owner_orcid', 'project_id', 'size')
+                     if k not in ('unique_id', 'owner_orcid', 'project_id', 'public', 'instrument_name', 'size')
                      and v not in (None, '')}
     ds = get_client().datasets.update(packet.unique_id, **update_fields)
 
@@ -240,7 +240,11 @@ def push_packet(packet, include_file = False):
             continue
 
         child_files = child.get('files_to_upload', [])
-        resp = get_client().datasets.create(Dataset(**child_ds), child_md,
+
+        child_fields = child_ds.copy()
+        child_fields.pop('size', None)
+
+        resp = get_client().datasets.create(Dataset(**child_fields), child_md,
                                             files_to_upload=child_files)
         child_dsid = resp['dsid']
         existing_children[parent_id][child_ds['dataset_name']] = child_dsid

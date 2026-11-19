@@ -33,7 +33,7 @@ class SurIngestor(CrucibleDatasetIngestor):
         try:
             dataset = file_reader(self.file_to_upload, lazy=False)
         except Exception as e:
-            raise Exception(f"Failed to parse file {e}")
+            raise ValueError(f"Failed to parse file {e}")
 
         logger.info("# datasets: "+ str(len(dataset)))
         logger.info("NOTE: This number should be 1.")
@@ -63,7 +63,7 @@ class SurIngestor(CrucibleDatasetIngestor):
             self.instrument_info = scientific_metadata["Object_0_Channel_0"]["Parsed"]["MICROSCOPE"]
             self.general_info = scientific_metadata["Object_0_Channel_0"]["Parsed"]["GENERAL"]
         except KeyError as e:
-            raise Exception("Scientific metadata not found or in unsupported format.")
+            raise KeyError("Scientific metadata not found or in unsupported format.")
 
         logger.info(f'Successfully parsed scientific metadata from .sur file.')
 
