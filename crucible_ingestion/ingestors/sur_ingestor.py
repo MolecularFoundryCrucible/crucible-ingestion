@@ -30,6 +30,7 @@ class SurIngestor(CrucibleDatasetIngestor):
         return file_extension in self.supported_filetypes
 
     def setup_data(self):
+        """Verify dataset length, logging if there are irregularities, and prepare dataset for ingestion"""
         try:
             dataset = file_reader(self.file_to_upload, lazy=False)
         except Exception as e:
@@ -51,6 +52,8 @@ class SurIngestor(CrucibleDatasetIngestor):
         super().setup_data()
 
     def get_scientific_metadata(self):
+        """Extract scientific metadata values from .sur file via a recursive dictionary parse"""
+
         dataset = self.dataset
 
         scientific_metadata = dataset.get("original_metadata")
@@ -71,6 +74,7 @@ class SurIngestor(CrucibleDatasetIngestor):
     #   super().get_dataset_metadata()
 
     def parse_measurement(self):
+        """Build measurement name from metadata fields"""
         illumination = self.instrument_info.get("operating_mode", "")
         projection = self.instrument_info.get("projection_mode", "")
         acquisition = self.general_info.get("acquisition_type", "")
@@ -89,6 +93,7 @@ class SurIngestor(CrucibleDatasetIngestor):
         self.measurement = " ".join(filter(None, measurements))
 
     def get_thumbnails(self):
+        """Add the provided thumbnail to the dataset's thumbnails list"""
         try:
             thumbnail = self.generate_thumbnail()
             if thumbnail is not None:
@@ -97,6 +102,7 @@ class SurIngestor(CrucibleDatasetIngestor):
             logger.error(f"failed to extract thumbnail: {e}")
 
     def generate_thumbnail(self, target_size=(200, 200), dpi=100):
+        """Generate the thumbnail from the dataset's provided data via Python Imaging Library (PIL) and pyplot"""
         fig_size = (target_size[0] / dpi, target_size[1] / dpi)
 
         im = self.handle_thumbnail_dimensions()
@@ -112,6 +118,7 @@ class SurIngestor(CrucibleDatasetIngestor):
         return im
     
     def handle_thumbnail_dimensions(self):
+        """Handle thumbnail generation based on data axis dimensionality"""
         dataset = self.dataset
         acquisition = self.general_info.get("acquisition_type", "")
 
@@ -129,6 +136,7 @@ class SurIngestor(CrucibleDatasetIngestor):
 
     @staticmethod
     def clean_unicode(seq):
+        """Helper method for removing unicode escape sequences from a string or bytes file"""
         if isinstance(seq, str):
             return re.sub(r'\\u[0-9a-fA-F]{4}', '', seq)
         elif isinstance(seq, bytes):
@@ -145,6 +153,8 @@ class SurIngestor(CrucibleDatasetIngestor):
 
     @staticmethod
     def recursive_dict_parse(dctry, callback):
+        """Helper method for parsing a dictionary recursively while mutating the string via a callback function"""
+        """In this ingestor, the callback function is just the clean_unicode() function from above"""
         for key, val in dctry.items():
             if isinstance(val, dict):
                 SurIngestor.recursive_dict_parse(val, callback)

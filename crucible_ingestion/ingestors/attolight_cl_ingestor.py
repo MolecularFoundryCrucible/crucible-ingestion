@@ -23,10 +23,19 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
 
     def is_file_supported(self):
         """Check if the file to upload is a supported xml file based on its extension and content."""
-        file_extension = Path(self.file_to_upload).suffix.lower()
-        return file_extension in self.supported_filetypes
+
+        if Path(self.file_to_upload).suffix.lower() not in self.supported_filetypes:
+            return False
+
+        try:
+            with open(self.file_to_upload, "rb") as file:
+                _, root = next(ET.iterparse(file, events=("start",)))
+                return root.tag == "AttolightWorkspace"
+        except (ET.ParseError, StopIteration):
+            return False
 
     def setup_data(self):
+        """Read the .xml file to find all files associated with this dataset"""
         try:
             tree = ET.parse(self.file_to_upload)
             root = tree.getroot()
@@ -44,13 +53,13 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
                 self.child_sur.append(child.text)
             elif child.text != Path(self.file_to_upload).name: 
                 # Does not trigger on current file but does on all other non-.txt, non-.sur files
-                logger.info(f"Unexpected File encountered: {child.text}. Skipping...")
-
+                logger.info(f"Unexpected file encountered: {child.text}. Skipping...")
         logger.info(f"Sur Files: {self.child_sur}")
+
         super().setup_data()
 
     def get_scientific_metadata(self):
-        # This function natively ingests a .txt file included in the ingestion folder
+        """Natively ingest the .txt file included in the same upload as the .xml to use as parent dataset metadata"""
         if self.child_txt == "":
             raise ValueError("missing .txt file")
         txt_file = Path(self.file_to_upload).with_name(self.child_txt)
@@ -82,6 +91,7 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
     #   super().get_dataset_metadata()
 
     def parse_measurement(self):
+        """Build measurement name from metadata fields"""
         illumination = self.measurement_info.get("operating_mode", "")
         projection = self.measurement_info.get("projection_mode", "")
         acquisition = self.measurement_info.get("acquisition_type", "")
@@ -100,12 +110,10 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
         self.measurement = " ".join(filter(None, measurements))
 
     def parse_children(self):
-        # This function triggers ingestions on all children .sur files included in the ingestion folder 
-        # and associates them with a new dataset linked to the currently generating dataset
+        """Trigger ingestions on all children .sur files included in the ingestion folder and associates them with a new dataset linked to the currently generating dataset"""
 
         from ..data_ingestion import parse # Fixes circular import errors
 
-        i = 1 # Track unknown acquisition types, if necessary
         for file in self.child_sur:
             child = Dataset(
                 unique_id=mfid()[0], # Manually generate mfid for pre-server parsing behavior
@@ -128,20 +136,8 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
 
             child_metadata = child_packet.scientific_metadata
 
-            try:
-                acquisition = child_metadata["Object_0_Channel_0"]["Parsed"]["GENERAL"].get(
-                    "acquisition_type", "Unknown"
-                )
-            except Exception as e:
-                logger.error(f"Error accessing child metadata: {e}")
-                acquisition = "Unknown"
-
-            if acquisition == "Unknown":
-                acquisition += str(i)
-                i += 1
-
             child_packet.dataset_fields.update({
-                "dataset_name": f"{self.dataset_name}_{acquisition}",
+                "dataset_name": file,
                 "project_id": child.project_id,
                 "instrument_id": child.instrument_id,
                 "session_name": child.session_name,
@@ -156,7 +152,7 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
             })
 
     def get_thumbnails(self):
-        # This function selects one suitable thumbnail from within the child datasets ingested previously
+        """Select the hyperspectral thumbnail, or the first thumbnail if unavailable, from within the child datasets previously ingested"""
 
         for child in self.children:
             try:
