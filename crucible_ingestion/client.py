@@ -14,3 +14,9 @@ def get_client():
 def set_client(client):
     global _client
     _client = client
+
+
+def reset_client():
+    global _client
+    _client = None
+

@@ -29,12 +29,17 @@ from .rga_tey_batch_ingestor import RgaTeyBatchIngestor
 from .gc_log_ingestor import GCLogIngestor
 from .biologic_mpt_ingestor import BiologicMptIngestor
 from .image_ingestor import ImageIngestor, TifIngestor
+from .fei_sem_ingestor import FeiSemTifIngestor
 from .insitu_pl_ingestor import InSituPlIngestor
 from .dm_ingestor import DigitalMicrographIngestor
 from .emi_ingestor import EmiIngestor
 from .ser_ingestor import SerIngestor
 from .sur_ingestor import SurIngestor
 from .bcf_ingestor import BcfIngestor
+from .bruker_edx_ingestor import BrukerEdxIngestor
+from .gds_chipmap_ingestor import GdsChipMapIngestor
+from .horiba_ngs_ingestor import HoribaNgsIngestor
+from .kratos_xps_ingestor import KratosXpsIngestor
 from .emd_ingestor import BerkeleyEmdIngestor
 from .emd_velox_ingestor import VeloxEmdIngestor
 from .mrc_ingestor import MrcIngestor
@@ -84,6 +89,10 @@ ingestor_list = [AFMIngestor,
                 SerIngestor,
                 SurIngestor,
                 BcfIngestor,
+                BrukerEdxIngestor,
+                GdsChipMapIngestor,
+                HoribaNgsIngestor,
+                KratosXpsIngestor,
                 BerkeleyEmdIngestor,
                 VeloxEmdIngestor,
                 MrcIngestor,
@@ -92,6 +101,9 @@ ingestor_list = [AFMIngestor,
                 SpinbotSpecRunIngestor,
                 ImageIngestor,
                 TifIngestor,
+                # after TifIngestor so auto-detect leaves other apps' TIFFs alone;
+                # reachable only via an explicit ingestion_class
+                FeiSemTifIngestor,
                 BiologicMptIngestor,
                 GCLogIngestor,
                 NirvanaMultiPosSpecRunIngestor,

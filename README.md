@@ -6,7 +6,7 @@ the Crucible Data Platform.
 Parsing and sending are separate. `parse()` reads a file and returns an
 `IngestionPacket` describing everything that would be sent; `push_packet()` takes that
 packet and writes it to Crucible. Nothing is uploaded during parsing, and the file bytes
-themselves are never sent — only the parsed metadata.
+themselves are never sent -- only the parsed metadata.
 
 ## Install
 
@@ -53,7 +53,7 @@ record exists, parsing starts from scratch.
 ## Testing
 
 Testing does not need a dsid. Without one an mfid is generated locally, and `--test`
-creates a throwaway dataset under that id in the `crucible-test` project for `--push` to
+creates a persistent dataset under that id in the shared `crucible-test` project (not automatically cleaned up) for `--push` to
 write to, logging the id it picked:
 
 ```
@@ -68,7 +68,7 @@ uv run crucible-ingest --file {local_file_path}
 ```
 
 Passing a `--dsid` is optional and useful when you want the run to go against a dataset
-that already exists — to check that `parse()` reads the user provided fields back
+that already exists -- to check that `parse()` reads the user provided fields back
 correctly, for instance. With a `--dsid`, `--test` creates nothing and the push goes to
 that dataset.
 
@@ -98,7 +98,7 @@ hooks `setup_data()` calls: `get_scientific_metadata`, `get_dataset_metadata`,
 `get_thumbnails`.
 
 A new class needs `is_file_supported()` and must be added to `ingestor_list` in
-`crucible_ingestion/ingestors/registry.py`. Order matters — `find_supported_ingestor`
+`crucible_ingestion/ingestors/registry.py`. Order matters -- `find_supported_ingestor`
 returns the first class in the list that claims the file, so specific ingestors belong
 above general ones.
 
@@ -117,7 +117,7 @@ This runs `parse()` and records the packet's key paths, types, and values as a J
 in `tests/schemas/`, paired with the data file's hash in `tests/schema_registry.json`. The
 test suite checks later parses against it, so a field that stops being parsed shows up as a
 failure. Files already in the registry are skipped, so running it with no arguments picks
-up only what is new. Review the generated schema before committing — it records what the
+up only what is new. Review the generated schema before committing -- it records what the
 code does today, bugs included.
 
 ## Test data
