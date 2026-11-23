@@ -1,0 +1,725 @@
+{
+  "additionalProperties": true,
+  "properties": {
+    "children": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "dataset_fields": {
+      "additionalProperties": true,
+      "properties": {
+        "data_format": {
+          "const": "sur",
+          "type": "string"
+        },
+        "data_type": {
+          "const": "Cathodoluminescence",
+          "type": "string"
+        },
+        "dataset_name": {
+          "const": "testclData_v1",
+          "type": "string"
+        },
+        "instrument_name": {
+          "const": "spectre",
+          "type": "string"
+        },
+        "measurement": {
+          "const": "Cathodoluminescence",
+          "type": "string"
+        },
+        "owner_orcid": {
+          "const": "0009-0006-5351-7873",
+          "type": "string"
+        },
+        "project_id": {
+          "const": "testCrucible",
+          "type": "string"
+        },
+        "public": {
+          "const": false,
+          "type": "boolean"
+        },
+        "session_name": {
+          "const": "midnightWorksession",
+          "type": "string"
+        },
+        "size": {
+          "const": 32550,
+          "type": "number"
+        },
+        "timestamp": {
+          "const": "2026-10-14T08:13:00.000Z",
+          "type": "string"
+        },
+        "unique_id": {
+          "const": "0tpf76zxfnvfd000hcxk4fratg",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data_format",
+        "data_type",
+        "dataset_name",
+        "instrument_name",
+        "measurement",
+        "owner_orcid",
+        "project_id",
+        "public",
+        "session_name",
+        "size",
+        "timestamp",
+        "unique_id"
+      ],
+      "type": "object"
+    },
+    "file_to_upload": {
+      "const": "tests\\data\\ND_testSample_HAADF.sur",
+      "type": "string"
+    },
+    "ingestion_class": {
+      "const": "SurIngestor",
+      "type": "string"
+    },
+    "keywords": {
+      "allOf": [
+        {
+          "contains": {
+            "const": "Cathodoluminescence"
+          }
+        },
+        {
+          "contains": {
+            "const": "midnightWorksession"
+          }
+        },
+        {
+          "contains": {
+            "const": "spectre"
+          }
+        }
+      ],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "type": "array"
+    },
+    "samples": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "scientific_metadata": {
+      "additionalProperties": true,
+      "properties": {
+        "Dataset 0": {
+          "additionalProperties": true,
+          "properties": {
+            "Object_0_Channel_0": {
+              "additionalProperties": true,
+              "properties": {
+                "Header": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "H01_Signature": {
+                      "const": "DSCOMPRESSED",
+                      "type": "string"
+                    },
+                    "H02_Format": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H03_Number_of_Objects": {
+                      "const": 1,
+                      "type": "number"
+                    },
+                    "H04_Version": {
+                      "const": 1,
+                      "type": "number"
+                    },
+                    "H05_Object_Type": {
+                      "const": 2,
+                      "type": "number"
+                    },
+                    "H06_Object_Name": {
+                      "const": "Live Scan",
+                      "type": "string"
+                    },
+                    "H07_Operator_Name": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "H08_P_Size": {
+                      "const": 1,
+                      "type": "number"
+                    },
+                    "H09_Acquisition_Type": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H10_Range_Type": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H11_Special_Points": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H12_Absolute": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H13_Gauge_Resolution": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "H14_W_Size": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H15_Size_of_Points": {
+                      "const": 32,
+                      "type": "number"
+                    },
+                    "H16_Zmin": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H17_Zmax": {
+                      "const": 2147483647,
+                      "type": "number"
+                    },
+                    "H18_Number_of_Points": {
+                      "const": 128,
+                      "type": "number"
+                    },
+                    "H19_Number_of_Lines": {
+                      "const": 107,
+                      "type": "number"
+                    },
+                    "H20_Total_Nb_of_Pts": {
+                      "const": 13696,
+                      "type": "number"
+                    },
+                    "H21_X_Spacing": {
+                      "const": 0.0008821355877444148,
+                      "type": "number"
+                    },
+                    "H22_Y_Spacing": {
+                      "const": 0.0008821355877444148,
+                      "type": "number"
+                    },
+                    "H23_Z_Spacing": {
+                      "const": 1.0,
+                      "type": "number"
+                    },
+                    "H24_Name_of_X_Axis": {
+                      "const": "Width",
+                      "type": "string"
+                    },
+                    "H25_Name_of_Y_Axis": {
+                      "const": "Height",
+                      "type": "string"
+                    },
+                    "H26_Name_of_Z_Axis": {
+                      "const": "Intensities",
+                      "type": "string"
+                    },
+                    "H27_X_Step_Unit": {
+                      "const": "um",
+                      "type": "string"
+                    },
+                    "H28_Y_Step_Unit": {
+                      "const": "um",
+                      "type": "string"
+                    },
+                    "H29_Z_Step_Unit": {
+                      "const": "a.u.",
+                      "type": "string"
+                    },
+                    "H30_X_Length_Unit": {
+                      "const": "um",
+                      "type": "string"
+                    },
+                    "H31_Y_Length_Unit": {
+                      "const": "um",
+                      "type": "string"
+                    },
+                    "H32_Z_Length_Unit": {
+                      "const": "a.u.",
+                      "type": "string"
+                    },
+                    "H33_X_Unit_Ratio": {
+                      "const": 1.0,
+                      "type": "number"
+                    },
+                    "H34_Y_Unit_Ratio": {
+                      "const": 1.0,
+                      "type": "number"
+                    },
+                    "H35_Z_Unit_Ratio": {
+                      "const": 1.0,
+                      "type": "number"
+                    },
+                    "H36_Imprint": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H37_Inverted": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H38_Levelled": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H39_Obsolete": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "H40_Seconds": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H41_Minutes": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H42_Hours": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H43_Day": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H44_Month": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H45_Year": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H46_Day_of_week": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H47_Measurement_duration": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "H48_Compressed_data_size": {
+                      "const": 31277,
+                      "type": "number"
+                    },
+                    "H49_Obsolete": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "H50_Comment_size": {
+                      "const": 761,
+                      "type": "number"
+                    },
+                    "H51_Private_size": {
+                      "const": 0,
+                      "type": "number"
+                    },
+                    "H52_Client_zone": {
+                      "const": "                                                                                                                                ",
+                      "type": "string"
+                    },
+                    "H53_X_Offset": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "H54_Y_Offset": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "H55_Z_Offset": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "H56_T_Spacing": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "H57_T_Offset": {
+                      "const": 0.0,
+                      "type": "number"
+                    },
+                    "H58_T_Axis_Name": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "H59_T_Step_Unit": {
+                      "const": "",
+                      "type": "string"
+                    },
+                    "H60_Comment": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "H01_Signature",
+                    "H02_Format",
+                    "H03_Number_of_Objects",
+                    "H04_Version",
+                    "H05_Object_Type",
+                    "H06_Object_Name",
+                    "H07_Operator_Name",
+                    "H08_P_Size",
+                    "H09_Acquisition_Type",
+                    "H10_Range_Type",
+                    "H11_Special_Points",
+                    "H12_Absolute",
+                    "H13_Gauge_Resolution",
+                    "H14_W_Size",
+                    "H15_Size_of_Points",
+                    "H16_Zmin",
+                    "H17_Zmax",
+                    "H18_Number_of_Points",
+                    "H19_Number_of_Lines",
+                    "H20_Total_Nb_of_Pts",
+                    "H21_X_Spacing",
+                    "H22_Y_Spacing",
+                    "H23_Z_Spacing",
+                    "H24_Name_of_X_Axis",
+                    "H25_Name_of_Y_Axis",
+                    "H26_Name_of_Z_Axis",
+                    "H27_X_Step_Unit",
+                    "H28_Y_Step_Unit",
+                    "H29_Z_Step_Unit",
+                    "H30_X_Length_Unit",
+                    "H31_Y_Length_Unit",
+                    "H32_Z_Length_Unit",
+                    "H33_X_Unit_Ratio",
+                    "H34_Y_Unit_Ratio",
+                    "H35_Z_Unit_Ratio",
+                    "H36_Imprint",
+                    "H37_Inverted",
+                    "H38_Levelled",
+                    "H39_Obsolete",
+                    "H40_Seconds",
+                    "H41_Minutes",
+                    "H42_Hours",
+                    "H43_Day",
+                    "H44_Month",
+                    "H45_Year",
+                    "H46_Day_of_week",
+                    "H47_Measurement_duration",
+                    "H48_Compressed_data_size",
+                    "H49_Obsolete",
+                    "H50_Comment_size",
+                    "H51_Private_size",
+                    "H52_Client_zone",
+                    "H53_X_Offset",
+                    "H54_Y_Offset",
+                    "H55_Z_Offset",
+                    "H56_T_Spacing",
+                    "H57_T_Offset",
+                    "H58_T_Axis_Name",
+                    "H59_T_Step_Unit",
+                    "H60_Comment"
+                  ],
+                  "type": "object"
+                },
+                "Parsed": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "CCD": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "camera_name": {
+                          "const": "A.(EMCCD)970",
+                          "type": "string"
+                        },
+                        "exposure_time": {
+                          "const": 34,
+                          "type": "number"
+                        },
+                        "exposure_time_units": {
+                          "const": "ms",
+                          "type": "string"
+                        },
+                        "horizontal_binning": {
+                          "const": 1,
+                          "type": "number"
+                        },
+                        "output_amplification_mode": {
+                          "const": "Conventional",
+                          "type": "string"
+                        },
+                        "preamplification_gain": {
+                          "const": "x4",
+                          "type": "string"
+                        },
+                        "readout_rate": {
+                          "const": "50Khz",
+                          "type": "string"
+                        },
+                        "temperature": {
+                          "const": -62.0,
+                          "type": "number"
+                        },
+                        "temperature_units": {
+                          "const": "\u00b0C",
+                          "type": "string"
+                        },
+                        "vertical_binning": {
+                          "const": 200,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "camera_name",
+                        "exposure_time",
+                        "exposure_time_units",
+                        "horizontal_binning",
+                        "output_amplification_mode",
+                        "preamplification_gain",
+                        "readout_rate",
+                        "temperature",
+                        "temperature_units",
+                        "vertical_binning"
+                      ],
+                      "type": "object"
+                    },
+                    "GENERAL": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "acquisition_type": {
+                          "const": "HAADF",
+                          "type": "string"
+                        },
+                        "software_version": {
+                          "const": "undefined",
+                          "type": "string"
+                        },
+                        "timestamp": {
+                          "const": "2026-08-14_14:29:04",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "acquisition_type",
+                        "software_version",
+                        "timestamp"
+                      ],
+                      "type": "object"
+                    },
+                    "MICROSCOPE": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "field_of_view": {
+                          "const": 0.451,
+                          "type": "number"
+                        },
+                        "field_of_view_units": {
+                          "const": "nm",
+                          "type": "string"
+                        },
+                        "high_tension": {
+                          "const": 60.0,
+                          "type": "number"
+                        },
+                        "high_tension_units": {
+                          "const": "kV",
+                          "type": "string"
+                        },
+                        "magnification": {
+                          "const": 221842.0,
+                          "type": "number"
+                        },
+                        "model": {
+                          "const": "TFS",
+                          "type": "string"
+                        },
+                        "operating_mode": {
+                          "const": "STEM",
+                          "type": "string"
+                        },
+                        "probe_current": {
+                          "const": 0.017,
+                          "type": "number"
+                        },
+                        "probe_current_units": {
+                          "const": "nA",
+                          "type": "string"
+                        },
+                        "projection_mode": {
+                          "const": "DIFFRACTION",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "field_of_view",
+                        "field_of_view_units",
+                        "high_tension",
+                        "high_tension_units",
+                        "magnification",
+                        "model",
+                        "operating_mode",
+                        "probe_current",
+                        "probe_current_units",
+                        "projection_mode"
+                      ],
+                      "type": "object"
+                    },
+                    "SCAN": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "dwelltime": {
+                          "const": 1,
+                          "type": "number"
+                        },
+                        "dwelltime_units": {
+                          "const": "ms",
+                          "type": "string"
+                        },
+                        "input": {
+                          "const": "HAADF",
+                          "type": "string"
+                        },
+                        "reference_size_x": {
+                          "const": 512,
+                          "type": "number"
+                        },
+                        "reference_size_y": {
+                          "const": 512,
+                          "type": "number"
+                        },
+                        "resolution_x": {
+                          "const": 512,
+                          "type": "number"
+                        },
+                        "resolution_y": {
+                          "const": 512,
+                          "type": "number"
+                        },
+                        "size_x": {
+                          "const": 423,
+                          "type": "number"
+                        },
+                        "size_y": {
+                          "const": 356,
+                          "type": "number"
+                        },
+                        "start_x": {
+                          "const": 48,
+                          "type": "number"
+                        },
+                        "start_y": {
+                          "const": 22,
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "dwelltime",
+                        "dwelltime_units",
+                        "input",
+                        "reference_size_x",
+                        "reference_size_y",
+                        "resolution_x",
+                        "resolution_y",
+                        "size_x",
+                        "size_y",
+                        "start_x",
+                        "start_y"
+                      ],
+                      "type": "object"
+                    },
+                    "SPECTROMETER": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "entrance_mirror_position": {
+                          "const": "lateral",
+                          "type": "string"
+                        },
+                        "grating": {
+                          "const": "150/800(800nm)",
+                          "type": "string"
+                        },
+                        "spectrometer": {
+                          "const": "id:0",
+                          "type": "string"
+                        },
+                        "spectrometer_units": {
+                          "const": "-",
+                          "type": "string"
+                        },
+                        "wavelength": {
+                          "const": 650.0,
+                          "type": "number"
+                        },
+                        "wavelength_units": {
+                          "const": "nm",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "entrance_mirror_position",
+                        "grating",
+                        "spectrometer",
+                        "spectrometer_units",
+                        "wavelength",
+                        "wavelength_units"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "CCD",
+                    "GENERAL",
+                    "MICROSCOPE",
+                    "SCAN",
+                    "SPECTROMETER"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "Header",
+                "Parsed"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "Object_0_Channel_0"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "Dataset 0"
+      ],
+      "type": "object"
+    },
+    "thumbnails": {
+      "maxItems": 0,
+      "minItems": 0,
+      "type": "array"
+    },
+    "unique_id": {
+      "const": "0tpf76zxfnvfd000hcxk4fratg",
+      "type": "string"
+    }
+  },
+  "required": [
+    "children",
+    "dataset_fields",
+    "file_to_upload",
+    "ingestion_class",
+    "keywords",
+    "samples",
+    "scientific_metadata",
+    "thumbnails",
+    "unique_id"
+  ],
+  "type": "object"
+}

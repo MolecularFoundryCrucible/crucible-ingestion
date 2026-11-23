@@ -111,6 +111,8 @@ def parse(dataset_to_process, dsid, ingestion_class=None, cleanup=True, file_nam
     # check if the dataset already exists; reinstantiate ig with info
     populate_fields = ['dataset_name', 'public', 'owner_orcid',
                        'project_id', 'measurement', 'session_name',
+                       'instrument_name', 'instrument_id', 'data_type', 'timestamp',
+                       'data_format', 'size']
                        'instrument_name', 'instrument_id', 'instrument_mfid',
                        'data_type', 'timestamp', 'data_format', 'size']
 

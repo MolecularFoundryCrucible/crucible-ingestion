@@ -233,6 +233,12 @@
     "ingestor": "QSpleemARRESMMIngestor",
     "schema": "QSpleemARRESMMIngestor_8e1001.json"
   },
+  "8e7305b35cfe369ccd823de95c97cbac84820bd81f4755df84e4dc4bd8a4051a": {
+    "dsid": "0tr0dhscz1yc3000c5akp3fv7r",
+    "file": "150_800_CW500nm_CL_CL.sur",
+    "ingestor": "SurIngestor",
+    "schema": "SurIngestor_8e7305.json"
+  },
   "90cba8d2771e1bf1879843130b3bb3e6850a6f1c0a7e3dc57e4eb230f2993627": {
     "dsid": "xxx",
     "file": "team05/STEM_imaging_non-pixelated.emi",
@@ -292,6 +298,18 @@
     "file": "titanx_tia/TEM_Diff_Camera_BM-Ultrascan_DiffPattern.emi",
     "ingestor": "EmiIngestor",
     "schema": "EmiIngestor_ab6afe.json"
+  },
+  "b394aa88acc3054c4ecd0ae09f770ebaa88130027517c27a8565b4524edeab7c": {
+    "dsid": "0tr0dh0hz5v27000k5g84cxtam",
+    "file": "particle2_CL_workspace.xml",
+    "ingestor": "AttolightCLIngestor",
+    "schema": "AttolightCLIngestor_b394aa.json"
+  },
+  "b5028df34d087fd513a546a649289651aeb19211272fc0bde08cb154f2e1e24b": {
+    "dsid": "0tpf76zxfnvfd000hcxk4fratg",
+    "file": "ND_testSample_HAADF.sur",
+    "ingestor": "SurIngestor",
+    "schema": "SurIngestor_b5028d.json"
   },
   "b6527d2fe46a740516fa7e0f8e5ca890dc965fb3e474f0cbbeba3ba292e7ec4f": {
     "dsid": "xxx",

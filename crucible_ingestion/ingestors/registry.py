@@ -34,6 +34,7 @@ from .insitu_pl_ingestor import InSituPlIngestor
 from .dm_ingestor import DigitalMicrographIngestor
 from .emi_ingestor import EmiIngestor
 from .ser_ingestor import SerIngestor
+from .sur_ingestor import SurIngestor
 from .bcf_ingestor import BcfIngestor
 from .bruker_edx_ingestor import BrukerEdxIngestor
 from .gds_chipmap_ingestor import GdsChipMapIngestor
@@ -50,6 +51,7 @@ from .ptychography_h5_ingestor import PtychographyH5Ingestor
 from .h5_ingestor import H5Ingestor
 from .autobot_spinrun_yaml_ingestor import SpinRunIngestor_10kLegacy
 from .inorganic_xrd_ingestor import InorganicXRDIngestor
+from .attolight_cl_ingestor import AttolightCLIngestor
 
 
 logger = logging.getLogger(__name__)
@@ -85,6 +87,7 @@ ingestor_list = [AFMIngestor,
                 DigitalMicrographIngestor,
                 EmiIngestor,
                 SerIngestor,
+                SurIngestor,
                 BcfIngestor,
                 BrukerEdxIngestor,
                 GdsChipMapIngestor,
@@ -107,7 +110,8 @@ ingestor_list = [AFMIngestor,
                 NirvanaMultiPosLineScanIngestor,
                 NirvanaMultiPosLineScanIngestor_10kLegacy,
                 ScopeFoundryH5Ingestor,
-                H5Ingestor] 
+                H5Ingestor,
+                AttolightCLIngestor,] 
 
 SELECTABLE = {cls.__name__: cls for cls in ingestor_list} 
 

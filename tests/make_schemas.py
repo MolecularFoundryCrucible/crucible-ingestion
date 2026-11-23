@@ -44,6 +44,7 @@ import json
 import logging
 import traceback
 from pathlib import Path
+from mfid import mfid
 
 from crucible_ingestion.data_ingestion import parse
 
@@ -262,7 +263,7 @@ def main():
                         help="path to a data file; repeatable (default: everything in the data dir)")
     source.add_argument("--data-dir", dest="data_dir", default=None,
                         help="subfolder of tests/data to run over instead of tests/data itself")
-    parser.add_argument("--dsid", default="xxx", help="dataset unique id to parse against")
+    parser.add_argument("--dsid", default=mfid()[0], help="dataset unique id to parse against")
     parser.add_argument("--ingestor", default=None,
                         help="ingestor class name (default: auto-detect)")
     parser.add_argument("-v", "--verbose", action="store_true",
