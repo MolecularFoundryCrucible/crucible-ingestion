@@ -135,15 +135,11 @@ class CrucibleDatasetIngestor(Dataset):
         Base function that gets called
         during setup_data()
         should update unique_id, timestamp,
-        size, dataset_name, data_format
+        dataset_name, data_format
         """
         if self.unique_id is None:
             self.unique_id = mfid()[0]
         
-        if self.size is None:
-            self.size = 0
-
-        self.size += os.path.getsize(self.file_to_upload)
         if not self.data_format:
             self.data_format = self.match_name.split('.')[-1]
 

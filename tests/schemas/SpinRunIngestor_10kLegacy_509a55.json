@@ -44,7 +44,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {},
                 "unique_id": {}
               },
@@ -64,7 +63,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -363,7 +361,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {},
                 "unique_id": {}
               },
@@ -383,7 +380,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -682,7 +678,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {},
                 "unique_id": {}
               },
@@ -702,7 +697,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1001,7 +995,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {},
                 "unique_id": {}
               },
@@ -1021,7 +1014,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1320,7 +1312,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {},
                 "unique_id": {}
               },
@@ -1340,7 +1331,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1639,7 +1629,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {},
                 "unique_id": {}
               },
@@ -1659,7 +1648,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1958,7 +1946,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {},
                 "unique_id": {}
               },
@@ -1978,7 +1965,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -2277,7 +2263,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {},
                 "unique_id": {}
               },
@@ -2297,7 +2282,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -2596,10 +2580,6 @@
           "type": "boolean"
         },
         "session_name": {},
-        "size": {
-          "const": 4746,
-          "type": "number"
-        },
         "timestamp": {
           "const": "2026-07-28T18:20:24.805682+00:00",
           "type": "string"
@@ -2619,7 +2599,6 @@
         "project_id",
         "public",
         "session_name",
-        "size",
         "timestamp",
         "unique_id"
       ],

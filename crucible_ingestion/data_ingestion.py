@@ -112,7 +112,7 @@ def parse(dataset_to_process, dsid, ingestion_class=None, cleanup=True, file_nam
     populate_fields = ['dataset_name', 'public', 'owner_orcid',
                        'project_id', 'measurement', 'session_name',
                        'instrument_name', 'instrument_id', 'instrument_mfid',
-                       'data_type', 'timestamp', 'data_format', 'size']
+                       'data_type', 'timestamp', 'data_format']
 
     ig, found_ds = populate_existing_ds_info(ig, populate_fields)
 

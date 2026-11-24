@@ -36,10 +36,6 @@
           "type": "boolean"
         },
         "session_name": {},
-        "size": {
-          "const": 47501407,
-          "type": "number"
-        },
         "timestamp": {
           "const": "2026-08-10T12:43:06.000577",
           "type": "string"
@@ -59,7 +55,6 @@
         "project_id",
         "public",
         "session_name",
-        "size",
         "timestamp",
         "unique_id"
       ],

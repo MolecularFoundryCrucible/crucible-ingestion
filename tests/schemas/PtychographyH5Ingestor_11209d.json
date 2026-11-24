@@ -30,7 +30,6 @@
           "type": "boolean"
         },
         "session_name": {},
-        "size": {},
         "timestamp": {},
         "unique_id": {
           "const": "xxx",
@@ -47,7 +46,6 @@
         "project_id",
         "public",
         "session_name",
-        "size",
         "timestamp",
         "unique_id"
       ],

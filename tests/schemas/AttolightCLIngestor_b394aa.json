@@ -36,10 +36,6 @@
                   "type": "boolean"
                 },
                 "session_name": {},
-                "size": {
-                  "const": 23905108,
-                  "type": "number"
-                },
                 "timestamp": {
                   "const": "2026-11-20T07:46:25.716379",
                   "type": "string"
@@ -60,7 +56,6 @@
                 "project_id",
                 "public",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -719,10 +714,6 @@
                   "type": "boolean"
                 },
                 "session_name": {},
-                "size": {
-                  "const": 34296,
-                  "type": "number"
-                },
                 "timestamp": {
                   "const": "2026-11-20T07:46:25.682931",
                   "type": "string"
@@ -743,7 +734,6 @@
                 "project_id",
                 "public",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1402,10 +1392,6 @@
                   "type": "boolean"
                 },
                 "session_name": {},
-                "size": {
-                  "const": 568447,
-                  "type": "number"
-                },
                 "timestamp": {
                   "const": "2026-11-20T07:46:25.815389",
                   "type": "string"
@@ -1426,7 +1412,6 @@
                 "project_id",
                 "public",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -2084,10 +2069,6 @@
           "type": "boolean"
         },
         "session_name": {},
-        "size": {
-          "const": 402,
-          "type": "number"
-        },
         "timestamp": {
           "const": "2026-11-20T07:46:25.653190",
           "type": "string"
@@ -2107,7 +2088,6 @@
         "project_id",
         "public",
         "session_name",
-        "size",
         "timestamp",
         "unique_id"
       ],

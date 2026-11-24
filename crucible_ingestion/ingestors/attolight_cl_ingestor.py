@@ -47,9 +47,10 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
             raise ValueError(f"Failed to parse file: {e}")
 
         for child in files:
-            if child.text.split('.')[1] == 'txt':
+            suffix = Path(child.text).suffix.lower()
+            if suffix == '.txt':
                 self.child_txt = child.text
-            elif child.text.split('.')[1] == 'sur':
+            elif suffix == '.sur':
                 self.child_sur.append(child.text)
             elif child.text != Path(self.file_to_upload).name: 
                 # Does not trigger on current file but does on all other non-.txt, non-.sur files
@@ -138,6 +139,7 @@ class AttolightCLIngestor(CrucibleDatasetIngestor):
 
             child_packet.dataset_fields.update({
                 "dataset_name": file,
+                "owner_orcid": self.owner_orcid,
                 "project_id": child.project_id,
                 "instrument_id": child.instrument_id,
                 "session_name": child.session_name,

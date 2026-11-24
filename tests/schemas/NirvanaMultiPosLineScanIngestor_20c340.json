@@ -44,7 +44,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -67,7 +66,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -240,7 +238,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -263,7 +260,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -436,7 +432,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -459,7 +454,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -632,7 +626,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -655,7 +648,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -828,7 +820,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -851,7 +842,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1024,7 +1014,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -1047,7 +1036,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1220,7 +1208,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -1243,7 +1230,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1416,7 +1402,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -1439,7 +1424,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1612,7 +1596,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -1635,7 +1618,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -1808,7 +1790,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -1831,7 +1812,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -2004,7 +1984,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -2027,7 +2006,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -2200,7 +2178,6 @@
                 "resource_type": {},
                 "scientific_metadata": {},
                 "session_name": {},
-                "size": {},
                 "timestamp": {
                   "const": "2026-07-01T13:55:12",
                   "type": "string"
@@ -2223,7 +2200,6 @@
                 "resource_type",
                 "scientific_metadata",
                 "session_name",
-                "size",
                 "timestamp",
                 "unique_id"
               ],
@@ -2399,10 +2375,6 @@
           "const": "as-synthesized",
           "type": "string"
         },
-        "size": {
-          "const": 4150632,
-          "type": "number"
-        },
         "timestamp": {
           "const": "2026-07-01T13:55:12",
           "type": "string"
@@ -2422,7 +2394,6 @@
         "project_id",
         "public",
         "session_name",
-        "size",
         "timestamp",
         "unique_id"
       ],

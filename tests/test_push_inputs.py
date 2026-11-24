@@ -105,6 +105,14 @@ def test_children_name_no_instrument(entry):
 
 
 @for_each_file
+def test_children_set_no_size(entry):
+    """API 4.0 refuses size on dataset create with 422; the server sets it from the files."""
+    for i, child in enumerate(packet_for(entry).children):
+        assert child["dataset"].get("size") is None, \
+            f"children[{i}]['dataset'] sets size, which API 4.0 refuses"
+
+
+@for_each_file
 def test_ids_are_strings(entry):
     """Every id push_packet interpolates into a request path is a non-empty string."""
     packet = packet_for(entry)

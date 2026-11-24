@@ -45,10 +45,6 @@
           "const": "midnightWorksession",
           "type": "string"
         },
-        "size": {
-          "const": 32550,
-          "type": "number"
-        },
         "timestamp": {
           "const": "2026-10-14T08:13:00.000Z",
           "type": "string"
@@ -68,7 +64,6 @@
         "project_id",
         "public",
         "session_name",
-        "size",
         "timestamp",
         "unique_id"
       ],
