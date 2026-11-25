@@ -538,7 +538,7 @@ toml = [
 
 [[package]]
 name = "crucible-ingestion"
-version = "0.3.3"
+version = "0.3.4"
 source = { editable = "." }
 dependencies = [
     { name = "aicspylibczi" },
