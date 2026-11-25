@@ -46,8 +46,8 @@ Run the workflow by hand from the Actions tab (Release to PyPI -> Run workflow) 
    git push origin vX.Y.Z
    ```
 
-4. The `Release to PyPI` workflow runs: it verifies the tag matches `pyproject.toml`, builds, and (after any environment approval) publishes `crucible-ingestion==X.Y.Z` to PyPI.
-5. Confirm it is live: https://pypi.org/project/crucible-ingestion/X.Y.Z/ and `pip index versions crucible-ingestion`.
+4. The `Release to PyPI` workflow runs: it verifies the tag matches `pyproject.toml`, builds, and (after any environment approval) publishes `crucible-ingestion==X.Y.Z` to PyPI. Once the publish succeeds, it creates the GitHub Release for the tag, with notes generated from the pull requests merged since the previous tag and the wheel and sdist attached.
+5. Confirm it is live: https://pypi.org/project/crucible-ingestion/X.Y.Z/, `pip index versions crucible-ingestion`, and the release at https://github.com/MolecularFoundryCrucible/crucible-ingestion/releases.
 
 A tag whose version does not match `pyproject.toml` fails at the build job before anything is uploaded. PyPI never accepts the same version twice, so a botched release needs a new version number, not a re-tag.
 
