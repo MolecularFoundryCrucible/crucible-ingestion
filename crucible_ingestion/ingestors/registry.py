@@ -115,6 +115,14 @@ ingestor_list = [AFMIngestor,
 
 SELECTABLE = {cls.__name__: cls for cls in ingestor_list} 
 
+
+def capabilities():
+    """The selectable ingestors as a worker reports them in PUT /workers/{worker_id}."""
+    return [{"name": name,
+             "description": cls.description,
+             "file_extensions": list(cls.file_extensions)}
+            for name, cls in SELECTABLE.items()]
+
 def find_supported_ingestor(dataset_to_process,
                             dsid,
                             specified_ingestor = None,
