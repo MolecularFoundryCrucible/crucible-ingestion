@@ -6,7 +6,7 @@ from mfid import mfid
 import logging
 import json
 from pathlib import Path
-from typing import Optional
+from typing import ClassVar, Optional
 from crucible.models import Dataset
 
 from ..utils import (build_b64_thumbnail,
@@ -25,6 +25,11 @@ def cleanup_tmp_files():
 
 
 class CrucibleDatasetIngestor(Dataset):
+    # Hints the API shows when suggesting an ingestor for a file (registry.capabilities());
+    # is_file_supported alone decides whether a file is accepted.
+    description: ClassVar[str | None] = None
+    file_extensions: ClassVar[tuple[str, ...]] = ()
+
     ingestion_githash: str = os.environ.get("GITHASH")
     scientific_metadata: dict = {} 
     keywords: list = []
