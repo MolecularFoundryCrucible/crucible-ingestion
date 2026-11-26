@@ -211,7 +211,7 @@ def _owner_ref_from_orcid(fields):
     return fields
 
 
-def push_packet(packet, include_file = False):
+def push_packet(packet, include_file=False, skip_child_ingestion=False):
     # send the data
     # unique_id goes in the path, not the body, and the patch route rejects owner_orcid
     # and project_id. To set the project from the parsed packet, call:
@@ -287,8 +287,11 @@ def push_packet(packet, include_file = False):
             continue
 
         child_files = child.get('files_to_upload', [])
-        resp = get_client().datasets.create(Dataset(**_owner_ref_from_orcid(child_ds)), child_md,
-                                            files=child_files)
+        if skip_child_ingestion:
+            resp = get_client().datasets.create(Dataset(**_owner_ref_from_orcid(child_ds)), child_md)
+        else:
+            resp = get_client().datasets.create(Dataset(**_owner_ref_from_orcid(child_ds)), child_md,
+                                                files=child_files)
         child_dsid = resp['dataset_mfid']
         existing_children[parent_id][child_ds['dataset_name']] = child_dsid
         if declared_id:
@@ -308,6 +311,11 @@ def push_packet(packet, include_file = False):
                                                     thumbnail['caption'])
             except Exception as err:
                 logger.error(f"Failed to add child thumbnail with error {err}")
+
+        if skip_child_ingestion:
+            child_ingestion_class = child.get('ingestion_class')
+            for path in (child_files or []):
+                push_file(child_dsid, path, child_ingestion_class)
 
 
     # thumbnails
