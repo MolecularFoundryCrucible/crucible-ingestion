@@ -38,6 +38,7 @@ PUSH_ONLY_SAMPLE_KEYS = {"parent_ids", "link_to_dataset"}
 CALL_SITES = [
     (DatasetOperations, "update", 1, ()),
     (DatasetOperations, "create", 2, ()),
+    (DatasetOperations, "create", 2, ("files",)),
     (DatasetOperations, "list_children", 1, ()),
     (DatasetOperations, "link_sample", 2, ()),
     (DatasetOperations, "link", 2, ()),
@@ -55,7 +56,7 @@ CALL_SITES = [
 
 
 @pytest.mark.parametrize("owner, method, positional, keywords", CALL_SITES,
-                         ids=[f"{o.__name__}.{m}" for o, m, _, _ in CALL_SITES])
+                         ids=[f"{o.__name__}.{m}({','.join(kw)})" if kw else f"{o.__name__}.{m}" for o, m, _, kw in CALL_SITES])
 def test_call_sites_match_client_signatures(owner, method, positional, keywords):
     """The method still exists on the client and still accepts the arguments push_packet
     binds to it."""
